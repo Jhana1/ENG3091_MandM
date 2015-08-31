@@ -1,0 +1,856 @@
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKWD7uq.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"SCLK_A.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.SCLK_A_Write,"ax",%progbits
+  19              		.align	2
+  20              		.global	SCLK_A_Write
+  21              		.thumb
+  22              		.thumb_func
+  23              		.type	SCLK_A_Write, %function
+  24              	SCLK_A_Write:
+  25              	.LFB0:
+  26              		.file 1 ".\\Generated_Source\\PSoC5\\SCLK_A.c"
+   1:.\Generated_Source\PSoC5/SCLK_A.c **** /*******************************************************************************
+   2:.\Generated_Source\PSoC5/SCLK_A.c **** * File Name: SCLK_A.c  
+   3:.\Generated_Source\PSoC5/SCLK_A.c **** * Version 2.10
+   4:.\Generated_Source\PSoC5/SCLK_A.c **** *
+   5:.\Generated_Source\PSoC5/SCLK_A.c **** * Description:
+   6:.\Generated_Source\PSoC5/SCLK_A.c **** *  This file contains API to enable firmware control of a Pins component.
+   7:.\Generated_Source\PSoC5/SCLK_A.c **** *
+   8:.\Generated_Source\PSoC5/SCLK_A.c **** * Note:
+   9:.\Generated_Source\PSoC5/SCLK_A.c **** *
+  10:.\Generated_Source\PSoC5/SCLK_A.c **** ********************************************************************************
+  11:.\Generated_Source\PSoC5/SCLK_A.c **** * Copyright 2008-2014, Cypress Semiconductor Corporation.  All rights reserved.
+  12:.\Generated_Source\PSoC5/SCLK_A.c **** * You may use this file only in accordance with the license, terms, conditions, 
+  13:.\Generated_Source\PSoC5/SCLK_A.c **** * disclaimers, and limitations in the end user license agreement accompanying 
+  14:.\Generated_Source\PSoC5/SCLK_A.c **** * the software package with which this file was provided.
+  15:.\Generated_Source\PSoC5/SCLK_A.c **** *******************************************************************************/
+  16:.\Generated_Source\PSoC5/SCLK_A.c **** 
+  17:.\Generated_Source\PSoC5/SCLK_A.c **** #include "cytypes.h"
+  18:.\Generated_Source\PSoC5/SCLK_A.c **** #include "SCLK_A.h"
+  19:.\Generated_Source\PSoC5/SCLK_A.c **** 
+  20:.\Generated_Source\PSoC5/SCLK_A.c **** /* APIs are not generated for P15[7:6] on PSoC 5 */
+  21:.\Generated_Source\PSoC5/SCLK_A.c **** #if !(CY_PSOC5A &&\
+  22:.\Generated_Source\PSoC5/SCLK_A.c **** 	 SCLK_A__PORT == 15 && ((SCLK_A__MASK & 0xC0) != 0))
+  23:.\Generated_Source\PSoC5/SCLK_A.c **** 
+  24:.\Generated_Source\PSoC5/SCLK_A.c **** 
+  25:.\Generated_Source\PSoC5/SCLK_A.c **** /*******************************************************************************
+  26:.\Generated_Source\PSoC5/SCLK_A.c **** * Function Name: SCLK_A_Write
+  27:.\Generated_Source\PSoC5/SCLK_A.c **** ********************************************************************************
+  28:.\Generated_Source\PSoC5/SCLK_A.c **** *
+  29:.\Generated_Source\PSoC5/SCLK_A.c **** * Summary:
+  30:.\Generated_Source\PSoC5/SCLK_A.c **** *  Assign a new value to the digital port's data output register.  
+  31:.\Generated_Source\PSoC5/SCLK_A.c **** *
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKWD7uq.s 			page 2
+
+
+  32:.\Generated_Source\PSoC5/SCLK_A.c **** * Parameters:  
+  33:.\Generated_Source\PSoC5/SCLK_A.c **** *  prtValue:  The value to be assigned to the Digital Port. 
+  34:.\Generated_Source\PSoC5/SCLK_A.c **** *
+  35:.\Generated_Source\PSoC5/SCLK_A.c **** * Return: 
+  36:.\Generated_Source\PSoC5/SCLK_A.c **** *  None
+  37:.\Generated_Source\PSoC5/SCLK_A.c **** *  
+  38:.\Generated_Source\PSoC5/SCLK_A.c **** *******************************************************************************/
+  39:.\Generated_Source\PSoC5/SCLK_A.c **** void SCLK_A_Write(uint8 value) 
+  40:.\Generated_Source\PSoC5/SCLK_A.c **** {
+  27              		.loc 1 40 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  32              	.LVL0:
+  41:.\Generated_Source\PSoC5/SCLK_A.c ****     uint8 staticBits = (SCLK_A_DR & (uint8)(~SCLK_A_MASK));
+  33              		.loc 1 41 0
+  34 0000 044B     		ldr	r3, .L2
+  35 0002 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+  36 0004 02F0FE02 		and	r2, r2, #254
+  37              	.LVL1:
+  42:.\Generated_Source\PSoC5/SCLK_A.c ****     SCLK_A_DR = staticBits | ((uint8)(value << SCLK_A_SHIFT) & SCLK_A_MASK);
+  38              		.loc 1 42 0
+  39 0008 00F00100 		and	r0, r0, #1
+  40              	.LVL2:
+  41 000c 0243     		orrs	r2, r2, r0
+  42              	.LVL3:
+  43 000e 1A70     		strb	r2, [r3]
+  44 0010 7047     		bx	lr
+  45              	.L3:
+  46 0012 00BF     		.align	2
+  47              	.L2:
+  48 0014 00510040 		.word	1073762560
+  49              		.cfi_endproc
+  50              	.LFE0:
+  51              		.size	SCLK_A_Write, .-SCLK_A_Write
+  52              		.section	.text.SCLK_A_SetDriveMode,"ax",%progbits
+  53              		.align	2
+  54              		.global	SCLK_A_SetDriveMode
+  55              		.thumb
+  56              		.thumb_func
+  57              		.type	SCLK_A_SetDriveMode, %function
+  58              	SCLK_A_SetDriveMode:
+  59              	.LFB1:
+  43:.\Generated_Source\PSoC5/SCLK_A.c **** }
+  44:.\Generated_Source\PSoC5/SCLK_A.c **** 
+  45:.\Generated_Source\PSoC5/SCLK_A.c **** 
+  46:.\Generated_Source\PSoC5/SCLK_A.c **** /*******************************************************************************
+  47:.\Generated_Source\PSoC5/SCLK_A.c **** * Function Name: SCLK_A_SetDriveMode
+  48:.\Generated_Source\PSoC5/SCLK_A.c **** ********************************************************************************
+  49:.\Generated_Source\PSoC5/SCLK_A.c **** *
+  50:.\Generated_Source\PSoC5/SCLK_A.c **** * Summary:
+  51:.\Generated_Source\PSoC5/SCLK_A.c **** *  Change the drive mode on the pins of the port.
+  52:.\Generated_Source\PSoC5/SCLK_A.c **** * 
+  53:.\Generated_Source\PSoC5/SCLK_A.c **** * Parameters:  
+  54:.\Generated_Source\PSoC5/SCLK_A.c **** *  mode:  Change the pins to one of the following drive modes.
+  55:.\Generated_Source\PSoC5/SCLK_A.c **** *
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKWD7uq.s 			page 3
+
+
+  56:.\Generated_Source\PSoC5/SCLK_A.c **** *  SCLK_A_DM_STRONG     Strong Drive 
+  57:.\Generated_Source\PSoC5/SCLK_A.c **** *  SCLK_A_DM_OD_HI      Open Drain, Drives High 
+  58:.\Generated_Source\PSoC5/SCLK_A.c **** *  SCLK_A_DM_OD_LO      Open Drain, Drives Low 
+  59:.\Generated_Source\PSoC5/SCLK_A.c **** *  SCLK_A_DM_RES_UP     Resistive Pull Up 
+  60:.\Generated_Source\PSoC5/SCLK_A.c **** *  SCLK_A_DM_RES_DWN    Resistive Pull Down 
+  61:.\Generated_Source\PSoC5/SCLK_A.c **** *  SCLK_A_DM_RES_UPDWN  Resistive Pull Up/Down 
+  62:.\Generated_Source\PSoC5/SCLK_A.c **** *  SCLK_A_DM_DIG_HIZ    High Impedance Digital 
+  63:.\Generated_Source\PSoC5/SCLK_A.c **** *  SCLK_A_DM_ALG_HIZ    High Impedance Analog 
+  64:.\Generated_Source\PSoC5/SCLK_A.c **** *
+  65:.\Generated_Source\PSoC5/SCLK_A.c **** * Return: 
+  66:.\Generated_Source\PSoC5/SCLK_A.c **** *  None
+  67:.\Generated_Source\PSoC5/SCLK_A.c **** *
+  68:.\Generated_Source\PSoC5/SCLK_A.c **** *******************************************************************************/
+  69:.\Generated_Source\PSoC5/SCLK_A.c **** void SCLK_A_SetDriveMode(uint8 mode) 
+  70:.\Generated_Source\PSoC5/SCLK_A.c **** {
+  60              		.loc 1 70 0
+  61              		.cfi_startproc
+  62              		@ args = 0, pretend = 0, frame = 0
+  63              		@ frame_needed = 0, uses_anonymous_args = 0
+  64              		@ link register save eliminated.
+  65              	.LVL4:
+  71:.\Generated_Source\PSoC5/SCLK_A.c **** 	CyPins_SetPinDriveMode(SCLK_A_0, mode);
+  66              		.loc 1 71 0
+  67 0000 044B     		ldr	r3, .L5
+  68 0002 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+  69 0004 02F0F102 		and	r2, r2, #241
+  70 0008 00F00E00 		and	r0, r0, #14
+  71              	.LVL5:
+  72 000c 0243     		orrs	r2, r2, r0
+  73 000e 1A70     		strb	r2, [r3]
+  74 0010 7047     		bx	lr
+  75              	.L6:
+  76 0012 00BF     		.align	2
+  77              	.L5:
+  78 0014 00500040 		.word	1073762304
+  79              		.cfi_endproc
+  80              	.LFE1:
+  81              		.size	SCLK_A_SetDriveMode, .-SCLK_A_SetDriveMode
+  82              		.section	.text.SCLK_A_Read,"ax",%progbits
+  83              		.align	2
+  84              		.global	SCLK_A_Read
+  85              		.thumb
+  86              		.thumb_func
+  87              		.type	SCLK_A_Read, %function
+  88              	SCLK_A_Read:
+  89              	.LFB2:
+  72:.\Generated_Source\PSoC5/SCLK_A.c **** }
+  73:.\Generated_Source\PSoC5/SCLK_A.c **** 
+  74:.\Generated_Source\PSoC5/SCLK_A.c **** 
+  75:.\Generated_Source\PSoC5/SCLK_A.c **** /*******************************************************************************
+  76:.\Generated_Source\PSoC5/SCLK_A.c **** * Function Name: SCLK_A_Read
+  77:.\Generated_Source\PSoC5/SCLK_A.c **** ********************************************************************************
+  78:.\Generated_Source\PSoC5/SCLK_A.c **** *
+  79:.\Generated_Source\PSoC5/SCLK_A.c **** * Summary:
+  80:.\Generated_Source\PSoC5/SCLK_A.c **** *  Read the current value on the pins of the Digital Port in right justified 
+  81:.\Generated_Source\PSoC5/SCLK_A.c **** *  form.
+  82:.\Generated_Source\PSoC5/SCLK_A.c **** *
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKWD7uq.s 			page 4
+
+
+  83:.\Generated_Source\PSoC5/SCLK_A.c **** * Parameters:  
+  84:.\Generated_Source\PSoC5/SCLK_A.c **** *  None
+  85:.\Generated_Source\PSoC5/SCLK_A.c **** *
+  86:.\Generated_Source\PSoC5/SCLK_A.c **** * Return: 
+  87:.\Generated_Source\PSoC5/SCLK_A.c **** *  Returns the current value of the Digital Port as a right justified number
+  88:.\Generated_Source\PSoC5/SCLK_A.c **** *  
+  89:.\Generated_Source\PSoC5/SCLK_A.c **** * Note:
+  90:.\Generated_Source\PSoC5/SCLK_A.c **** *  Macro SCLK_A_ReadPS calls this function. 
+  91:.\Generated_Source\PSoC5/SCLK_A.c **** *  
+  92:.\Generated_Source\PSoC5/SCLK_A.c **** *******************************************************************************/
+  93:.\Generated_Source\PSoC5/SCLK_A.c **** uint8 SCLK_A_Read(void) 
+  94:.\Generated_Source\PSoC5/SCLK_A.c **** {
+  90              		.loc 1 94 0
+  91              		.cfi_startproc
+  92              		@ args = 0, pretend = 0, frame = 0
+  93              		@ frame_needed = 0, uses_anonymous_args = 0
+  94              		@ link register save eliminated.
+  95:.\Generated_Source\PSoC5/SCLK_A.c ****     return (SCLK_A_PS & SCLK_A_MASK) >> SCLK_A_SHIFT;
+  95              		.loc 1 95 0
+  96 0000 024B     		ldr	r3, .L8
+  97 0002 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+  96:.\Generated_Source\PSoC5/SCLK_A.c **** }
+  98              		.loc 1 96 0
+  99 0004 00F00100 		and	r0, r0, #1
+ 100 0008 7047     		bx	lr
+ 101              	.L9:
+ 102 000a 00BF     		.align	2
+ 103              	.L8:
+ 104 000c 01510040 		.word	1073762561
+ 105              		.cfi_endproc
+ 106              	.LFE2:
+ 107              		.size	SCLK_A_Read, .-SCLK_A_Read
+ 108              		.section	.text.SCLK_A_ReadDataReg,"ax",%progbits
+ 109              		.align	2
+ 110              		.global	SCLK_A_ReadDataReg
+ 111              		.thumb
+ 112              		.thumb_func
+ 113              		.type	SCLK_A_ReadDataReg, %function
+ 114              	SCLK_A_ReadDataReg:
+ 115              	.LFB3:
+  97:.\Generated_Source\PSoC5/SCLK_A.c **** 
+  98:.\Generated_Source\PSoC5/SCLK_A.c **** 
+  99:.\Generated_Source\PSoC5/SCLK_A.c **** /*******************************************************************************
+ 100:.\Generated_Source\PSoC5/SCLK_A.c **** * Function Name: SCLK_A_ReadDataReg
+ 101:.\Generated_Source\PSoC5/SCLK_A.c **** ********************************************************************************
+ 102:.\Generated_Source\PSoC5/SCLK_A.c **** *
+ 103:.\Generated_Source\PSoC5/SCLK_A.c **** * Summary:
+ 104:.\Generated_Source\PSoC5/SCLK_A.c **** *  Read the current value assigned to a Digital Port's data output register
+ 105:.\Generated_Source\PSoC5/SCLK_A.c **** *
+ 106:.\Generated_Source\PSoC5/SCLK_A.c **** * Parameters:  
+ 107:.\Generated_Source\PSoC5/SCLK_A.c **** *  None 
+ 108:.\Generated_Source\PSoC5/SCLK_A.c **** *
+ 109:.\Generated_Source\PSoC5/SCLK_A.c **** * Return: 
+ 110:.\Generated_Source\PSoC5/SCLK_A.c **** *  Returns the current value assigned to the Digital Port's data output register
+ 111:.\Generated_Source\PSoC5/SCLK_A.c **** *  
+ 112:.\Generated_Source\PSoC5/SCLK_A.c **** *******************************************************************************/
+ 113:.\Generated_Source\PSoC5/SCLK_A.c **** uint8 SCLK_A_ReadDataReg(void) 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKWD7uq.s 			page 5
+
+
+ 114:.\Generated_Source\PSoC5/SCLK_A.c **** {
+ 116              		.loc 1 114 0
+ 117              		.cfi_startproc
+ 118              		@ args = 0, pretend = 0, frame = 0
+ 119              		@ frame_needed = 0, uses_anonymous_args = 0
+ 120              		@ link register save eliminated.
+ 115:.\Generated_Source\PSoC5/SCLK_A.c ****     return (SCLK_A_DR & SCLK_A_MASK) >> SCLK_A_SHIFT;
+ 121              		.loc 1 115 0
+ 122 0000 024B     		ldr	r3, .L11
+ 123 0002 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 116:.\Generated_Source\PSoC5/SCLK_A.c **** }
+ 124              		.loc 1 116 0
+ 125 0004 00F00100 		and	r0, r0, #1
+ 126 0008 7047     		bx	lr
+ 127              	.L12:
+ 128 000a 00BF     		.align	2
+ 129              	.L11:
+ 130 000c 00510040 		.word	1073762560
+ 131              		.cfi_endproc
+ 132              	.LFE3:
+ 133              		.size	SCLK_A_ReadDataReg, .-SCLK_A_ReadDataReg
+ 134              		.section	.text.SCLK_A_ClearInterrupt,"ax",%progbits
+ 135              		.align	2
+ 136              		.global	SCLK_A_ClearInterrupt
+ 137              		.thumb
+ 138              		.thumb_func
+ 139              		.type	SCLK_A_ClearInterrupt, %function
+ 140              	SCLK_A_ClearInterrupt:
+ 141              	.LFB4:
+ 117:.\Generated_Source\PSoC5/SCLK_A.c **** 
+ 118:.\Generated_Source\PSoC5/SCLK_A.c **** 
+ 119:.\Generated_Source\PSoC5/SCLK_A.c **** /* If Interrupts Are Enabled for this Pins component */ 
+ 120:.\Generated_Source\PSoC5/SCLK_A.c **** #if defined(SCLK_A_INTSTAT) 
+ 121:.\Generated_Source\PSoC5/SCLK_A.c **** 
+ 122:.\Generated_Source\PSoC5/SCLK_A.c ****     /*******************************************************************************
+ 123:.\Generated_Source\PSoC5/SCLK_A.c ****     * Function Name: SCLK_A_ClearInterrupt
+ 124:.\Generated_Source\PSoC5/SCLK_A.c ****     ********************************************************************************
+ 125:.\Generated_Source\PSoC5/SCLK_A.c ****     * Summary:
+ 126:.\Generated_Source\PSoC5/SCLK_A.c ****     *  Clears any active interrupts attached to port and returns the value of the 
+ 127:.\Generated_Source\PSoC5/SCLK_A.c ****     *  interrupt status register.
+ 128:.\Generated_Source\PSoC5/SCLK_A.c ****     *
+ 129:.\Generated_Source\PSoC5/SCLK_A.c ****     * Parameters:  
+ 130:.\Generated_Source\PSoC5/SCLK_A.c ****     *  None 
+ 131:.\Generated_Source\PSoC5/SCLK_A.c ****     *
+ 132:.\Generated_Source\PSoC5/SCLK_A.c ****     * Return: 
+ 133:.\Generated_Source\PSoC5/SCLK_A.c ****     *  Returns the value of the interrupt status register
+ 134:.\Generated_Source\PSoC5/SCLK_A.c ****     *  
+ 135:.\Generated_Source\PSoC5/SCLK_A.c ****     *******************************************************************************/
+ 136:.\Generated_Source\PSoC5/SCLK_A.c ****     uint8 SCLK_A_ClearInterrupt(void) 
+ 137:.\Generated_Source\PSoC5/SCLK_A.c ****     {
+ 142              		.loc 1 137 0
+ 143              		.cfi_startproc
+ 144              		@ args = 0, pretend = 0, frame = 0
+ 145              		@ frame_needed = 0, uses_anonymous_args = 0
+ 146              		@ link register save eliminated.
+ 138:.\Generated_Source\PSoC5/SCLK_A.c ****         return (SCLK_A_INTSTAT & SCLK_A_MASK) >> SCLK_A_SHIFT;
+ 147              		.loc 1 138 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKWD7uq.s 			page 6
+
+
+ 148 0000 024B     		ldr	r3, .L14
+ 149 0002 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 139:.\Generated_Source\PSoC5/SCLK_A.c ****     }
+ 150              		.loc 1 139 0
+ 151 0004 00F00100 		and	r0, r0, #1
+ 152 0008 7047     		bx	lr
+ 153              	.L15:
+ 154 000a 00BF     		.align	2
+ 155              	.L14:
+ 156 000c 80450040 		.word	1073759616
+ 157              		.cfi_endproc
+ 158              	.LFE4:
+ 159              		.size	SCLK_A_ClearInterrupt, .-SCLK_A_ClearInterrupt
+ 160              		.text
+ 161              	.Letext0:
+ 162              		.file 2 ".\\Generated_Source\\PSoC5\\cytypes.h"
+ 163              		.section	.debug_info,"",%progbits
+ 164              	.Ldebug_info0:
+ 165 0000 31010000 		.4byte	0x131
+ 166 0004 0400     		.2byte	0x4
+ 167 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 168 000a 04       		.byte	0x4
+ 169 000b 01       		.uleb128 0x1
+ 170 000c 26010000 		.4byte	.LASF21
+ 171 0010 01       		.byte	0x1
+ 172 0011 B5010000 		.4byte	.LASF22
+ 173 0015 A3000000 		.4byte	.LASF23
+ 174 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 175 001d 00000000 		.4byte	0
+ 176 0021 00000000 		.4byte	.Ldebug_line0
+ 177 0025 02       		.uleb128 0x2
+ 178 0026 01       		.byte	0x1
+ 179 0027 06       		.byte	0x6
+ 180 0028 F0010000 		.4byte	.LASF0
+ 181 002c 02       		.uleb128 0x2
+ 182 002d 01       		.byte	0x1
+ 183 002e 08       		.byte	0x8
+ 184 002f 37000000 		.4byte	.LASF1
+ 185 0033 02       		.uleb128 0x2
+ 186 0034 02       		.byte	0x2
+ 187 0035 05       		.byte	0x5
+ 188 0036 D7010000 		.4byte	.LASF2
+ 189 003a 02       		.uleb128 0x2
+ 190 003b 02       		.byte	0x2
+ 191 003c 07       		.byte	0x7
+ 192 003d 5C000000 		.4byte	.LASF3
+ 193 0041 02       		.uleb128 0x2
+ 194 0042 04       		.byte	0x4
+ 195 0043 05       		.byte	0x5
+ 196 0044 E7010000 		.4byte	.LASF4
+ 197 0048 02       		.uleb128 0x2
+ 198 0049 04       		.byte	0x4
+ 199 004a 07       		.byte	0x7
+ 200 004b 4A000000 		.4byte	.LASF5
+ 201 004f 02       		.uleb128 0x2
+ 202 0050 08       		.byte	0x8
+ 203 0051 05       		.byte	0x5
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKWD7uq.s 			page 7
+
+
+ 204 0052 A2010000 		.4byte	.LASF6
+ 205 0056 02       		.uleb128 0x2
+ 206 0057 08       		.byte	0x8
+ 207 0058 07       		.byte	0x7
+ 208 0059 0A010000 		.4byte	.LASF7
+ 209 005d 03       		.uleb128 0x3
+ 210 005e 04       		.byte	0x4
+ 211 005f 05       		.byte	0x5
+ 212 0060 696E7400 		.ascii	"int\000"
+ 213 0064 02       		.uleb128 0x2
+ 214 0065 04       		.byte	0x4
+ 215 0066 07       		.byte	0x7
+ 216 0067 96000000 		.4byte	.LASF8
+ 217 006b 04       		.uleb128 0x4
+ 218 006c E1010000 		.4byte	.LASF12
+ 219 0070 02       		.byte	0x2
+ 220 0071 B3       		.byte	0xb3
+ 221 0072 2C000000 		.4byte	0x2c
+ 222 0076 02       		.uleb128 0x2
+ 223 0077 04       		.byte	0x4
+ 224 0078 04       		.byte	0x4
+ 225 0079 31000000 		.4byte	.LASF9
+ 226 007d 02       		.uleb128 0x2
+ 227 007e 08       		.byte	0x8
+ 228 007f 04       		.byte	0x4
+ 229 0080 6F000000 		.4byte	.LASF10
+ 230 0084 02       		.uleb128 0x2
+ 231 0085 01       		.byte	0x1
+ 232 0086 08       		.byte	0x8
+ 233 0087 B0010000 		.4byte	.LASF11
+ 234 008b 05       		.uleb128 0x5
+ 235 008c 45000000 		.4byte	.LASF13
+ 236 0090 02       		.byte	0x2
+ 237 0091 5D01     		.2byte	0x15d
+ 238 0093 97000000 		.4byte	0x97
+ 239 0097 06       		.uleb128 0x6
+ 240 0098 6B000000 		.4byte	0x6b
+ 241 009c 07       		.uleb128 0x7
+ 242 009d 76000000 		.4byte	.LASF14
+ 243 00a1 01       		.byte	0x1
+ 244 00a2 27       		.byte	0x27
+ 245 00a3 00000000 		.4byte	.LFB0
+ 246 00a7 18000000 		.4byte	.LFE0-.LFB0
+ 247 00ab 01       		.uleb128 0x1
+ 248 00ac 9C       		.byte	0x9c
+ 249 00ad D0000000 		.4byte	0xd0
+ 250 00b1 08       		.uleb128 0x8
+ 251 00b2 00000000 		.4byte	.LASF16
+ 252 00b6 01       		.byte	0x1
+ 253 00b7 27       		.byte	0x27
+ 254 00b8 6B000000 		.4byte	0x6b
+ 255 00bc 00000000 		.4byte	.LLST0
+ 256 00c0 09       		.uleb128 0x9
+ 257 00c1 06000000 		.4byte	.LASF24
+ 258 00c5 01       		.byte	0x1
+ 259 00c6 29       		.byte	0x29
+ 260 00c7 6B000000 		.4byte	0x6b
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKWD7uq.s 			page 8
+
+
+ 261 00cb 21000000 		.4byte	.LLST1
+ 262 00cf 00       		.byte	0
+ 263 00d0 07       		.uleb128 0x7
+ 264 00d1 1D000000 		.4byte	.LASF15
+ 265 00d5 01       		.byte	0x1
+ 266 00d6 45       		.byte	0x45
+ 267 00d7 00000000 		.4byte	.LFB1
+ 268 00db 18000000 		.4byte	.LFE1-.LFB1
+ 269 00df 01       		.uleb128 0x1
+ 270 00e0 9C       		.byte	0x9c
+ 271 00e1 F5000000 		.4byte	0xf5
+ 272 00e5 08       		.uleb128 0x8
+ 273 00e6 21010000 		.4byte	.LASF17
+ 274 00ea 01       		.byte	0x1
+ 275 00eb 45       		.byte	0x45
+ 276 00ec 6B000000 		.4byte	0x6b
+ 277 00f0 34000000 		.4byte	.LLST2
+ 278 00f4 00       		.byte	0
+ 279 00f5 0A       		.uleb128 0xa
+ 280 00f6 11000000 		.4byte	.LASF18
+ 281 00fa 01       		.byte	0x1
+ 282 00fb 5D       		.byte	0x5d
+ 283 00fc 6B000000 		.4byte	0x6b
+ 284 0100 00000000 		.4byte	.LFB2
+ 285 0104 10000000 		.4byte	.LFE2-.LFB2
+ 286 0108 01       		.uleb128 0x1
+ 287 0109 9C       		.byte	0x9c
+ 288 010a 0A       		.uleb128 0xa
+ 289 010b 83000000 		.4byte	.LASF19
+ 290 010f 01       		.byte	0x1
+ 291 0110 71       		.byte	0x71
+ 292 0111 6B000000 		.4byte	0x6b
+ 293 0115 00000000 		.4byte	.LFB3
+ 294 0119 10000000 		.4byte	.LFE3-.LFB3
+ 295 011d 01       		.uleb128 0x1
+ 296 011e 9C       		.byte	0x9c
+ 297 011f 0A       		.uleb128 0xa
+ 298 0120 F4000000 		.4byte	.LASF20
+ 299 0124 01       		.byte	0x1
+ 300 0125 88       		.byte	0x88
+ 301 0126 6B000000 		.4byte	0x6b
+ 302 012a 00000000 		.4byte	.LFB4
+ 303 012e 10000000 		.4byte	.LFE4-.LFB4
+ 304 0132 01       		.uleb128 0x1
+ 305 0133 9C       		.byte	0x9c
+ 306 0134 00       		.byte	0
+ 307              		.section	.debug_abbrev,"",%progbits
+ 308              	.Ldebug_abbrev0:
+ 309 0000 01       		.uleb128 0x1
+ 310 0001 11       		.uleb128 0x11
+ 311 0002 01       		.byte	0x1
+ 312 0003 25       		.uleb128 0x25
+ 313 0004 0E       		.uleb128 0xe
+ 314 0005 13       		.uleb128 0x13
+ 315 0006 0B       		.uleb128 0xb
+ 316 0007 03       		.uleb128 0x3
+ 317 0008 0E       		.uleb128 0xe
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKWD7uq.s 			page 9
+
+
+ 318 0009 1B       		.uleb128 0x1b
+ 319 000a 0E       		.uleb128 0xe
+ 320 000b 55       		.uleb128 0x55
+ 321 000c 17       		.uleb128 0x17
+ 322 000d 11       		.uleb128 0x11
+ 323 000e 01       		.uleb128 0x1
+ 324 000f 10       		.uleb128 0x10
+ 325 0010 17       		.uleb128 0x17
+ 326 0011 00       		.byte	0
+ 327 0012 00       		.byte	0
+ 328 0013 02       		.uleb128 0x2
+ 329 0014 24       		.uleb128 0x24
+ 330 0015 00       		.byte	0
+ 331 0016 0B       		.uleb128 0xb
+ 332 0017 0B       		.uleb128 0xb
+ 333 0018 3E       		.uleb128 0x3e
+ 334 0019 0B       		.uleb128 0xb
+ 335 001a 03       		.uleb128 0x3
+ 336 001b 0E       		.uleb128 0xe
+ 337 001c 00       		.byte	0
+ 338 001d 00       		.byte	0
+ 339 001e 03       		.uleb128 0x3
+ 340 001f 24       		.uleb128 0x24
+ 341 0020 00       		.byte	0
+ 342 0021 0B       		.uleb128 0xb
+ 343 0022 0B       		.uleb128 0xb
+ 344 0023 3E       		.uleb128 0x3e
+ 345 0024 0B       		.uleb128 0xb
+ 346 0025 03       		.uleb128 0x3
+ 347 0026 08       		.uleb128 0x8
+ 348 0027 00       		.byte	0
+ 349 0028 00       		.byte	0
+ 350 0029 04       		.uleb128 0x4
+ 351 002a 16       		.uleb128 0x16
+ 352 002b 00       		.byte	0
+ 353 002c 03       		.uleb128 0x3
+ 354 002d 0E       		.uleb128 0xe
+ 355 002e 3A       		.uleb128 0x3a
+ 356 002f 0B       		.uleb128 0xb
+ 357 0030 3B       		.uleb128 0x3b
+ 358 0031 0B       		.uleb128 0xb
+ 359 0032 49       		.uleb128 0x49
+ 360 0033 13       		.uleb128 0x13
+ 361 0034 00       		.byte	0
+ 362 0035 00       		.byte	0
+ 363 0036 05       		.uleb128 0x5
+ 364 0037 16       		.uleb128 0x16
+ 365 0038 00       		.byte	0
+ 366 0039 03       		.uleb128 0x3
+ 367 003a 0E       		.uleb128 0xe
+ 368 003b 3A       		.uleb128 0x3a
+ 369 003c 0B       		.uleb128 0xb
+ 370 003d 3B       		.uleb128 0x3b
+ 371 003e 05       		.uleb128 0x5
+ 372 003f 49       		.uleb128 0x49
+ 373 0040 13       		.uleb128 0x13
+ 374 0041 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKWD7uq.s 			page 10
+
+
+ 375 0042 00       		.byte	0
+ 376 0043 06       		.uleb128 0x6
+ 377 0044 35       		.uleb128 0x35
+ 378 0045 00       		.byte	0
+ 379 0046 49       		.uleb128 0x49
+ 380 0047 13       		.uleb128 0x13
+ 381 0048 00       		.byte	0
+ 382 0049 00       		.byte	0
+ 383 004a 07       		.uleb128 0x7
+ 384 004b 2E       		.uleb128 0x2e
+ 385 004c 01       		.byte	0x1
+ 386 004d 3F       		.uleb128 0x3f
+ 387 004e 19       		.uleb128 0x19
+ 388 004f 03       		.uleb128 0x3
+ 389 0050 0E       		.uleb128 0xe
+ 390 0051 3A       		.uleb128 0x3a
+ 391 0052 0B       		.uleb128 0xb
+ 392 0053 3B       		.uleb128 0x3b
+ 393 0054 0B       		.uleb128 0xb
+ 394 0055 27       		.uleb128 0x27
+ 395 0056 19       		.uleb128 0x19
+ 396 0057 11       		.uleb128 0x11
+ 397 0058 01       		.uleb128 0x1
+ 398 0059 12       		.uleb128 0x12
+ 399 005a 06       		.uleb128 0x6
+ 400 005b 40       		.uleb128 0x40
+ 401 005c 18       		.uleb128 0x18
+ 402 005d 9742     		.uleb128 0x2117
+ 403 005f 19       		.uleb128 0x19
+ 404 0060 01       		.uleb128 0x1
+ 405 0061 13       		.uleb128 0x13
+ 406 0062 00       		.byte	0
+ 407 0063 00       		.byte	0
+ 408 0064 08       		.uleb128 0x8
+ 409 0065 05       		.uleb128 0x5
+ 410 0066 00       		.byte	0
+ 411 0067 03       		.uleb128 0x3
+ 412 0068 0E       		.uleb128 0xe
+ 413 0069 3A       		.uleb128 0x3a
+ 414 006a 0B       		.uleb128 0xb
+ 415 006b 3B       		.uleb128 0x3b
+ 416 006c 0B       		.uleb128 0xb
+ 417 006d 49       		.uleb128 0x49
+ 418 006e 13       		.uleb128 0x13
+ 419 006f 02       		.uleb128 0x2
+ 420 0070 17       		.uleb128 0x17
+ 421 0071 00       		.byte	0
+ 422 0072 00       		.byte	0
+ 423 0073 09       		.uleb128 0x9
+ 424 0074 34       		.uleb128 0x34
+ 425 0075 00       		.byte	0
+ 426 0076 03       		.uleb128 0x3
+ 427 0077 0E       		.uleb128 0xe
+ 428 0078 3A       		.uleb128 0x3a
+ 429 0079 0B       		.uleb128 0xb
+ 430 007a 3B       		.uleb128 0x3b
+ 431 007b 0B       		.uleb128 0xb
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKWD7uq.s 			page 11
+
+
+ 432 007c 49       		.uleb128 0x49
+ 433 007d 13       		.uleb128 0x13
+ 434 007e 02       		.uleb128 0x2
+ 435 007f 17       		.uleb128 0x17
+ 436 0080 00       		.byte	0
+ 437 0081 00       		.byte	0
+ 438 0082 0A       		.uleb128 0xa
+ 439 0083 2E       		.uleb128 0x2e
+ 440 0084 00       		.byte	0
+ 441 0085 3F       		.uleb128 0x3f
+ 442 0086 19       		.uleb128 0x19
+ 443 0087 03       		.uleb128 0x3
+ 444 0088 0E       		.uleb128 0xe
+ 445 0089 3A       		.uleb128 0x3a
+ 446 008a 0B       		.uleb128 0xb
+ 447 008b 3B       		.uleb128 0x3b
+ 448 008c 0B       		.uleb128 0xb
+ 449 008d 27       		.uleb128 0x27
+ 450 008e 19       		.uleb128 0x19
+ 451 008f 49       		.uleb128 0x49
+ 452 0090 13       		.uleb128 0x13
+ 453 0091 11       		.uleb128 0x11
+ 454 0092 01       		.uleb128 0x1
+ 455 0093 12       		.uleb128 0x12
+ 456 0094 06       		.uleb128 0x6
+ 457 0095 40       		.uleb128 0x40
+ 458 0096 18       		.uleb128 0x18
+ 459 0097 9742     		.uleb128 0x2117
+ 460 0099 19       		.uleb128 0x19
+ 461 009a 00       		.byte	0
+ 462 009b 00       		.byte	0
+ 463 009c 00       		.byte	0
+ 464              		.section	.debug_loc,"",%progbits
+ 465              	.Ldebug_loc0:
+ 466              	.LLST0:
+ 467 0000 00000000 		.4byte	.LVL0
+ 468 0004 0C000000 		.4byte	.LVL2
+ 469 0008 0100     		.2byte	0x1
+ 470 000a 50       		.byte	0x50
+ 471 000b 0C000000 		.4byte	.LVL2
+ 472 000f 18000000 		.4byte	.LFE0
+ 473 0013 0400     		.2byte	0x4
+ 474 0015 F3       		.byte	0xf3
+ 475 0016 01       		.uleb128 0x1
+ 476 0017 50       		.byte	0x50
+ 477 0018 9F       		.byte	0x9f
+ 478 0019 00000000 		.4byte	0
+ 479 001d 00000000 		.4byte	0
+ 480              	.LLST1:
+ 481 0021 08000000 		.4byte	.LVL1
+ 482 0025 0E000000 		.4byte	.LVL3
+ 483 0029 0100     		.2byte	0x1
+ 484 002b 52       		.byte	0x52
+ 485 002c 00000000 		.4byte	0
+ 486 0030 00000000 		.4byte	0
+ 487              	.LLST2:
+ 488 0034 00000000 		.4byte	.LVL4
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKWD7uq.s 			page 12
+
+
+ 489 0038 0C000000 		.4byte	.LVL5
+ 490 003c 0100     		.2byte	0x1
+ 491 003e 50       		.byte	0x50
+ 492 003f 0C000000 		.4byte	.LVL5
+ 493 0043 18000000 		.4byte	.LFE1
+ 494 0047 0400     		.2byte	0x4
+ 495 0049 F3       		.byte	0xf3
+ 496 004a 01       		.uleb128 0x1
+ 497 004b 50       		.byte	0x50
+ 498 004c 9F       		.byte	0x9f
+ 499 004d 00000000 		.4byte	0
+ 500 0051 00000000 		.4byte	0
+ 501              		.section	.debug_aranges,"",%progbits
+ 502 0000 3C000000 		.4byte	0x3c
+ 503 0004 0200     		.2byte	0x2
+ 504 0006 00000000 		.4byte	.Ldebug_info0
+ 505 000a 04       		.byte	0x4
+ 506 000b 00       		.byte	0
+ 507 000c 0000     		.2byte	0
+ 508 000e 0000     		.2byte	0
+ 509 0010 00000000 		.4byte	.LFB0
+ 510 0014 18000000 		.4byte	.LFE0-.LFB0
+ 511 0018 00000000 		.4byte	.LFB1
+ 512 001c 18000000 		.4byte	.LFE1-.LFB1
+ 513 0020 00000000 		.4byte	.LFB2
+ 514 0024 10000000 		.4byte	.LFE2-.LFB2
+ 515 0028 00000000 		.4byte	.LFB3
+ 516 002c 10000000 		.4byte	.LFE3-.LFB3
+ 517 0030 00000000 		.4byte	.LFB4
+ 518 0034 10000000 		.4byte	.LFE4-.LFB4
+ 519 0038 00000000 		.4byte	0
+ 520 003c 00000000 		.4byte	0
+ 521              		.section	.debug_ranges,"",%progbits
+ 522              	.Ldebug_ranges0:
+ 523 0000 00000000 		.4byte	.LFB0
+ 524 0004 18000000 		.4byte	.LFE0
+ 525 0008 00000000 		.4byte	.LFB1
+ 526 000c 18000000 		.4byte	.LFE1
+ 527 0010 00000000 		.4byte	.LFB2
+ 528 0014 10000000 		.4byte	.LFE2
+ 529 0018 00000000 		.4byte	.LFB3
+ 530 001c 10000000 		.4byte	.LFE3
+ 531 0020 00000000 		.4byte	.LFB4
+ 532 0024 10000000 		.4byte	.LFE4
+ 533 0028 00000000 		.4byte	0
+ 534 002c 00000000 		.4byte	0
+ 535              		.section	.debug_line,"",%progbits
+ 536              	.Ldebug_line0:
+ 537 0000 A3000000 		.section	.debug_str,"MS",%progbits,1
+ 537      02004500 
+ 537      00000201 
+ 537      FB0E0D00 
+ 537      01010101 
+ 538              	.LASF16:
+ 539 0000 76616C75 		.ascii	"value\000"
+ 539      6500
+ 540              	.LASF24:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKWD7uq.s 			page 13
+
+
+ 541 0006 73746174 		.ascii	"staticBits\000"
+ 541      69634269 
+ 541      747300
+ 542              	.LASF18:
+ 543 0011 53434C4B 		.ascii	"SCLK_A_Read\000"
+ 543      5F415F52 
+ 543      65616400 
+ 544              	.LASF15:
+ 545 001d 53434C4B 		.ascii	"SCLK_A_SetDriveMode\000"
+ 545      5F415F53 
+ 545      65744472 
+ 545      6976654D 
+ 545      6F646500 
+ 546              	.LASF9:
+ 547 0031 666C6F61 		.ascii	"float\000"
+ 547      7400
+ 548              	.LASF1:
+ 549 0037 756E7369 		.ascii	"unsigned char\000"
+ 549      676E6564 
+ 549      20636861 
+ 549      7200
+ 550              	.LASF13:
+ 551 0045 72656738 		.ascii	"reg8\000"
+ 551      00
+ 552              	.LASF5:
+ 553 004a 6C6F6E67 		.ascii	"long unsigned int\000"
+ 553      20756E73 
+ 553      69676E65 
+ 553      6420696E 
+ 553      7400
+ 554              	.LASF3:
+ 555 005c 73686F72 		.ascii	"short unsigned int\000"
+ 555      7420756E 
+ 555      7369676E 
+ 555      65642069 
+ 555      6E7400
+ 556              	.LASF10:
+ 557 006f 646F7562 		.ascii	"double\000"
+ 557      6C6500
+ 558              	.LASF14:
+ 559 0076 53434C4B 		.ascii	"SCLK_A_Write\000"
+ 559      5F415F57 
+ 559      72697465 
+ 559      00
+ 560              	.LASF19:
+ 561 0083 53434C4B 		.ascii	"SCLK_A_ReadDataReg\000"
+ 561      5F415F52 
+ 561      65616444 
+ 561      61746152 
+ 561      656700
+ 562              	.LASF8:
+ 563 0096 756E7369 		.ascii	"unsigned int\000"
+ 563      676E6564 
+ 563      20696E74 
+ 563      00
+ 564              	.LASF23:
+ 565 00a3 433A5C55 		.ascii	"C:\\Users\\xavieran\\Desktop\\ECE3091\\PSOCProjects"
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKWD7uq.s 			page 14
+
+
+ 565      73657273 
+ 565      5C786176 
+ 565      69657261 
+ 565      6E5C4465 
+ 566 00d1 5C454E47 		.ascii	"\\ENG3091_MandM\\ENG3091_MandM.cydsn\000"
+ 566      33303931 
+ 566      5F4D616E 
+ 566      644D5C45 
+ 566      4E473330 
+ 567              	.LASF20:
+ 568 00f4 53434C4B 		.ascii	"SCLK_A_ClearInterrupt\000"
+ 568      5F415F43 
+ 568      6C656172 
+ 568      496E7465 
+ 568      72727570 
+ 569              	.LASF7:
+ 570 010a 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 570      206C6F6E 
+ 570      6720756E 
+ 570      7369676E 
+ 570      65642069 
+ 571              	.LASF17:
+ 572 0121 6D6F6465 		.ascii	"mode\000"
+ 572      00
+ 573              	.LASF21:
+ 574 0126 474E5520 		.ascii	"GNU C 4.8.4 20140526 (release) [ARM/embedded-4_8-br"
+ 574      4320342E 
+ 574      382E3420 
+ 574      32303134 
+ 574      30353236 
+ 575 0159 616E6368 		.ascii	"anch revision 211358] -mcpu=cortex-m3 -mthumb -g -O"
+ 575      20726576 
+ 575      6973696F 
+ 575      6E203231 
+ 575      31333538 
+ 576 018c 67202D66 		.ascii	"g -ffunction-sections\000"
+ 576      66756E63 
+ 576      74696F6E 
+ 576      2D736563 
+ 576      74696F6E 
+ 577              	.LASF6:
+ 578 01a2 6C6F6E67 		.ascii	"long long int\000"
+ 578      206C6F6E 
+ 578      6720696E 
+ 578      7400
+ 579              	.LASF11:
+ 580 01b0 63686172 		.ascii	"char\000"
+ 580      00
+ 581              	.LASF22:
+ 582 01b5 2E5C4765 		.ascii	".\\Generated_Source\\PSoC5\\SCLK_A.c\000"
+ 582      6E657261 
+ 582      7465645F 
+ 582      536F7572 
+ 582      63655C50 
+ 583              	.LASF2:
+ 584 01d7 73686F72 		.ascii	"short int\000"
+ 584      7420696E 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKWD7uq.s 			page 15
+
+
+ 584      7400
+ 585              	.LASF12:
+ 586 01e1 75696E74 		.ascii	"uint8\000"
+ 586      3800
+ 587              	.LASF4:
+ 588 01e7 6C6F6E67 		.ascii	"long int\000"
+ 588      20696E74 
+ 588      00
+ 589              	.LASF0:
+ 590 01f0 7369676E 		.ascii	"signed char\000"
+ 590      65642063 
+ 590      68617200 
+ 591              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.8.4 20140526 (release) [ARM/embedded-4_8-br
