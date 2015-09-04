@@ -25,8 +25,8 @@ volatile uint8 status_a;
 volatile uint8 mov_x_a;
 volatile uint8 mov_y_a;
 
-extern volatile int32 loc_x_a;
-extern volatile int32 loc_y_a;
+volatile int32 loc_x_a;
+volatile int32 loc_y_a;
 
 volatile uint8 data_ready_a;
 
@@ -108,7 +108,7 @@ void mouse_a_init(){
     CyDelay(2);
     
     //CHECK_A_Write(1);
-    mouse_a_write(0x00); //Set resolution to 1c/mm
+    mouse_a_write(0x02); //Set resolution to 4c/mm
     //CHECK_A_Write(0);
     
     
@@ -127,11 +127,12 @@ void reset_sclk_a_isr(){
     mov_x_a = 0;
     mov_y_a = 0;
     status_a = 0;
-    data_ready_a = 0;
     time_prev_a = Timer_ReadCounter();
 }
 
 CY_ISR(MY_SCLK_A_ISR){        
+    
+    
     //If the clock is high when the *falling* edge interrupt triggers,
     //obviously the interrupt was triggered falsely
     if (SCLK_A_Read() == 1){
@@ -202,7 +203,7 @@ CY_ISR(MY_SCLK_A_ISR){
                 } else {
                     loc_y_a += mov_y_a;
                 }
-                
+                data_ready_a++;
                 reset_sclk_a_isr();
             }
             break;

@@ -12,8 +12,15 @@
 
 #ifndef MY_NAVIGATION
     #include <project.h>
+    struct Position {
+        double x;
+        double y;
+        double angle;
+    };
     
     void reset_navigation();
+    void init_navigation();
+    void refresh_position();
     
     CY_ISR_PROTO(REFRESH_POSITION);
 #endif

@@ -88,6 +88,8 @@
 #include "M2IN2.h"
 #include "OV9650_1.h"
 #include "CAM_CLK.h"
+#include "ISR_CHECKP_aliases.h"
+#include "ISR_CHECKP.h"
 #include "LCD_Cntl_Port.h"
 #include "mSerial_Dm_aliases.h"
 #include "mSerial_Dm.h"

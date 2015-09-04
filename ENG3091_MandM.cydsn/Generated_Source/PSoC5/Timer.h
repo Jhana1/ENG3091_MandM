@@ -179,7 +179,7 @@ void Timer_Wakeup(void)        ;
                                                  ((uint8)((uint8)0 << Timer_STATUS_CAPTURE_INT_MASK_SHIFT)) | \
                                                  ((uint8)((uint8)0 << Timer_STATUS_FIFOFULL_INT_MASK_SHIFT)))
 #endif /* (Timer_UsingFixedFunction) */
-#define Timer_INIT_CAPTURE_COUNT      (2u)
+#define Timer_INIT_CAPTURE_COUNT      (100u)
 #define Timer_INIT_INT_CAPTURE_COUNT  ((uint8)((uint8)(1u - 1u) << Timer_CTRL_INTCNT_SHIFT))
 
 

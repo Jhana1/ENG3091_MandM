@@ -11,18 +11,16 @@
 */
 #include <project.h>
 #include <stdio.h>
+#include <math.h>
+
 
 #include <mouse_a.h>
 #include <mouse_b.h>
 #include <motor.h>
 #include <navigation.h>
 
-volatile int32 loc_x_a;
-volatile int32 loc_y_a;
-
-volatile int32 loc_x_b;
-volatile int32 loc_y_b;
-
+//this is in navigation.c
+extern struct Position location;
 
 uint8 inc;
 uint8 dec;
@@ -47,12 +45,6 @@ void init_mice(){
     sclk_a_isr_Stop();
     sclk_b_isr_Stop();
     
-    loc_x_a = 0;
-    loc_y_a = 0;
-    
-    loc_x_b = 0;
-    loc_y_b = 0;
-    
     CyGlobalIntDisable; /* Disable global interrupts. */
     
     mouse_a_init();
@@ -65,77 +57,55 @@ void init_mice(){
     
     SCLK_A_ClearInterrupt();
     SCLK_B_ClearInterrupt();
-    
+    sclk_a_isr_SetPriority(0);
+    sclk_b_isr_SetPriority(0);
     sclk_a_isr_StartEx(MY_SCLK_A_ISR);
     sclk_b_isr_StartEx(MY_SCLK_B_ISR);    
 }
 
+
+
 int main()
 {
-    char outString[16];  // String to hold the ascii result
-    
-    //LCD_Start();
-    ORANGE_Write(0);
+    /* ** INITIALIZE COMPONENTS ** */
+    LCD_Start();
+    Timer_Start();
     
     CyDelay(200);//give mice time to boot up
     init_mice();
-    reset_navigation();
-    ORANGE_Write(1);
-    
-    CYGlobalIntEnable;
-    
+    init_navigation();
     init_buttons();
     init_motors();
  
-    setForward(0x3);
     
-    Timer_Start();
+    /* ** Variables used in main ** */
+    char outString[16];  // String to hold the ascii result
     uint32 time;
-
     uint8 pwm_var = 255;
     dec = 0;
     inc = 0;
     
-    //Start it stopped initially...
-    loc_y_a = 10000;
-    loc_y_b = 10000;
-    
+    setForward(0x3);
     
     for(;;)
     {   
         time = Timer_ReadCounter();
         
+        refresh_position();
+        
         if (dec){
             dec = 0;
-            //MAKE IT STOOOOP!!!
-            loc_y_a = 10000;
-            loc_y_b = 10000;
         } else if (inc){
             inc = 0;
-            
             reset_navigation();
-        }
+        } 
         
-        setSpeed(0x3, pwm_var);
-        
-        if (loc_y_a < 8000 && loc_y_b < 8000){
-            setForward(0x3);
-        } else {
-            setCoast(0x3);
-        }
-        
-        
-        /*
         if ((time % 400) == 0){
-            //LCD_ClearDisplay();
-            
-            sprintf(outString, "X:%ld Y:%ld", loc_x_a, loc_y_a);
+            LCD_ClearDisplay();
+            sprintf(outString, "X%ld Y%ld", (int32) (location.x), (int32) (location.y));
             LCD_PosPrintString(0, 0, outString);
-            sprintf(outString, "X:%ld Y:%ld", loc_x_b, loc_y_b);
+            sprintf(outString, "A%d", (int) (location.angle * (180.0/M_PI)) + 42);
             LCD_PosPrintString(1, 0, outString);
-            //LCD_PosPrintNumber(0,0,pwm_var);
-            
-            setSpeed(0x3, pwm_var);
-        }*/
+        }
     }
 }

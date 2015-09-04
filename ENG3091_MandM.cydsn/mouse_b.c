@@ -25,8 +25,8 @@ volatile uint8 status_b;
 volatile uint8 mov_x_b;
 volatile uint8 mov_y_b;
 
-extern volatile int32 loc_x_b;
-extern volatile int32 loc_y_b;
+volatile int32 loc_x_b;
+volatile int32 loc_y_b;
 
 volatile uint8 data_ready_b;
 
@@ -104,7 +104,7 @@ void mouse_b_init(){
     CyDelay(2);
     
     //CHECK_B_Write(1);
-    mouse_b_write(0x00); //Set resolution to 1c/mm
+    mouse_b_write(0x02); //Set resolution to 4c/mm
     //CHECK_B_Write(0);
     
     CyDelay(2);
@@ -121,7 +121,6 @@ void reset_sclk_b_isr(){
     mov_x_b = 0;
     mov_y_b = 0;
     status_b = 0;
-    data_ready_b = 0;
     time_prev_b = Timer_ReadCounter();
 }
 
@@ -196,7 +195,7 @@ CY_ISR(MY_SCLK_B_ISR){
                 } else {
                     loc_y_b += mov_y_b;
                 }
-                
+                data_ready_b++;
                 reset_sclk_b_isr();
             }
             break;
