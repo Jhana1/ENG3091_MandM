@@ -32,10 +32,10 @@ extern volatile uint8 data_ready_b;
 //We store the navigation info here
 struct Position location;
 
-struct Position update_position(double dxl, double dyl, double dxr, double dyr);
+struct Position calculate_dposition(double dxl, double dyl, double dxr, double dyr);
 
 //9.4cm = 94mm = 94*4 counts/mm = 376.0 counts
-#define SEPARATION 376.0
+#define SEPARATION 400
 
 double signum(double x){
     if (x >= 0){
@@ -45,17 +45,10 @@ double signum(double x){
     }
 }
 
-double myabs(double x){
-    if (x >= 0){
-        return x;
-    } else {
-        return -x;
-    }
-}
-
 void refresh_position(){
-    if (data_ready_a > 5 && data_ready_b > 5){
-        struct Position delta = update_position((double) loc_x_a, (double) loc_y_a, (double) loc_x_b, (double) loc_y_b);
+    //If either mouse has given us more than 5 readings we recalculate position
+    if (data_ready_a > 5 || data_ready_b > 5){
+        struct Position delta = calculate_dposition((double) loc_x_a, (double) loc_y_a, (double) loc_x_b, (double) loc_y_b);
         
         loc_x_a = 0;
         loc_y_a = 0;
@@ -64,28 +57,46 @@ void refresh_position(){
         loc_x_b = 0;
         loc_y_b = 0;
         data_ready_b = 0;
+            
+        double angle = location.angle + atan2(delta.y, delta.x);
+        double length = sqrt(delta.x*delta.x + delta.y*delta.y);
         
-        location.x += delta.x;
-        location.y += delta.y;
+        location.x += length*cos(angle);
+        location.y += length*sin(angle);
         location.angle += delta.angle;
     }
 }
+
+
 /* Call this every x times per second to calculate the current position and heading*/
-struct Position update_position(double dxl, double dyl, double dxr, double dyr){
+struct Position calculate_dposition(double dxl, double dyl, double dxr, double dyr){
     ISR_CHECKP_Write(1); //for timing purposes
     //Let the A mouse be LEFT and the B mouse be RIGHT
     double rl, ll, rr, lr, al, ar;
     double xpl, xpr, ypl, ypr;
     
-    struct Position delta;
+    struct Position delta = {.x = 0,.y = 0, .angle = 0};
+    
+    // Correct for error in y
+    dyl *= 1.089;
+    dxl *= 1.089;
     
     //If no change, don't bother going through this whole routine
-    
-    /*if (dxl == 0 && dyl == 0 && dxr == 0 && dyr == 0){
-        nav_clock_ClearPending();
+    if (dxl == 0 && dyl == 0 && dxr == 0 && dyr == 0){
+        //nav_clock_ClearPending();
         ISR_CHECKP_Write(0);
-        return;
-    }*/
+        return delta;
+    }
+    
+    //We ignore x noise
+    if (fabs(dxl) < 4 && fabs(dxr) < 4){
+        //And correct the y axis values accordingly
+        if (dyl > dyr){
+            dyr = dyl;
+        } else {
+            dyl = dyr;
+        }
+    }
     
     //calculate new values for location_x and location_y using dloc_x and dloc_y
     //Using the method in the italian paper (Bonarini, Matteucci, Restelli)
@@ -94,31 +105,31 @@ struct Position update_position(double dxl, double dyl, double dxr, double dyr){
     ar = atan2(dyr, dxr);
     
     //radius of arc a and b
-    if ((al < .001 && al > -.001) || ((al < M_PI + .001) && (al > M_PI - .001))){
-        ll = myabs(dxl);
+    if (al == 0 || al == M_PI){
+        ll = fabs(dxl);
     } else {
         ll = dyl/sin(al);
     }    
     
-    if ((al < .001 && al > -.001) || ((ar < M_PI + .001) && (ar > M_PI - .001))){
-        lr = myabs(dxr);
+    if (ar == 0 || ar == M_PI){
+        lr =fabs(dxr);
     } else {
         lr = dyr/sin(ar);
     }  
     
     //Take the absolute value of alpha a - alpha b to get gamma
-    double gamma = myabs(al - ar);
+    double gamma = fabs(al - ar);
     
     double dtheta = signum(dyr - dyl)*sqrt(ll*ll + lr*lr - 2.0*cos(gamma)*ll*lr) / SEPARATION;
     
-    if (myabs(dtheta) < .001){ //dtheta == 0...
+    if (fabs(dtheta) < .00001){ //dtheta == 0...
         xpr = 0;
         xpl = 0;
         ypl = ll;
         ypr = lr;
     } else { //dtheta != 0...
-        rl = ll / myabs(dtheta);
-        rr = lr / myabs(dtheta);
+        rl = ll / fabs(dtheta);
+        rr = lr / fabs(dtheta);
         
         double sdtheta = signum(dtheta);
     
@@ -130,18 +141,9 @@ struct Position update_position(double dxl, double dyl, double dxr, double dyr){
     }
     
     
-    double dx = (xpr + xpl)/2.0;
-    double dy = (ypr + ypl)/2.0;
- 
-    double angle = location.angle + atan2(dy, dx);
-    double length = sqrt(dx*dx + dy*dy);
-    
-    delta.x = length*cos(angle);
-    delta.y = length*sin(angle);
+    delta.x = (xpr + xpl)/2.0;
+    delta.y = (ypr + ypl)/2.0;
     delta.angle = dtheta;
-    /*
-    if (location.angle > (2*M_PI)) location.angle -= (2*M_PI);
-    if (location.angle < 0) location.angle += (2*M_PI);*/
     
     ISR_CHECKP_Write(0); 
     return delta;

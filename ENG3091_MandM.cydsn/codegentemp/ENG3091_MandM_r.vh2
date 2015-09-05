@@ -1,5 +1,5 @@
 -- Project:   ENG3091_MandM
--- Generated: 09/04/2015 12:15:49
+-- Generated: 09/05/2015 16:26:30
 -- PSoC Creator  3.2
 
 ENTITY ENG3091_MandM IS
@@ -11,12 +11,12 @@ ENTITY ENG3091_MandM IS
         D7(0)_PAD : OUT std_ulogic;
         E(0)_PAD : OUT std_ulogic;
         ISR_CHECKP(0)_PAD : OUT std_ulogic;
-        M1EN(0)_PAD : OUT std_ulogic;
-        M1IN1(0)_PAD : OUT std_ulogic;
-        M1IN2(0)_PAD : OUT std_ulogic;
-        M2EN(0)_PAD : OUT std_ulogic;
-        M2IN1(0)_PAD : OUT std_ulogic;
-        M2IN2(0)_PAD : OUT std_ulogic;
+        MLEN(0)_PAD : OUT std_ulogic;
+        MLIN1(0)_PAD : OUT std_ulogic;
+        MLIN2(0)_PAD : OUT std_ulogic;
+        MREN(0)_PAD : OUT std_ulogic;
+        MRIN1(0)_PAD : OUT std_ulogic;
+        MRIN2(0)_PAD : OUT std_ulogic;
         ORANGE(0)_PAD : OUT std_ulogic;
         RED(0)_PAD : OUT std_ulogic;
         RS(0)_PAD : OUT std_ulogic;
@@ -73,12 +73,12 @@ ARCHITECTURE __DEFAULT__ OF ENG3091_MandM IS
     SIGNAL D7(0)__PA : bit;
     SIGNAL E(0)__PA : bit;
     SIGNAL ISR_CHECKP(0)__PA : bit;
-    SIGNAL M1EN(0)__PA : bit;
-    SIGNAL M1IN1(0)__PA : bit;
-    SIGNAL M1IN2(0)__PA : bit;
-    SIGNAL M2EN(0)__PA : bit;
-    SIGNAL M2IN1(0)__PA : bit;
-    SIGNAL M2IN2(0)__PA : bit;
+    SIGNAL MLEN(0)__PA : bit;
+    SIGNAL MLIN1(0)__PA : bit;
+    SIGNAL MLIN2(0)__PA : bit;
+    SIGNAL MREN(0)__PA : bit;
+    SIGNAL MRIN1(0)__PA : bit;
+    SIGNAL MRIN2(0)__PA : bit;
     SIGNAL Net_10 : bit;
     SIGNAL Net_11 : bit;
     SIGNAL Net_12 : bit;
@@ -136,10 +136,10 @@ ARCHITECTURE __DEFAULT__ OF ENG3091_MandM IS
     SIGNAL \Button:PWM:Net_54\ : bit;
     SIGNAL \LCD:Cntl_Port:control_6\ : bit;
     SIGNAL \LCD:Cntl_Port:control_7\ : bit;
-    SIGNAL \MOTOR1:Net_54\ : bit;
-    SIGNAL \MOTOR1:Net_63\ : bit;
-    SIGNAL \MOTOR2:Net_54\ : bit;
-    SIGNAL \MOTOR2:Net_63\ : bit;
+    SIGNAL \MOTOR_L:Net_54\ : bit;
+    SIGNAL \MOTOR_L:Net_63\ : bit;
+    SIGNAL \MOTOR_R:Net_54\ : bit;
+    SIGNAL \MOTOR_R:Net_63\ : bit;
     SIGNAL \\\OV9650_1:D(0)\\__PA\ : bit;
     SIGNAL \\\OV9650_1:D(1)\\__PA\ : bit;
     SIGNAL \\\OV9650_1:D(2)\\__PA\ : bit;
@@ -188,30 +188,30 @@ ARCHITECTURE __DEFAULT__ OF ENG3091_MandM IS
     SIGNAL \Timer:TimerUDB:status_3\ : bit;
     SIGNAL \Timer:TimerUDB:status_tc\ : bit;
     ATTRIBUTE placement_force OF \Timer:TimerUDB:status_tc\ : SIGNAL IS "U(2,2,A)3";
-    SIGNAL \\\mSerial:Dm(0)\\__PA\ : bit;
-    SIGNAL \\\mSerial:Dp(0)\\__PA\ : bit;
-    SIGNAL \mSerial:Net_1010\ : bit;
-    SIGNAL \mSerial:Net_79\ : bit;
-    SIGNAL \mSerial:Net_81\ : bit;
-    SIGNAL \mSerial:Net_824\ : bit;
-    SIGNAL \mSerial:Net_95\ : bit;
-    SIGNAL \mSerial:dma_req_0\ : bit;
-    SIGNAL \mSerial:dma_req_1\ : bit;
-    SIGNAL \mSerial:dma_req_2\ : bit;
-    SIGNAL \mSerial:dma_req_3\ : bit;
-    SIGNAL \mSerial:dma_req_4\ : bit;
-    SIGNAL \mSerial:dma_req_5\ : bit;
-    SIGNAL \mSerial:dma_req_6\ : bit;
-    SIGNAL \mSerial:dma_req_7\ : bit;
-    SIGNAL \mSerial:ept_int_0\ : bit;
-    SIGNAL \mSerial:ept_int_1\ : bit;
-    SIGNAL \mSerial:ept_int_2\ : bit;
-    SIGNAL \mSerial:ept_int_3\ : bit;
-    SIGNAL \mSerial:ept_int_4\ : bit;
-    SIGNAL \mSerial:ept_int_5\ : bit;
-    SIGNAL \mSerial:ept_int_6\ : bit;
-    SIGNAL \mSerial:ept_int_7\ : bit;
-    SIGNAL \mSerial:ept_int_8\ : bit;
+    SIGNAL \\\USB:Dm(0)\\__PA\ : bit;
+    SIGNAL \\\USB:Dp(0)\\__PA\ : bit;
+    SIGNAL \USB:Net_1010\ : bit;
+    SIGNAL \USB:Net_79\ : bit;
+    SIGNAL \USB:Net_81\ : bit;
+    SIGNAL \USB:Net_824\ : bit;
+    SIGNAL \USB:Net_95\ : bit;
+    SIGNAL \USB:dma_req_0\ : bit;
+    SIGNAL \USB:dma_req_1\ : bit;
+    SIGNAL \USB:dma_req_2\ : bit;
+    SIGNAL \USB:dma_req_3\ : bit;
+    SIGNAL \USB:dma_req_4\ : bit;
+    SIGNAL \USB:dma_req_5\ : bit;
+    SIGNAL \USB:dma_req_6\ : bit;
+    SIGNAL \USB:dma_req_7\ : bit;
+    SIGNAL \USB:ept_int_0\ : bit;
+    SIGNAL \USB:ept_int_1\ : bit;
+    SIGNAL \USB:ept_int_2\ : bit;
+    SIGNAL \USB:ept_int_3\ : bit;
+    SIGNAL \USB:ept_int_4\ : bit;
+    SIGNAL \USB:ept_int_5\ : bit;
+    SIGNAL \USB:ept_int_6\ : bit;
+    SIGNAL \USB:ept_int_7\ : bit;
+    SIGNAL \USB:ept_int_8\ : bit;
     SIGNAL __ONE__ : bit;
     ATTRIBUTE placement_force OF __ONE__ : SIGNAL IS "U(1,4,A)0";
     ATTRIBUTE POWER OF __ONE__ : SIGNAL IS true;
@@ -266,18 +266,18 @@ ARCHITECTURE __DEFAULT__ OF ENG3091_MandM IS
     ATTRIBUTE Location OF E(0) : LABEL IS "P12[2]";
     ATTRIBUTE lib_model OF ISR_CHECKP(0) : LABEL IS "iocell7";
     ATTRIBUTE Location OF ISR_CHECKP(0) : LABEL IS "P0[4]";
-    ATTRIBUTE lib_model OF M1EN(0) : LABEL IS "iocell8";
-    ATTRIBUTE Location OF M1EN(0) : LABEL IS "P12[5]";
-    ATTRIBUTE lib_model OF M1IN1(0) : LABEL IS "iocell9";
-    ATTRIBUTE Location OF M1IN1(0) : LABEL IS "P6[5]";
-    ATTRIBUTE lib_model OF M1IN2(0) : LABEL IS "iocell10";
-    ATTRIBUTE Location OF M1IN2(0) : LABEL IS "P6[6]";
-    ATTRIBUTE lib_model OF M2EN(0) : LABEL IS "iocell11";
-    ATTRIBUTE Location OF M2EN(0) : LABEL IS "P5[1]";
-    ATTRIBUTE lib_model OF M2IN1(0) : LABEL IS "iocell12";
-    ATTRIBUTE Location OF M2IN1(0) : LABEL IS "P6[7]";
-    ATTRIBUTE lib_model OF M2IN2(0) : LABEL IS "iocell13";
-    ATTRIBUTE Location OF M2IN2(0) : LABEL IS "P5[0]";
+    ATTRIBUTE lib_model OF MLEN(0) : LABEL IS "iocell8";
+    ATTRIBUTE Location OF MLEN(0) : LABEL IS "P12[5]";
+    ATTRIBUTE lib_model OF MLIN1(0) : LABEL IS "iocell9";
+    ATTRIBUTE Location OF MLIN1(0) : LABEL IS "P6[5]";
+    ATTRIBUTE lib_model OF MLIN2(0) : LABEL IS "iocell10";
+    ATTRIBUTE Location OF MLIN2(0) : LABEL IS "P6[6]";
+    ATTRIBUTE lib_model OF MREN(0) : LABEL IS "iocell11";
+    ATTRIBUTE Location OF MREN(0) : LABEL IS "P5[1]";
+    ATTRIBUTE lib_model OF MRIN1(0) : LABEL IS "iocell12";
+    ATTRIBUTE Location OF MRIN1(0) : LABEL IS "P6[7]";
+    ATTRIBUTE lib_model OF MRIN2(0) : LABEL IS "iocell13";
+    ATTRIBUTE Location OF MRIN2(0) : LABEL IS "P5[0]";
     ATTRIBUTE lib_model OF Net_54 : LABEL IS "macrocell1";
     ATTRIBUTE Location OF Net_54 : LABEL IS "U(0,0)";
     ATTRIBUTE lib_model OF Net_55 : LABEL IS "macrocell2";
@@ -311,8 +311,8 @@ ARCHITECTURE __DEFAULT__ OF ENG3091_MandM IS
     ATTRIBUTE Location OF \Button:PWM:PWMHW\ : LABEL IS "F(Timer,0)";
     ATTRIBUTE lib_model OF \LCD:Cntl_Port:Sync:ctrl_reg\ : LABEL IS "controlcell1";
     ATTRIBUTE Location OF \LCD:Cntl_Port:Sync:ctrl_reg\ : LABEL IS "U(3,3)";
-    ATTRIBUTE Location OF \MOTOR1:PWMHW\ : LABEL IS "F(Timer,1)";
-    ATTRIBUTE Location OF \MOTOR2:PWMHW\ : LABEL IS "F(Timer,2)";
+    ATTRIBUTE Location OF \MOTOR_L:PWMHW\ : LABEL IS "F(Timer,1)";
+    ATTRIBUTE Location OF \MOTOR_R:PWMHW\ : LABEL IS "F(Timer,2)";
     ATTRIBUTE lib_model OF \OV9650_1:D(0)\ : LABEL IS "iocell26";
     ATTRIBUTE Location OF \OV9650_1:D(0)\ : LABEL IS "P4[7]";
     ATTRIBUTE lib_model OF \OV9650_1:D(1)\ : LABEL IS "iocell27";
@@ -360,20 +360,20 @@ ARCHITECTURE __DEFAULT__ OF ENG3091_MandM IS
     ATTRIBUTE Location OF \Timer:TimerUDB:sT24:timerdp:u2\ : LABEL IS "U(2,2)";
     ATTRIBUTE lib_model OF \Timer:TimerUDB:status_tc\ : LABEL IS "macrocell3";
     ATTRIBUTE Location OF \Timer:TimerUDB:status_tc\ : LABEL IS "U(2,2)";
-    ATTRIBUTE lib_model OF \mSerial:Dm(0)\ : LABEL IS "iocell40";
-    ATTRIBUTE Location OF \mSerial:Dm(0)\ : LABEL IS "P15[7]";
-    ATTRIBUTE lib_model OF \mSerial:Dp(0)\ : LABEL IS "iocell41";
-    ATTRIBUTE Location OF \mSerial:Dp(0)\ : LABEL IS "P15[6]";
-    ATTRIBUTE Location OF \mSerial:Dp\ : LABEL IS "F(PICU,8)";
-    ATTRIBUTE Location OF \mSerial:USB\ : LABEL IS "F(USB,0)";
-    ATTRIBUTE Location OF \mSerial:arb_int\ : LABEL IS "[IntrHod=(0)][IntrId=(22)]";
-    ATTRIBUTE Location OF \mSerial:bus_reset\ : LABEL IS "[IntrHod=(0)][IntrId=(23)]";
-    ATTRIBUTE Location OF \mSerial:dp_int\ : LABEL IS "[IntrHod=(0)][IntrId=(12)]";
-    ATTRIBUTE Location OF \mSerial:ep_0\ : LABEL IS "[IntrHod=(0)][IntrId=(24)]";
-    ATTRIBUTE Location OF \mSerial:ep_1\ : LABEL IS "[IntrHod=(0)][IntrId=(0)]";
-    ATTRIBUTE Location OF \mSerial:ep_2\ : LABEL IS "[IntrHod=(0)][IntrId=(1)]";
-    ATTRIBUTE Location OF \mSerial:ep_3\ : LABEL IS "[IntrHod=(0)][IntrId=(2)]";
-    ATTRIBUTE Location OF \mSerial:sof_int\ : LABEL IS "[IntrHod=(0)][IntrId=(21)]";
+    ATTRIBUTE lib_model OF \USB:Dm(0)\ : LABEL IS "iocell40";
+    ATTRIBUTE Location OF \USB:Dm(0)\ : LABEL IS "P15[7]";
+    ATTRIBUTE lib_model OF \USB:Dp(0)\ : LABEL IS "iocell41";
+    ATTRIBUTE Location OF \USB:Dp(0)\ : LABEL IS "P15[6]";
+    ATTRIBUTE Location OF \USB:Dp\ : LABEL IS "F(PICU,8)";
+    ATTRIBUTE Location OF \USB:USB\ : LABEL IS "F(USB,0)";
+    ATTRIBUTE Location OF \USB:arb_int\ : LABEL IS "[IntrHod=(0)][IntrId=(22)]";
+    ATTRIBUTE Location OF \USB:bus_reset\ : LABEL IS "[IntrHod=(0)][IntrId=(23)]";
+    ATTRIBUTE Location OF \USB:dp_int\ : LABEL IS "[IntrHod=(0)][IntrId=(12)]";
+    ATTRIBUTE Location OF \USB:ep_0\ : LABEL IS "[IntrHod=(0)][IntrId=(24)]";
+    ATTRIBUTE Location OF \USB:ep_1\ : LABEL IS "[IntrHod=(0)][IntrId=(0)]";
+    ATTRIBUTE Location OF \USB:ep_2\ : LABEL IS "[IntrHod=(0)][IntrId=(1)]";
+    ATTRIBUTE Location OF \USB:ep_3\ : LABEL IS "[IntrHod=(0)][IntrId=(2)]";
+    ATTRIBUTE Location OF \USB:sof_int\ : LABEL IS "[IntrHod=(0)][IntrId=(21)]";
     ATTRIBUTE lib_model OF __ONE__ : LABEL IS "macrocell4";
     ATTRIBUTE Location OF __ONE__ : LABEL IS "U(1,4)";
     ATTRIBUTE Location OF but0 : LABEL IS "[IntrHod=(0)][IntrId=(3)]";
@@ -1385,7 +1385,7 @@ BEGIN
             out_clock_en => '1',
             out_reset => '0');
 
-    M1EN:logicalport
+    MLEN:logicalport
         GENERIC MAP(
             drive_mode => "110",
             ibuf_enabled => "1",
@@ -1455,20 +1455,20 @@ BEGIN
             out_clock_en => open,
             out_reset => open);
 
-    M1EN(0):iocell
+    MLEN(0):iocell
         GENERIC MAP(
             in_sync_mode => 0,
             out_sync_mode => 0,
             oe_sync_mode => 0,
-            logicalport => "M1EN",
+            logicalport => "MLEN",
             logicalport_pin_id => 0,
             io_capabilities => "0000000000000000000000000000000000000000000000000000000000000101")
         PORT MAP(
-            pa_out => M1EN(0)__PA,
+            pa_out => MLEN(0)__PA,
             oe => open,
             pin_input => Net_68,
-            pad_out => M1EN(0)_PAD,
-            pad_in => M1EN(0)_PAD,
+            pad_out => MLEN(0)_PAD,
+            pad_in => MLEN(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
             in_reset => '0',
@@ -1476,7 +1476,7 @@ BEGIN
             out_clock_en => '1',
             out_reset => '0');
 
-    M1IN1:logicalport
+    MLIN1:logicalport
         GENERIC MAP(
             drive_mode => "110",
             ibuf_enabled => "1",
@@ -1546,18 +1546,18 @@ BEGIN
             out_clock_en => open,
             out_reset => open);
 
-    M1IN1(0):iocell
+    MLIN1(0):iocell
         GENERIC MAP(
             in_sync_mode => 0,
             out_sync_mode => 0,
             oe_sync_mode => 0,
-            logicalport => "M1IN1",
+            logicalport => "MLIN1",
             logicalport_pin_id => 0,
             io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
         PORT MAP(
-            pa_out => M1IN1(0)__PA,
+            pa_out => MLIN1(0)__PA,
             oe => open,
-            pad_in => M1IN1(0)_PAD,
+            pad_in => MLIN1(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
             in_reset => '0',
@@ -1565,7 +1565,7 @@ BEGIN
             out_clock_en => '1',
             out_reset => '0');
 
-    M1IN2:logicalport
+    MLIN2:logicalport
         GENERIC MAP(
             drive_mode => "110",
             ibuf_enabled => "1",
@@ -1635,18 +1635,18 @@ BEGIN
             out_clock_en => open,
             out_reset => open);
 
-    M1IN2(0):iocell
+    MLIN2(0):iocell
         GENERIC MAP(
             in_sync_mode => 0,
             out_sync_mode => 0,
             oe_sync_mode => 0,
-            logicalport => "M1IN2",
+            logicalport => "MLIN2",
             logicalport_pin_id => 0,
             io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
         PORT MAP(
-            pa_out => M1IN2(0)__PA,
+            pa_out => MLIN2(0)__PA,
             oe => open,
-            pad_in => M1IN2(0)_PAD,
+            pad_in => MLIN2(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
             in_reset => '0',
@@ -1654,7 +1654,7 @@ BEGIN
             out_clock_en => '1',
             out_reset => '0');
 
-    M2EN:logicalport
+    MREN:logicalport
         GENERIC MAP(
             drive_mode => "110",
             ibuf_enabled => "1",
@@ -1724,20 +1724,20 @@ BEGIN
             out_clock_en => open,
             out_reset => open);
 
-    M2EN(0):iocell
+    MREN(0):iocell
         GENERIC MAP(
             in_sync_mode => 0,
             out_sync_mode => 0,
             oe_sync_mode => 0,
-            logicalport => "M2EN",
+            logicalport => "MREN",
             logicalport_pin_id => 0,
             io_capabilities => "0000000000000000000000000000000000000000000000000000000000000101")
         PORT MAP(
-            pa_out => M2EN(0)__PA,
+            pa_out => MREN(0)__PA,
             oe => open,
             pin_input => Net_334,
-            pad_out => M2EN(0)_PAD,
-            pad_in => M2EN(0)_PAD,
+            pad_out => MREN(0)_PAD,
+            pad_in => MREN(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
             in_reset => '0',
@@ -1745,7 +1745,7 @@ BEGIN
             out_clock_en => '1',
             out_reset => '0');
 
-    M2IN1:logicalport
+    MRIN1:logicalport
         GENERIC MAP(
             drive_mode => "110",
             ibuf_enabled => "1",
@@ -1815,18 +1815,18 @@ BEGIN
             out_clock_en => open,
             out_reset => open);
 
-    M2IN1(0):iocell
+    MRIN1(0):iocell
         GENERIC MAP(
             in_sync_mode => 0,
             out_sync_mode => 0,
             oe_sync_mode => 0,
-            logicalport => "M2IN1",
+            logicalport => "MRIN1",
             logicalport_pin_id => 0,
             io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
         PORT MAP(
-            pa_out => M2IN1(0)__PA,
+            pa_out => MRIN1(0)__PA,
             oe => open,
-            pad_in => M2IN1(0)_PAD,
+            pad_in => MRIN1(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
             in_reset => '0',
@@ -1834,7 +1834,7 @@ BEGIN
             out_clock_en => '1',
             out_reset => '0');
 
-    M2IN2:logicalport
+    MRIN2:logicalport
         GENERIC MAP(
             drive_mode => "110",
             ibuf_enabled => "1",
@@ -1904,18 +1904,18 @@ BEGIN
             out_clock_en => open,
             out_reset => open);
 
-    M2IN2(0):iocell
+    MRIN2(0):iocell
         GENERIC MAP(
             in_sync_mode => 0,
             out_sync_mode => 0,
             oe_sync_mode => 0,
-            logicalport => "M2IN2",
+            logicalport => "MRIN2",
             logicalport_pin_id => 0,
             io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
         PORT MAP(
-            pa_out => M2IN2(0)__PA,
+            pa_out => MRIN2(0)__PA,
             oe => open,
-            pad_in => M2IN2(0)_PAD,
+            pad_in => MRIN2(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
             in_reset => '0',
@@ -2993,7 +2993,7 @@ BEGIN
             control_0 => Net_9,
             busclk => ClockBlock_BUS_CLK);
 
-    \MOTOR1:PWMHW\:timercell
+    \MOTOR_L:PWMHW\:timercell
         GENERIC MAP(
             cy_registers => "")
         PORT MAP(
@@ -3002,11 +3002,11 @@ BEGIN
             enable => __ONE__,
             capture => open,
             timer_reset => open,
-            tc => \MOTOR1:Net_63\,
+            tc => \MOTOR_L:Net_63\,
             cmp => Net_68,
-            irq => \MOTOR1:Net_54\);
+            irq => \MOTOR_L:Net_54\);
 
-    \MOTOR2:PWMHW\:timercell
+    \MOTOR_R:PWMHW\:timercell
         GENERIC MAP(
             cy_registers => "")
         PORT MAP(
@@ -3015,9 +3015,9 @@ BEGIN
             enable => __ONE__,
             capture => open,
             timer_reset => open,
-            tc => \MOTOR2:Net_63\,
+            tc => \MOTOR_R:Net_63\,
             cmp => Net_334,
-            irq => \MOTOR2:Net_54\);
+            irq => \MOTOR_R:Net_54\);
 
     \OV9650_1:D(0)\:iocell
         GENERIC MAP(
@@ -4079,16 +4079,16 @@ BEGIN
             main_0 => \Timer:TimerUDB:control_7\,
             main_1 => \Timer:TimerUDB:per_zero\);
 
-    \mSerial:Dm(0)\:iocell
+    \USB:Dm(0)\:iocell
         GENERIC MAP(
             in_sync_mode => 0,
             out_sync_mode => 0,
             oe_sync_mode => 0,
-            logicalport => "\mSerial:Dm\",
+            logicalport => "\USB:Dm\",
             logicalport_pin_id => 0,
             io_capabilities => "0000000000000000000000000000000000000000100000000000000000000000")
         PORT MAP(
-            pa_out => \\\mSerial:Dm(0)\\__PA\,
+            pa_out => \\\USB:Dm(0)\\__PA\,
             oe => open,
             in_clock => open,
             in_clock_en => '1',
@@ -4097,7 +4097,7 @@ BEGIN
             out_clock_en => '1',
             out_reset => '0');
 
-    \mSerial:Dm\:logicalport
+    \USB:Dm\:logicalport
         GENERIC MAP(
             drive_mode => "000",
             ibuf_enabled => "0",
@@ -4167,16 +4167,16 @@ BEGIN
             out_clock_en => open,
             out_reset => open);
 
-    \mSerial:Dp(0)\:iocell
+    \USB:Dp(0)\:iocell
         GENERIC MAP(
             in_sync_mode => 2,
             out_sync_mode => 0,
             oe_sync_mode => 0,
-            logicalport => "\mSerial:Dp\",
+            logicalport => "\USB:Dp\",
             logicalport_pin_id => 0,
             io_capabilities => "0000000000000000000000000000000000000000010000000000000000000000")
         PORT MAP(
-            pa_out => \\\mSerial:Dp(0)\\__PA\,
+            pa_out => \\\USB:Dp(0)\\__PA\,
             oe => open,
             in_clock => ClockBlock_BUS_CLK,
             in_clock_en => '1',
@@ -4185,7 +4185,7 @@ BEGIN
             out_clock_en => '1',
             out_reset => '0');
 
-    \mSerial:Dp\:logicalport
+    \USB:Dp\:logicalport
         GENERIC MAP(
             drive_mode => "000",
             ibuf_enabled => "0",
@@ -4254,86 +4254,86 @@ BEGIN
             in_reset => open,
             out_clock_en => open,
             out_reset => open,
-            interrupt => \mSerial:Net_1010\,
+            interrupt => \USB:Net_1010\,
             in_clock => open);
 
-    \mSerial:USB\:usbcell
+    \USB:USB\:usbcell
         GENERIC MAP(
             cy_registers => "")
         PORT MAP(
             sof_int => Net_15,
-            arb_int => \mSerial:Net_79\,
-            usb_int => \mSerial:Net_81\,
-            ept_int_8 => \mSerial:ept_int_8\,
-            ept_int_7 => \mSerial:ept_int_7\,
-            ept_int_6 => \mSerial:ept_int_6\,
-            ept_int_5 => \mSerial:ept_int_5\,
-            ept_int_4 => \mSerial:ept_int_4\,
-            ept_int_3 => \mSerial:ept_int_3\,
-            ept_int_2 => \mSerial:ept_int_2\,
-            ept_int_1 => \mSerial:ept_int_1\,
-            ept_int_0 => \mSerial:ept_int_0\,
-            ord_int => \mSerial:Net_95\,
-            dma_req_7 => \mSerial:dma_req_7\,
-            dma_req_6 => \mSerial:dma_req_6\,
-            dma_req_5 => \mSerial:dma_req_5\,
-            dma_req_4 => \mSerial:dma_req_4\,
-            dma_req_3 => \mSerial:dma_req_3\,
-            dma_req_2 => \mSerial:dma_req_2\,
-            dma_req_1 => \mSerial:dma_req_1\,
-            dma_req_0 => \mSerial:dma_req_0\,
-            dma_termin => \mSerial:Net_824\);
+            arb_int => \USB:Net_79\,
+            usb_int => \USB:Net_81\,
+            ept_int_8 => \USB:ept_int_8\,
+            ept_int_7 => \USB:ept_int_7\,
+            ept_int_6 => \USB:ept_int_6\,
+            ept_int_5 => \USB:ept_int_5\,
+            ept_int_4 => \USB:ept_int_4\,
+            ept_int_3 => \USB:ept_int_3\,
+            ept_int_2 => \USB:ept_int_2\,
+            ept_int_1 => \USB:ept_int_1\,
+            ept_int_0 => \USB:ept_int_0\,
+            ord_int => \USB:Net_95\,
+            dma_req_7 => \USB:dma_req_7\,
+            dma_req_6 => \USB:dma_req_6\,
+            dma_req_5 => \USB:dma_req_5\,
+            dma_req_4 => \USB:dma_req_4\,
+            dma_req_3 => \USB:dma_req_3\,
+            dma_req_2 => \USB:dma_req_2\,
+            dma_req_1 => \USB:dma_req_1\,
+            dma_req_0 => \USB:dma_req_0\,
+            dma_termin => \USB:Net_824\);
 
-    \mSerial:arb_int\:interrupt
+    \USB:arb_int\:interrupt
         GENERIC MAP(
             int_type => "10")
         PORT MAP(
-            interrupt => \mSerial:Net_79\,
+            interrupt => \USB:Net_79\,
             clock => ClockBlock_BUS_CLK);
 
-    \mSerial:bus_reset\:interrupt
+    \USB:bus_reset\:interrupt
         GENERIC MAP(
             int_type => "10")
         PORT MAP(
-            interrupt => \mSerial:Net_81\,
+            interrupt => \USB:Net_81\,
             clock => ClockBlock_BUS_CLK);
 
-    \mSerial:dp_int\:interrupt
+    \USB:dp_int\:interrupt
         GENERIC MAP(
             int_type => "10")
         PORT MAP(
-            interrupt => \mSerial:Net_1010\,
+            interrupt => \USB:Net_1010\,
             clock => ClockBlock_BUS_CLK);
 
-    \mSerial:ep_0\:interrupt
+    \USB:ep_0\:interrupt
         GENERIC MAP(
             int_type => "10")
         PORT MAP(
-            interrupt => \mSerial:ept_int_0\,
+            interrupt => \USB:ept_int_0\,
             clock => ClockBlock_BUS_CLK);
 
-    \mSerial:ep_1\:interrupt
+    \USB:ep_1\:interrupt
         GENERIC MAP(
             int_type => "10")
         PORT MAP(
-            interrupt => \mSerial:ept_int_1\,
+            interrupt => \USB:ept_int_1\,
             clock => ClockBlock_BUS_CLK);
 
-    \mSerial:ep_2\:interrupt
+    \USB:ep_2\:interrupt
         GENERIC MAP(
             int_type => "10")
         PORT MAP(
-            interrupt => \mSerial:ept_int_2\,
+            interrupt => \USB:ept_int_2\,
             clock => ClockBlock_BUS_CLK);
 
-    \mSerial:ep_3\:interrupt
+    \USB:ep_3\:interrupt
         GENERIC MAP(
             int_type => "10")
         PORT MAP(
-            interrupt => \mSerial:ept_int_3\,
+            interrupt => \USB:ept_int_3\,
             clock => ClockBlock_BUS_CLK);
 
-    \mSerial:sof_int\:interrupt
+    \USB:sof_int\:interrupt
         GENERIC MAP(
             int_type => "10")
         PORT MAP(

@@ -11,6 +11,7 @@
 */
 
 #include <project.h>
+#include <mouse_conf.h>
 
 #define S_STAT_START 0
 #define S_MOVX_START 1
@@ -92,7 +93,7 @@ void mouse_b_init(){
     CyDelay(2);
     
     //CHECK_B_Write(1);
-    mouse_b_write(80); //Set sample rate to 80 (DEC)
+    mouse_b_write(M_SAMPLE); //Set sample rate to 80 (DEC)
     //CHECK_B_Write(0);
     
     CyDelay(2);
@@ -104,7 +105,7 @@ void mouse_b_init(){
     CyDelay(2);
     
     //CHECK_B_Write(1);
-    mouse_b_write(0x02); //Set resolution to 4c/mm
+    mouse_b_write(M_RES); //Set resolution to 4c/mm
     //CHECK_B_Write(0);
     
     CyDelay(2);

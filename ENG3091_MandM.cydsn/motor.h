@@ -14,7 +14,14 @@
 #ifndef MY_MOTOR
     #include <project.h>
     
+    #define MLEFT 0x1
+    #define MRIGHT 0x2
+    #define MBOTH 0x3
+    
+    void refresh_motor(int32 delta);
     void init_motors(void);
+    void setRightRotate();
+    void setLeftRotate();
     void setSpeed(uint8 motor, uint8 speed);
     void setForward(uint8 motor);
     void setReverse(uint8 motor);

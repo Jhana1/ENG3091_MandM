@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 1
 
 
    1              		.syntax unified
@@ -40,39 +40,40 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 1
   11:.\main.c      **** */
   12:.\main.c      **** #include <project.h>
   13:.\main.c      **** #include <stdio.h>
-  14:.\main.c      **** #include <math.h>
-  15:.\main.c      **** 
+  14:.\main.c      **** #include <stdarg.h>
+  15:.\main.c      **** #include <math.h>
   16:.\main.c      **** 
-  17:.\main.c      **** #include <mouse_a.h>
-  18:.\main.c      **** #include <mouse_b.h>
-  19:.\main.c      **** #include <motor.h>
-  20:.\main.c      **** #include <navigation.h>
-  21:.\main.c      **** 
-  22:.\main.c      **** //this is in navigation.c
-  23:.\main.c      **** extern struct Position location;
-  24:.\main.c      **** 
-  25:.\main.c      **** uint8 inc;
-  26:.\main.c      **** uint8 dec;
-  27:.\main.c      **** 
-  28:.\main.c      **** CY_ISR(INC_ISR){
-  27              		.loc 1 28 0
+  17:.\main.c      **** 
+  18:.\main.c      **** #include <mouse_a.h>
+  19:.\main.c      **** #include <mouse_b.h>
+  20:.\main.c      **** #include <motor.h>
+  21:.\main.c      **** #include <navigation.h>
+  22:.\main.c      **** 
+  23:.\main.c      **** //this is in navigation.c
+  24:.\main.c      **** extern struct Position location;
+  25:.\main.c      **** 
+  26:.\main.c      **** uint8 inc;
+  27:.\main.c      **** uint8 dec;
+  28:.\main.c      **** 
+  29:.\main.c      **** CY_ISR(INC_ISR){
+  27              		.loc 1 29 0
   28              		.cfi_startproc
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 2
+
+
   29              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 2
-
-
   30              		@ frame_needed = 0, uses_anonymous_args = 0
   31 0000 08B5     		push	{r3, lr}
   32              		.cfi_def_cfa_offset 8
   33              		.cfi_offset 3, -8
   34              		.cfi_offset 14, -4
-  29:.\main.c      ****     inc = 1;
-  35              		.loc 1 29 0
+  30:.\main.c      ****     inc = 1;
+  35              		.loc 1 30 0
   36 0002 0122     		movs	r2, #1
   37 0004 024B     		ldr	r3, .L2
   38 0006 1A70     		strb	r2, [r3]
-  30:.\main.c      ****     but0_ClearPending();
-  39              		.loc 1 30 0
+  31:.\main.c      ****     but0_ClearPending();
+  39              		.loc 1 31 0
   40 0008 FFF7FEFF 		bl	but0_ClearPending
   41              	.LVL0:
   42 000c 08BD     		pop	{r3, pc}
@@ -91,10 +92,10 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 1
   55              		.type	DEC_ISR, %function
   56              	DEC_ISR:
   57              	.LFB64:
-  31:.\main.c      **** }
-  32:.\main.c      **** 
-  33:.\main.c      **** CY_ISR(DEC_ISR){
-  58              		.loc 1 33 0
+  32:.\main.c      **** }
+  33:.\main.c      **** 
+  34:.\main.c      **** CY_ISR(DEC_ISR){
+  58              		.loc 1 34 0
   59              		.cfi_startproc
   60              		@ args = 0, pretend = 0, frame = 0
   61              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -102,13 +103,13 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 1
   63              		.cfi_def_cfa_offset 8
   64              		.cfi_offset 3, -8
   65              		.cfi_offset 14, -4
-  34:.\main.c      ****     dec = 1;
-  66              		.loc 1 34 0
+  35:.\main.c      ****     dec = 1;
+  66              		.loc 1 35 0
   67 0002 0122     		movs	r2, #1
   68 0004 024B     		ldr	r3, .L5
   69 0006 1A70     		strb	r2, [r3]
-  35:.\main.c      ****     but1_ClearPending();
-  70              		.loc 1 35 0
+  36:.\main.c      ****     but1_ClearPending();
+  70              		.loc 1 36 0
   71 0008 FFF7FEFF 		bl	but1_ClearPending
   72              	.LVL1:
   73 000c 08BD     		pop	{r3, pc}
@@ -117,10 +118,10 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 1
   76              	.L5:
   77 0010 00000000 		.word	dec
   78              		.cfi_endproc
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 3
+
+
   79              	.LFE64:
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 3
-
-
   80              		.size	DEC_ISR, .-DEC_ISR
   81              		.section	.text.init_buttons,"ax",%progbits
   82              		.align	2
@@ -130,10 +131,10 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 1
   86              		.type	init_buttons, %function
   87              	init_buttons:
   88              	.LFB65:
-  36:.\main.c      **** }
-  37:.\main.c      **** 
-  38:.\main.c      **** void init_buttons(){
-  89              		.loc 1 38 0
+  37:.\main.c      **** }
+  38:.\main.c      **** 
+  39:.\main.c      **** void init_buttons(){
+  89              		.loc 1 39 0
   90              		.cfi_startproc
   91              		@ args = 0, pretend = 0, frame = 0
   92              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -141,2050 +142,2430 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 1
   94              		.cfi_def_cfa_offset 8
   95              		.cfi_offset 3, -8
   96              		.cfi_offset 14, -4
-  39:.\main.c      ****     Button_Start();
-  97              		.loc 1 39 0
+  40:.\main.c      ****     Button_Start();
+  97              		.loc 1 40 0
   98 0002 FFF7FEFF 		bl	Button_PWM_Start
   99              	.LVL2:
-  40:.\main.c      ****     but0_StartEx(INC_ISR);
- 100              		.loc 1 40 0
- 101 0006 0348     		ldr	r0, .L8
+  41:.\main.c      ****     but0_StartEx(INC_ISR);
+ 100              		.loc 1 41 0
+ 101 0006 0648     		ldr	r0, .L8
  102 0008 FFF7FEFF 		bl	but0_StartEx
  103              	.LVL3:
-  41:.\main.c      ****     but1_StartEx(DEC_ISR);
- 104              		.loc 1 41 0
- 105 000c 0248     		ldr	r0, .L8+4
+  42:.\main.c      ****     but1_StartEx(DEC_ISR);
+ 104              		.loc 1 42 0
+ 105 000c 0548     		ldr	r0, .L8+4
  106 000e FFF7FEFF 		bl	but1_StartEx
  107              	.LVL4:
- 108 0012 08BD     		pop	{r3, pc}
- 109              	.L9:
- 110              		.align	2
- 111              	.L8:
- 112 0014 00000000 		.word	INC_ISR
- 113 0018 00000000 		.word	DEC_ISR
- 114              		.cfi_endproc
- 115              	.LFE65:
- 116              		.size	init_buttons, .-init_buttons
- 117              		.section	.text.init_mice,"ax",%progbits
- 118              		.align	2
- 119              		.global	init_mice
- 120              		.thumb
- 121              		.thumb_func
- 122              		.type	init_mice, %function
- 123              	init_mice:
- 124              	.LFB66:
-  42:.\main.c      **** }
-  43:.\main.c      **** 
-  44:.\main.c      **** void init_mice(){
- 125              		.loc 1 44 0
- 126              		.cfi_startproc
- 127              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 4
+  43:.\main.c      ****     
+  44:.\main.c      ****     dec = 0;
+ 108              		.loc 1 44 0
+ 109 0012 0023     		movs	r3, #0
+ 110 0014 044A     		ldr	r2, .L8+8
+ 111 0016 1370     		strb	r3, [r2]
+  45:.\main.c      ****     inc = 0;
+ 112              		.loc 1 45 0
+ 113 0018 044A     		ldr	r2, .L8+12
+ 114 001a 1370     		strb	r3, [r2]
+ 115 001c 08BD     		pop	{r3, pc}
+ 116              	.L9:
+ 117 001e 00BF     		.align	2
+ 118              	.L8:
+ 119 0020 00000000 		.word	INC_ISR
+ 120 0024 00000000 		.word	DEC_ISR
+ 121 0028 00000000 		.word	dec
+ 122 002c 00000000 		.word	inc
+ 123              		.cfi_endproc
+ 124              	.LFE65:
+ 125              		.size	init_buttons, .-init_buttons
+ 126              		.section	.text.init_mice,"ax",%progbits
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 4
 
 
- 128              		@ frame_needed = 0, uses_anonymous_args = 0
- 129 0000 08B5     		push	{r3, lr}
- 130              		.cfi_def_cfa_offset 8
- 131              		.cfi_offset 3, -8
- 132              		.cfi_offset 14, -4
-  45:.\main.c      ****     sclk_a_isr_Stop();
- 133              		.loc 1 45 0
- 134 0002 FFF7FEFF 		bl	sclk_a_isr_Stop
- 135              	.LVL5:
-  46:.\main.c      ****     sclk_b_isr_Stop();
- 136              		.loc 1 46 0
- 137 0006 FFF7FEFF 		bl	sclk_b_isr_Stop
- 138              	.LVL6:
-  47:.\main.c      ****     
-  48:.\main.c      ****     CyGlobalIntDisable; /* Disable global interrupts. */
- 139              		.loc 1 48 0
- 140              	@ 48 ".\main.c" 1
- 141 000a 72B6     		CPSID   i
- 142              	@ 0 "" 2
-  49:.\main.c      ****     
-  50:.\main.c      ****     mouse_a_init();
- 143              		.loc 1 50 0
- 144              		.thumb
- 145 000c FFF7FEFF 		bl	mouse_a_init
- 146              	.LVL7:
-  51:.\main.c      ****     mouse_b_init();
- 147              		.loc 1 51 0
- 148 0010 FFF7FEFF 		bl	mouse_b_init
- 149              	.LVL8:
-  52:.\main.c      ****     
-  53:.\main.c      ****     reset_sclk_a_isr();
- 150              		.loc 1 53 0
- 151 0014 FFF7FEFF 		bl	reset_sclk_a_isr
- 152              	.LVL9:
-  54:.\main.c      ****     reset_sclk_b_isr();
- 153              		.loc 1 54 0
- 154 0018 FFF7FEFF 		bl	reset_sclk_b_isr
- 155              	.LVL10:
-  55:.\main.c      ****     
-  56:.\main.c      ****     CyGlobalIntEnable; /* Enable global interrupts. */
- 156              		.loc 1 56 0
- 157              	@ 56 ".\main.c" 1
- 158 001c 62B6     		CPSIE   i
- 159              	@ 0 "" 2
-  57:.\main.c      ****     
-  58:.\main.c      ****     SCLK_A_ClearInterrupt();
- 160              		.loc 1 58 0
- 161              		.thumb
- 162 001e FFF7FEFF 		bl	SCLK_A_ClearInterrupt
- 163              	.LVL11:
-  59:.\main.c      ****     SCLK_B_ClearInterrupt();
- 164              		.loc 1 59 0
- 165 0022 FFF7FEFF 		bl	SCLK_B_ClearInterrupt
- 166              	.LVL12:
-  60:.\main.c      ****     sclk_a_isr_SetPriority(0);
- 167              		.loc 1 60 0
- 168 0026 0020     		movs	r0, #0
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 5
+ 127              		.align	2
+ 128              		.global	init_mice
+ 129              		.thumb
+ 130              		.thumb_func
+ 131              		.type	init_mice, %function
+ 132              	init_mice:
+ 133              	.LFB66:
+  46:.\main.c      **** }
+  47:.\main.c      **** 
+  48:.\main.c      **** void init_mice(){
+ 134              		.loc 1 48 0
+ 135              		.cfi_startproc
+ 136              		@ args = 0, pretend = 0, frame = 0
+ 137              		@ frame_needed = 0, uses_anonymous_args = 0
+ 138 0000 08B5     		push	{r3, lr}
+ 139              		.cfi_def_cfa_offset 8
+ 140              		.cfi_offset 3, -8
+ 141              		.cfi_offset 14, -4
+  49:.\main.c      ****     sclk_a_isr_Stop();
+ 142              		.loc 1 49 0
+ 143 0002 FFF7FEFF 		bl	sclk_a_isr_Stop
+ 144              	.LVL5:
+  50:.\main.c      ****     sclk_b_isr_Stop();
+ 145              		.loc 1 50 0
+ 146 0006 FFF7FEFF 		bl	sclk_b_isr_Stop
+ 147              	.LVL6:
+  51:.\main.c      ****     
+  52:.\main.c      ****     CyGlobalIntDisable; /* Disable global interrupts. */
+ 148              		.loc 1 52 0
+ 149              	@ 52 ".\main.c" 1
+ 150 000a 72B6     		CPSID   i
+ 151              	@ 0 "" 2
+  53:.\main.c      ****     
+  54:.\main.c      ****     mouse_a_init();
+ 152              		.loc 1 54 0
+ 153              		.thumb
+ 154 000c FFF7FEFF 		bl	mouse_a_init
+ 155              	.LVL7:
+  55:.\main.c      ****     mouse_b_init();
+ 156              		.loc 1 55 0
+ 157 0010 FFF7FEFF 		bl	mouse_b_init
+ 158              	.LVL8:
+  56:.\main.c      ****     
+  57:.\main.c      ****     reset_sclk_a_isr();
+ 159              		.loc 1 57 0
+ 160 0014 FFF7FEFF 		bl	reset_sclk_a_isr
+ 161              	.LVL9:
+  58:.\main.c      ****     reset_sclk_b_isr();
+ 162              		.loc 1 58 0
+ 163 0018 FFF7FEFF 		bl	reset_sclk_b_isr
+ 164              	.LVL10:
+  59:.\main.c      ****     
+  60:.\main.c      ****     CyGlobalIntEnable; /* Enable global interrupts. */
+ 165              		.loc 1 60 0
+ 166              	@ 60 ".\main.c" 1
+ 167 001c 62B6     		CPSIE   i
+ 168              	@ 0 "" 2
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 5
 
 
- 169 0028 FFF7FEFF 		bl	sclk_a_isr_SetPriority
- 170              	.LVL13:
-  61:.\main.c      ****     sclk_b_isr_SetPriority(0);
- 171              		.loc 1 61 0
- 172 002c 0020     		movs	r0, #0
- 173 002e FFF7FEFF 		bl	sclk_b_isr_SetPriority
- 174              	.LVL14:
-  62:.\main.c      ****     sclk_a_isr_StartEx(MY_SCLK_A_ISR);
- 175              		.loc 1 62 0
- 176 0032 0348     		ldr	r0, .L11
- 177 0034 FFF7FEFF 		bl	sclk_a_isr_StartEx
- 178              	.LVL15:
-  63:.\main.c      ****     sclk_b_isr_StartEx(MY_SCLK_B_ISR);    
- 179              		.loc 1 63 0
- 180 0038 0248     		ldr	r0, .L11+4
- 181 003a FFF7FEFF 		bl	sclk_b_isr_StartEx
- 182              	.LVL16:
- 183 003e 08BD     		pop	{r3, pc}
- 184              	.L12:
- 185              		.align	2
- 186              	.L11:
- 187 0040 00000000 		.word	MY_SCLK_A_ISR
- 188 0044 00000000 		.word	MY_SCLK_B_ISR
- 189              		.cfi_endproc
- 190              	.LFE66:
- 191              		.size	init_mice, .-init_mice
- 192              		.global	__aeabi_d2iz
- 193              		.global	__aeabi_dmul
- 194              		.section	.text.main,"ax",%progbits
- 195              		.align	2
- 196              		.global	main
- 197              		.thumb
- 198              		.thumb_func
- 199              		.type	main, %function
- 200              	main:
- 201              	.LFB67:
-  64:.\main.c      **** }
-  65:.\main.c      **** 
-  66:.\main.c      **** 
-  67:.\main.c      **** 
-  68:.\main.c      **** int main()
-  69:.\main.c      **** {
- 202              		.loc 1 69 0
- 203              		.cfi_startproc
- 204              		@ args = 0, pretend = 0, frame = 16
- 205              		@ frame_needed = 0, uses_anonymous_args = 0
- 206 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
- 207              		.cfi_def_cfa_offset 36
- 208              		.cfi_offset 4, -36
- 209              		.cfi_offset 5, -32
- 210              		.cfi_offset 6, -28
- 211              		.cfi_offset 7, -24
- 212              		.cfi_offset 8, -20
- 213              		.cfi_offset 9, -16
- 214              		.cfi_offset 10, -12
- 215              		.cfi_offset 11, -8
+  61:.\main.c      ****     
+  62:.\main.c      ****     SCLK_A_ClearInterrupt();
+ 169              		.loc 1 62 0
+ 170              		.thumb
+ 171 001e FFF7FEFF 		bl	SCLK_A_ClearInterrupt
+ 172              	.LVL11:
+  63:.\main.c      ****     SCLK_B_ClearInterrupt();
+ 173              		.loc 1 63 0
+ 174 0022 FFF7FEFF 		bl	SCLK_B_ClearInterrupt
+ 175              	.LVL12:
+  64:.\main.c      ****     sclk_a_isr_SetPriority(0);
+ 176              		.loc 1 64 0
+ 177 0026 0020     		movs	r0, #0
+ 178 0028 FFF7FEFF 		bl	sclk_a_isr_SetPriority
+ 179              	.LVL13:
+  65:.\main.c      ****     sclk_b_isr_SetPriority(0);
+ 180              		.loc 1 65 0
+ 181 002c 0020     		movs	r0, #0
+ 182 002e FFF7FEFF 		bl	sclk_b_isr_SetPriority
+ 183              	.LVL14:
+  66:.\main.c      ****     sclk_a_isr_StartEx(MY_SCLK_A_ISR);
+ 184              		.loc 1 66 0
+ 185 0032 0348     		ldr	r0, .L11
+ 186 0034 FFF7FEFF 		bl	sclk_a_isr_StartEx
+ 187              	.LVL15:
+  67:.\main.c      ****     sclk_b_isr_StartEx(MY_SCLK_B_ISR);    
+ 188              		.loc 1 67 0
+ 189 0038 0248     		ldr	r0, .L11+4
+ 190 003a FFF7FEFF 		bl	sclk_b_isr_StartEx
+ 191              	.LVL16:
+ 192 003e 08BD     		pop	{r3, pc}
+ 193              	.L12:
+ 194              		.align	2
+ 195              	.L11:
+ 196 0040 00000000 		.word	MY_SCLK_A_ISR
+ 197 0044 00000000 		.word	MY_SCLK_B_ISR
+ 198              		.cfi_endproc
+ 199              	.LFE66:
+ 200              		.size	init_mice, .-init_mice
+ 201              		.section	.text.stop_mice,"ax",%progbits
+ 202              		.align	2
+ 203              		.global	stop_mice
+ 204              		.thumb
+ 205              		.thumb_func
+ 206              		.type	stop_mice, %function
+ 207              	stop_mice:
+ 208              	.LFB67:
+  68:.\main.c      **** }
+  69:.\main.c      **** 
+  70:.\main.c      **** void stop_mice(){
+ 209              		.loc 1 70 0
+ 210              		.cfi_startproc
+ 211              		@ args = 0, pretend = 0, frame = 0
+ 212              		@ frame_needed = 0, uses_anonymous_args = 0
+ 213 0000 08B5     		push	{r3, lr}
+ 214              		.cfi_def_cfa_offset 8
+ 215              		.cfi_offset 3, -8
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 6
+
+
  216              		.cfi_offset 14, -4
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 6
-
-
- 217 0004 85B0     		sub	sp, sp, #20
- 218              		.cfi_def_cfa_offset 56
-  70:.\main.c      ****     /* ** INITIALIZE COMPONENTS ** */
-  71:.\main.c      ****     LCD_Start();
- 219              		.loc 1 71 0
- 220 0006 FFF7FEFF 		bl	LCD_Start
- 221              	.LVL17:
-  72:.\main.c      ****     Timer_Start();
- 222              		.loc 1 72 0
- 223 000a FFF7FEFF 		bl	Timer_Start
- 224              	.LVL18:
-  73:.\main.c      ****     
-  74:.\main.c      ****     CyDelay(200);//give mice time to boot up
- 225              		.loc 1 74 0
- 226 000e C820     		movs	r0, #200
- 227 0010 FFF7FEFF 		bl	CyDelay
- 228              	.LVL19:
-  75:.\main.c      ****     init_mice();
- 229              		.loc 1 75 0
- 230 0014 FFF7FEFF 		bl	init_mice
- 231              	.LVL20:
-  76:.\main.c      ****     init_navigation();
- 232              		.loc 1 76 0
- 233 0018 FFF7FEFF 		bl	init_navigation
- 234              	.LVL21:
-  77:.\main.c      ****     init_buttons();
+  71:.\main.c      ****     sclk_a_isr_Stop();
+ 217              		.loc 1 71 0
+ 218 0002 FFF7FEFF 		bl	sclk_a_isr_Stop
+ 219              	.LVL17:
+  72:.\main.c      ****     sclk_b_isr_Stop();
+ 220              		.loc 1 72 0
+ 221 0006 FFF7FEFF 		bl	sclk_b_isr_Stop
+ 222              	.LVL18:
+ 223 000a 08BD     		pop	{r3, pc}
+ 224              		.cfi_endproc
+ 225              	.LFE67:
+ 226              		.size	stop_mice, .-stop_mice
+ 227              		.section	.text.print,"ax",%progbits
+ 228              		.align	2
+ 229              		.global	print
+ 230              		.thumb
+ 231              		.thumb_func
+ 232              		.type	print, %function
+ 233              	print:
+ 234              	.LFB68:
+  73:.\main.c      **** }
+  74:.\main.c      **** 
+  75:.\main.c      **** // print() function, works like snprintf(). See: http://www.cplusplus.com/reference/cstdio/snprintf
+  76:.\main.c      **** void print(const char *fmt, ...)
+  77:.\main.c      **** {
  235              		.loc 1 77 0
- 236 001c FFF7FEFF 		bl	init_buttons
- 237              	.LVL22:
-  78:.\main.c      ****     init_motors();
- 238              		.loc 1 78 0
- 239 0020 FFF7FEFF 		bl	init_motors
- 240              	.LVL23:
-  79:.\main.c      ****  
-  80:.\main.c      ****     
-  81:.\main.c      ****     /* ** Variables used in main ** */
-  82:.\main.c      ****     char outString[16];  // String to hold the ascii result
-  83:.\main.c      ****     uint32 time;
-  84:.\main.c      ****     uint8 pwm_var = 255;
-  85:.\main.c      ****     dec = 0;
- 241              		.loc 1 85 0
- 242 0024 0023     		movs	r3, #0
- 243 0026 324A     		ldr	r2, .L19+8
- 244 0028 1370     		strb	r3, [r2]
-  86:.\main.c      ****     inc = 0;
- 245              		.loc 1 86 0
- 246 002a 324A     		ldr	r2, .L19+12
- 247 002c 1370     		strb	r3, [r2]
-  87:.\main.c      ****     
-  88:.\main.c      ****     setForward(0x3);
- 248              		.loc 1 88 0
- 249 002e 0320     		movs	r0, #3
- 250 0030 FFF7FEFF 		bl	setForward
- 251              	.LVL24:
-  89:.\main.c      ****     
-  90:.\main.c      ****     for(;;)
-  91:.\main.c      ****     {   
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 7
+ 236              		.cfi_startproc
+ 237              		@ args = 4, pretend = 16, frame = 72
+ 238              		@ frame_needed = 0, uses_anonymous_args = 1
+ 239              	.LVL19:
+ 240 0000 0FB4     		push	{r0, r1, r2, r3}
+ 241              		.cfi_def_cfa_offset 16
+ 242              		.cfi_offset 0, -16
+ 243              		.cfi_offset 1, -12
+ 244              		.cfi_offset 2, -8
+ 245              		.cfi_offset 3, -4
+ 246 0002 00B5     		push	{lr}
+ 247              		.cfi_def_cfa_offset 20
+ 248              		.cfi_offset 14, -20
+ 249 0004 93B0     		sub	sp, sp, #76
+ 250              		.cfi_def_cfa_offset 96
+  78:.\main.c      ****    if(!USB_GetConfiguration()) return;  // Do nothing if the USB cable is not connected.
+ 251              		.loc 1 78 0
+ 252 0006 FFF7FEFF 		bl	USB_GetConfiguration
+ 253              	.LVL20:
+ 254 000a 68B1     		cbz	r0, .L14
+  79:.\main.c      ****    char buffer[64];
+  80:.\main.c      ****    va_list args;
+  81:.\main.c      ****    va_start(args, fmt);
+ 255              		.loc 1 81 0
+ 256 000c 15AB     		add	r3, sp, #84
+ 257 000e 0193     		str	r3, [sp, #4]
+  82:.\main.c      ****    vsnprintf(buffer, sizeof(buffer), fmt, args);
+ 258              		.loc 1 82 0
+ 259 0010 02A8     		add	r0, sp, #8
+ 260 0012 4021     		movs	r1, #64
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 7
 
 
-  92:.\main.c      ****         time = Timer_ReadCounter();
-  93:.\main.c      ****         
-  94:.\main.c      ****         refresh_position();
-  95:.\main.c      ****         
-  96:.\main.c      ****         if (dec){
- 252              		.loc 1 96 0
- 253 0034 DFF8B880 		ldr	r8, .L19+8
-  97:.\main.c      ****             dec = 0;
-  98:.\main.c      ****         } else if (inc){
-  99:.\main.c      ****             inc = 0;
- 100:.\main.c      ****             reset_navigation();
- 101:.\main.c      ****         } 
- 102:.\main.c      ****         
- 103:.\main.c      ****         if ((time % 400) == 0){
- 254              		.loc 1 103 0
- 255 0038 DFF8C490 		ldr	r9, .L19+24
- 104:.\main.c      ****             LCD_ClearDisplay();
- 105:.\main.c      ****             sprintf(outString, "X%ld Y%ld", (int32) (location.x), (int32) (location.y));
- 106:.\main.c      ****             LCD_PosPrintString(0, 0, outString);
- 107:.\main.c      ****             sprintf(outString, "A%d", (int) (location.angle * (180.0/M_PI)) + 42);
- 256              		.loc 1 107 0
- 257 003c 2AA7     		adr	r7, .L19
- 258 003e D7E90067 		ldrd	r6, [r7]
- 259              	.L18:
-  92:.\main.c      ****         time = Timer_ReadCounter();
- 260              		.loc 1 92 0
- 261 0042 FFF7FEFF 		bl	Timer_ReadCounter
- 262              	.LVL25:
- 263 0046 0446     		mov	r4, r0
- 264              	.LVL26:
-  94:.\main.c      ****         refresh_position();
- 265              		.loc 1 94 0
- 266 0048 FFF7FEFF 		bl	refresh_position
- 267              	.LVL27:
-  96:.\main.c      ****         if (dec){
- 268              		.loc 1 96 0
- 269 004c 98F80030 		ldrb	r3, [r8]	@ zero_extendqisi2
- 270 0050 1BB1     		cbz	r3, .L14
-  97:.\main.c      ****             dec = 0;
- 271              		.loc 1 97 0
- 272 0052 0023     		movs	r3, #0
- 273 0054 88F80030 		strb	r3, [r8]
- 274 0058 07E0     		b	.L15
- 275              	.L14:
-  98:.\main.c      ****         } else if (inc){
- 276              		.loc 1 98 0
- 277 005a 264B     		ldr	r3, .L19+12
- 278 005c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 279 005e 23B1     		cbz	r3, .L15
-  99:.\main.c      ****             inc = 0;
- 280              		.loc 1 99 0
- 281 0060 0022     		movs	r2, #0
- 282 0062 244B     		ldr	r3, .L19+12
- 283 0064 1A70     		strb	r2, [r3]
- 100:.\main.c      ****             reset_navigation();
- 284              		.loc 1 100 0
- 285 0066 FFF7FEFF 		bl	reset_navigation
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 8
+ 261 0014 149A     		ldr	r2, [sp, #80]
+ 262 0016 FFF7FEFF 		bl	vsnprintf
+ 263              	.LVL21:
+ 264              	.L16:
+  83:.\main.c      ****    va_end(args);
+  84:.\main.c      ****    while(!USB_CDCIsReady());
+ 265              		.loc 1 84 0 discriminator 1
+ 266 001a FFF7FEFF 		bl	USB_CDCIsReady
+ 267              	.LVL22:
+ 268 001e 0028     		cmp	r0, #0
+ 269 0020 FBD0     		beq	.L16
+  85:.\main.c      ****    USB_PutString(buffer);
+ 270              		.loc 1 85 0
+ 271 0022 02A8     		add	r0, sp, #8
+ 272 0024 FFF7FEFF 		bl	USB_PutString
+ 273              	.LVL23:
+ 274              	.L14:
+  86:.\main.c      **** }
+ 275              		.loc 1 86 0
+ 276 0028 13B0     		add	sp, sp, #76
+ 277              		@ sp needed
+ 278 002a 5DF804EB 		ldr	lr, [sp], #4
+ 279 002e 04B0     		add	sp, sp, #16
+ 280 0030 7047     		bx	lr
+ 281              		.cfi_endproc
+ 282              	.LFE68:
+ 283              		.size	print, .-print
+ 284 0032 00BF     		.section	.text.main,"ax",%progbits
+ 285              		.align	2
+ 286              		.global	main
+ 287              		.thumb
+ 288              		.thumb_func
+ 289              		.type	main, %function
+ 290              	main:
+ 291              	.LFB69:
+  87:.\main.c      **** 
+  88:.\main.c      **** int main()
+  89:.\main.c      **** {
+ 292              		.loc 1 89 0
+ 293              		.cfi_startproc
+ 294              		@ args = 0, pretend = 0, frame = 16
+ 295              		@ frame_needed = 0, uses_anonymous_args = 0
+ 296 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 297              		.cfi_def_cfa_offset 20
+ 298              		.cfi_offset 4, -20
+ 299              		.cfi_offset 5, -16
+ 300              		.cfi_offset 6, -12
+ 301              		.cfi_offset 7, -8
+ 302              		.cfi_offset 14, -4
+ 303 0002 85B0     		sub	sp, sp, #20
+ 304              		.cfi_def_cfa_offset 40
+  90:.\main.c      ****     /* ** INITIALIZE COMPONENTS ** */
+  91:.\main.c      ****     LCD_Start();
+ 305              		.loc 1 91 0
+ 306 0004 FFF7FEFF 		bl	LCD_Start
+ 307              	.LVL24:
+  92:.\main.c      ****     Timer_Start();
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 8
 
 
- 286              	.LVL28:
- 287              	.L15:
- 103:.\main.c      ****         if ((time % 400) == 0){
- 288              		.loc 1 103 0
- 289 006a A9FB0423 		umull	r2, r3, r9, r4
- 290 006e DB09     		lsrs	r3, r3, #7
- 291 0070 4FF4C872 		mov	r2, #400
- 292 0074 02FB1343 		mls	r3, r2, r3, r4
- 293 0078 002B     		cmp	r3, #0
- 294 007a E2D1     		bne	.L18
- 104:.\main.c      ****             LCD_ClearDisplay();
- 295              		.loc 1 104 0
- 296 007c 0120     		movs	r0, #1
- 297 007e FFF7FEFF 		bl	LCD_WriteControl
- 298              	.LVL29:
- 105:.\main.c      ****             sprintf(outString, "X%ld Y%ld", (int32) (location.x), (int32) (location.y));
- 299              		.loc 1 105 0
- 300 0082 DFF880A0 		ldr	r10, .L19+28
- 301 0086 DAE90245 		ldrd	r4, [r10, #8]
- 302              	.LVL30:
- 303 008a DAE90001 		ldrd	r0, [r10]
- 304 008e FFF7FEFF 		bl	__aeabi_d2iz
- 305              	.LVL31:
- 306 0092 8346     		mov	fp, r0
- 307 0094 2046     		mov	r0, r4
- 308 0096 2946     		mov	r1, r5
- 309 0098 FFF7FEFF 		bl	__aeabi_d2iz
- 310              	.LVL32:
- 311 009c 0346     		mov	r3, r0
- 312 009e 6846     		mov	r0, sp
- 313 00a0 1549     		ldr	r1, .L19+16
- 314 00a2 5A46     		mov	r2, fp
- 315 00a4 FFF7FEFF 		bl	sprintf
- 316              	.LVL33:
- 106:.\main.c      ****             LCD_PosPrintString(0, 0, outString);
- 317              		.loc 1 106 0
- 318 00a8 0020     		movs	r0, #0
- 319 00aa 0146     		mov	r1, r0
- 320 00ac FFF7FEFF 		bl	LCD_Position
- 321              	.LVL34:
- 322 00b0 6846     		mov	r0, sp
- 323 00b2 FFF7FEFF 		bl	LCD_PrintString
- 324              	.LVL35:
- 325              		.loc 1 107 0
- 326 00b6 DAE90401 		ldrd	r0, [r10, #16]
- 327 00ba 3246     		mov	r2, r6
- 328 00bc 3B46     		mov	r3, r7
- 329 00be FFF7FEFF 		bl	__aeabi_dmul
- 330              	.LVL36:
- 331 00c2 FFF7FEFF 		bl	__aeabi_d2iz
- 332              	.LVL37:
- 333 00c6 00F12A02 		add	r2, r0, #42
- 334 00ca 6846     		mov	r0, sp
- 335 00cc 0B49     		ldr	r1, .L19+20
- 336 00ce FFF7FEFF 		bl	sprintf
- 337              	.LVL38:
- 108:.\main.c      ****             LCD_PosPrintString(1, 0, outString);
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 9
+ 308              		.loc 1 92 0
+ 309 0008 FFF7FEFF 		bl	Timer_Start
+ 310              	.LVL25:
+  93:.\main.c      ****     
+  94:.\main.c      ****     CyDelay(200);//give mice time to boot up
+ 311              		.loc 1 94 0
+ 312 000c C820     		movs	r0, #200
+ 313 000e FFF7FEFF 		bl	CyDelay
+ 314              	.LVL26:
+  95:.\main.c      ****     init_mice();
+ 315              		.loc 1 95 0
+ 316 0012 FFF7FEFF 		bl	init_mice
+ 317              	.LVL27:
+  96:.\main.c      ****     init_navigation();
+ 318              		.loc 1 96 0
+ 319 0016 FFF7FEFF 		bl	init_navigation
+ 320              	.LVL28:
+  97:.\main.c      ****     init_buttons();
+ 321              		.loc 1 97 0
+ 322 001a FFF7FEFF 		bl	init_buttons
+ 323              	.LVL29:
+  98:.\main.c      ****     init_motors();
+ 324              		.loc 1 98 0
+ 325 001e FFF7FEFF 		bl	init_motors
+ 326              	.LVL30:
+  99:.\main.c      ****  
+ 100:.\main.c      ****     
+ 101:.\main.c      ****     /* ** Variables used in main ** */
+ 102:.\main.c      ****     char outString[16];  // String to hold the ascii result
+ 103:.\main.c      ****     uint32 time = Timer_ReadCounter();
+ 327              		.loc 1 103 0
+ 328 0022 FFF7FEFF 		bl	Timer_ReadCounter
+ 329              	.LVL31:
+ 104:.\main.c      ****     uint32 delta;
+ 105:.\main.c      ****     extern volatile int32 loc_x_a;
+ 106:.\main.c      ****     extern volatile int32 loc_y_a;
+ 107:.\main.c      ****     extern volatile int32 loc_x_b;
+ 108:.\main.c      ****     extern volatile int32 loc_y_b;
+ 109:.\main.c      ****     setCoast(MBOTH);
+ 330              		.loc 1 109 0
+ 331 0026 0320     		movs	r0, #3
+ 332 0028 FFF7FEFF 		bl	setCoast
+ 333              	.LVL32:
+ 110:.\main.c      ****     for(;;)
+ 111:.\main.c      ****     {   
+ 112:.\main.c      ****         delta = Timer_ReadCounter() - time;
+ 113:.\main.c      ****         time = Timer_ReadCounter();
+ 114:.\main.c      ****         
+ 115:.\main.c      ****         
+ 116:.\main.c      ****         if (dec){
+ 334              		.loc 1 116 0
+ 335 002c 1E4D     		ldr	r5, .L25
+ 117:.\main.c      ****             dec = 0;
+ 118:.\main.c      ****             reset_navigation();
+ 119:.\main.c      ****         } else if (inc){
+ 336              		.loc 1 119 0
+ 337 002e 1F4E     		ldr	r6, .L25+4
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 9
 
 
- 338              		.loc 1 108 0
- 339 00d2 0120     		movs	r0, #1
- 340 00d4 0021     		movs	r1, #0
- 341 00d6 FFF7FEFF 		bl	LCD_Position
- 342              	.LVL39:
- 343 00da 6846     		mov	r0, sp
- 344 00dc FFF7FEFF 		bl	LCD_PrintString
- 345              	.LVL40:
- 346 00e0 AFE7     		b	.L18
- 347              	.L20:
- 348 00e2 00BFAFF3 		.align	3
- 348      0080
- 349              	.L19:
- 350 00e8 F8C1631A 		.word	442745336
- 351 00ec DCA54C40 		.word	1078765020
- 352 00f0 00000000 		.word	dec
- 353 00f4 00000000 		.word	inc
- 354 00f8 00000000 		.word	.LC0
- 355 00fc 0C000000 		.word	.LC1
- 356 0100 1F85EB51 		.word	1374389535
- 357 0104 00000000 		.word	location
- 358              		.cfi_endproc
- 359              	.LFE67:
- 360              		.size	main, .-main
- 361              		.comm	dec,1,1
- 362              		.comm	inc,1,1
- 363              		.comm	OV9650_1_framebuffer,50688,4
- 364              		.section	.rodata.str1.4,"aMS",%progbits,1
- 365              		.align	2
- 366              	.LC0:
- 367 0000 58256C64 		.ascii	"X%ld Y%ld\000"
- 367      2059256C 
- 367      6400
- 368 000a 0000     		.space	2
- 369              	.LC1:
- 370 000c 41256400 		.ascii	"A%d\000"
- 371              		.text
- 372              	.Letext0:
- 373              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
- 374              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
- 375              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
- 376              		.file 5 "./navigation.h"
- 377              		.file 6 "Generated_Source\\PSoC5/core_cm3.h"
- 378              		.file 7 "Generated_Source\\PSoC5/OV9650_1.h"
- 379              		.file 8 "Generated_Source\\PSoC5/but0.h"
- 380              		.file 9 "Generated_Source\\PSoC5/but1.h"
- 381              		.file 10 "Generated_Source\\PSoC5/Button_PWM.h"
- 382              		.file 11 "Generated_Source\\PSoC5/sclk_a_isr.h"
- 383              		.file 12 "Generated_Source\\PSoC5/sclk_b_isr.h"
- 384              		.file 13 "./mouse_a.h"
- 385              		.file 14 "./mouse_b.h"
- 386              		.file 15 "Generated_Source\\PSoC5/SCLK_A.h"
- 387              		.file 16 "Generated_Source\\PSoC5/SCLK_B.h"
- 388              		.file 17 "Generated_Source\\PSoC5/LCD.h"
- 389              		.file 18 "Generated_Source\\PSoC5/Timer.h"
- 390              		.file 19 "Generated_Source\\PSoC5/CyLib.h"
- 391              		.file 20 "./motor.h"
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 10
+ 120:.\main.c      ****             inc = 0;
+ 121:.\main.c      ****             
+ 122:.\main.c      ****         } 
+ 123:.\main.c      ****         
+ 124:.\main.c      ****         if ((time % 400) == 0){
+ 338              		.loc 1 124 0
+ 339 0030 1F4F     		ldr	r7, .L25+8
+ 340              	.L24:
+ 112:.\main.c      ****         delta = Timer_ReadCounter() - time;
+ 341              		.loc 1 112 0
+ 342 0032 FFF7FEFF 		bl	Timer_ReadCounter
+ 343              	.LVL33:
+ 113:.\main.c      ****         time = Timer_ReadCounter();
+ 344              		.loc 1 113 0
+ 345 0036 FFF7FEFF 		bl	Timer_ReadCounter
+ 346              	.LVL34:
+ 347 003a 0446     		mov	r4, r0
+ 348              	.LVL35:
+ 116:.\main.c      ****         if (dec){
+ 349              		.loc 1 116 0
+ 350 003c 2B78     		ldrb	r3, [r5]	@ zero_extendqisi2
+ 351 003e 23B1     		cbz	r3, .L20
+ 117:.\main.c      ****             dec = 0;
+ 352              		.loc 1 117 0
+ 353 0040 0023     		movs	r3, #0
+ 354 0042 2B70     		strb	r3, [r5]
+ 118:.\main.c      ****             reset_navigation();
+ 355              		.loc 1 118 0
+ 356 0044 FFF7FEFF 		bl	reset_navigation
+ 357              	.LVL36:
+ 358 0048 03E0     		b	.L21
+ 359              	.LVL37:
+ 360              	.L20:
+ 119:.\main.c      ****         } else if (inc){
+ 361              		.loc 1 119 0
+ 362 004a 3378     		ldrb	r3, [r6]	@ zero_extendqisi2
+ 363 004c 0BB1     		cbz	r3, .L21
+ 120:.\main.c      ****             inc = 0;
+ 364              		.loc 1 120 0
+ 365 004e 0023     		movs	r3, #0
+ 366 0050 3370     		strb	r3, [r6]
+ 367              	.LVL38:
+ 368              	.L21:
+ 369              		.loc 1 124 0
+ 370 0052 A7FB0423 		umull	r2, r3, r7, r4
+ 371 0056 DB09     		lsrs	r3, r3, #7
+ 372 0058 4FF4C872 		mov	r2, #400
+ 373 005c 02FB1343 		mls	r3, r2, r3, r4
+ 374 0060 002B     		cmp	r3, #0
+ 375 0062 E6D1     		bne	.L24
+ 125:.\main.c      ****             LCD_ClearDisplay();
+ 376              		.loc 1 125 0
+ 377 0064 0120     		movs	r0, #1
+ 378 0066 FFF7FEFF 		bl	LCD_WriteControl
+ 379              	.LVL39:
+ 126:.\main.c      ****             
+ 127:.\main.c      ****             sprintf(outString, "x%ld y%ld - L", loc_x_a, loc_y_a);
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 10
 
 
- 392              		.file 21 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8
- 393              		.section	.debug_info,"",%progbits
- 394              	.Ldebug_info0:
- 395 0000 9A050000 		.4byte	0x59a
- 396 0004 0400     		.2byte	0x4
- 397 0006 00000000 		.4byte	.Ldebug_abbrev0
- 398 000a 04       		.byte	0x4
- 399 000b 01       		.uleb128 0x1
- 400 000c 19010000 		.4byte	.LASF62
- 401 0010 01       		.byte	0x1
- 402 0011 86030000 		.4byte	.LASF63
- 403 0015 24000000 		.4byte	.LASF64
- 404 0019 00000000 		.4byte	.Ldebug_ranges0+0
- 405 001d 00000000 		.4byte	0
- 406 0021 00000000 		.4byte	.Ldebug_line0
- 407 0025 02       		.uleb128 0x2
- 408 0026 01       		.byte	0x1
- 409 0027 06       		.byte	0x6
- 410 0028 44020000 		.4byte	.LASF0
- 411 002c 02       		.uleb128 0x2
- 412 002d 01       		.byte	0x1
- 413 002e 08       		.byte	0x8
- 414 002f C0010000 		.4byte	.LASF1
- 415 0033 02       		.uleb128 0x2
- 416 0034 02       		.byte	0x2
- 417 0035 05       		.byte	0x5
- 418 0036 89000000 		.4byte	.LASF2
- 419 003a 02       		.uleb128 0x2
- 420 003b 02       		.byte	0x2
- 421 003c 07       		.byte	0x7
- 422 003d E8020000 		.4byte	.LASF3
- 423 0041 03       		.uleb128 0x3
- 424 0042 8F030000 		.4byte	.LASF9
- 425 0046 02       		.byte	0x2
- 426 0047 37       		.byte	0x37
- 427 0048 4C000000 		.4byte	0x4c
- 428 004c 02       		.uleb128 0x2
- 429 004d 04       		.byte	0x4
- 430 004e 05       		.byte	0x5
- 431 004f A1010000 		.4byte	.LASF4
- 432 0053 02       		.uleb128 0x2
- 433 0054 04       		.byte	0x4
- 434 0055 07       		.byte	0x7
- 435 0056 4A030000 		.4byte	.LASF5
- 436 005a 02       		.uleb128 0x2
- 437 005b 08       		.byte	0x8
- 438 005c 05       		.byte	0x5
- 439 005d 0B010000 		.4byte	.LASF6
- 440 0061 02       		.uleb128 0x2
- 441 0062 08       		.byte	0x8
- 442 0063 07       		.byte	0x7
- 443 0064 50020000 		.4byte	.LASF7
- 444 0068 04       		.uleb128 0x4
- 445 0069 04       		.byte	0x4
- 446 006a 05       		.byte	0x5
- 447 006b 696E7400 		.ascii	"int\000"
- 448 006f 02       		.uleb128 0x2
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 11
+ 380              		.loc 1 127 0
+ 381 006a 124B     		ldr	r3, .L25+12
+ 382 006c 1A68     		ldr	r2, [r3]
+ 383 006e 124B     		ldr	r3, .L25+16
+ 384 0070 1B68     		ldr	r3, [r3]
+ 385 0072 6846     		mov	r0, sp
+ 386 0074 1149     		ldr	r1, .L25+20
+ 387 0076 FFF7FEFF 		bl	sprintf
+ 388              	.LVL40:
+ 128:.\main.c      ****             LCD_PosPrintString(0,0, outString);
+ 389              		.loc 1 128 0
+ 390 007a 0020     		movs	r0, #0
+ 391 007c 0146     		mov	r1, r0
+ 392 007e FFF7FEFF 		bl	LCD_Position
+ 393              	.LVL41:
+ 394 0082 6846     		mov	r0, sp
+ 395 0084 FFF7FEFF 		bl	LCD_PrintString
+ 396              	.LVL42:
+ 129:.\main.c      ****             sprintf(outString, "x%ld y%ld - R", loc_x_b, loc_y_b);
+ 397              		.loc 1 129 0
+ 398 0088 0D4B     		ldr	r3, .L25+24
+ 399 008a 1A68     		ldr	r2, [r3]
+ 400 008c 0D4B     		ldr	r3, .L25+28
+ 401 008e 1B68     		ldr	r3, [r3]
+ 402 0090 6846     		mov	r0, sp
+ 403 0092 0D49     		ldr	r1, .L25+32
+ 404 0094 FFF7FEFF 		bl	sprintf
+ 405              	.LVL43:
+ 130:.\main.c      ****             LCD_PosPrintString(1,0, outString);
+ 406              		.loc 1 130 0
+ 407 0098 0120     		movs	r0, #1
+ 408 009a 0021     		movs	r1, #0
+ 409 009c FFF7FEFF 		bl	LCD_Position
+ 410              	.LVL44:
+ 411 00a0 6846     		mov	r0, sp
+ 412 00a2 FFF7FEFF 		bl	LCD_PrintString
+ 413              	.LVL45:
+ 414 00a6 C4E7     		b	.L24
+ 415              	.L26:
+ 416              		.align	2
+ 417              	.L25:
+ 418 00a8 00000000 		.word	dec
+ 419 00ac 00000000 		.word	inc
+ 420 00b0 1F85EB51 		.word	1374389535
+ 421 00b4 00000000 		.word	loc_x_a
+ 422 00b8 00000000 		.word	loc_y_a
+ 423 00bc 00000000 		.word	.LC0
+ 424 00c0 00000000 		.word	loc_x_b
+ 425 00c4 00000000 		.word	loc_y_b
+ 426 00c8 10000000 		.word	.LC1
+ 427              		.cfi_endproc
+ 428              	.LFE69:
+ 429              		.size	main, .-main
+ 430              		.comm	dec,1,1
+ 431              		.comm	inc,1,1
+ 432              		.comm	OV9650_1_framebuffer,50688,4
+ 433              		.section	.rodata.str1.4,"aMS",%progbits,1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 11
 
 
- 449 0070 04       		.byte	0x4
- 450 0071 07       		.byte	0x7
- 451 0072 77020000 		.4byte	.LASF8
- 452 0076 03       		.uleb128 0x3
- 453 0077 E0020000 		.4byte	.LASF10
- 454 007b 03       		.byte	0x3
- 455 007c 41       		.byte	0x41
- 456 007d 41000000 		.4byte	0x41
- 457 0081 03       		.uleb128 0x3
- 458 0082 C1000000 		.4byte	.LASF11
- 459 0086 04       		.byte	0x4
- 460 0087 B3       		.byte	0xb3
- 461 0088 2C000000 		.4byte	0x2c
- 462 008c 03       		.uleb128 0x3
- 463 008d 43030000 		.4byte	.LASF12
- 464 0091 04       		.byte	0x4
- 465 0092 B5       		.byte	0xb5
- 466 0093 53000000 		.4byte	0x53
- 467 0097 03       		.uleb128 0x3
- 468 0098 5C030000 		.4byte	.LASF13
- 469 009c 04       		.byte	0x4
- 470 009d B8       		.byte	0xb8
- 471 009e 4C000000 		.4byte	0x4c
- 472 00a2 02       		.uleb128 0x2
- 473 00a3 04       		.byte	0x4
- 474 00a4 04       		.byte	0x4
- 475 00a5 F8000000 		.4byte	.LASF14
- 476 00a9 02       		.uleb128 0x2
- 477 00aa 08       		.byte	0x8
- 478 00ab 04       		.byte	0x4
- 479 00ac 62030000 		.4byte	.LASF15
- 480 00b0 03       		.uleb128 0x3
- 481 00b1 9C000000 		.4byte	.LASF16
- 482 00b5 04       		.byte	0x4
- 483 00b6 C4       		.byte	0xc4
- 484 00b7 BB000000 		.4byte	0xbb
- 485 00bb 02       		.uleb128 0x2
- 486 00bc 01       		.byte	0x1
- 487 00bd 08       		.byte	0x8
- 488 00be C9020000 		.4byte	.LASF17
- 489 00c2 05       		.uleb128 0x5
- 490 00c3 0B020000 		.4byte	.LASF18
- 491 00c7 04       		.byte	0x4
- 492 00c8 6F01     		.2byte	0x16f
- 493 00ca CE000000 		.4byte	0xce
- 494 00ce 06       		.uleb128 0x6
- 495 00cf 04       		.byte	0x4
- 496 00d0 D4000000 		.4byte	0xd4
- 497 00d4 07       		.uleb128 0x7
- 498 00d5 02       		.uleb128 0x2
- 499 00d6 04       		.byte	0x4
- 500 00d7 07       		.byte	0x7
- 501 00d8 93000000 		.4byte	.LASF19
- 502 00dc 06       		.uleb128 0x6
- 503 00dd 04       		.byte	0x4
- 504 00de BB000000 		.4byte	0xbb
- 505 00e2 06       		.uleb128 0x6
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 12
+ 434              		.align	2
+ 435              	.LC0:
+ 436 0000 78256C64 		.ascii	"x%ld y%ld - L\000"
+ 436      2079256C 
+ 436      64202D20 
+ 436      4C00
+ 437 000e 0000     		.space	2
+ 438              	.LC1:
+ 439 0010 78256C64 		.ascii	"x%ld y%ld - R\000"
+ 439      2079256C 
+ 439      64202D20 
+ 439      5200
+ 440 001e 0000     		.text
+ 441              	.Letext0:
+ 442              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 443              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 444              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 445              		.file 5 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 446              		.file 6 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 447              		.file 7 "Generated_Source\\PSoC5/core_cm3.h"
+ 448              		.file 8 "Generated_Source\\PSoC5/OV9650_1.h"
+ 449              		.file 9 "Generated_Source\\PSoC5/but0.h"
+ 450              		.file 10 "Generated_Source\\PSoC5/but1.h"
+ 451              		.file 11 "Generated_Source\\PSoC5/Button_PWM.h"
+ 452              		.file 12 "Generated_Source\\PSoC5/sclk_a_isr.h"
+ 453              		.file 13 "Generated_Source\\PSoC5/sclk_b_isr.h"
+ 454              		.file 14 "./mouse_a.h"
+ 455              		.file 15 "./mouse_b.h"
+ 456              		.file 16 "Generated_Source\\PSoC5/SCLK_A.h"
+ 457              		.file 17 "Generated_Source\\PSoC5/SCLK_B.h"
+ 458              		.file 18 "Generated_Source\\PSoC5/USB.h"
+ 459              		.file 19 "Generated_Source\\PSoC5/USB_cdc.h"
+ 460              		.file 20 "Generated_Source\\PSoC5/LCD.h"
+ 461              		.file 21 "Generated_Source\\PSoC5/Timer.h"
+ 462              		.file 22 "Generated_Source\\PSoC5/CyLib.h"
+ 463              		.file 23 "./motor.h"
+ 464              		.file 24 "./navigation.h"
+ 465              		.file 25 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8
+ 466              		.file 26 "<built-in>"
+ 467              		.section	.debug_info,"",%progbits
+ 468              	.Ldebug_info0:
+ 469 0000 FC060000 		.4byte	0x6fc
+ 470 0004 0400     		.2byte	0x4
+ 471 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 472 000a 04       		.byte	0x4
+ 473 000b 01       		.uleb128 0x1
+ 474 000c 45010000 		.4byte	.LASF74
+ 475 0010 01       		.byte	0x1
+ 476 0011 08040000 		.4byte	.LASF75
+ 477 0015 2B000000 		.4byte	.LASF76
+ 478 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 479 001d 00000000 		.4byte	0
+ 480 0021 00000000 		.4byte	.Ldebug_line0
+ 481 0025 02       		.uleb128 0x2
+ 482 0026 01       		.byte	0x1
+ 483 0027 06       		.byte	0x6
+ 484 0028 72020000 		.4byte	.LASF0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 12
 
 
- 506 00e3 04       		.byte	0x4
- 507 00e4 E8000000 		.4byte	0xe8
- 508 00e8 08       		.uleb128 0x8
- 509 00e9 BB000000 		.4byte	0xbb
- 510 00ed 02       		.uleb128 0x2
- 511 00ee 08       		.byte	0x8
- 512 00ef 04       		.byte	0x4
- 513 00f0 FF010000 		.4byte	.LASF20
- 514 00f4 09       		.uleb128 0x9
- 515 00f5 CC030000 		.4byte	.LASF65
- 516 00f9 18       		.byte	0x18
- 517 00fa 05       		.byte	0x5
- 518 00fb 0F       		.byte	0xf
- 519 00fc 21010000 		.4byte	0x121
- 520 0100 0A       		.uleb128 0xa
- 521 0101 7800     		.ascii	"x\000"
- 522 0103 05       		.byte	0x5
- 523 0104 10       		.byte	0x10
- 524 0105 A9000000 		.4byte	0xa9
- 525 0109 00       		.byte	0
- 526 010a 0A       		.uleb128 0xa
- 527 010b 7900     		.ascii	"y\000"
- 528 010d 05       		.byte	0x5
- 529 010e 11       		.byte	0x11
- 530 010f A9000000 		.4byte	0xa9
- 531 0113 08       		.byte	0x8
- 532 0114 0B       		.uleb128 0xb
- 533 0115 C1030000 		.4byte	.LASF21
- 534 0119 05       		.byte	0x5
- 535 011a 12       		.byte	0x12
- 536 011b A9000000 		.4byte	0xa9
- 537 011f 10       		.byte	0x10
- 538 0120 00       		.byte	0
- 539 0121 0C       		.uleb128 0xc
- 540 0122 3B030000 		.4byte	.LASF22
- 541 0126 01       		.byte	0x1
- 542 0127 1C       		.byte	0x1c
- 543 0128 00000000 		.4byte	.LFB63
- 544 012c 14000000 		.4byte	.LFE63-.LFB63
- 545 0130 01       		.uleb128 0x1
- 546 0131 9C       		.byte	0x9c
- 547 0132 40010000 		.4byte	0x140
- 548 0136 0D       		.uleb128 0xd
- 549 0137 0C000000 		.4byte	.LVL0
- 550 013b 1B040000 		.4byte	0x41b
- 551 013f 00       		.byte	0
- 552 0140 0C       		.uleb128 0xc
- 553 0141 81000000 		.4byte	.LASF23
- 554 0145 01       		.byte	0x1
- 555 0146 21       		.byte	0x21
- 556 0147 00000000 		.4byte	.LFB64
- 557 014b 14000000 		.4byte	.LFE64-.LFB64
- 558 014f 01       		.uleb128 0x1
- 559 0150 9C       		.byte	0x9c
- 560 0151 5F010000 		.4byte	0x15f
- 561 0155 0D       		.uleb128 0xd
- 562 0156 0C000000 		.4byte	.LVL1
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 13
+ 485 002c 02       		.uleb128 0x2
+ 486 002d 01       		.byte	0x1
+ 487 002e 08       		.byte	0x8
+ 488 002f FF010000 		.4byte	.LASF1
+ 489 0033 02       		.uleb128 0x2
+ 490 0034 02       		.byte	0x2
+ 491 0035 05       		.byte	0x5
+ 492 0036 90000000 		.4byte	.LASF2
+ 493 003a 02       		.uleb128 0x2
+ 494 003b 02       		.byte	0x2
+ 495 003c 07       		.byte	0x7
+ 496 003d 3F030000 		.4byte	.LASF3
+ 497 0041 03       		.uleb128 0x3
+ 498 0042 11040000 		.4byte	.LASF9
+ 499 0046 02       		.byte	0x2
+ 500 0047 37       		.byte	0x37
+ 501 0048 4C000000 		.4byte	0x4c
+ 502 004c 02       		.uleb128 0x2
+ 503 004d 04       		.byte	0x4
+ 504 004e 05       		.byte	0x5
+ 505 004f D7010000 		.4byte	.LASF4
+ 506 0053 02       		.uleb128 0x2
+ 507 0054 04       		.byte	0x4
+ 508 0055 07       		.byte	0x7
+ 509 0056 B5030000 		.4byte	.LASF5
+ 510 005a 02       		.uleb128 0x2
+ 511 005b 08       		.byte	0x8
+ 512 005c 05       		.byte	0x5
+ 513 005d 37010000 		.4byte	.LASF6
+ 514 0061 02       		.uleb128 0x2
+ 515 0062 08       		.byte	0x8
+ 516 0063 07       		.byte	0x7
+ 517 0064 7E020000 		.4byte	.LASF7
+ 518 0068 04       		.uleb128 0x4
+ 519 0069 04       		.byte	0x4
+ 520 006a 05       		.byte	0x5
+ 521 006b 696E7400 		.ascii	"int\000"
+ 522 006f 02       		.uleb128 0x2
+ 523 0070 04       		.byte	0x4
+ 524 0071 07       		.byte	0x7
+ 525 0072 BA020000 		.4byte	.LASF8
+ 526 0076 03       		.uleb128 0x3
+ 527 0077 37030000 		.4byte	.LASF10
+ 528 007b 03       		.byte	0x3
+ 529 007c 41       		.byte	0x41
+ 530 007d 41000000 		.4byte	0x41
+ 531 0081 03       		.uleb128 0x3
+ 532 0082 ED000000 		.4byte	.LASF11
+ 533 0086 04       		.byte	0x4
+ 534 0087 B3       		.byte	0xb3
+ 535 0088 2C000000 		.4byte	0x2c
+ 536 008c 03       		.uleb128 0x3
+ 537 008d 97030000 		.4byte	.LASF12
+ 538 0091 04       		.byte	0x4
+ 539 0092 B5       		.byte	0xb5
+ 540 0093 53000000 		.4byte	0x53
+ 541 0097 03       		.uleb128 0x3
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 13
 
 
- 563 015a 22040000 		.4byte	0x422
- 564 015e 00       		.byte	0
- 565 015f 0E       		.uleb128 0xe
- 566 0160 FE000000 		.4byte	.LASF24
- 567 0164 01       		.byte	0x1
- 568 0165 26       		.byte	0x26
- 569 0166 00000000 		.4byte	.LFB65
- 570 016a 1C000000 		.4byte	.LFE65-.LFB65
- 571 016e 01       		.uleb128 0x1
- 572 016f 9C       		.byte	0x9c
- 573 0170 A8010000 		.4byte	0x1a8
- 574 0174 0D       		.uleb128 0xd
- 575 0175 06000000 		.4byte	.LVL2
- 576 0179 29040000 		.4byte	0x429
- 577 017d 0F       		.uleb128 0xf
- 578 017e 0C000000 		.4byte	.LVL3
- 579 0182 30040000 		.4byte	0x430
- 580 0186 94010000 		.4byte	0x194
- 581 018a 10       		.uleb128 0x10
- 582 018b 01       		.uleb128 0x1
- 583 018c 50       		.byte	0x50
- 584 018d 05       		.uleb128 0x5
- 585 018e 03       		.byte	0x3
- 586 018f 00000000 		.4byte	INC_ISR
- 587 0193 00       		.byte	0
- 588 0194 11       		.uleb128 0x11
- 589 0195 12000000 		.4byte	.LVL4
- 590 0199 41040000 		.4byte	0x441
- 591 019d 10       		.uleb128 0x10
- 592 019e 01       		.uleb128 0x1
- 593 019f 50       		.byte	0x50
- 594 01a0 05       		.uleb128 0x5
- 595 01a1 03       		.byte	0x3
- 596 01a2 00000000 		.4byte	DEC_ISR
- 597 01a6 00       		.byte	0
- 598 01a7 00       		.byte	0
- 599 01a8 0E       		.uleb128 0xe
- 600 01a9 BF020000 		.4byte	.LASF25
- 601 01ad 01       		.byte	0x1
- 602 01ae 2C       		.byte	0x2c
- 603 01af 00000000 		.4byte	.LFB66
- 604 01b3 48000000 		.4byte	.LFE66-.LFB66
- 605 01b7 01       		.uleb128 0x1
- 606 01b8 9C       		.byte	0x9c
- 607 01b9 3E020000 		.4byte	0x23e
- 608 01bd 0D       		.uleb128 0xd
- 609 01be 06000000 		.4byte	.LVL5
- 610 01c2 52040000 		.4byte	0x452
- 611 01c6 0D       		.uleb128 0xd
- 612 01c7 0A000000 		.4byte	.LVL6
- 613 01cb 59040000 		.4byte	0x459
- 614 01cf 0D       		.uleb128 0xd
- 615 01d0 10000000 		.4byte	.LVL7
- 616 01d4 60040000 		.4byte	0x460
- 617 01d8 0D       		.uleb128 0xd
- 618 01d9 14000000 		.4byte	.LVL8
- 619 01dd 67040000 		.4byte	0x467
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 14
+ 542 0098 C7030000 		.4byte	.LASF13
+ 543 009c 04       		.byte	0x4
+ 544 009d B8       		.byte	0xb8
+ 545 009e 4C000000 		.4byte	0x4c
+ 546 00a2 02       		.uleb128 0x2
+ 547 00a3 04       		.byte	0x4
+ 548 00a4 04       		.byte	0x4
+ 549 00a5 24010000 		.4byte	.LASF14
+ 550 00a9 02       		.uleb128 0x2
+ 551 00aa 08       		.byte	0x8
+ 552 00ab 04       		.byte	0x4
+ 553 00ac CD030000 		.4byte	.LASF15
+ 554 00b0 03       		.uleb128 0x3
+ 555 00b1 B6000000 		.4byte	.LASF16
+ 556 00b5 04       		.byte	0x4
+ 557 00b6 C4       		.byte	0xc4
+ 558 00b7 BB000000 		.4byte	0xbb
+ 559 00bb 02       		.uleb128 0x2
+ 560 00bc 01       		.byte	0x1
+ 561 00bd 08       		.byte	0x8
+ 562 00be 20030000 		.4byte	.LASF17
+ 563 00c2 05       		.uleb128 0x5
+ 564 00c3 39020000 		.4byte	.LASF18
+ 565 00c7 04       		.byte	0x4
+ 566 00c8 6F01     		.2byte	0x16f
+ 567 00ca CE000000 		.4byte	0xce
+ 568 00ce 06       		.uleb128 0x6
+ 569 00cf 04       		.byte	0x4
+ 570 00d0 D4000000 		.4byte	0xd4
+ 571 00d4 07       		.uleb128 0x7
+ 572 00d5 03       		.uleb128 0x3
+ 573 00d6 9A000000 		.4byte	.LASF19
+ 574 00da 05       		.byte	0x5
+ 575 00db D4       		.byte	0xd4
+ 576 00dc 6F000000 		.4byte	0x6f
+ 577 00e0 02       		.uleb128 0x2
+ 578 00e1 04       		.byte	0x4
+ 579 00e2 07       		.byte	0x7
+ 580 00e3 2D040000 		.4byte	.LASF20
+ 581 00e7 08       		.uleb128 0x8
+ 582 00e8 04       		.byte	0x4
+ 583 00e9 06       		.uleb128 0x6
+ 584 00ea 04       		.byte	0x4
+ 585 00eb BB000000 		.4byte	0xbb
+ 586 00ef 06       		.uleb128 0x6
+ 587 00f0 04       		.byte	0x4
+ 588 00f1 F5000000 		.4byte	0xf5
+ 589 00f5 09       		.uleb128 0x9
+ 590 00f6 BB000000 		.4byte	0xbb
+ 591 00fa 03       		.uleb128 0x3
+ 592 00fb 36040000 		.4byte	.LASF21
+ 593 00ff 06       		.byte	0x6
+ 594 0100 28       		.byte	0x28
+ 595 0101 05010000 		.4byte	0x105
+ 596 0105 0A       		.uleb128 0xa
+ 597 0106 C1010000 		.4byte	.LASF77
+ 598 010a 04       		.byte	0x4
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 14
 
 
- 620 01e1 0D       		.uleb128 0xd
- 621 01e2 18000000 		.4byte	.LVL9
- 622 01e6 6E040000 		.4byte	0x46e
- 623 01ea 0D       		.uleb128 0xd
- 624 01eb 1C000000 		.4byte	.LVL10
- 625 01ef 75040000 		.4byte	0x475
- 626 01f3 0D       		.uleb128 0xd
- 627 01f4 22000000 		.4byte	.LVL11
- 628 01f8 7C040000 		.4byte	0x47c
- 629 01fc 0D       		.uleb128 0xd
- 630 01fd 26000000 		.4byte	.LVL12
- 631 0201 87040000 		.4byte	0x487
- 632 0205 0F       		.uleb128 0xf
- 633 0206 2C000000 		.4byte	.LVL13
- 634 020a 92040000 		.4byte	0x492
- 635 020e 18020000 		.4byte	0x218
- 636 0212 10       		.uleb128 0x10
- 637 0213 01       		.uleb128 0x1
- 638 0214 50       		.byte	0x50
- 639 0215 01       		.uleb128 0x1
- 640 0216 30       		.byte	0x30
- 641 0217 00       		.byte	0
- 642 0218 0F       		.uleb128 0xf
- 643 0219 32000000 		.4byte	.LVL14
- 644 021d A3040000 		.4byte	0x4a3
- 645 0221 2B020000 		.4byte	0x22b
- 646 0225 10       		.uleb128 0x10
- 647 0226 01       		.uleb128 0x1
- 648 0227 50       		.byte	0x50
- 649 0228 01       		.uleb128 0x1
- 650 0229 30       		.byte	0x30
- 651 022a 00       		.byte	0
- 652 022b 0D       		.uleb128 0xd
- 653 022c 38000000 		.4byte	.LVL15
- 654 0230 B4040000 		.4byte	0x4b4
- 655 0234 0D       		.uleb128 0xd
- 656 0235 3E000000 		.4byte	.LVL16
- 657 0239 C5040000 		.4byte	0x4c5
- 658 023d 00       		.byte	0
- 659 023e 12       		.uleb128 0x12
- 660 023f A2000000 		.4byte	.LASF26
- 661 0243 01       		.byte	0x1
- 662 0244 44       		.byte	0x44
- 663 0245 68000000 		.4byte	0x68
- 664 0249 00000000 		.4byte	.LFB67
- 665 024d 08010000 		.4byte	.LFE67-.LFB67
- 666 0251 01       		.uleb128 0x1
- 667 0252 9C       		.byte	0x9c
- 668 0253 A0030000 		.4byte	0x3a0
- 669 0257 13       		.uleb128 0x13
- 670 0258 A7000000 		.4byte	.LASF27
- 671 025c 01       		.byte	0x1
- 672 025d 52       		.byte	0x52
- 673 025e A0030000 		.4byte	0x3a0
- 674 0262 02       		.uleb128 0x2
- 675 0263 91       		.byte	0x91
- 676 0264 48       		.sleb128 -56
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 15
+ 599 010b 1A       		.byte	0x1a
+ 600 010c 00       		.byte	0
+ 601 010d 1C010000 		.4byte	0x11c
+ 602 0111 0B       		.uleb128 0xb
+ 603 0112 1B030000 		.4byte	.LASF78
+ 604 0116 E7000000 		.4byte	0xe7
+ 605 011a 00       		.byte	0
+ 606 011b 00       		.byte	0
+ 607 011c 03       		.uleb128 0x3
+ 608 011d D1000000 		.4byte	.LASF22
+ 609 0121 06       		.byte	0x6
+ 610 0122 62       		.byte	0x62
+ 611 0123 FA000000 		.4byte	0xfa
+ 612 0127 02       		.uleb128 0x2
+ 613 0128 08       		.byte	0x8
+ 614 0129 04       		.byte	0x4
+ 615 012a 2D020000 		.4byte	.LASF23
+ 616 012e 0C       		.uleb128 0xc
+ 617 012f 8F030000 		.4byte	.LASF24
+ 618 0133 01       		.byte	0x1
+ 619 0134 1D       		.byte	0x1d
+ 620 0135 00000000 		.4byte	.LFB63
+ 621 0139 14000000 		.4byte	.LFE63-.LFB63
+ 622 013d 01       		.uleb128 0x1
+ 623 013e 9C       		.byte	0x9c
+ 624 013f 4D010000 		.4byte	0x14d
+ 625 0143 0D       		.uleb128 0xd
+ 626 0144 0C000000 		.4byte	.LVL0
+ 627 0148 42050000 		.4byte	0x542
+ 628 014c 00       		.byte	0
+ 629 014d 0C       		.uleb128 0xc
+ 630 014e 88000000 		.4byte	.LASF25
+ 631 0152 01       		.byte	0x1
+ 632 0153 22       		.byte	0x22
+ 633 0154 00000000 		.4byte	.LFB64
+ 634 0158 14000000 		.4byte	.LFE64-.LFB64
+ 635 015c 01       		.uleb128 0x1
+ 636 015d 9C       		.byte	0x9c
+ 637 015e 6C010000 		.4byte	0x16c
+ 638 0162 0D       		.uleb128 0xd
+ 639 0163 0C000000 		.4byte	.LVL1
+ 640 0167 49050000 		.4byte	0x549
+ 641 016b 00       		.byte	0
+ 642 016c 0E       		.uleb128 0xe
+ 643 016d 2A010000 		.4byte	.LASF26
+ 644 0171 01       		.byte	0x1
+ 645 0172 27       		.byte	0x27
+ 646 0173 00000000 		.4byte	.LFB65
+ 647 0177 30000000 		.4byte	.LFE65-.LFB65
+ 648 017b 01       		.uleb128 0x1
+ 649 017c 9C       		.byte	0x9c
+ 650 017d B5010000 		.4byte	0x1b5
+ 651 0181 0D       		.uleb128 0xd
+ 652 0182 06000000 		.4byte	.LVL2
+ 653 0186 50050000 		.4byte	0x550
+ 654 018a 0F       		.uleb128 0xf
+ 655 018b 0C000000 		.4byte	.LVL3
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 15
 
 
- 677 0265 14       		.uleb128 0x14
- 678 0266 C7030000 		.4byte	.LASF28
- 679 026a 01       		.byte	0x1
- 680 026b 53       		.byte	0x53
- 681 026c 8C000000 		.4byte	0x8c
- 682 0270 00000000 		.4byte	.LLST0
- 683 0274 15       		.uleb128 0x15
- 684 0275 00000000 		.4byte	.LASF29
- 685 0279 01       		.byte	0x1
- 686 027a 54       		.byte	0x54
- 687 027b 81000000 		.4byte	0x81
- 688 027f 7F       		.sleb128 -1
- 689 0280 0D       		.uleb128 0xd
- 690 0281 0A000000 		.4byte	.LVL17
- 691 0285 D6040000 		.4byte	0x4d6
- 692 0289 0D       		.uleb128 0xd
- 693 028a 0E000000 		.4byte	.LVL18
- 694 028e DD040000 		.4byte	0x4dd
- 695 0292 0F       		.uleb128 0xf
- 696 0293 14000000 		.4byte	.LVL19
- 697 0297 E4040000 		.4byte	0x4e4
- 698 029b A6020000 		.4byte	0x2a6
- 699 029f 10       		.uleb128 0x10
- 700 02a0 01       		.uleb128 0x1
- 701 02a1 50       		.byte	0x50
- 702 02a2 02       		.uleb128 0x2
- 703 02a3 08       		.byte	0x8
- 704 02a4 C8       		.byte	0xc8
- 705 02a5 00       		.byte	0
- 706 02a6 0D       		.uleb128 0xd
- 707 02a7 18000000 		.4byte	.LVL20
- 708 02ab A8010000 		.4byte	0x1a8
- 709 02af 0D       		.uleb128 0xd
- 710 02b0 1C000000 		.4byte	.LVL21
- 711 02b4 F5040000 		.4byte	0x4f5
- 712 02b8 0D       		.uleb128 0xd
- 713 02b9 20000000 		.4byte	.LVL22
- 714 02bd 5F010000 		.4byte	0x15f
- 715 02c1 0D       		.uleb128 0xd
- 716 02c2 24000000 		.4byte	.LVL23
- 717 02c6 02050000 		.4byte	0x502
- 718 02ca 0F       		.uleb128 0xf
- 719 02cb 34000000 		.4byte	.LVL24
- 720 02cf 09050000 		.4byte	0x509
- 721 02d3 DD020000 		.4byte	0x2dd
- 722 02d7 10       		.uleb128 0x10
- 723 02d8 01       		.uleb128 0x1
- 724 02d9 50       		.byte	0x50
- 725 02da 01       		.uleb128 0x1
- 726 02db 33       		.byte	0x33
- 727 02dc 00       		.byte	0
- 728 02dd 0D       		.uleb128 0xd
- 729 02de 46000000 		.4byte	.LVL25
- 730 02e2 1A050000 		.4byte	0x51a
- 731 02e6 0D       		.uleb128 0xd
- 732 02e7 4C000000 		.4byte	.LVL27
- 733 02eb 25050000 		.4byte	0x525
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 16
+ 656 018f 57050000 		.4byte	0x557
+ 657 0193 A1010000 		.4byte	0x1a1
+ 658 0197 10       		.uleb128 0x10
+ 659 0198 01       		.uleb128 0x1
+ 660 0199 50       		.byte	0x50
+ 661 019a 05       		.uleb128 0x5
+ 662 019b 03       		.byte	0x3
+ 663 019c 00000000 		.4byte	INC_ISR
+ 664 01a0 00       		.byte	0
+ 665 01a1 11       		.uleb128 0x11
+ 666 01a2 12000000 		.4byte	.LVL4
+ 667 01a6 68050000 		.4byte	0x568
+ 668 01aa 10       		.uleb128 0x10
+ 669 01ab 01       		.uleb128 0x1
+ 670 01ac 50       		.byte	0x50
+ 671 01ad 05       		.uleb128 0x5
+ 672 01ae 03       		.byte	0x3
+ 673 01af 00000000 		.4byte	DEC_ISR
+ 674 01b3 00       		.byte	0
+ 675 01b4 00       		.byte	0
+ 676 01b5 0E       		.uleb128 0xe
+ 677 01b6 07030000 		.4byte	.LASF27
+ 678 01ba 01       		.byte	0x1
+ 679 01bb 30       		.byte	0x30
+ 680 01bc 00000000 		.4byte	.LFB66
+ 681 01c0 48000000 		.4byte	.LFE66-.LFB66
+ 682 01c4 01       		.uleb128 0x1
+ 683 01c5 9C       		.byte	0x9c
+ 684 01c6 4B020000 		.4byte	0x24b
+ 685 01ca 0D       		.uleb128 0xd
+ 686 01cb 06000000 		.4byte	.LVL5
+ 687 01cf 79050000 		.4byte	0x579
+ 688 01d3 0D       		.uleb128 0xd
+ 689 01d4 0A000000 		.4byte	.LVL6
+ 690 01d8 80050000 		.4byte	0x580
+ 691 01dc 0D       		.uleb128 0xd
+ 692 01dd 10000000 		.4byte	.LVL7
+ 693 01e1 87050000 		.4byte	0x587
+ 694 01e5 0D       		.uleb128 0xd
+ 695 01e6 14000000 		.4byte	.LVL8
+ 696 01ea 8E050000 		.4byte	0x58e
+ 697 01ee 0D       		.uleb128 0xd
+ 698 01ef 18000000 		.4byte	.LVL9
+ 699 01f3 95050000 		.4byte	0x595
+ 700 01f7 0D       		.uleb128 0xd
+ 701 01f8 1C000000 		.4byte	.LVL10
+ 702 01fc 9C050000 		.4byte	0x59c
+ 703 0200 0D       		.uleb128 0xd
+ 704 0201 22000000 		.4byte	.LVL11
+ 705 0205 A3050000 		.4byte	0x5a3
+ 706 0209 0D       		.uleb128 0xd
+ 707 020a 26000000 		.4byte	.LVL12
+ 708 020e AE050000 		.4byte	0x5ae
+ 709 0212 0F       		.uleb128 0xf
+ 710 0213 2C000000 		.4byte	.LVL13
+ 711 0217 B9050000 		.4byte	0x5b9
+ 712 021b 25020000 		.4byte	0x225
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 16
 
 
- 734 02ef 0D       		.uleb128 0xd
- 735 02f0 6A000000 		.4byte	.LVL28
- 736 02f4 32050000 		.4byte	0x532
- 737 02f8 0F       		.uleb128 0xf
- 738 02f9 82000000 		.4byte	.LVL29
- 739 02fd 3F050000 		.4byte	0x53f
- 740 0301 0B030000 		.4byte	0x30b
- 741 0305 10       		.uleb128 0x10
- 742 0306 01       		.uleb128 0x1
- 743 0307 50       		.byte	0x50
- 744 0308 01       		.uleb128 0x1
- 745 0309 31       		.byte	0x31
- 746 030a 00       		.byte	0
- 747 030b 0F       		.uleb128 0xf
- 748 030c A8000000 		.4byte	.LVL33
- 749 0310 50050000 		.4byte	0x550
- 750 0314 2E030000 		.4byte	0x32e
- 751 0318 10       		.uleb128 0x10
- 752 0319 01       		.uleb128 0x1
- 753 031a 52       		.byte	0x52
- 754 031b 02       		.uleb128 0x2
- 755 031c 7B       		.byte	0x7b
- 756 031d 00       		.sleb128 0
- 757 031e 10       		.uleb128 0x10
- 758 031f 01       		.uleb128 0x1
- 759 0320 51       		.byte	0x51
- 760 0321 05       		.uleb128 0x5
- 761 0322 03       		.byte	0x3
- 762 0323 00000000 		.4byte	.LC0
- 763 0327 10       		.uleb128 0x10
- 764 0328 01       		.uleb128 0x1
- 765 0329 50       		.byte	0x50
- 766 032a 02       		.uleb128 0x2
- 767 032b 7D       		.byte	0x7d
- 768 032c 00       		.sleb128 0
- 769 032d 00       		.byte	0
- 770 032e 0F       		.uleb128 0xf
- 771 032f B0000000 		.4byte	.LVL34
- 772 0333 6B050000 		.4byte	0x56b
- 773 0337 46030000 		.4byte	0x346
- 774 033b 10       		.uleb128 0x10
- 775 033c 01       		.uleb128 0x1
- 776 033d 51       		.byte	0x51
- 777 033e 01       		.uleb128 0x1
- 778 033f 30       		.byte	0x30
- 779 0340 10       		.uleb128 0x10
- 780 0341 01       		.uleb128 0x1
- 781 0342 50       		.byte	0x50
- 782 0343 01       		.uleb128 0x1
- 783 0344 30       		.byte	0x30
- 784 0345 00       		.byte	0
- 785 0346 0F       		.uleb128 0xf
- 786 0347 B6000000 		.4byte	.LVL35
- 787 034b 81050000 		.4byte	0x581
- 788 034f 5A030000 		.4byte	0x35a
- 789 0353 10       		.uleb128 0x10
- 790 0354 01       		.uleb128 0x1
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 17
+ 713 021f 10       		.uleb128 0x10
+ 714 0220 01       		.uleb128 0x1
+ 715 0221 50       		.byte	0x50
+ 716 0222 01       		.uleb128 0x1
+ 717 0223 30       		.byte	0x30
+ 718 0224 00       		.byte	0
+ 719 0225 0F       		.uleb128 0xf
+ 720 0226 32000000 		.4byte	.LVL14
+ 721 022a CA050000 		.4byte	0x5ca
+ 722 022e 38020000 		.4byte	0x238
+ 723 0232 10       		.uleb128 0x10
+ 724 0233 01       		.uleb128 0x1
+ 725 0234 50       		.byte	0x50
+ 726 0235 01       		.uleb128 0x1
+ 727 0236 30       		.byte	0x30
+ 728 0237 00       		.byte	0
+ 729 0238 0D       		.uleb128 0xd
+ 730 0239 38000000 		.4byte	.LVL15
+ 731 023d DB050000 		.4byte	0x5db
+ 732 0241 0D       		.uleb128 0xd
+ 733 0242 3E000000 		.4byte	.LVL16
+ 734 0246 EC050000 		.4byte	0x5ec
+ 735 024a 00       		.byte	0
+ 736 024b 0E       		.uleb128 0xe
+ 737 024c EE030000 		.4byte	.LASF28
+ 738 0250 01       		.byte	0x1
+ 739 0251 46       		.byte	0x46
+ 740 0252 00000000 		.4byte	.LFB67
+ 741 0256 0C000000 		.4byte	.LFE67-.LFB67
+ 742 025a 01       		.uleb128 0x1
+ 743 025b 9C       		.byte	0x9c
+ 744 025c 73020000 		.4byte	0x273
+ 745 0260 0D       		.uleb128 0xd
+ 746 0261 06000000 		.4byte	.LVL17
+ 747 0265 79050000 		.4byte	0x579
+ 748 0269 0D       		.uleb128 0xd
+ 749 026a 0A000000 		.4byte	.LVL18
+ 750 026e 80050000 		.4byte	0x580
+ 751 0272 00       		.byte	0
+ 752 0273 0C       		.uleb128 0xc
+ 753 0274 95020000 		.4byte	.LASF29
+ 754 0278 01       		.byte	0x1
+ 755 0279 4C       		.byte	0x4c
+ 756 027a 00000000 		.4byte	.LFB68
+ 757 027e 32000000 		.4byte	.LFE68-.LFB68
+ 758 0282 01       		.uleb128 0x1
+ 759 0283 9C       		.byte	0x9c
+ 760 0284 01030000 		.4byte	0x301
+ 761 0288 12       		.uleb128 0x12
+ 762 0289 666D7400 		.ascii	"fmt\000"
+ 763 028d 01       		.byte	0x1
+ 764 028e 4C       		.byte	0x4c
+ 765 028f EF000000 		.4byte	0xef
+ 766 0293 02       		.uleb128 0x2
+ 767 0294 91       		.byte	0x91
+ 768 0295 70       		.sleb128 -16
+ 769 0296 13       		.uleb128 0x13
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 17
 
 
- 791 0355 50       		.byte	0x50
- 792 0356 02       		.uleb128 0x2
- 793 0357 7D       		.byte	0x7d
- 794 0358 00       		.sleb128 0
- 795 0359 00       		.byte	0
- 796 035a 0F       		.uleb128 0xf
- 797 035b D2000000 		.4byte	.LVL38
- 798 035f 50050000 		.4byte	0x550
- 799 0363 77030000 		.4byte	0x377
- 800 0367 10       		.uleb128 0x10
- 801 0368 01       		.uleb128 0x1
- 802 0369 51       		.byte	0x51
- 803 036a 05       		.uleb128 0x5
- 804 036b 03       		.byte	0x3
- 805 036c 0C000000 		.4byte	.LC1
- 806 0370 10       		.uleb128 0x10
- 807 0371 01       		.uleb128 0x1
- 808 0372 50       		.byte	0x50
- 809 0373 02       		.uleb128 0x2
- 810 0374 7D       		.byte	0x7d
- 811 0375 00       		.sleb128 0
- 812 0376 00       		.byte	0
- 813 0377 0F       		.uleb128 0xf
- 814 0378 DA000000 		.4byte	.LVL39
- 815 037c 6B050000 		.4byte	0x56b
- 816 0380 8F030000 		.4byte	0x38f
- 817 0384 10       		.uleb128 0x10
- 818 0385 01       		.uleb128 0x1
- 819 0386 51       		.byte	0x51
- 820 0387 01       		.uleb128 0x1
- 821 0388 30       		.byte	0x30
- 822 0389 10       		.uleb128 0x10
- 823 038a 01       		.uleb128 0x1
- 824 038b 50       		.byte	0x50
- 825 038c 01       		.uleb128 0x1
- 826 038d 31       		.byte	0x31
- 827 038e 00       		.byte	0
- 828 038f 11       		.uleb128 0x11
- 829 0390 E0000000 		.4byte	.LVL40
- 830 0394 81050000 		.4byte	0x581
- 831 0398 10       		.uleb128 0x10
- 832 0399 01       		.uleb128 0x1
- 833 039a 50       		.byte	0x50
- 834 039b 02       		.uleb128 0x2
- 835 039c 7D       		.byte	0x7d
- 836 039d 00       		.sleb128 0
- 837 039e 00       		.byte	0
- 838 039f 00       		.byte	0
- 839 03a0 16       		.uleb128 0x16
- 840 03a1 BB000000 		.4byte	0xbb
- 841 03a5 B0030000 		.4byte	0x3b0
- 842 03a9 17       		.uleb128 0x17
- 843 03aa D5000000 		.4byte	0xd5
- 844 03ae 0F       		.byte	0xf
- 845 03af 00       		.byte	0
- 846 03b0 18       		.uleb128 0x18
- 847 03b1 D5030000 		.4byte	.LASF30
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 18
+ 770 0297 14       		.uleb128 0x14
+ 771 0298 88030000 		.4byte	.LASF30
+ 772 029c 01       		.byte	0x1
+ 773 029d 4F       		.byte	0x4f
+ 774 029e 01030000 		.4byte	0x301
+ 775 02a2 03       		.uleb128 0x3
+ 776 02a3 91       		.byte	0x91
+ 777 02a4 A87F     		.sleb128 -88
+ 778 02a6 14       		.uleb128 0x14
+ 779 02a7 D7020000 		.4byte	.LASF31
+ 780 02ab 01       		.byte	0x1
+ 781 02ac 50       		.byte	0x50
+ 782 02ad 1C010000 		.4byte	0x11c
+ 783 02b1 03       		.uleb128 0x3
+ 784 02b2 91       		.byte	0x91
+ 785 02b3 A47F     		.sleb128 -92
+ 786 02b5 0D       		.uleb128 0xd
+ 787 02b6 0A000000 		.4byte	.LVL20
+ 788 02ba FD050000 		.4byte	0x5fd
+ 789 02be 0F       		.uleb128 0xf
+ 790 02bf 1A000000 		.4byte	.LVL21
+ 791 02c3 08060000 		.4byte	0x608
+ 792 02c7 E6020000 		.4byte	0x2e6
+ 793 02cb 10       		.uleb128 0x10
+ 794 02cc 01       		.uleb128 0x1
+ 795 02cd 53       		.byte	0x53
+ 796 02ce 02       		.uleb128 0x2
+ 797 02cf 91       		.byte	0x91
+ 798 02d0 54       		.sleb128 -44
+ 799 02d1 10       		.uleb128 0x10
+ 800 02d2 01       		.uleb128 0x1
+ 801 02d3 52       		.byte	0x52
+ 802 02d4 03       		.uleb128 0x3
+ 803 02d5 91       		.byte	0x91
+ 804 02d6 50       		.sleb128 -48
+ 805 02d7 06       		.byte	0x6
+ 806 02d8 10       		.uleb128 0x10
+ 807 02d9 01       		.uleb128 0x1
+ 808 02da 51       		.byte	0x51
+ 809 02db 02       		.uleb128 0x2
+ 810 02dc 08       		.byte	0x8
+ 811 02dd 40       		.byte	0x40
+ 812 02de 10       		.uleb128 0x10
+ 813 02df 01       		.uleb128 0x1
+ 814 02e0 50       		.byte	0x50
+ 815 02e1 03       		.uleb128 0x3
+ 816 02e2 91       		.byte	0x91
+ 817 02e3 887F     		.sleb128 -120
+ 818 02e5 00       		.byte	0
+ 819 02e6 0D       		.uleb128 0xd
+ 820 02e7 1E000000 		.4byte	.LVL22
+ 821 02eb 2D060000 		.4byte	0x62d
+ 822 02ef 11       		.uleb128 0x11
+ 823 02f0 28000000 		.4byte	.LVL23
+ 824 02f4 38060000 		.4byte	0x638
+ 825 02f8 10       		.uleb128 0x10
+ 826 02f9 01       		.uleb128 0x1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 18
 
 
- 848 03b5 06       		.byte	0x6
- 849 03b6 2A06     		.2byte	0x62a
- 850 03b8 BC030000 		.4byte	0x3bc
- 851 03bc 19       		.uleb128 0x19
- 852 03bd 76000000 		.4byte	0x76
- 853 03c1 16       		.uleb128 0x16
- 854 03c2 81000000 		.4byte	0x81
- 855 03c6 DD030000 		.4byte	0x3dd
- 856 03ca 17       		.uleb128 0x17
- 857 03cb D5000000 		.4byte	0xd5
- 858 03cf 8F       		.byte	0x8f
- 859 03d0 17       		.uleb128 0x17
- 860 03d1 D5000000 		.4byte	0xd5
- 861 03d5 57       		.byte	0x57
- 862 03d6 17       		.uleb128 0x17
- 863 03d7 D5000000 		.4byte	0xd5
- 864 03db 03       		.byte	0x3
- 865 03dc 00       		.byte	0
- 866 03dd 1A       		.uleb128 0x1a
- 867 03de FB030000 		.4byte	.LASF31
- 868 03e2 07       		.byte	0x7
- 869 03e3 08       		.byte	0x8
- 870 03e4 C1030000 		.4byte	0x3c1
- 871 03e8 05       		.uleb128 0x5
- 872 03e9 03       		.byte	0x3
- 873 03ea 00000000 		.4byte	OV9650_1_framebuffer
- 874 03ee 1B       		.uleb128 0x1b
- 875 03ef 99030000 		.4byte	.LASF32
- 876 03f3 01       		.byte	0x1
- 877 03f4 17       		.byte	0x17
- 878 03f5 F4000000 		.4byte	0xf4
- 879 03f9 1C       		.uleb128 0x1c
- 880 03fa 696E6300 		.ascii	"inc\000"
- 881 03fe 01       		.byte	0x1
- 882 03ff 19       		.byte	0x19
- 883 0400 81000000 		.4byte	0x81
- 884 0404 05       		.uleb128 0x5
- 885 0405 03       		.byte	0x3
- 886 0406 00000000 		.4byte	inc
- 887 040a 1C       		.uleb128 0x1c
- 888 040b 64656300 		.ascii	"dec\000"
- 889 040f 01       		.byte	0x1
- 890 0410 1A       		.byte	0x1a
- 891 0411 81000000 		.4byte	0x81
- 892 0415 05       		.uleb128 0x5
- 893 0416 03       		.byte	0x3
- 894 0417 00000000 		.4byte	dec
- 895 041b 1D       		.uleb128 0x1d
- 896 041c A2030000 		.4byte	.LASF33
- 897 0420 08       		.byte	0x8
- 898 0421 28       		.byte	0x28
- 899 0422 1D       		.uleb128 0x1d
- 900 0423 12030000 		.4byte	.LASF34
- 901 0427 09       		.byte	0x9
- 902 0428 28       		.byte	0x28
- 903 0429 1D       		.uleb128 0x1d
- 904 042a 18020000 		.4byte	.LASF35
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 19
+ 827 02fa 50       		.byte	0x50
+ 828 02fb 03       		.uleb128 0x3
+ 829 02fc 91       		.byte	0x91
+ 830 02fd 887F     		.sleb128 -120
+ 831 02ff 00       		.byte	0
+ 832 0300 00       		.byte	0
+ 833 0301 15       		.uleb128 0x15
+ 834 0302 BB000000 		.4byte	0xbb
+ 835 0306 11030000 		.4byte	0x311
+ 836 030a 16       		.uleb128 0x16
+ 837 030b E0000000 		.4byte	0xe0
+ 838 030f 3F       		.byte	0x3f
+ 839 0310 00       		.byte	0
+ 840 0311 17       		.uleb128 0x17
+ 841 0312 BC000000 		.4byte	.LASF32
+ 842 0316 01       		.byte	0x1
+ 843 0317 58       		.byte	0x58
+ 844 0318 68000000 		.4byte	0x68
+ 845 031c 00000000 		.4byte	.LFB69
+ 846 0320 CC000000 		.4byte	.LFE69-.LFB69
+ 847 0324 01       		.uleb128 0x1
+ 848 0325 9C       		.byte	0x9c
+ 849 0326 A1040000 		.4byte	0x4a1
+ 850 032a 14       		.uleb128 0x14
+ 851 032b 11000000 		.4byte	.LASF33
+ 852 032f 01       		.byte	0x1
+ 853 0330 66       		.byte	0x66
+ 854 0331 A1040000 		.4byte	0x4a1
+ 855 0335 02       		.uleb128 0x2
+ 856 0336 91       		.byte	0x91
+ 857 0337 58       		.sleb128 -40
+ 858 0338 18       		.uleb128 0x18
+ 859 0339 45040000 		.4byte	.LASF34
+ 860 033d 01       		.byte	0x1
+ 861 033e 67       		.byte	0x67
+ 862 033f 8C000000 		.4byte	0x8c
+ 863 0343 00000000 		.4byte	.LLST0
+ 864 0347 19       		.uleb128 0x19
+ 865 0348 D9000000 		.4byte	.LASF79
+ 866 034c 01       		.byte	0x1
+ 867 034d 68       		.byte	0x68
+ 868 034e 8C000000 		.4byte	0x8c
+ 869 0352 1A       		.uleb128 0x1a
+ 870 0353 1B000000 		.4byte	.LASF35
+ 871 0357 01       		.byte	0x1
+ 872 0358 69       		.byte	0x69
+ 873 0359 B1040000 		.4byte	0x4b1
+ 874 035d 1A       		.uleb128 0x1a
+ 875 035e 4A040000 		.4byte	.LASF36
+ 876 0362 01       		.byte	0x1
+ 877 0363 6A       		.byte	0x6a
+ 878 0364 B1040000 		.4byte	0x4b1
+ 879 0368 1A       		.uleb128 0x1a
+ 880 0369 23000000 		.4byte	.LASF37
+ 881 036d 01       		.byte	0x1
+ 882 036e 6B       		.byte	0x6b
+ 883 036f B1040000 		.4byte	0x4b1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 19
 
 
- 905 042e 0A       		.byte	0xa
- 906 042f 92       		.byte	0x92
- 907 0430 1E       		.uleb128 0x1e
- 908 0431 94020000 		.4byte	.LASF36
- 909 0435 08       		.byte	0x8
- 910 0436 18       		.byte	0x18
- 911 0437 41040000 		.4byte	0x441
- 912 043b 1F       		.uleb128 0x1f
- 913 043c C2000000 		.4byte	0xc2
- 914 0440 00       		.byte	0
- 915 0441 1E       		.uleb128 0x1e
- 916 0442 B2020000 		.4byte	.LASF37
- 917 0446 09       		.byte	0x9
- 918 0447 18       		.byte	0x18
- 919 0448 52040000 		.4byte	0x452
- 920 044c 1F       		.uleb128 0x1f
- 921 044d C2000000 		.4byte	0xc2
- 922 0451 00       		.byte	0
- 923 0452 1D       		.uleb128 0x1d
- 924 0453 67020000 		.4byte	.LASF38
- 925 0457 0B       		.byte	0xb
- 926 0458 19       		.byte	0x19
- 927 0459 1D       		.uleb128 0x1d
- 928 045a B1000000 		.4byte	.LASF39
- 929 045e 0C       		.byte	0xc
- 930 045f 19       		.byte	0x19
- 931 0460 1D       		.uleb128 0x1d
- 932 0461 69030000 		.4byte	.LASF40
- 933 0465 0D       		.byte	0xd
- 934 0466 12       		.byte	0x12
- 935 0467 1D       		.uleb128 0x1d
- 936 0468 EB000000 		.4byte	.LASF41
- 937 046c 0E       		.byte	0xe
- 938 046d 12       		.byte	0x12
- 939 046e 1D       		.uleb128 0x1d
- 940 046f 08000000 		.4byte	.LASF42
- 941 0473 0D       		.byte	0xd
- 942 0474 13       		.byte	0x13
- 943 0475 1D       		.uleb128 0x1d
- 944 0476 DA000000 		.4byte	.LASF43
- 945 047a 0E       		.byte	0xe
- 946 047b 13       		.byte	0x13
- 947 047c 20       		.uleb128 0x20
- 948 047d AA010000 		.4byte	.LASF44
- 949 0481 0F       		.byte	0xf
- 950 0482 2C       		.byte	0x2c
- 951 0483 81000000 		.4byte	0x81
- 952 0487 20       		.uleb128 0x20
- 953 0488 E9010000 		.4byte	.LASF45
- 954 048c 10       		.byte	0x10
- 955 048d 2C       		.byte	0x2c
- 956 048e 81000000 		.4byte	0x81
- 957 0492 1E       		.uleb128 0x1e
- 958 0493 FB020000 		.4byte	.LASF46
- 959 0497 0B       		.byte	0xb
- 960 0498 20       		.byte	0x20
- 961 0499 A3040000 		.4byte	0x4a3
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 20
+ 884 0373 1A       		.uleb128 0x1a
+ 885 0374 52040000 		.4byte	.LASF38
+ 886 0378 01       		.byte	0x1
+ 887 0379 6C       		.byte	0x6c
+ 888 037a B1040000 		.4byte	0x4b1
+ 889 037e 0D       		.uleb128 0xd
+ 890 037f 08000000 		.4byte	.LVL24
+ 891 0383 54060000 		.4byte	0x654
+ 892 0387 0D       		.uleb128 0xd
+ 893 0388 0C000000 		.4byte	.LVL25
+ 894 038c 5B060000 		.4byte	0x65b
+ 895 0390 0F       		.uleb128 0xf
+ 896 0391 12000000 		.4byte	.LVL26
+ 897 0395 62060000 		.4byte	0x662
+ 898 0399 A4030000 		.4byte	0x3a4
+ 899 039d 10       		.uleb128 0x10
+ 900 039e 01       		.uleb128 0x1
+ 901 039f 50       		.byte	0x50
+ 902 03a0 02       		.uleb128 0x2
+ 903 03a1 08       		.byte	0x8
+ 904 03a2 C8       		.byte	0xc8
+ 905 03a3 00       		.byte	0
+ 906 03a4 0D       		.uleb128 0xd
+ 907 03a5 16000000 		.4byte	.LVL27
+ 908 03a9 B5010000 		.4byte	0x1b5
+ 909 03ad 0D       		.uleb128 0xd
+ 910 03ae 1A000000 		.4byte	.LVL28
+ 911 03b2 73060000 		.4byte	0x673
+ 912 03b6 0D       		.uleb128 0xd
+ 913 03b7 1E000000 		.4byte	.LVL29
+ 914 03bb 6C010000 		.4byte	0x16c
+ 915 03bf 0D       		.uleb128 0xd
+ 916 03c0 22000000 		.4byte	.LVL30
+ 917 03c4 80060000 		.4byte	0x680
+ 918 03c8 0D       		.uleb128 0xd
+ 919 03c9 26000000 		.4byte	.LVL31
+ 920 03cd 87060000 		.4byte	0x687
+ 921 03d1 0F       		.uleb128 0xf
+ 922 03d2 2C000000 		.4byte	.LVL32
+ 923 03d6 92060000 		.4byte	0x692
+ 924 03da E4030000 		.4byte	0x3e4
+ 925 03de 10       		.uleb128 0x10
+ 926 03df 01       		.uleb128 0x1
+ 927 03e0 50       		.byte	0x50
+ 928 03e1 01       		.uleb128 0x1
+ 929 03e2 33       		.byte	0x33
+ 930 03e3 00       		.byte	0
+ 931 03e4 0D       		.uleb128 0xd
+ 932 03e5 36000000 		.4byte	.LVL33
+ 933 03e9 87060000 		.4byte	0x687
+ 934 03ed 0D       		.uleb128 0xd
+ 935 03ee 3A000000 		.4byte	.LVL34
+ 936 03f2 87060000 		.4byte	0x687
+ 937 03f6 0D       		.uleb128 0xd
+ 938 03f7 48000000 		.4byte	.LVL36
+ 939 03fb A3060000 		.4byte	0x6a3
+ 940 03ff 0F       		.uleb128 0xf
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 20
 
 
- 962 049d 1F       		.uleb128 0x1f
- 963 049e 81000000 		.4byte	0x81
- 964 04a2 00       		.byte	0
- 965 04a3 1E       		.uleb128 0x1e
- 966 04a4 24030000 		.4byte	.LASF47
- 967 04a8 0C       		.byte	0xc
- 968 04a9 20       		.byte	0x20
- 969 04aa B4040000 		.4byte	0x4b4
- 970 04ae 1F       		.uleb128 0x1f
- 971 04af 81000000 		.4byte	0x81
- 972 04b3 00       		.byte	0
- 973 04b4 1E       		.uleb128 0x1e
- 974 04b5 C7000000 		.4byte	.LASF48
- 975 04b9 0B       		.byte	0xb
- 976 04ba 18       		.byte	0x18
- 977 04bb C5040000 		.4byte	0x4c5
- 978 04bf 1F       		.uleb128 0x1f
- 979 04c0 C2000000 		.4byte	0xc2
- 980 04c4 00       		.byte	0
- 981 04c5 1E       		.uleb128 0x1e
- 982 04c6 31020000 		.4byte	.LASF49
- 983 04ca 0C       		.byte	0xc
- 984 04cb 18       		.byte	0x18
- 985 04cc D6040000 		.4byte	0x4d6
- 986 04d0 1F       		.uleb128 0x1f
- 987 04d1 C2000000 		.4byte	0xc2
- 988 04d5 00       		.byte	0
- 989 04d6 1D       		.uleb128 0x1d
- 990 04d7 DF010000 		.4byte	.LASF50
- 991 04db 11       		.byte	0x11
- 992 04dc 38       		.byte	0x38
- 993 04dd 1D       		.uleb128 0x1d
- 994 04de 95010000 		.4byte	.LASF51
- 995 04e2 12       		.byte	0x12
- 996 04e3 5A       		.byte	0x5a
- 997 04e4 1E       		.uleb128 0x1e
- 998 04e5 E2030000 		.4byte	.LASF52
- 999 04e9 13       		.byte	0x13
- 1000 04ea 77       		.byte	0x77
- 1001 04eb F5040000 		.4byte	0x4f5
- 1002 04ef 1F       		.uleb128 0x1f
- 1003 04f0 8C000000 		.4byte	0x8c
- 1004 04f4 00       		.byte	0
- 1005 04f5 21       		.uleb128 0x21
- 1006 04f6 76030000 		.4byte	.LASF56
- 1007 04fa 05       		.byte	0x5
- 1008 04fb 16       		.byte	0x16
- 1009 04fc 02050000 		.4byte	0x502
- 1010 0500 22       		.uleb128 0x22
- 1011 0501 00       		.byte	0
- 1012 0502 1D       		.uleb128 0x1d
- 1013 0503 75000000 		.4byte	.LASF53
- 1014 0507 14       		.byte	0x14
- 1015 0508 11       		.byte	0x11
- 1016 0509 1E       		.uleb128 0x1e
- 1017 050a 19000000 		.4byte	.LASF54
- 1018 050e 14       		.byte	0x14
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 21
+ 941 0400 6A000000 		.4byte	.LVL39
+ 942 0404 B0060000 		.4byte	0x6b0
+ 943 0408 12040000 		.4byte	0x412
+ 944 040c 10       		.uleb128 0x10
+ 945 040d 01       		.uleb128 0x1
+ 946 040e 50       		.byte	0x50
+ 947 040f 01       		.uleb128 0x1
+ 948 0410 31       		.byte	0x31
+ 949 0411 00       		.byte	0
+ 950 0412 0F       		.uleb128 0xf
+ 951 0413 7A000000 		.4byte	.LVL40
+ 952 0417 C1060000 		.4byte	0x6c1
+ 953 041b 2F040000 		.4byte	0x42f
+ 954 041f 10       		.uleb128 0x10
+ 955 0420 01       		.uleb128 0x1
+ 956 0421 51       		.byte	0x51
+ 957 0422 05       		.uleb128 0x5
+ 958 0423 03       		.byte	0x3
+ 959 0424 00000000 		.4byte	.LC0
+ 960 0428 10       		.uleb128 0x10
+ 961 0429 01       		.uleb128 0x1
+ 962 042a 50       		.byte	0x50
+ 963 042b 02       		.uleb128 0x2
+ 964 042c 7D       		.byte	0x7d
+ 965 042d 00       		.sleb128 0
+ 966 042e 00       		.byte	0
+ 967 042f 0F       		.uleb128 0xf
+ 968 0430 82000000 		.4byte	.LVL41
+ 969 0434 DC060000 		.4byte	0x6dc
+ 970 0438 47040000 		.4byte	0x447
+ 971 043c 10       		.uleb128 0x10
+ 972 043d 01       		.uleb128 0x1
+ 973 043e 51       		.byte	0x51
+ 974 043f 01       		.uleb128 0x1
+ 975 0440 30       		.byte	0x30
+ 976 0441 10       		.uleb128 0x10
+ 977 0442 01       		.uleb128 0x1
+ 978 0443 50       		.byte	0x50
+ 979 0444 01       		.uleb128 0x1
+ 980 0445 30       		.byte	0x30
+ 981 0446 00       		.byte	0
+ 982 0447 0F       		.uleb128 0xf
+ 983 0448 88000000 		.4byte	.LVL42
+ 984 044c F2060000 		.4byte	0x6f2
+ 985 0450 5B040000 		.4byte	0x45b
+ 986 0454 10       		.uleb128 0x10
+ 987 0455 01       		.uleb128 0x1
+ 988 0456 50       		.byte	0x50
+ 989 0457 02       		.uleb128 0x2
+ 990 0458 7D       		.byte	0x7d
+ 991 0459 00       		.sleb128 0
+ 992 045a 00       		.byte	0
+ 993 045b 0F       		.uleb128 0xf
+ 994 045c 98000000 		.4byte	.LVL43
+ 995 0460 C1060000 		.4byte	0x6c1
+ 996 0464 78040000 		.4byte	0x478
+ 997 0468 10       		.uleb128 0x10
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 21
 
 
- 1019 050f 13       		.byte	0x13
- 1020 0510 1A050000 		.4byte	0x51a
- 1021 0514 1F       		.uleb128 0x1f
- 1022 0515 81000000 		.4byte	0x81
- 1023 0519 00       		.byte	0
- 1024 051a 20       		.uleb128 0x20
- 1025 051b CE020000 		.4byte	.LASF55
- 1026 051f 12       		.byte	0x12
- 1027 0520 69       		.byte	0x69
- 1028 0521 8C000000 		.4byte	0x8c
- 1029 0525 21       		.uleb128 0x21
- 1030 0526 CE010000 		.4byte	.LASF57
- 1031 052a 05       		.byte	0x5
- 1032 052b 17       		.byte	0x17
- 1033 052c 32050000 		.4byte	0x532
- 1034 0530 22       		.uleb128 0x22
- 1035 0531 00       		.byte	0
- 1036 0532 21       		.uleb128 0x21
- 1037 0533 A1020000 		.4byte	.LASF58
- 1038 0537 05       		.byte	0x5
- 1039 0538 15       		.byte	0x15
- 1040 0539 3F050000 		.4byte	0x53f
- 1041 053d 22       		.uleb128 0x22
- 1042 053e 00       		.byte	0
- 1043 053f 1E       		.uleb128 0x1e
- 1044 0540 EA030000 		.4byte	.LASF59
- 1045 0544 11       		.byte	0x11
- 1046 0545 3A       		.byte	0x3a
- 1047 0546 50050000 		.4byte	0x550
- 1048 054a 1F       		.uleb128 0x1f
- 1049 054b 81000000 		.4byte	0x81
- 1050 054f 00       		.byte	0
- 1051 0550 23       		.uleb128 0x23
- 1052 0551 29020000 		.4byte	.LASF66
- 1053 0555 15       		.byte	0x15
- 1054 0556 D9       		.byte	0xd9
- 1055 0557 68000000 		.4byte	0x68
- 1056 055b 6B050000 		.4byte	0x56b
- 1057 055f 1F       		.uleb128 0x1f
- 1058 0560 DC000000 		.4byte	0xdc
- 1059 0564 1F       		.uleb128 0x1f
- 1060 0565 E2000000 		.4byte	0xe2
- 1061 0569 22       		.uleb128 0x22
- 1062 056a 00       		.byte	0
- 1063 056b 1E       		.uleb128 0x1e
- 1064 056c B4030000 		.4byte	.LASF60
- 1065 0570 11       		.byte	0x11
- 1066 0571 3D       		.byte	0x3d
- 1067 0572 81050000 		.4byte	0x581
- 1068 0576 1F       		.uleb128 0x1f
- 1069 0577 81000000 		.4byte	0x81
- 1070 057b 1F       		.uleb128 0x1f
- 1071 057c 81000000 		.4byte	0x81
- 1072 0580 00       		.byte	0
- 1073 0581 1E       		.uleb128 0x1e
- 1074 0582 84020000 		.4byte	.LASF61
- 1075 0586 11       		.byte	0x11
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 22
+ 998 0469 01       		.uleb128 0x1
+ 999 046a 51       		.byte	0x51
+ 1000 046b 05       		.uleb128 0x5
+ 1001 046c 03       		.byte	0x3
+ 1002 046d 10000000 		.4byte	.LC1
+ 1003 0471 10       		.uleb128 0x10
+ 1004 0472 01       		.uleb128 0x1
+ 1005 0473 50       		.byte	0x50
+ 1006 0474 02       		.uleb128 0x2
+ 1007 0475 7D       		.byte	0x7d
+ 1008 0476 00       		.sleb128 0
+ 1009 0477 00       		.byte	0
+ 1010 0478 0F       		.uleb128 0xf
+ 1011 0479 A0000000 		.4byte	.LVL44
+ 1012 047d DC060000 		.4byte	0x6dc
+ 1013 0481 90040000 		.4byte	0x490
+ 1014 0485 10       		.uleb128 0x10
+ 1015 0486 01       		.uleb128 0x1
+ 1016 0487 51       		.byte	0x51
+ 1017 0488 01       		.uleb128 0x1
+ 1018 0489 30       		.byte	0x30
+ 1019 048a 10       		.uleb128 0x10
+ 1020 048b 01       		.uleb128 0x1
+ 1021 048c 50       		.byte	0x50
+ 1022 048d 01       		.uleb128 0x1
+ 1023 048e 31       		.byte	0x31
+ 1024 048f 00       		.byte	0
+ 1025 0490 11       		.uleb128 0x11
+ 1026 0491 A6000000 		.4byte	.LVL45
+ 1027 0495 F2060000 		.4byte	0x6f2
+ 1028 0499 10       		.uleb128 0x10
+ 1029 049a 01       		.uleb128 0x1
+ 1030 049b 50       		.byte	0x50
+ 1031 049c 02       		.uleb128 0x2
+ 1032 049d 7D       		.byte	0x7d
+ 1033 049e 00       		.sleb128 0
+ 1034 049f 00       		.byte	0
+ 1035 04a0 00       		.byte	0
+ 1036 04a1 15       		.uleb128 0x15
+ 1037 04a2 BB000000 		.4byte	0xbb
+ 1038 04a6 B1040000 		.4byte	0x4b1
+ 1039 04aa 16       		.uleb128 0x16
+ 1040 04ab E0000000 		.4byte	0xe0
+ 1041 04af 0F       		.byte	0xf
+ 1042 04b0 00       		.byte	0
+ 1043 04b1 1B       		.uleb128 0x1b
+ 1044 04b2 97000000 		.4byte	0x97
+ 1045 04b6 1C       		.uleb128 0x1c
+ 1046 04b7 D4030000 		.4byte	.LASF39
+ 1047 04bb 07       		.byte	0x7
+ 1048 04bc 2A06     		.2byte	0x62a
+ 1049 04be C2040000 		.4byte	0x4c2
+ 1050 04c2 1B       		.uleb128 0x1b
+ 1051 04c3 76000000 		.4byte	0x76
+ 1052 04c7 15       		.uleb128 0x15
+ 1053 04c8 81000000 		.4byte	0x81
+ 1054 04cc E3040000 		.4byte	0x4e3
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 22
 
 
- 1076 0587 3C       		.byte	0x3c
- 1077 0588 92050000 		.4byte	0x592
- 1078 058c 1F       		.uleb128 0x1f
- 1079 058d 92050000 		.4byte	0x592
- 1080 0591 00       		.byte	0
- 1081 0592 06       		.uleb128 0x6
- 1082 0593 04       		.byte	0x4
- 1083 0594 98050000 		.4byte	0x598
- 1084 0598 08       		.uleb128 0x8
- 1085 0599 B0000000 		.4byte	0xb0
- 1086 059d 00       		.byte	0
- 1087              		.section	.debug_abbrev,"",%progbits
- 1088              	.Ldebug_abbrev0:
- 1089 0000 01       		.uleb128 0x1
- 1090 0001 11       		.uleb128 0x11
- 1091 0002 01       		.byte	0x1
- 1092 0003 25       		.uleb128 0x25
- 1093 0004 0E       		.uleb128 0xe
- 1094 0005 13       		.uleb128 0x13
- 1095 0006 0B       		.uleb128 0xb
- 1096 0007 03       		.uleb128 0x3
- 1097 0008 0E       		.uleb128 0xe
- 1098 0009 1B       		.uleb128 0x1b
- 1099 000a 0E       		.uleb128 0xe
- 1100 000b 55       		.uleb128 0x55
- 1101 000c 17       		.uleb128 0x17
- 1102 000d 11       		.uleb128 0x11
- 1103 000e 01       		.uleb128 0x1
- 1104 000f 10       		.uleb128 0x10
- 1105 0010 17       		.uleb128 0x17
- 1106 0011 00       		.byte	0
- 1107 0012 00       		.byte	0
- 1108 0013 02       		.uleb128 0x2
- 1109 0014 24       		.uleb128 0x24
- 1110 0015 00       		.byte	0
- 1111 0016 0B       		.uleb128 0xb
- 1112 0017 0B       		.uleb128 0xb
- 1113 0018 3E       		.uleb128 0x3e
- 1114 0019 0B       		.uleb128 0xb
- 1115 001a 03       		.uleb128 0x3
- 1116 001b 0E       		.uleb128 0xe
- 1117 001c 00       		.byte	0
- 1118 001d 00       		.byte	0
- 1119 001e 03       		.uleb128 0x3
- 1120 001f 16       		.uleb128 0x16
- 1121 0020 00       		.byte	0
- 1122 0021 03       		.uleb128 0x3
- 1123 0022 0E       		.uleb128 0xe
- 1124 0023 3A       		.uleb128 0x3a
- 1125 0024 0B       		.uleb128 0xb
- 1126 0025 3B       		.uleb128 0x3b
- 1127 0026 0B       		.uleb128 0xb
- 1128 0027 49       		.uleb128 0x49
- 1129 0028 13       		.uleb128 0x13
- 1130 0029 00       		.byte	0
- 1131 002a 00       		.byte	0
- 1132 002b 04       		.uleb128 0x4
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 23
+ 1055 04d0 16       		.uleb128 0x16
+ 1056 04d1 E0000000 		.4byte	0xe0
+ 1057 04d5 8F       		.byte	0x8f
+ 1058 04d6 16       		.uleb128 0x16
+ 1059 04d7 E0000000 		.4byte	0xe0
+ 1060 04db 57       		.byte	0x57
+ 1061 04dc 16       		.uleb128 0x16
+ 1062 04dd E0000000 		.4byte	0xe0
+ 1063 04e1 03       		.byte	0x3
+ 1064 04e2 00       		.byte	0
+ 1065 04e3 1D       		.uleb128 0x1d
+ 1066 04e4 73040000 		.4byte	.LASF40
+ 1067 04e8 08       		.byte	0x8
+ 1068 04e9 08       		.byte	0x8
+ 1069 04ea C7040000 		.4byte	0x4c7
+ 1070 04ee 05       		.uleb128 0x5
+ 1071 04ef 03       		.byte	0x3
+ 1072 04f0 00000000 		.4byte	OV9650_1_framebuffer
+ 1073 04f4 1E       		.uleb128 0x1e
+ 1074 04f5 696E6300 		.ascii	"inc\000"
+ 1075 04f9 01       		.byte	0x1
+ 1076 04fa 1A       		.byte	0x1a
+ 1077 04fb 81000000 		.4byte	0x81
+ 1078 04ff 05       		.uleb128 0x5
+ 1079 0500 03       		.byte	0x3
+ 1080 0501 00000000 		.4byte	inc
+ 1081 0505 1E       		.uleb128 0x1e
+ 1082 0506 64656300 		.ascii	"dec\000"
+ 1083 050a 01       		.byte	0x1
+ 1084 050b 1B       		.byte	0x1b
+ 1085 050c 81000000 		.4byte	0x81
+ 1086 0510 05       		.uleb128 0x5
+ 1087 0511 03       		.byte	0x3
+ 1088 0512 00000000 		.4byte	dec
+ 1089 0516 1A       		.uleb128 0x1a
+ 1090 0517 1B000000 		.4byte	.LASF35
+ 1091 051b 01       		.byte	0x1
+ 1092 051c 69       		.byte	0x69
+ 1093 051d B1040000 		.4byte	0x4b1
+ 1094 0521 1A       		.uleb128 0x1a
+ 1095 0522 4A040000 		.4byte	.LASF36
+ 1096 0526 01       		.byte	0x1
+ 1097 0527 6A       		.byte	0x6a
+ 1098 0528 B1040000 		.4byte	0x4b1
+ 1099 052c 1A       		.uleb128 0x1a
+ 1100 052d 23000000 		.4byte	.LASF37
+ 1101 0531 01       		.byte	0x1
+ 1102 0532 6B       		.byte	0x6b
+ 1103 0533 B1040000 		.4byte	0x4b1
+ 1104 0537 1A       		.uleb128 0x1a
+ 1105 0538 52040000 		.4byte	.LASF38
+ 1106 053c 01       		.byte	0x1
+ 1107 053d 6C       		.byte	0x6c
+ 1108 053e B1040000 		.4byte	0x4b1
+ 1109 0542 1F       		.uleb128 0x1f
+ 1110 0543 1B040000 		.4byte	.LASF41
+ 1111 0547 09       		.byte	0x9
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 23
 
 
- 1133 002c 24       		.uleb128 0x24
- 1134 002d 00       		.byte	0
- 1135 002e 0B       		.uleb128 0xb
- 1136 002f 0B       		.uleb128 0xb
- 1137 0030 3E       		.uleb128 0x3e
- 1138 0031 0B       		.uleb128 0xb
- 1139 0032 03       		.uleb128 0x3
- 1140 0033 08       		.uleb128 0x8
- 1141 0034 00       		.byte	0
- 1142 0035 00       		.byte	0
- 1143 0036 05       		.uleb128 0x5
- 1144 0037 16       		.uleb128 0x16
- 1145 0038 00       		.byte	0
- 1146 0039 03       		.uleb128 0x3
- 1147 003a 0E       		.uleb128 0xe
- 1148 003b 3A       		.uleb128 0x3a
- 1149 003c 0B       		.uleb128 0xb
- 1150 003d 3B       		.uleb128 0x3b
- 1151 003e 05       		.uleb128 0x5
- 1152 003f 49       		.uleb128 0x49
- 1153 0040 13       		.uleb128 0x13
- 1154 0041 00       		.byte	0
- 1155 0042 00       		.byte	0
- 1156 0043 06       		.uleb128 0x6
- 1157 0044 0F       		.uleb128 0xf
- 1158 0045 00       		.byte	0
- 1159 0046 0B       		.uleb128 0xb
- 1160 0047 0B       		.uleb128 0xb
- 1161 0048 49       		.uleb128 0x49
- 1162 0049 13       		.uleb128 0x13
- 1163 004a 00       		.byte	0
- 1164 004b 00       		.byte	0
- 1165 004c 07       		.uleb128 0x7
- 1166 004d 15       		.uleb128 0x15
- 1167 004e 00       		.byte	0
- 1168 004f 27       		.uleb128 0x27
- 1169 0050 19       		.uleb128 0x19
- 1170 0051 00       		.byte	0
- 1171 0052 00       		.byte	0
- 1172 0053 08       		.uleb128 0x8
- 1173 0054 26       		.uleb128 0x26
- 1174 0055 00       		.byte	0
- 1175 0056 49       		.uleb128 0x49
- 1176 0057 13       		.uleb128 0x13
- 1177 0058 00       		.byte	0
- 1178 0059 00       		.byte	0
- 1179 005a 09       		.uleb128 0x9
- 1180 005b 13       		.uleb128 0x13
- 1181 005c 01       		.byte	0x1
- 1182 005d 03       		.uleb128 0x3
- 1183 005e 0E       		.uleb128 0xe
- 1184 005f 0B       		.uleb128 0xb
- 1185 0060 0B       		.uleb128 0xb
- 1186 0061 3A       		.uleb128 0x3a
- 1187 0062 0B       		.uleb128 0xb
- 1188 0063 3B       		.uleb128 0x3b
- 1189 0064 0B       		.uleb128 0xb
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 24
+ 1112 0548 28       		.byte	0x28
+ 1113 0549 1F       		.uleb128 0x1f
+ 1114 054a 76030000 		.4byte	.LASF42
+ 1115 054e 0A       		.byte	0xa
+ 1116 054f 28       		.byte	0x28
+ 1117 0550 1F       		.uleb128 0x1f
+ 1118 0551 46020000 		.4byte	.LASF43
+ 1119 0555 0B       		.byte	0xb
+ 1120 0556 92       		.byte	0x92
+ 1121 0557 20       		.uleb128 0x20
+ 1122 0558 DC020000 		.4byte	.LASF44
+ 1123 055c 09       		.byte	0x9
+ 1124 055d 18       		.byte	0x18
+ 1125 055e 68050000 		.4byte	0x568
+ 1126 0562 21       		.uleb128 0x21
+ 1127 0563 C2000000 		.4byte	0xc2
+ 1128 0567 00       		.byte	0
+ 1129 0568 20       		.uleb128 0x20
+ 1130 0569 FA020000 		.4byte	.LASF45
+ 1131 056d 0A       		.byte	0xa
+ 1132 056e 18       		.byte	0x18
+ 1133 056f 79050000 		.4byte	0x579
+ 1134 0573 21       		.uleb128 0x21
+ 1135 0574 C2000000 		.4byte	0xc2
+ 1136 0578 00       		.byte	0
+ 1137 0579 1F       		.uleb128 0x1f
+ 1138 057a 9B020000 		.4byte	.LASF46
+ 1139 057e 0C       		.byte	0xc
+ 1140 057f 19       		.byte	0x19
+ 1141 0580 1F       		.uleb128 0x1f
+ 1142 0581 C1000000 		.4byte	.LASF47
+ 1143 0585 0D       		.byte	0xd
+ 1144 0586 19       		.byte	0x19
+ 1145 0587 1F       		.uleb128 0x1f
+ 1146 0588 E1030000 		.4byte	.LASF48
+ 1147 058c 0E       		.byte	0xe
+ 1148 058d 12       		.byte	0x12
+ 1149 058e 1F       		.uleb128 0x1f
+ 1150 058f 17010000 		.4byte	.LASF49
+ 1151 0593 0F       		.byte	0xf
+ 1152 0594 12       		.byte	0x12
+ 1153 0595 1F       		.uleb128 0x1f
+ 1154 0596 00000000 		.4byte	.LASF50
+ 1155 059a 0E       		.byte	0xe
+ 1156 059b 13       		.byte	0x13
+ 1157 059c 1F       		.uleb128 0x1f
+ 1158 059d 06010000 		.4byte	.LASF51
+ 1159 05a1 0F       		.byte	0xf
+ 1160 05a2 13       		.byte	0x13
+ 1161 05a3 22       		.uleb128 0x22
+ 1162 05a4 E0010000 		.4byte	.LASF52
+ 1163 05a8 10       		.byte	0x10
+ 1164 05a9 2C       		.byte	0x2c
+ 1165 05aa 81000000 		.4byte	0x81
+ 1166 05ae 22       		.uleb128 0x22
+ 1167 05af 17020000 		.4byte	.LASF53
+ 1168 05b3 11       		.byte	0x11
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 24
 
 
- 1190 0065 01       		.uleb128 0x1
- 1191 0066 13       		.uleb128 0x13
- 1192 0067 00       		.byte	0
- 1193 0068 00       		.byte	0
- 1194 0069 0A       		.uleb128 0xa
- 1195 006a 0D       		.uleb128 0xd
- 1196 006b 00       		.byte	0
- 1197 006c 03       		.uleb128 0x3
- 1198 006d 08       		.uleb128 0x8
- 1199 006e 3A       		.uleb128 0x3a
- 1200 006f 0B       		.uleb128 0xb
- 1201 0070 3B       		.uleb128 0x3b
- 1202 0071 0B       		.uleb128 0xb
- 1203 0072 49       		.uleb128 0x49
- 1204 0073 13       		.uleb128 0x13
- 1205 0074 38       		.uleb128 0x38
- 1206 0075 0B       		.uleb128 0xb
- 1207 0076 00       		.byte	0
- 1208 0077 00       		.byte	0
- 1209 0078 0B       		.uleb128 0xb
- 1210 0079 0D       		.uleb128 0xd
- 1211 007a 00       		.byte	0
- 1212 007b 03       		.uleb128 0x3
- 1213 007c 0E       		.uleb128 0xe
- 1214 007d 3A       		.uleb128 0x3a
- 1215 007e 0B       		.uleb128 0xb
- 1216 007f 3B       		.uleb128 0x3b
- 1217 0080 0B       		.uleb128 0xb
- 1218 0081 49       		.uleb128 0x49
- 1219 0082 13       		.uleb128 0x13
- 1220 0083 38       		.uleb128 0x38
- 1221 0084 0B       		.uleb128 0xb
- 1222 0085 00       		.byte	0
- 1223 0086 00       		.byte	0
- 1224 0087 0C       		.uleb128 0xc
- 1225 0088 2E       		.uleb128 0x2e
- 1226 0089 01       		.byte	0x1
- 1227 008a 3F       		.uleb128 0x3f
- 1228 008b 19       		.uleb128 0x19
- 1229 008c 03       		.uleb128 0x3
- 1230 008d 0E       		.uleb128 0xe
- 1231 008e 3A       		.uleb128 0x3a
- 1232 008f 0B       		.uleb128 0xb
- 1233 0090 3B       		.uleb128 0x3b
- 1234 0091 0B       		.uleb128 0xb
- 1235 0092 27       		.uleb128 0x27
- 1236 0093 19       		.uleb128 0x19
- 1237 0094 11       		.uleb128 0x11
- 1238 0095 01       		.uleb128 0x1
- 1239 0096 12       		.uleb128 0x12
- 1240 0097 06       		.uleb128 0x6
- 1241 0098 40       		.uleb128 0x40
- 1242 0099 18       		.uleb128 0x18
- 1243 009a 9742     		.uleb128 0x2117
- 1244 009c 19       		.uleb128 0x19
- 1245 009d 01       		.uleb128 0x1
- 1246 009e 13       		.uleb128 0x13
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 25
+ 1169 05b4 2C       		.byte	0x2c
+ 1170 05b5 81000000 		.4byte	0x81
+ 1171 05b9 20       		.uleb128 0x20
+ 1172 05ba 52030000 		.4byte	.LASF54
+ 1173 05be 0C       		.byte	0xc
+ 1174 05bf 20       		.byte	0x20
+ 1175 05c0 CA050000 		.4byte	0x5ca
+ 1176 05c4 21       		.uleb128 0x21
+ 1177 05c5 81000000 		.4byte	0x81
+ 1178 05c9 00       		.byte	0
+ 1179 05ca 20       		.uleb128 0x20
+ 1180 05cb 9E030000 		.4byte	.LASF55
+ 1181 05cf 0D       		.byte	0xd
+ 1182 05d0 20       		.byte	0x20
+ 1183 05d1 DB050000 		.4byte	0x5db
+ 1184 05d5 21       		.uleb128 0x21
+ 1185 05d6 81000000 		.4byte	0x81
+ 1186 05da 00       		.byte	0
+ 1187 05db 20       		.uleb128 0x20
+ 1188 05dc F3000000 		.4byte	.LASF56
+ 1189 05e0 0C       		.byte	0xc
+ 1190 05e1 18       		.byte	0x18
+ 1191 05e2 EC050000 		.4byte	0x5ec
+ 1192 05e6 21       		.uleb128 0x21
+ 1193 05e7 C2000000 		.4byte	0xc2
+ 1194 05eb 00       		.byte	0
+ 1195 05ec 20       		.uleb128 0x20
+ 1196 05ed 5F020000 		.4byte	.LASF57
+ 1197 05f1 0D       		.byte	0xd
+ 1198 05f2 18       		.byte	0x18
+ 1199 05f3 FD050000 		.4byte	0x5fd
+ 1200 05f7 21       		.uleb128 0x21
+ 1201 05f8 C2000000 		.4byte	0xc2
+ 1202 05fc 00       		.byte	0
+ 1203 05fd 22       		.uleb128 0x22
+ 1204 05fe A1000000 		.4byte	.LASF58
+ 1205 0602 12       		.byte	0x12
+ 1206 0603 C5       		.byte	0xc5
+ 1207 0604 81000000 		.4byte	0x81
+ 1208 0608 23       		.uleb128 0x23
+ 1209 0609 11030000 		.4byte	.LASF70
+ 1210 060d 19       		.byte	0x19
+ 1211 060e 2601     		.2byte	0x126
+ 1212 0610 68000000 		.4byte	0x68
+ 1213 0614 2D060000 		.4byte	0x62d
+ 1214 0618 21       		.uleb128 0x21
+ 1215 0619 E9000000 		.4byte	0xe9
+ 1216 061d 21       		.uleb128 0x21
+ 1217 061e D5000000 		.4byte	0xd5
+ 1218 0622 21       		.uleb128 0x21
+ 1219 0623 EF000000 		.4byte	0xef
+ 1220 0627 21       		.uleb128 0x21
+ 1221 0628 FA000000 		.4byte	0xfa
+ 1222 062c 00       		.byte	0
+ 1223 062d 22       		.uleb128 0x22
+ 1224 062e AB020000 		.4byte	.LASF59
+ 1225 0632 13       		.byte	0x13
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 25
 
 
- 1247 009f 00       		.byte	0
- 1248 00a0 00       		.byte	0
- 1249 00a1 0D       		.uleb128 0xd
- 1250 00a2 898201   		.uleb128 0x4109
- 1251 00a5 00       		.byte	0
- 1252 00a6 11       		.uleb128 0x11
- 1253 00a7 01       		.uleb128 0x1
- 1254 00a8 31       		.uleb128 0x31
- 1255 00a9 13       		.uleb128 0x13
- 1256 00aa 00       		.byte	0
- 1257 00ab 00       		.byte	0
- 1258 00ac 0E       		.uleb128 0xe
- 1259 00ad 2E       		.uleb128 0x2e
- 1260 00ae 01       		.byte	0x1
- 1261 00af 3F       		.uleb128 0x3f
- 1262 00b0 19       		.uleb128 0x19
- 1263 00b1 03       		.uleb128 0x3
- 1264 00b2 0E       		.uleb128 0xe
- 1265 00b3 3A       		.uleb128 0x3a
- 1266 00b4 0B       		.uleb128 0xb
- 1267 00b5 3B       		.uleb128 0x3b
- 1268 00b6 0B       		.uleb128 0xb
- 1269 00b7 11       		.uleb128 0x11
- 1270 00b8 01       		.uleb128 0x1
- 1271 00b9 12       		.uleb128 0x12
- 1272 00ba 06       		.uleb128 0x6
- 1273 00bb 40       		.uleb128 0x40
- 1274 00bc 18       		.uleb128 0x18
- 1275 00bd 9742     		.uleb128 0x2117
- 1276 00bf 19       		.uleb128 0x19
- 1277 00c0 01       		.uleb128 0x1
- 1278 00c1 13       		.uleb128 0x13
- 1279 00c2 00       		.byte	0
- 1280 00c3 00       		.byte	0
- 1281 00c4 0F       		.uleb128 0xf
- 1282 00c5 898201   		.uleb128 0x4109
- 1283 00c8 01       		.byte	0x1
- 1284 00c9 11       		.uleb128 0x11
- 1285 00ca 01       		.uleb128 0x1
- 1286 00cb 31       		.uleb128 0x31
- 1287 00cc 13       		.uleb128 0x13
- 1288 00cd 01       		.uleb128 0x1
- 1289 00ce 13       		.uleb128 0x13
- 1290 00cf 00       		.byte	0
- 1291 00d0 00       		.byte	0
- 1292 00d1 10       		.uleb128 0x10
- 1293 00d2 8A8201   		.uleb128 0x410a
- 1294 00d5 00       		.byte	0
- 1295 00d6 02       		.uleb128 0x2
- 1296 00d7 18       		.uleb128 0x18
- 1297 00d8 9142     		.uleb128 0x2111
- 1298 00da 18       		.uleb128 0x18
- 1299 00db 00       		.byte	0
- 1300 00dc 00       		.byte	0
- 1301 00dd 11       		.uleb128 0x11
- 1302 00de 898201   		.uleb128 0x4109
- 1303 00e1 01       		.byte	0x1
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 26
+ 1226 0633 24       		.byte	0x24
+ 1227 0634 81000000 		.4byte	0x81
+ 1228 0638 20       		.uleb128 0x20
+ 1229 0639 DF000000 		.4byte	.LASF60
+ 1230 063d 13       		.byte	0x13
+ 1231 063e 20       		.byte	0x20
+ 1232 063f 49060000 		.4byte	0x649
+ 1233 0643 21       		.uleb128 0x21
+ 1234 0644 49060000 		.4byte	0x649
+ 1235 0648 00       		.byte	0
+ 1236 0649 06       		.uleb128 0x6
+ 1237 064a 04       		.byte	0x4
+ 1238 064b 4F060000 		.4byte	0x64f
+ 1239 064f 09       		.uleb128 0x9
+ 1240 0650 B0000000 		.4byte	0xb0
+ 1241 0654 1F       		.uleb128 0x1f
+ 1242 0655 0D020000 		.4byte	.LASF61
+ 1243 0659 14       		.byte	0x14
+ 1244 065a 38       		.byte	0x38
+ 1245 065b 1F       		.uleb128 0x1f
+ 1246 065c CB010000 		.4byte	.LASF62
+ 1247 0660 15       		.byte	0x15
+ 1248 0661 5A       		.byte	0x5a
+ 1249 0662 20       		.uleb128 0x20
+ 1250 0663 5A040000 		.4byte	.LASF63
+ 1251 0667 16       		.byte	0x16
+ 1252 0668 77       		.byte	0x77
+ 1253 0669 73060000 		.4byte	0x673
+ 1254 066d 21       		.uleb128 0x21
+ 1255 066e 8C000000 		.4byte	0x8c
+ 1256 0672 00       		.byte	0
+ 1257 0673 24       		.uleb128 0x24
+ 1258 0674 F8030000 		.4byte	.LASF67
+ 1259 0678 18       		.byte	0x18
+ 1260 0679 16       		.byte	0x16
+ 1261 067a 80060000 		.4byte	0x680
+ 1262 067e 13       		.uleb128 0x13
+ 1263 067f 00       		.byte	0
+ 1264 0680 1F       		.uleb128 0x1f
+ 1265 0681 7C000000 		.4byte	.LASF64
+ 1266 0685 17       		.byte	0x17
+ 1267 0686 16       		.byte	0x16
+ 1268 0687 22       		.uleb128 0x22
+ 1269 0688 25030000 		.4byte	.LASF65
+ 1270 068c 15       		.byte	0x15
+ 1271 068d 69       		.byte	0x69
+ 1272 068e 8C000000 		.4byte	0x8c
+ 1273 0692 20       		.uleb128 0x20
+ 1274 0693 F6010000 		.4byte	.LASF66
+ 1275 0697 17       		.byte	0x17
+ 1276 0698 1C       		.byte	0x1c
+ 1277 0699 A3060000 		.4byte	0x6a3
+ 1278 069d 21       		.uleb128 0x21
+ 1279 069e 81000000 		.4byte	0x81
+ 1280 06a2 00       		.byte	0
+ 1281 06a3 24       		.uleb128 0x24
+ 1282 06a4 E9020000 		.4byte	.LASF68
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 26
 
 
- 1304 00e2 11       		.uleb128 0x11
- 1305 00e3 01       		.uleb128 0x1
- 1306 00e4 31       		.uleb128 0x31
- 1307 00e5 13       		.uleb128 0x13
- 1308 00e6 00       		.byte	0
- 1309 00e7 00       		.byte	0
- 1310 00e8 12       		.uleb128 0x12
- 1311 00e9 2E       		.uleb128 0x2e
- 1312 00ea 01       		.byte	0x1
- 1313 00eb 3F       		.uleb128 0x3f
- 1314 00ec 19       		.uleb128 0x19
- 1315 00ed 03       		.uleb128 0x3
- 1316 00ee 0E       		.uleb128 0xe
- 1317 00ef 3A       		.uleb128 0x3a
- 1318 00f0 0B       		.uleb128 0xb
- 1319 00f1 3B       		.uleb128 0x3b
- 1320 00f2 0B       		.uleb128 0xb
- 1321 00f3 49       		.uleb128 0x49
- 1322 00f4 13       		.uleb128 0x13
- 1323 00f5 11       		.uleb128 0x11
- 1324 00f6 01       		.uleb128 0x1
- 1325 00f7 12       		.uleb128 0x12
- 1326 00f8 06       		.uleb128 0x6
- 1327 00f9 40       		.uleb128 0x40
- 1328 00fa 18       		.uleb128 0x18
- 1329 00fb 9642     		.uleb128 0x2116
- 1330 00fd 19       		.uleb128 0x19
- 1331 00fe 01       		.uleb128 0x1
- 1332 00ff 13       		.uleb128 0x13
- 1333 0100 00       		.byte	0
- 1334 0101 00       		.byte	0
- 1335 0102 13       		.uleb128 0x13
- 1336 0103 34       		.uleb128 0x34
- 1337 0104 00       		.byte	0
- 1338 0105 03       		.uleb128 0x3
- 1339 0106 0E       		.uleb128 0xe
- 1340 0107 3A       		.uleb128 0x3a
- 1341 0108 0B       		.uleb128 0xb
- 1342 0109 3B       		.uleb128 0x3b
- 1343 010a 0B       		.uleb128 0xb
- 1344 010b 49       		.uleb128 0x49
- 1345 010c 13       		.uleb128 0x13
- 1346 010d 02       		.uleb128 0x2
- 1347 010e 18       		.uleb128 0x18
- 1348 010f 00       		.byte	0
- 1349 0110 00       		.byte	0
- 1350 0111 14       		.uleb128 0x14
- 1351 0112 34       		.uleb128 0x34
- 1352 0113 00       		.byte	0
- 1353 0114 03       		.uleb128 0x3
- 1354 0115 0E       		.uleb128 0xe
- 1355 0116 3A       		.uleb128 0x3a
- 1356 0117 0B       		.uleb128 0xb
- 1357 0118 3B       		.uleb128 0x3b
- 1358 0119 0B       		.uleb128 0xb
- 1359 011a 49       		.uleb128 0x49
- 1360 011b 13       		.uleb128 0x13
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 27
+ 1283 06a8 18       		.byte	0x18
+ 1284 06a9 15       		.byte	0x15
+ 1285 06aa B0060000 		.4byte	0x6b0
+ 1286 06ae 13       		.uleb128 0x13
+ 1287 06af 00       		.byte	0
+ 1288 06b0 20       		.uleb128 0x20
+ 1289 06b1 62040000 		.4byte	.LASF69
+ 1290 06b5 14       		.byte	0x14
+ 1291 06b6 3A       		.byte	0x3a
+ 1292 06b7 C1060000 		.4byte	0x6c1
+ 1293 06bb 21       		.uleb128 0x21
+ 1294 06bc 81000000 		.4byte	0x81
+ 1295 06c0 00       		.byte	0
+ 1296 06c1 25       		.uleb128 0x25
+ 1297 06c2 57020000 		.4byte	.LASF71
+ 1298 06c6 19       		.byte	0x19
+ 1299 06c7 D9       		.byte	0xd9
+ 1300 06c8 68000000 		.4byte	0x68
+ 1301 06cc DC060000 		.4byte	0x6dc
+ 1302 06d0 21       		.uleb128 0x21
+ 1303 06d1 E9000000 		.4byte	0xe9
+ 1304 06d5 21       		.uleb128 0x21
+ 1305 06d6 EF000000 		.4byte	0xef
+ 1306 06da 13       		.uleb128 0x13
+ 1307 06db 00       		.byte	0
+ 1308 06dc 20       		.uleb128 0x20
+ 1309 06dd 69030000 		.4byte	.LASF72
+ 1310 06e1 14       		.byte	0x14
+ 1311 06e2 3D       		.byte	0x3d
+ 1312 06e3 F2060000 		.4byte	0x6f2
+ 1313 06e7 21       		.uleb128 0x21
+ 1314 06e8 81000000 		.4byte	0x81
+ 1315 06ec 21       		.uleb128 0x21
+ 1316 06ed 81000000 		.4byte	0x81
+ 1317 06f1 00       		.byte	0
+ 1318 06f2 26       		.uleb128 0x26
+ 1319 06f3 C7020000 		.4byte	.LASF73
+ 1320 06f7 14       		.byte	0x14
+ 1321 06f8 3C       		.byte	0x3c
+ 1322 06f9 21       		.uleb128 0x21
+ 1323 06fa 49060000 		.4byte	0x649
+ 1324 06fe 00       		.byte	0
+ 1325 06ff 00       		.byte	0
+ 1326              		.section	.debug_abbrev,"",%progbits
+ 1327              	.Ldebug_abbrev0:
+ 1328 0000 01       		.uleb128 0x1
+ 1329 0001 11       		.uleb128 0x11
+ 1330 0002 01       		.byte	0x1
+ 1331 0003 25       		.uleb128 0x25
+ 1332 0004 0E       		.uleb128 0xe
+ 1333 0005 13       		.uleb128 0x13
+ 1334 0006 0B       		.uleb128 0xb
+ 1335 0007 03       		.uleb128 0x3
+ 1336 0008 0E       		.uleb128 0xe
+ 1337 0009 1B       		.uleb128 0x1b
+ 1338 000a 0E       		.uleb128 0xe
+ 1339 000b 55       		.uleb128 0x55
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 27
 
 
- 1361 011c 02       		.uleb128 0x2
- 1362 011d 17       		.uleb128 0x17
- 1363 011e 00       		.byte	0
- 1364 011f 00       		.byte	0
- 1365 0120 15       		.uleb128 0x15
- 1366 0121 34       		.uleb128 0x34
- 1367 0122 00       		.byte	0
- 1368 0123 03       		.uleb128 0x3
- 1369 0124 0E       		.uleb128 0xe
- 1370 0125 3A       		.uleb128 0x3a
- 1371 0126 0B       		.uleb128 0xb
- 1372 0127 3B       		.uleb128 0x3b
- 1373 0128 0B       		.uleb128 0xb
- 1374 0129 49       		.uleb128 0x49
- 1375 012a 13       		.uleb128 0x13
- 1376 012b 1C       		.uleb128 0x1c
- 1377 012c 0D       		.uleb128 0xd
- 1378 012d 00       		.byte	0
- 1379 012e 00       		.byte	0
- 1380 012f 16       		.uleb128 0x16
- 1381 0130 01       		.uleb128 0x1
- 1382 0131 01       		.byte	0x1
- 1383 0132 49       		.uleb128 0x49
- 1384 0133 13       		.uleb128 0x13
- 1385 0134 01       		.uleb128 0x1
- 1386 0135 13       		.uleb128 0x13
- 1387 0136 00       		.byte	0
- 1388 0137 00       		.byte	0
- 1389 0138 17       		.uleb128 0x17
- 1390 0139 21       		.uleb128 0x21
- 1391 013a 00       		.byte	0
- 1392 013b 49       		.uleb128 0x49
- 1393 013c 13       		.uleb128 0x13
- 1394 013d 2F       		.uleb128 0x2f
- 1395 013e 0B       		.uleb128 0xb
- 1396 013f 00       		.byte	0
- 1397 0140 00       		.byte	0
- 1398 0141 18       		.uleb128 0x18
- 1399 0142 34       		.uleb128 0x34
- 1400 0143 00       		.byte	0
- 1401 0144 03       		.uleb128 0x3
- 1402 0145 0E       		.uleb128 0xe
- 1403 0146 3A       		.uleb128 0x3a
- 1404 0147 0B       		.uleb128 0xb
- 1405 0148 3B       		.uleb128 0x3b
- 1406 0149 05       		.uleb128 0x5
- 1407 014a 49       		.uleb128 0x49
- 1408 014b 13       		.uleb128 0x13
- 1409 014c 3F       		.uleb128 0x3f
- 1410 014d 19       		.uleb128 0x19
- 1411 014e 3C       		.uleb128 0x3c
- 1412 014f 19       		.uleb128 0x19
- 1413 0150 00       		.byte	0
- 1414 0151 00       		.byte	0
- 1415 0152 19       		.uleb128 0x19
- 1416 0153 35       		.uleb128 0x35
- 1417 0154 00       		.byte	0
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 28
+ 1340 000c 17       		.uleb128 0x17
+ 1341 000d 11       		.uleb128 0x11
+ 1342 000e 01       		.uleb128 0x1
+ 1343 000f 10       		.uleb128 0x10
+ 1344 0010 17       		.uleb128 0x17
+ 1345 0011 00       		.byte	0
+ 1346 0012 00       		.byte	0
+ 1347 0013 02       		.uleb128 0x2
+ 1348 0014 24       		.uleb128 0x24
+ 1349 0015 00       		.byte	0
+ 1350 0016 0B       		.uleb128 0xb
+ 1351 0017 0B       		.uleb128 0xb
+ 1352 0018 3E       		.uleb128 0x3e
+ 1353 0019 0B       		.uleb128 0xb
+ 1354 001a 03       		.uleb128 0x3
+ 1355 001b 0E       		.uleb128 0xe
+ 1356 001c 00       		.byte	0
+ 1357 001d 00       		.byte	0
+ 1358 001e 03       		.uleb128 0x3
+ 1359 001f 16       		.uleb128 0x16
+ 1360 0020 00       		.byte	0
+ 1361 0021 03       		.uleb128 0x3
+ 1362 0022 0E       		.uleb128 0xe
+ 1363 0023 3A       		.uleb128 0x3a
+ 1364 0024 0B       		.uleb128 0xb
+ 1365 0025 3B       		.uleb128 0x3b
+ 1366 0026 0B       		.uleb128 0xb
+ 1367 0027 49       		.uleb128 0x49
+ 1368 0028 13       		.uleb128 0x13
+ 1369 0029 00       		.byte	0
+ 1370 002a 00       		.byte	0
+ 1371 002b 04       		.uleb128 0x4
+ 1372 002c 24       		.uleb128 0x24
+ 1373 002d 00       		.byte	0
+ 1374 002e 0B       		.uleb128 0xb
+ 1375 002f 0B       		.uleb128 0xb
+ 1376 0030 3E       		.uleb128 0x3e
+ 1377 0031 0B       		.uleb128 0xb
+ 1378 0032 03       		.uleb128 0x3
+ 1379 0033 08       		.uleb128 0x8
+ 1380 0034 00       		.byte	0
+ 1381 0035 00       		.byte	0
+ 1382 0036 05       		.uleb128 0x5
+ 1383 0037 16       		.uleb128 0x16
+ 1384 0038 00       		.byte	0
+ 1385 0039 03       		.uleb128 0x3
+ 1386 003a 0E       		.uleb128 0xe
+ 1387 003b 3A       		.uleb128 0x3a
+ 1388 003c 0B       		.uleb128 0xb
+ 1389 003d 3B       		.uleb128 0x3b
+ 1390 003e 05       		.uleb128 0x5
+ 1391 003f 49       		.uleb128 0x49
+ 1392 0040 13       		.uleb128 0x13
+ 1393 0041 00       		.byte	0
+ 1394 0042 00       		.byte	0
+ 1395 0043 06       		.uleb128 0x6
+ 1396 0044 0F       		.uleb128 0xf
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 28
 
 
- 1418 0155 49       		.uleb128 0x49
- 1419 0156 13       		.uleb128 0x13
- 1420 0157 00       		.byte	0
- 1421 0158 00       		.byte	0
- 1422 0159 1A       		.uleb128 0x1a
- 1423 015a 34       		.uleb128 0x34
- 1424 015b 00       		.byte	0
- 1425 015c 03       		.uleb128 0x3
- 1426 015d 0E       		.uleb128 0xe
- 1427 015e 3A       		.uleb128 0x3a
- 1428 015f 0B       		.uleb128 0xb
- 1429 0160 3B       		.uleb128 0x3b
- 1430 0161 0B       		.uleb128 0xb
- 1431 0162 49       		.uleb128 0x49
- 1432 0163 13       		.uleb128 0x13
- 1433 0164 3F       		.uleb128 0x3f
- 1434 0165 19       		.uleb128 0x19
- 1435 0166 02       		.uleb128 0x2
- 1436 0167 18       		.uleb128 0x18
- 1437 0168 00       		.byte	0
- 1438 0169 00       		.byte	0
- 1439 016a 1B       		.uleb128 0x1b
- 1440 016b 34       		.uleb128 0x34
- 1441 016c 00       		.byte	0
- 1442 016d 03       		.uleb128 0x3
- 1443 016e 0E       		.uleb128 0xe
- 1444 016f 3A       		.uleb128 0x3a
- 1445 0170 0B       		.uleb128 0xb
- 1446 0171 3B       		.uleb128 0x3b
- 1447 0172 0B       		.uleb128 0xb
- 1448 0173 49       		.uleb128 0x49
- 1449 0174 13       		.uleb128 0x13
- 1450 0175 3F       		.uleb128 0x3f
- 1451 0176 19       		.uleb128 0x19
- 1452 0177 3C       		.uleb128 0x3c
- 1453 0178 19       		.uleb128 0x19
- 1454 0179 00       		.byte	0
- 1455 017a 00       		.byte	0
- 1456 017b 1C       		.uleb128 0x1c
- 1457 017c 34       		.uleb128 0x34
- 1458 017d 00       		.byte	0
- 1459 017e 03       		.uleb128 0x3
- 1460 017f 08       		.uleb128 0x8
- 1461 0180 3A       		.uleb128 0x3a
- 1462 0181 0B       		.uleb128 0xb
- 1463 0182 3B       		.uleb128 0x3b
- 1464 0183 0B       		.uleb128 0xb
- 1465 0184 49       		.uleb128 0x49
- 1466 0185 13       		.uleb128 0x13
- 1467 0186 3F       		.uleb128 0x3f
- 1468 0187 19       		.uleb128 0x19
- 1469 0188 02       		.uleb128 0x2
- 1470 0189 18       		.uleb128 0x18
- 1471 018a 00       		.byte	0
- 1472 018b 00       		.byte	0
- 1473 018c 1D       		.uleb128 0x1d
- 1474 018d 2E       		.uleb128 0x2e
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 29
+ 1397 0045 00       		.byte	0
+ 1398 0046 0B       		.uleb128 0xb
+ 1399 0047 0B       		.uleb128 0xb
+ 1400 0048 49       		.uleb128 0x49
+ 1401 0049 13       		.uleb128 0x13
+ 1402 004a 00       		.byte	0
+ 1403 004b 00       		.byte	0
+ 1404 004c 07       		.uleb128 0x7
+ 1405 004d 15       		.uleb128 0x15
+ 1406 004e 00       		.byte	0
+ 1407 004f 27       		.uleb128 0x27
+ 1408 0050 19       		.uleb128 0x19
+ 1409 0051 00       		.byte	0
+ 1410 0052 00       		.byte	0
+ 1411 0053 08       		.uleb128 0x8
+ 1412 0054 0F       		.uleb128 0xf
+ 1413 0055 00       		.byte	0
+ 1414 0056 0B       		.uleb128 0xb
+ 1415 0057 0B       		.uleb128 0xb
+ 1416 0058 00       		.byte	0
+ 1417 0059 00       		.byte	0
+ 1418 005a 09       		.uleb128 0x9
+ 1419 005b 26       		.uleb128 0x26
+ 1420 005c 00       		.byte	0
+ 1421 005d 49       		.uleb128 0x49
+ 1422 005e 13       		.uleb128 0x13
+ 1423 005f 00       		.byte	0
+ 1424 0060 00       		.byte	0
+ 1425 0061 0A       		.uleb128 0xa
+ 1426 0062 13       		.uleb128 0x13
+ 1427 0063 01       		.byte	0x1
+ 1428 0064 03       		.uleb128 0x3
+ 1429 0065 0E       		.uleb128 0xe
+ 1430 0066 0B       		.uleb128 0xb
+ 1431 0067 0B       		.uleb128 0xb
+ 1432 0068 3A       		.uleb128 0x3a
+ 1433 0069 0B       		.uleb128 0xb
+ 1434 006a 3B       		.uleb128 0x3b
+ 1435 006b 0B       		.uleb128 0xb
+ 1436 006c 01       		.uleb128 0x1
+ 1437 006d 13       		.uleb128 0x13
+ 1438 006e 00       		.byte	0
+ 1439 006f 00       		.byte	0
+ 1440 0070 0B       		.uleb128 0xb
+ 1441 0071 0D       		.uleb128 0xd
+ 1442 0072 00       		.byte	0
+ 1443 0073 03       		.uleb128 0x3
+ 1444 0074 0E       		.uleb128 0xe
+ 1445 0075 49       		.uleb128 0x49
+ 1446 0076 13       		.uleb128 0x13
+ 1447 0077 38       		.uleb128 0x38
+ 1448 0078 0B       		.uleb128 0xb
+ 1449 0079 34       		.uleb128 0x34
+ 1450 007a 19       		.uleb128 0x19
+ 1451 007b 00       		.byte	0
+ 1452 007c 00       		.byte	0
+ 1453 007d 0C       		.uleb128 0xc
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 29
 
 
- 1475 018e 00       		.byte	0
- 1476 018f 3F       		.uleb128 0x3f
- 1477 0190 19       		.uleb128 0x19
- 1478 0191 03       		.uleb128 0x3
- 1479 0192 0E       		.uleb128 0xe
- 1480 0193 3A       		.uleb128 0x3a
- 1481 0194 0B       		.uleb128 0xb
- 1482 0195 3B       		.uleb128 0x3b
- 1483 0196 0B       		.uleb128 0xb
- 1484 0197 27       		.uleb128 0x27
- 1485 0198 19       		.uleb128 0x19
- 1486 0199 3C       		.uleb128 0x3c
- 1487 019a 19       		.uleb128 0x19
- 1488 019b 00       		.byte	0
- 1489 019c 00       		.byte	0
- 1490 019d 1E       		.uleb128 0x1e
- 1491 019e 2E       		.uleb128 0x2e
- 1492 019f 01       		.byte	0x1
- 1493 01a0 3F       		.uleb128 0x3f
- 1494 01a1 19       		.uleb128 0x19
- 1495 01a2 03       		.uleb128 0x3
- 1496 01a3 0E       		.uleb128 0xe
- 1497 01a4 3A       		.uleb128 0x3a
- 1498 01a5 0B       		.uleb128 0xb
- 1499 01a6 3B       		.uleb128 0x3b
- 1500 01a7 0B       		.uleb128 0xb
- 1501 01a8 27       		.uleb128 0x27
- 1502 01a9 19       		.uleb128 0x19
- 1503 01aa 3C       		.uleb128 0x3c
- 1504 01ab 19       		.uleb128 0x19
- 1505 01ac 01       		.uleb128 0x1
- 1506 01ad 13       		.uleb128 0x13
- 1507 01ae 00       		.byte	0
- 1508 01af 00       		.byte	0
- 1509 01b0 1F       		.uleb128 0x1f
- 1510 01b1 05       		.uleb128 0x5
- 1511 01b2 00       		.byte	0
- 1512 01b3 49       		.uleb128 0x49
- 1513 01b4 13       		.uleb128 0x13
- 1514 01b5 00       		.byte	0
- 1515 01b6 00       		.byte	0
- 1516 01b7 20       		.uleb128 0x20
- 1517 01b8 2E       		.uleb128 0x2e
- 1518 01b9 00       		.byte	0
- 1519 01ba 3F       		.uleb128 0x3f
- 1520 01bb 19       		.uleb128 0x19
- 1521 01bc 03       		.uleb128 0x3
- 1522 01bd 0E       		.uleb128 0xe
- 1523 01be 3A       		.uleb128 0x3a
- 1524 01bf 0B       		.uleb128 0xb
- 1525 01c0 3B       		.uleb128 0x3b
- 1526 01c1 0B       		.uleb128 0xb
- 1527 01c2 27       		.uleb128 0x27
- 1528 01c3 19       		.uleb128 0x19
- 1529 01c4 49       		.uleb128 0x49
- 1530 01c5 13       		.uleb128 0x13
- 1531 01c6 3C       		.uleb128 0x3c
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 30
+ 1454 007e 2E       		.uleb128 0x2e
+ 1455 007f 01       		.byte	0x1
+ 1456 0080 3F       		.uleb128 0x3f
+ 1457 0081 19       		.uleb128 0x19
+ 1458 0082 03       		.uleb128 0x3
+ 1459 0083 0E       		.uleb128 0xe
+ 1460 0084 3A       		.uleb128 0x3a
+ 1461 0085 0B       		.uleb128 0xb
+ 1462 0086 3B       		.uleb128 0x3b
+ 1463 0087 0B       		.uleb128 0xb
+ 1464 0088 27       		.uleb128 0x27
+ 1465 0089 19       		.uleb128 0x19
+ 1466 008a 11       		.uleb128 0x11
+ 1467 008b 01       		.uleb128 0x1
+ 1468 008c 12       		.uleb128 0x12
+ 1469 008d 06       		.uleb128 0x6
+ 1470 008e 40       		.uleb128 0x40
+ 1471 008f 18       		.uleb128 0x18
+ 1472 0090 9742     		.uleb128 0x2117
+ 1473 0092 19       		.uleb128 0x19
+ 1474 0093 01       		.uleb128 0x1
+ 1475 0094 13       		.uleb128 0x13
+ 1476 0095 00       		.byte	0
+ 1477 0096 00       		.byte	0
+ 1478 0097 0D       		.uleb128 0xd
+ 1479 0098 898201   		.uleb128 0x4109
+ 1480 009b 00       		.byte	0
+ 1481 009c 11       		.uleb128 0x11
+ 1482 009d 01       		.uleb128 0x1
+ 1483 009e 31       		.uleb128 0x31
+ 1484 009f 13       		.uleb128 0x13
+ 1485 00a0 00       		.byte	0
+ 1486 00a1 00       		.byte	0
+ 1487 00a2 0E       		.uleb128 0xe
+ 1488 00a3 2E       		.uleb128 0x2e
+ 1489 00a4 01       		.byte	0x1
+ 1490 00a5 3F       		.uleb128 0x3f
+ 1491 00a6 19       		.uleb128 0x19
+ 1492 00a7 03       		.uleb128 0x3
+ 1493 00a8 0E       		.uleb128 0xe
+ 1494 00a9 3A       		.uleb128 0x3a
+ 1495 00aa 0B       		.uleb128 0xb
+ 1496 00ab 3B       		.uleb128 0x3b
+ 1497 00ac 0B       		.uleb128 0xb
+ 1498 00ad 11       		.uleb128 0x11
+ 1499 00ae 01       		.uleb128 0x1
+ 1500 00af 12       		.uleb128 0x12
+ 1501 00b0 06       		.uleb128 0x6
+ 1502 00b1 40       		.uleb128 0x40
+ 1503 00b2 18       		.uleb128 0x18
+ 1504 00b3 9742     		.uleb128 0x2117
+ 1505 00b5 19       		.uleb128 0x19
+ 1506 00b6 01       		.uleb128 0x1
+ 1507 00b7 13       		.uleb128 0x13
+ 1508 00b8 00       		.byte	0
+ 1509 00b9 00       		.byte	0
+ 1510 00ba 0F       		.uleb128 0xf
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 30
 
 
- 1532 01c7 19       		.uleb128 0x19
- 1533 01c8 00       		.byte	0
- 1534 01c9 00       		.byte	0
- 1535 01ca 21       		.uleb128 0x21
- 1536 01cb 2E       		.uleb128 0x2e
- 1537 01cc 01       		.byte	0x1
- 1538 01cd 3F       		.uleb128 0x3f
- 1539 01ce 19       		.uleb128 0x19
- 1540 01cf 03       		.uleb128 0x3
- 1541 01d0 0E       		.uleb128 0xe
- 1542 01d1 3A       		.uleb128 0x3a
- 1543 01d2 0B       		.uleb128 0xb
- 1544 01d3 3B       		.uleb128 0x3b
- 1545 01d4 0B       		.uleb128 0xb
- 1546 01d5 3C       		.uleb128 0x3c
- 1547 01d6 19       		.uleb128 0x19
- 1548 01d7 01       		.uleb128 0x1
- 1549 01d8 13       		.uleb128 0x13
- 1550 01d9 00       		.byte	0
- 1551 01da 00       		.byte	0
- 1552 01db 22       		.uleb128 0x22
- 1553 01dc 18       		.uleb128 0x18
- 1554 01dd 00       		.byte	0
- 1555 01de 00       		.byte	0
- 1556 01df 00       		.byte	0
- 1557 01e0 23       		.uleb128 0x23
- 1558 01e1 2E       		.uleb128 0x2e
- 1559 01e2 01       		.byte	0x1
- 1560 01e3 3F       		.uleb128 0x3f
- 1561 01e4 19       		.uleb128 0x19
- 1562 01e5 03       		.uleb128 0x3
- 1563 01e6 0E       		.uleb128 0xe
- 1564 01e7 3A       		.uleb128 0x3a
- 1565 01e8 0B       		.uleb128 0xb
- 1566 01e9 3B       		.uleb128 0x3b
- 1567 01ea 0B       		.uleb128 0xb
- 1568 01eb 27       		.uleb128 0x27
- 1569 01ec 19       		.uleb128 0x19
- 1570 01ed 49       		.uleb128 0x49
- 1571 01ee 13       		.uleb128 0x13
- 1572 01ef 3C       		.uleb128 0x3c
- 1573 01f0 19       		.uleb128 0x19
- 1574 01f1 01       		.uleb128 0x1
- 1575 01f2 13       		.uleb128 0x13
- 1576 01f3 00       		.byte	0
- 1577 01f4 00       		.byte	0
- 1578 01f5 00       		.byte	0
- 1579              		.section	.debug_loc,"",%progbits
- 1580              	.Ldebug_loc0:
- 1581              	.LLST0:
- 1582 0000 48000000 		.4byte	.LVL26
- 1583 0004 4B000000 		.4byte	.LVL27-1
- 1584 0008 0100     		.2byte	0x1
- 1585 000a 50       		.byte	0x50
- 1586 000b 4B000000 		.4byte	.LVL27-1
- 1587 000f 8A000000 		.4byte	.LVL30
- 1588 0013 0100     		.2byte	0x1
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 31
+ 1511 00bb 898201   		.uleb128 0x4109
+ 1512 00be 01       		.byte	0x1
+ 1513 00bf 11       		.uleb128 0x11
+ 1514 00c0 01       		.uleb128 0x1
+ 1515 00c1 31       		.uleb128 0x31
+ 1516 00c2 13       		.uleb128 0x13
+ 1517 00c3 01       		.uleb128 0x1
+ 1518 00c4 13       		.uleb128 0x13
+ 1519 00c5 00       		.byte	0
+ 1520 00c6 00       		.byte	0
+ 1521 00c7 10       		.uleb128 0x10
+ 1522 00c8 8A8201   		.uleb128 0x410a
+ 1523 00cb 00       		.byte	0
+ 1524 00cc 02       		.uleb128 0x2
+ 1525 00cd 18       		.uleb128 0x18
+ 1526 00ce 9142     		.uleb128 0x2111
+ 1527 00d0 18       		.uleb128 0x18
+ 1528 00d1 00       		.byte	0
+ 1529 00d2 00       		.byte	0
+ 1530 00d3 11       		.uleb128 0x11
+ 1531 00d4 898201   		.uleb128 0x4109
+ 1532 00d7 01       		.byte	0x1
+ 1533 00d8 11       		.uleb128 0x11
+ 1534 00d9 01       		.uleb128 0x1
+ 1535 00da 31       		.uleb128 0x31
+ 1536 00db 13       		.uleb128 0x13
+ 1537 00dc 00       		.byte	0
+ 1538 00dd 00       		.byte	0
+ 1539 00de 12       		.uleb128 0x12
+ 1540 00df 05       		.uleb128 0x5
+ 1541 00e0 00       		.byte	0
+ 1542 00e1 03       		.uleb128 0x3
+ 1543 00e2 08       		.uleb128 0x8
+ 1544 00e3 3A       		.uleb128 0x3a
+ 1545 00e4 0B       		.uleb128 0xb
+ 1546 00e5 3B       		.uleb128 0x3b
+ 1547 00e6 0B       		.uleb128 0xb
+ 1548 00e7 49       		.uleb128 0x49
+ 1549 00e8 13       		.uleb128 0x13
+ 1550 00e9 02       		.uleb128 0x2
+ 1551 00ea 18       		.uleb128 0x18
+ 1552 00eb 00       		.byte	0
+ 1553 00ec 00       		.byte	0
+ 1554 00ed 13       		.uleb128 0x13
+ 1555 00ee 18       		.uleb128 0x18
+ 1556 00ef 00       		.byte	0
+ 1557 00f0 00       		.byte	0
+ 1558 00f1 00       		.byte	0
+ 1559 00f2 14       		.uleb128 0x14
+ 1560 00f3 34       		.uleb128 0x34
+ 1561 00f4 00       		.byte	0
+ 1562 00f5 03       		.uleb128 0x3
+ 1563 00f6 0E       		.uleb128 0xe
+ 1564 00f7 3A       		.uleb128 0x3a
+ 1565 00f8 0B       		.uleb128 0xb
+ 1566 00f9 3B       		.uleb128 0x3b
+ 1567 00fa 0B       		.uleb128 0xb
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 31
 
 
- 1589 0015 54       		.byte	0x54
- 1590 0016 00000000 		.4byte	0
- 1591 001a 00000000 		.4byte	0
- 1592              		.section	.debug_aranges,"",%progbits
- 1593 0000 3C000000 		.4byte	0x3c
- 1594 0004 0200     		.2byte	0x2
- 1595 0006 00000000 		.4byte	.Ldebug_info0
- 1596 000a 04       		.byte	0x4
- 1597 000b 00       		.byte	0
- 1598 000c 0000     		.2byte	0
- 1599 000e 0000     		.2byte	0
- 1600 0010 00000000 		.4byte	.LFB63
- 1601 0014 14000000 		.4byte	.LFE63-.LFB63
- 1602 0018 00000000 		.4byte	.LFB64
- 1603 001c 14000000 		.4byte	.LFE64-.LFB64
- 1604 0020 00000000 		.4byte	.LFB65
- 1605 0024 1C000000 		.4byte	.LFE65-.LFB65
- 1606 0028 00000000 		.4byte	.LFB66
- 1607 002c 48000000 		.4byte	.LFE66-.LFB66
- 1608 0030 00000000 		.4byte	.LFB67
- 1609 0034 08010000 		.4byte	.LFE67-.LFB67
- 1610 0038 00000000 		.4byte	0
- 1611 003c 00000000 		.4byte	0
- 1612              		.section	.debug_ranges,"",%progbits
- 1613              	.Ldebug_ranges0:
- 1614 0000 00000000 		.4byte	.LFB63
- 1615 0004 14000000 		.4byte	.LFE63
- 1616 0008 00000000 		.4byte	.LFB64
- 1617 000c 14000000 		.4byte	.LFE64
- 1618 0010 00000000 		.4byte	.LFB65
- 1619 0014 1C000000 		.4byte	.LFE65
- 1620 0018 00000000 		.4byte	.LFB66
- 1621 001c 48000000 		.4byte	.LFE66
- 1622 0020 00000000 		.4byte	.LFB67
- 1623 0024 08010000 		.4byte	.LFE67
- 1624 0028 00000000 		.4byte	0
- 1625 002c 00000000 		.4byte	0
- 1626              		.section	.debug_line,"",%progbits
- 1627              	.Ldebug_line0:
- 1628 0000 9E020000 		.section	.debug_str,"MS",%progbits,1
- 1628      02001A02 
- 1628      00000201 
- 1628      FB0E0D00 
- 1628      01010101 
- 1629              	.LASF29:
- 1630 0000 70776D5F 		.ascii	"pwm_var\000"
- 1630      76617200 
- 1631              	.LASF42:
- 1632 0008 72657365 		.ascii	"reset_sclk_a_isr\000"
- 1632      745F7363 
- 1632      6C6B5F61 
- 1632      5F697372 
- 1632      00
- 1633              	.LASF54:
- 1634 0019 73657446 		.ascii	"setForward\000"
- 1634      6F727761 
- 1634      726400
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 32
+ 1568 00fb 49       		.uleb128 0x49
+ 1569 00fc 13       		.uleb128 0x13
+ 1570 00fd 02       		.uleb128 0x2
+ 1571 00fe 18       		.uleb128 0x18
+ 1572 00ff 00       		.byte	0
+ 1573 0100 00       		.byte	0
+ 1574 0101 15       		.uleb128 0x15
+ 1575 0102 01       		.uleb128 0x1
+ 1576 0103 01       		.byte	0x1
+ 1577 0104 49       		.uleb128 0x49
+ 1578 0105 13       		.uleb128 0x13
+ 1579 0106 01       		.uleb128 0x1
+ 1580 0107 13       		.uleb128 0x13
+ 1581 0108 00       		.byte	0
+ 1582 0109 00       		.byte	0
+ 1583 010a 16       		.uleb128 0x16
+ 1584 010b 21       		.uleb128 0x21
+ 1585 010c 00       		.byte	0
+ 1586 010d 49       		.uleb128 0x49
+ 1587 010e 13       		.uleb128 0x13
+ 1588 010f 2F       		.uleb128 0x2f
+ 1589 0110 0B       		.uleb128 0xb
+ 1590 0111 00       		.byte	0
+ 1591 0112 00       		.byte	0
+ 1592 0113 17       		.uleb128 0x17
+ 1593 0114 2E       		.uleb128 0x2e
+ 1594 0115 01       		.byte	0x1
+ 1595 0116 3F       		.uleb128 0x3f
+ 1596 0117 19       		.uleb128 0x19
+ 1597 0118 03       		.uleb128 0x3
+ 1598 0119 0E       		.uleb128 0xe
+ 1599 011a 3A       		.uleb128 0x3a
+ 1600 011b 0B       		.uleb128 0xb
+ 1601 011c 3B       		.uleb128 0x3b
+ 1602 011d 0B       		.uleb128 0xb
+ 1603 011e 49       		.uleb128 0x49
+ 1604 011f 13       		.uleb128 0x13
+ 1605 0120 11       		.uleb128 0x11
+ 1606 0121 01       		.uleb128 0x1
+ 1607 0122 12       		.uleb128 0x12
+ 1608 0123 06       		.uleb128 0x6
+ 1609 0124 40       		.uleb128 0x40
+ 1610 0125 18       		.uleb128 0x18
+ 1611 0126 9742     		.uleb128 0x2117
+ 1612 0128 19       		.uleb128 0x19
+ 1613 0129 01       		.uleb128 0x1
+ 1614 012a 13       		.uleb128 0x13
+ 1615 012b 00       		.byte	0
+ 1616 012c 00       		.byte	0
+ 1617 012d 18       		.uleb128 0x18
+ 1618 012e 34       		.uleb128 0x34
+ 1619 012f 00       		.byte	0
+ 1620 0130 03       		.uleb128 0x3
+ 1621 0131 0E       		.uleb128 0xe
+ 1622 0132 3A       		.uleb128 0x3a
+ 1623 0133 0B       		.uleb128 0xb
+ 1624 0134 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 32
 
 
- 1635              	.LASF64:
- 1636 0024 433A5C55 		.ascii	"C:\\Users\\xavieran\\Desktop\\ECE3091\\PSOCProjects"
- 1636      73657273 
- 1636      5C786176 
- 1636      69657261 
- 1636      6E5C4465 
- 1637 0052 5C454E47 		.ascii	"\\ENG3091_MandM\\ENG3091_MandM.cydsn\000"
- 1637      33303931 
- 1637      5F4D616E 
- 1637      644D5C45 
- 1637      4E473330 
- 1638              	.LASF53:
- 1639 0075 696E6974 		.ascii	"init_motors\000"
- 1639      5F6D6F74 
- 1639      6F727300 
- 1640              	.LASF23:
- 1641 0081 4445435F 		.ascii	"DEC_ISR\000"
- 1641      49535200 
- 1642              	.LASF2:
- 1643 0089 73686F72 		.ascii	"short int\000"
- 1643      7420696E 
- 1643      7400
- 1644              	.LASF19:
- 1645 0093 73697A65 		.ascii	"sizetype\000"
- 1645      74797065 
- 1645      00
- 1646              	.LASF16:
- 1647 009c 63686172 		.ascii	"char8\000"
- 1647      3800
- 1648              	.LASF26:
- 1649 00a2 6D61696E 		.ascii	"main\000"
- 1649      00
- 1650              	.LASF27:
- 1651 00a7 6F757453 		.ascii	"outString\000"
- 1651      7472696E 
- 1651      6700
- 1652              	.LASF39:
- 1653 00b1 73636C6B 		.ascii	"sclk_b_isr_Stop\000"
- 1653      5F625F69 
- 1653      73725F53 
- 1653      746F7000 
- 1654              	.LASF11:
- 1655 00c1 75696E74 		.ascii	"uint8\000"
- 1655      3800
- 1656              	.LASF48:
- 1657 00c7 73636C6B 		.ascii	"sclk_a_isr_StartEx\000"
- 1657      5F615F69 
- 1657      73725F53 
- 1657      74617274 
- 1657      457800
- 1658              	.LASF43:
- 1659 00da 72657365 		.ascii	"reset_sclk_b_isr\000"
- 1659      745F7363 
- 1659      6C6B5F62 
- 1659      5F697372 
- 1659      00
- 1660              	.LASF41:
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 33
+ 1625 0135 0B       		.uleb128 0xb
+ 1626 0136 49       		.uleb128 0x49
+ 1627 0137 13       		.uleb128 0x13
+ 1628 0138 02       		.uleb128 0x2
+ 1629 0139 17       		.uleb128 0x17
+ 1630 013a 00       		.byte	0
+ 1631 013b 00       		.byte	0
+ 1632 013c 19       		.uleb128 0x19
+ 1633 013d 34       		.uleb128 0x34
+ 1634 013e 00       		.byte	0
+ 1635 013f 03       		.uleb128 0x3
+ 1636 0140 0E       		.uleb128 0xe
+ 1637 0141 3A       		.uleb128 0x3a
+ 1638 0142 0B       		.uleb128 0xb
+ 1639 0143 3B       		.uleb128 0x3b
+ 1640 0144 0B       		.uleb128 0xb
+ 1641 0145 49       		.uleb128 0x49
+ 1642 0146 13       		.uleb128 0x13
+ 1643 0147 00       		.byte	0
+ 1644 0148 00       		.byte	0
+ 1645 0149 1A       		.uleb128 0x1a
+ 1646 014a 34       		.uleb128 0x34
+ 1647 014b 00       		.byte	0
+ 1648 014c 03       		.uleb128 0x3
+ 1649 014d 0E       		.uleb128 0xe
+ 1650 014e 3A       		.uleb128 0x3a
+ 1651 014f 0B       		.uleb128 0xb
+ 1652 0150 3B       		.uleb128 0x3b
+ 1653 0151 0B       		.uleb128 0xb
+ 1654 0152 49       		.uleb128 0x49
+ 1655 0153 13       		.uleb128 0x13
+ 1656 0154 3F       		.uleb128 0x3f
+ 1657 0155 19       		.uleb128 0x19
+ 1658 0156 3C       		.uleb128 0x3c
+ 1659 0157 19       		.uleb128 0x19
+ 1660 0158 00       		.byte	0
+ 1661 0159 00       		.byte	0
+ 1662 015a 1B       		.uleb128 0x1b
+ 1663 015b 35       		.uleb128 0x35
+ 1664 015c 00       		.byte	0
+ 1665 015d 49       		.uleb128 0x49
+ 1666 015e 13       		.uleb128 0x13
+ 1667 015f 00       		.byte	0
+ 1668 0160 00       		.byte	0
+ 1669 0161 1C       		.uleb128 0x1c
+ 1670 0162 34       		.uleb128 0x34
+ 1671 0163 00       		.byte	0
+ 1672 0164 03       		.uleb128 0x3
+ 1673 0165 0E       		.uleb128 0xe
+ 1674 0166 3A       		.uleb128 0x3a
+ 1675 0167 0B       		.uleb128 0xb
+ 1676 0168 3B       		.uleb128 0x3b
+ 1677 0169 05       		.uleb128 0x5
+ 1678 016a 49       		.uleb128 0x49
+ 1679 016b 13       		.uleb128 0x13
+ 1680 016c 3F       		.uleb128 0x3f
+ 1681 016d 19       		.uleb128 0x19
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 33
 
 
- 1661 00eb 6D6F7573 		.ascii	"mouse_b_init\000"
- 1661      655F625F 
- 1661      696E6974 
- 1661      00
- 1662              	.LASF14:
- 1663 00f8 666C6F61 		.ascii	"float\000"
- 1663      7400
- 1664              	.LASF24:
- 1665 00fe 696E6974 		.ascii	"init_buttons\000"
- 1665      5F627574 
- 1665      746F6E73 
- 1665      00
- 1666              	.LASF6:
- 1667 010b 6C6F6E67 		.ascii	"long long int\000"
- 1667      206C6F6E 
- 1667      6720696E 
- 1667      7400
- 1668              	.LASF62:
- 1669 0119 474E5520 		.ascii	"GNU C 4.8.4 20140526 (release) [ARM/embedded-4_8-br"
- 1669      4320342E 
- 1669      382E3420 
- 1669      32303134 
- 1669      30353236 
- 1670 014c 616E6368 		.ascii	"anch revision 211358] -mcpu=cortex-m3 -mthumb -g -O"
- 1670      20726576 
- 1670      6973696F 
- 1670      6E203231 
- 1670      31333538 
- 1671 017f 67202D66 		.ascii	"g -ffunction-sections\000"
- 1671      66756E63 
- 1671      74696F6E 
- 1671      2D736563 
- 1671      74696F6E 
- 1672              	.LASF51:
- 1673 0195 54696D65 		.ascii	"Timer_Start\000"
- 1673      725F5374 
- 1673      61727400 
- 1674              	.LASF4:
- 1675 01a1 6C6F6E67 		.ascii	"long int\000"
- 1675      20696E74 
- 1675      00
- 1676              	.LASF44:
- 1677 01aa 53434C4B 		.ascii	"SCLK_A_ClearInterrupt\000"
- 1677      5F415F43 
- 1677      6C656172 
- 1677      496E7465 
- 1677      72727570 
- 1678              	.LASF1:
- 1679 01c0 756E7369 		.ascii	"unsigned char\000"
- 1679      676E6564 
- 1679      20636861 
- 1679      7200
- 1680              	.LASF57:
- 1681 01ce 72656672 		.ascii	"refresh_position\000"
- 1681      6573685F 
- 1681      706F7369 
- 1681      74696F6E 
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 34
+ 1682 016e 3C       		.uleb128 0x3c
+ 1683 016f 19       		.uleb128 0x19
+ 1684 0170 00       		.byte	0
+ 1685 0171 00       		.byte	0
+ 1686 0172 1D       		.uleb128 0x1d
+ 1687 0173 34       		.uleb128 0x34
+ 1688 0174 00       		.byte	0
+ 1689 0175 03       		.uleb128 0x3
+ 1690 0176 0E       		.uleb128 0xe
+ 1691 0177 3A       		.uleb128 0x3a
+ 1692 0178 0B       		.uleb128 0xb
+ 1693 0179 3B       		.uleb128 0x3b
+ 1694 017a 0B       		.uleb128 0xb
+ 1695 017b 49       		.uleb128 0x49
+ 1696 017c 13       		.uleb128 0x13
+ 1697 017d 3F       		.uleb128 0x3f
+ 1698 017e 19       		.uleb128 0x19
+ 1699 017f 02       		.uleb128 0x2
+ 1700 0180 18       		.uleb128 0x18
+ 1701 0181 00       		.byte	0
+ 1702 0182 00       		.byte	0
+ 1703 0183 1E       		.uleb128 0x1e
+ 1704 0184 34       		.uleb128 0x34
+ 1705 0185 00       		.byte	0
+ 1706 0186 03       		.uleb128 0x3
+ 1707 0187 08       		.uleb128 0x8
+ 1708 0188 3A       		.uleb128 0x3a
+ 1709 0189 0B       		.uleb128 0xb
+ 1710 018a 3B       		.uleb128 0x3b
+ 1711 018b 0B       		.uleb128 0xb
+ 1712 018c 49       		.uleb128 0x49
+ 1713 018d 13       		.uleb128 0x13
+ 1714 018e 3F       		.uleb128 0x3f
+ 1715 018f 19       		.uleb128 0x19
+ 1716 0190 02       		.uleb128 0x2
+ 1717 0191 18       		.uleb128 0x18
+ 1718 0192 00       		.byte	0
+ 1719 0193 00       		.byte	0
+ 1720 0194 1F       		.uleb128 0x1f
+ 1721 0195 2E       		.uleb128 0x2e
+ 1722 0196 00       		.byte	0
+ 1723 0197 3F       		.uleb128 0x3f
+ 1724 0198 19       		.uleb128 0x19
+ 1725 0199 03       		.uleb128 0x3
+ 1726 019a 0E       		.uleb128 0xe
+ 1727 019b 3A       		.uleb128 0x3a
+ 1728 019c 0B       		.uleb128 0xb
+ 1729 019d 3B       		.uleb128 0x3b
+ 1730 019e 0B       		.uleb128 0xb
+ 1731 019f 27       		.uleb128 0x27
+ 1732 01a0 19       		.uleb128 0x19
+ 1733 01a1 3C       		.uleb128 0x3c
+ 1734 01a2 19       		.uleb128 0x19
+ 1735 01a3 00       		.byte	0
+ 1736 01a4 00       		.byte	0
+ 1737 01a5 20       		.uleb128 0x20
+ 1738 01a6 2E       		.uleb128 0x2e
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 34
 
 
- 1681      00
- 1682              	.LASF50:
- 1683 01df 4C43445F 		.ascii	"LCD_Start\000"
- 1683      53746172 
- 1683      7400
- 1684              	.LASF45:
- 1685 01e9 53434C4B 		.ascii	"SCLK_B_ClearInterrupt\000"
- 1685      5F425F43 
- 1685      6C656172 
- 1685      496E7465 
- 1685      72727570 
- 1686              	.LASF20:
- 1687 01ff 6C6F6E67 		.ascii	"long double\000"
- 1687      20646F75 
- 1687      626C6500 
- 1688              	.LASF18:
- 1689 020b 63796973 		.ascii	"cyisraddress\000"
- 1689      72616464 
- 1689      72657373 
- 1689      00
- 1690              	.LASF35:
- 1691 0218 42757474 		.ascii	"Button_PWM_Start\000"
- 1691      6F6E5F50 
- 1691      574D5F53 
- 1691      74617274 
- 1691      00
- 1692              	.LASF66:
- 1693 0229 73707269 		.ascii	"sprintf\000"
- 1693      6E746600 
- 1694              	.LASF49:
- 1695 0231 73636C6B 		.ascii	"sclk_b_isr_StartEx\000"
- 1695      5F625F69 
- 1695      73725F53 
- 1695      74617274 
- 1695      457800
- 1696              	.LASF0:
- 1697 0244 7369676E 		.ascii	"signed char\000"
- 1697      65642063 
- 1697      68617200 
- 1698              	.LASF7:
- 1699 0250 6C6F6E67 		.ascii	"long long unsigned int\000"
- 1699      206C6F6E 
- 1699      6720756E 
- 1699      7369676E 
- 1699      65642069 
- 1700              	.LASF38:
- 1701 0267 73636C6B 		.ascii	"sclk_a_isr_Stop\000"
- 1701      5F615F69 
- 1701      73725F53 
- 1701      746F7000 
- 1702              	.LASF8:
- 1703 0277 756E7369 		.ascii	"unsigned int\000"
- 1703      676E6564 
- 1703      20696E74 
- 1703      00
- 1704              	.LASF61:
- 1705 0284 4C43445F 		.ascii	"LCD_PrintString\000"
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 35
+ 1739 01a7 01       		.byte	0x1
+ 1740 01a8 3F       		.uleb128 0x3f
+ 1741 01a9 19       		.uleb128 0x19
+ 1742 01aa 03       		.uleb128 0x3
+ 1743 01ab 0E       		.uleb128 0xe
+ 1744 01ac 3A       		.uleb128 0x3a
+ 1745 01ad 0B       		.uleb128 0xb
+ 1746 01ae 3B       		.uleb128 0x3b
+ 1747 01af 0B       		.uleb128 0xb
+ 1748 01b0 27       		.uleb128 0x27
+ 1749 01b1 19       		.uleb128 0x19
+ 1750 01b2 3C       		.uleb128 0x3c
+ 1751 01b3 19       		.uleb128 0x19
+ 1752 01b4 01       		.uleb128 0x1
+ 1753 01b5 13       		.uleb128 0x13
+ 1754 01b6 00       		.byte	0
+ 1755 01b7 00       		.byte	0
+ 1756 01b8 21       		.uleb128 0x21
+ 1757 01b9 05       		.uleb128 0x5
+ 1758 01ba 00       		.byte	0
+ 1759 01bb 49       		.uleb128 0x49
+ 1760 01bc 13       		.uleb128 0x13
+ 1761 01bd 00       		.byte	0
+ 1762 01be 00       		.byte	0
+ 1763 01bf 22       		.uleb128 0x22
+ 1764 01c0 2E       		.uleb128 0x2e
+ 1765 01c1 00       		.byte	0
+ 1766 01c2 3F       		.uleb128 0x3f
+ 1767 01c3 19       		.uleb128 0x19
+ 1768 01c4 03       		.uleb128 0x3
+ 1769 01c5 0E       		.uleb128 0xe
+ 1770 01c6 3A       		.uleb128 0x3a
+ 1771 01c7 0B       		.uleb128 0xb
+ 1772 01c8 3B       		.uleb128 0x3b
+ 1773 01c9 0B       		.uleb128 0xb
+ 1774 01ca 27       		.uleb128 0x27
+ 1775 01cb 19       		.uleb128 0x19
+ 1776 01cc 49       		.uleb128 0x49
+ 1777 01cd 13       		.uleb128 0x13
+ 1778 01ce 3C       		.uleb128 0x3c
+ 1779 01cf 19       		.uleb128 0x19
+ 1780 01d0 00       		.byte	0
+ 1781 01d1 00       		.byte	0
+ 1782 01d2 23       		.uleb128 0x23
+ 1783 01d3 2E       		.uleb128 0x2e
+ 1784 01d4 01       		.byte	0x1
+ 1785 01d5 3F       		.uleb128 0x3f
+ 1786 01d6 19       		.uleb128 0x19
+ 1787 01d7 03       		.uleb128 0x3
+ 1788 01d8 0E       		.uleb128 0xe
+ 1789 01d9 3A       		.uleb128 0x3a
+ 1790 01da 0B       		.uleb128 0xb
+ 1791 01db 3B       		.uleb128 0x3b
+ 1792 01dc 05       		.uleb128 0x5
+ 1793 01dd 27       		.uleb128 0x27
+ 1794 01de 19       		.uleb128 0x19
+ 1795 01df 49       		.uleb128 0x49
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 35
 
 
- 1705      5072696E 
- 1705      74537472 
- 1705      696E6700 
- 1706              	.LASF36:
- 1707 0294 62757430 		.ascii	"but0_StartEx\000"
- 1707      5F537461 
- 1707      72744578 
- 1707      00
- 1708              	.LASF58:
- 1709 02a1 72657365 		.ascii	"reset_navigation\000"
- 1709      745F6E61 
- 1709      76696761 
- 1709      74696F6E 
- 1709      00
- 1710              	.LASF37:
- 1711 02b2 62757431 		.ascii	"but1_StartEx\000"
- 1711      5F537461 
- 1711      72744578 
- 1711      00
- 1712              	.LASF25:
- 1713 02bf 696E6974 		.ascii	"init_mice\000"
- 1713      5F6D6963 
- 1713      6500
- 1714              	.LASF17:
- 1715 02c9 63686172 		.ascii	"char\000"
- 1715      00
- 1716              	.LASF55:
- 1717 02ce 54696D65 		.ascii	"Timer_ReadCounter\000"
- 1717      725F5265 
- 1717      6164436F 
- 1717      756E7465 
- 1717      7200
- 1718              	.LASF10:
- 1719 02e0 696E7433 		.ascii	"int32_t\000"
- 1719      325F7400 
- 1720              	.LASF3:
- 1721 02e8 73686F72 		.ascii	"short unsigned int\000"
- 1721      7420756E 
- 1721      7369676E 
- 1721      65642069 
- 1721      6E7400
- 1722              	.LASF46:
- 1723 02fb 73636C6B 		.ascii	"sclk_a_isr_SetPriority\000"
- 1723      5F615F69 
- 1723      73725F53 
- 1723      65745072 
- 1723      696F7269 
- 1724              	.LASF34:
- 1725 0312 62757431 		.ascii	"but1_ClearPending\000"
- 1725      5F436C65 
- 1725      61725065 
- 1725      6E64696E 
- 1725      6700
- 1726              	.LASF47:
- 1727 0324 73636C6B 		.ascii	"sclk_b_isr_SetPriority\000"
- 1727      5F625F69 
- 1727      73725F53 
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 36
+ 1796 01e0 13       		.uleb128 0x13
+ 1797 01e1 3C       		.uleb128 0x3c
+ 1798 01e2 19       		.uleb128 0x19
+ 1799 01e3 01       		.uleb128 0x1
+ 1800 01e4 13       		.uleb128 0x13
+ 1801 01e5 00       		.byte	0
+ 1802 01e6 00       		.byte	0
+ 1803 01e7 24       		.uleb128 0x24
+ 1804 01e8 2E       		.uleb128 0x2e
+ 1805 01e9 01       		.byte	0x1
+ 1806 01ea 3F       		.uleb128 0x3f
+ 1807 01eb 19       		.uleb128 0x19
+ 1808 01ec 03       		.uleb128 0x3
+ 1809 01ed 0E       		.uleb128 0xe
+ 1810 01ee 3A       		.uleb128 0x3a
+ 1811 01ef 0B       		.uleb128 0xb
+ 1812 01f0 3B       		.uleb128 0x3b
+ 1813 01f1 0B       		.uleb128 0xb
+ 1814 01f2 3C       		.uleb128 0x3c
+ 1815 01f3 19       		.uleb128 0x19
+ 1816 01f4 01       		.uleb128 0x1
+ 1817 01f5 13       		.uleb128 0x13
+ 1818 01f6 00       		.byte	0
+ 1819 01f7 00       		.byte	0
+ 1820 01f8 25       		.uleb128 0x25
+ 1821 01f9 2E       		.uleb128 0x2e
+ 1822 01fa 01       		.byte	0x1
+ 1823 01fb 3F       		.uleb128 0x3f
+ 1824 01fc 19       		.uleb128 0x19
+ 1825 01fd 03       		.uleb128 0x3
+ 1826 01fe 0E       		.uleb128 0xe
+ 1827 01ff 3A       		.uleb128 0x3a
+ 1828 0200 0B       		.uleb128 0xb
+ 1829 0201 3B       		.uleb128 0x3b
+ 1830 0202 0B       		.uleb128 0xb
+ 1831 0203 27       		.uleb128 0x27
+ 1832 0204 19       		.uleb128 0x19
+ 1833 0205 49       		.uleb128 0x49
+ 1834 0206 13       		.uleb128 0x13
+ 1835 0207 3C       		.uleb128 0x3c
+ 1836 0208 19       		.uleb128 0x19
+ 1837 0209 01       		.uleb128 0x1
+ 1838 020a 13       		.uleb128 0x13
+ 1839 020b 00       		.byte	0
+ 1840 020c 00       		.byte	0
+ 1841 020d 26       		.uleb128 0x26
+ 1842 020e 2E       		.uleb128 0x2e
+ 1843 020f 01       		.byte	0x1
+ 1844 0210 3F       		.uleb128 0x3f
+ 1845 0211 19       		.uleb128 0x19
+ 1846 0212 03       		.uleb128 0x3
+ 1847 0213 0E       		.uleb128 0xe
+ 1848 0214 3A       		.uleb128 0x3a
+ 1849 0215 0B       		.uleb128 0xb
+ 1850 0216 3B       		.uleb128 0x3b
+ 1851 0217 0B       		.uleb128 0xb
+ 1852 0218 27       		.uleb128 0x27
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 36
 
 
- 1727      65745072 
- 1727      696F7269 
- 1728              	.LASF22:
- 1729 033b 494E435F 		.ascii	"INC_ISR\000"
- 1729      49535200 
- 1730              	.LASF12:
- 1731 0343 75696E74 		.ascii	"uint32\000"
- 1731      333200
- 1732              	.LASF5:
- 1733 034a 6C6F6E67 		.ascii	"long unsigned int\000"
- 1733      20756E73 
- 1733      69676E65 
- 1733      6420696E 
- 1733      7400
- 1734              	.LASF13:
- 1735 035c 696E7433 		.ascii	"int32\000"
- 1735      3200
- 1736              	.LASF15:
- 1737 0362 646F7562 		.ascii	"double\000"
- 1737      6C6500
- 1738              	.LASF40:
- 1739 0369 6D6F7573 		.ascii	"mouse_a_init\000"
- 1739      655F615F 
- 1739      696E6974 
- 1739      00
- 1740              	.LASF56:
- 1741 0376 696E6974 		.ascii	"init_navigation\000"
- 1741      5F6E6176 
- 1741      69676174 
- 1741      696F6E00 
- 1742              	.LASF63:
- 1743 0386 2E5C6D61 		.ascii	".\\main.c\000"
- 1743      696E2E63 
- 1743      00
- 1744              	.LASF9:
- 1745 038f 5F5F696E 		.ascii	"__int32_t\000"
- 1745      7433325F 
- 1745      7400
- 1746              	.LASF32:
- 1747 0399 6C6F6361 		.ascii	"location\000"
- 1747      74696F6E 
- 1747      00
- 1748              	.LASF33:
- 1749 03a2 62757430 		.ascii	"but0_ClearPending\000"
- 1749      5F436C65 
- 1749      61725065 
- 1749      6E64696E 
- 1749      6700
- 1750              	.LASF60:
- 1751 03b4 4C43445F 		.ascii	"LCD_Position\000"
- 1751      506F7369 
- 1751      74696F6E 
- 1751      00
- 1752              	.LASF21:
- 1753 03c1 616E676C 		.ascii	"angle\000"
- 1753      6500
- 1754              	.LASF28:
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN4CMAn.s 			page 37
+ 1853 0219 19       		.uleb128 0x19
+ 1854 021a 3C       		.uleb128 0x3c
+ 1855 021b 19       		.uleb128 0x19
+ 1856 021c 00       		.byte	0
+ 1857 021d 00       		.byte	0
+ 1858 021e 00       		.byte	0
+ 1859              		.section	.debug_loc,"",%progbits
+ 1860              	.Ldebug_loc0:
+ 1861              	.LLST0:
+ 1862 0000 3C000000 		.4byte	.LVL35
+ 1863 0004 47000000 		.4byte	.LVL36-1
+ 1864 0008 0100     		.2byte	0x1
+ 1865 000a 50       		.byte	0x50
+ 1866 000b 47000000 		.4byte	.LVL36-1
+ 1867 000f 4A000000 		.4byte	.LVL37
+ 1868 0013 0100     		.2byte	0x1
+ 1869 0015 54       		.byte	0x54
+ 1870 0016 4A000000 		.4byte	.LVL37
+ 1871 001a 52000000 		.4byte	.LVL38
+ 1872 001e 0100     		.2byte	0x1
+ 1873 0020 50       		.byte	0x50
+ 1874 0021 52000000 		.4byte	.LVL38
+ 1875 0025 CC000000 		.4byte	.LFE69
+ 1876 0029 0100     		.2byte	0x1
+ 1877 002b 54       		.byte	0x54
+ 1878 002c 00000000 		.4byte	0
+ 1879 0030 00000000 		.4byte	0
+ 1880              		.section	.debug_aranges,"",%progbits
+ 1881 0000 4C000000 		.4byte	0x4c
+ 1882 0004 0200     		.2byte	0x2
+ 1883 0006 00000000 		.4byte	.Ldebug_info0
+ 1884 000a 04       		.byte	0x4
+ 1885 000b 00       		.byte	0
+ 1886 000c 0000     		.2byte	0
+ 1887 000e 0000     		.2byte	0
+ 1888 0010 00000000 		.4byte	.LFB63
+ 1889 0014 14000000 		.4byte	.LFE63-.LFB63
+ 1890 0018 00000000 		.4byte	.LFB64
+ 1891 001c 14000000 		.4byte	.LFE64-.LFB64
+ 1892 0020 00000000 		.4byte	.LFB65
+ 1893 0024 30000000 		.4byte	.LFE65-.LFB65
+ 1894 0028 00000000 		.4byte	.LFB66
+ 1895 002c 48000000 		.4byte	.LFE66-.LFB66
+ 1896 0030 00000000 		.4byte	.LFB67
+ 1897 0034 0C000000 		.4byte	.LFE67-.LFB67
+ 1898 0038 00000000 		.4byte	.LFB68
+ 1899 003c 32000000 		.4byte	.LFE68-.LFB68
+ 1900 0040 00000000 		.4byte	.LFB69
+ 1901 0044 CC000000 		.4byte	.LFE69-.LFB69
+ 1902 0048 00000000 		.4byte	0
+ 1903 004c 00000000 		.4byte	0
+ 1904              		.section	.debug_ranges,"",%progbits
+ 1905              	.Ldebug_ranges0:
+ 1906 0000 00000000 		.4byte	.LFB63
+ 1907 0004 14000000 		.4byte	.LFE63
+ 1908 0008 00000000 		.4byte	.LFB64
+ 1909 000c 14000000 		.4byte	.LFE64
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 37
 
 
- 1755 03c7 74696D65 		.ascii	"time\000"
- 1755      00
- 1756              	.LASF65:
- 1757 03cc 506F7369 		.ascii	"Position\000"
- 1757      74696F6E 
- 1757      00
- 1758              	.LASF30:
- 1759 03d5 49544D5F 		.ascii	"ITM_RxBuffer\000"
- 1759      52784275 
- 1759      66666572 
- 1759      00
- 1760              	.LASF52:
- 1761 03e2 43794465 		.ascii	"CyDelay\000"
- 1761      6C617900 
- 1762              	.LASF59:
- 1763 03ea 4C43445F 		.ascii	"LCD_WriteControl\000"
- 1763      57726974 
- 1763      65436F6E 
- 1763      74726F6C 
- 1763      00
- 1764              	.LASF31:
- 1765 03fb 4F563936 		.ascii	"OV9650_1_framebuffer\000"
- 1765      35305F31 
- 1765      5F667261 
- 1765      6D656275 
- 1765      66666572 
- 1766              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.8.4 20140526 (release) [ARM/embedded-4_8-br
+ 1910 0010 00000000 		.4byte	.LFB65
+ 1911 0014 30000000 		.4byte	.LFE65
+ 1912 0018 00000000 		.4byte	.LFB66
+ 1913 001c 48000000 		.4byte	.LFE66
+ 1914 0020 00000000 		.4byte	.LFB67
+ 1915 0024 0C000000 		.4byte	.LFE67
+ 1916 0028 00000000 		.4byte	.LFB68
+ 1917 002c 32000000 		.4byte	.LFE68
+ 1918 0030 00000000 		.4byte	.LFB69
+ 1919 0034 CC000000 		.4byte	.LFE69
+ 1920 0038 00000000 		.4byte	0
+ 1921 003c 00000000 		.4byte	0
+ 1922              		.section	.debug_line,"",%progbits
+ 1923              	.Ldebug_line0:
+ 1924 0000 7C030000 		.section	.debug_str,"MS",%progbits,1
+ 1924      0200CC02 
+ 1924      00000201 
+ 1924      FB0E0D00 
+ 1924      01010101 
+ 1925              	.LASF50:
+ 1926 0000 72657365 		.ascii	"reset_sclk_a_isr\000"
+ 1926      745F7363 
+ 1926      6C6B5F61 
+ 1926      5F697372 
+ 1926      00
+ 1927              	.LASF33:
+ 1928 0011 6F757453 		.ascii	"outString\000"
+ 1928      7472696E 
+ 1928      6700
+ 1929              	.LASF35:
+ 1930 001b 6C6F635F 		.ascii	"loc_x_a\000"
+ 1930      785F6100 
+ 1931              	.LASF37:
+ 1932 0023 6C6F635F 		.ascii	"loc_x_b\000"
+ 1932      785F6200 
+ 1933              	.LASF76:
+ 1934 002b 433A5C55 		.ascii	"C:\\Users\\xavieran\\Desktop\\ECE3091\\PSOCProjects"
+ 1934      73657273 
+ 1934      5C786176 
+ 1934      69657261 
+ 1934      6E5C4465 
+ 1935 0059 5C454E47 		.ascii	"\\ENG3091_MandM\\ENG3091_MandM.cydsn\000"
+ 1935      33303931 
+ 1935      5F4D616E 
+ 1935      644D5C45 
+ 1935      4E473330 
+ 1936              	.LASF64:
+ 1937 007c 696E6974 		.ascii	"init_motors\000"
+ 1937      5F6D6F74 
+ 1937      6F727300 
+ 1938              	.LASF25:
+ 1939 0088 4445435F 		.ascii	"DEC_ISR\000"
+ 1939      49535200 
+ 1940              	.LASF2:
+ 1941 0090 73686F72 		.ascii	"short int\000"
+ 1941      7420696E 
+ 1941      7400
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 38
+
+
+ 1942              	.LASF19:
+ 1943 009a 73697A65 		.ascii	"size_t\000"
+ 1943      5F7400
+ 1944              	.LASF58:
+ 1945 00a1 5553425F 		.ascii	"USB_GetConfiguration\000"
+ 1945      47657443 
+ 1945      6F6E6669 
+ 1945      67757261 
+ 1945      74696F6E 
+ 1946              	.LASF16:
+ 1947 00b6 63686172 		.ascii	"char8\000"
+ 1947      3800
+ 1948              	.LASF32:
+ 1949 00bc 6D61696E 		.ascii	"main\000"
+ 1949      00
+ 1950              	.LASF47:
+ 1951 00c1 73636C6B 		.ascii	"sclk_b_isr_Stop\000"
+ 1951      5F625F69 
+ 1951      73725F53 
+ 1951      746F7000 
+ 1952              	.LASF22:
+ 1953 00d1 76615F6C 		.ascii	"va_list\000"
+ 1953      69737400 
+ 1954              	.LASF79:
+ 1955 00d9 64656C74 		.ascii	"delta\000"
+ 1955      6100
+ 1956              	.LASF60:
+ 1957 00df 5553425F 		.ascii	"USB_PutString\000"
+ 1957      50757453 
+ 1957      7472696E 
+ 1957      6700
+ 1958              	.LASF11:
+ 1959 00ed 75696E74 		.ascii	"uint8\000"
+ 1959      3800
+ 1960              	.LASF56:
+ 1961 00f3 73636C6B 		.ascii	"sclk_a_isr_StartEx\000"
+ 1961      5F615F69 
+ 1961      73725F53 
+ 1961      74617274 
+ 1961      457800
+ 1962              	.LASF51:
+ 1963 0106 72657365 		.ascii	"reset_sclk_b_isr\000"
+ 1963      745F7363 
+ 1963      6C6B5F62 
+ 1963      5F697372 
+ 1963      00
+ 1964              	.LASF49:
+ 1965 0117 6D6F7573 		.ascii	"mouse_b_init\000"
+ 1965      655F625F 
+ 1965      696E6974 
+ 1965      00
+ 1966              	.LASF14:
+ 1967 0124 666C6F61 		.ascii	"float\000"
+ 1967      7400
+ 1968              	.LASF26:
+ 1969 012a 696E6974 		.ascii	"init_buttons\000"
+ 1969      5F627574 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 39
+
+
+ 1969      746F6E73 
+ 1969      00
+ 1970              	.LASF6:
+ 1971 0137 6C6F6E67 		.ascii	"long long int\000"
+ 1971      206C6F6E 
+ 1971      6720696E 
+ 1971      7400
+ 1972              	.LASF74:
+ 1973 0145 474E5520 		.ascii	"GNU C 4.8.4 20140526 (release) [ARM/embedded-4_8-br"
+ 1973      4320342E 
+ 1973      382E3420 
+ 1973      32303134 
+ 1973      30353236 
+ 1974 0178 616E6368 		.ascii	"anch revision 211358] -mcpu=cortex-m3 -mthumb -g -O"
+ 1974      20726576 
+ 1974      6973696F 
+ 1974      6E203231 
+ 1974      31333538 
+ 1975 01ab 67202D66 		.ascii	"g -ffunction-sections\000"
+ 1975      66756E63 
+ 1975      74696F6E 
+ 1975      2D736563 
+ 1975      74696F6E 
+ 1976              	.LASF77:
+ 1977 01c1 5F5F7661 		.ascii	"__va_list\000"
+ 1977      5F6C6973 
+ 1977      7400
+ 1978              	.LASF62:
+ 1979 01cb 54696D65 		.ascii	"Timer_Start\000"
+ 1979      725F5374 
+ 1979      61727400 
+ 1980              	.LASF4:
+ 1981 01d7 6C6F6E67 		.ascii	"long int\000"
+ 1981      20696E74 
+ 1981      00
+ 1982              	.LASF52:
+ 1983 01e0 53434C4B 		.ascii	"SCLK_A_ClearInterrupt\000"
+ 1983      5F415F43 
+ 1983      6C656172 
+ 1983      496E7465 
+ 1983      72727570 
+ 1984              	.LASF66:
+ 1985 01f6 73657443 		.ascii	"setCoast\000"
+ 1985      6F617374 
+ 1985      00
+ 1986              	.LASF1:
+ 1987 01ff 756E7369 		.ascii	"unsigned char\000"
+ 1987      676E6564 
+ 1987      20636861 
+ 1987      7200
+ 1988              	.LASF61:
+ 1989 020d 4C43445F 		.ascii	"LCD_Start\000"
+ 1989      53746172 
+ 1989      7400
+ 1990              	.LASF53:
+ 1991 0217 53434C4B 		.ascii	"SCLK_B_ClearInterrupt\000"
+ 1991      5F425F43 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 40
+
+
+ 1991      6C656172 
+ 1991      496E7465 
+ 1991      72727570 
+ 1992              	.LASF23:
+ 1993 022d 6C6F6E67 		.ascii	"long double\000"
+ 1993      20646F75 
+ 1993      626C6500 
+ 1994              	.LASF18:
+ 1995 0239 63796973 		.ascii	"cyisraddress\000"
+ 1995      72616464 
+ 1995      72657373 
+ 1995      00
+ 1996              	.LASF43:
+ 1997 0246 42757474 		.ascii	"Button_PWM_Start\000"
+ 1997      6F6E5F50 
+ 1997      574D5F53 
+ 1997      74617274 
+ 1997      00
+ 1998              	.LASF71:
+ 1999 0257 73707269 		.ascii	"sprintf\000"
+ 1999      6E746600 
+ 2000              	.LASF57:
+ 2001 025f 73636C6B 		.ascii	"sclk_b_isr_StartEx\000"
+ 2001      5F625F69 
+ 2001      73725F53 
+ 2001      74617274 
+ 2001      457800
+ 2002              	.LASF0:
+ 2003 0272 7369676E 		.ascii	"signed char\000"
+ 2003      65642063 
+ 2003      68617200 
+ 2004              	.LASF7:
+ 2005 027e 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2005      206C6F6E 
+ 2005      6720756E 
+ 2005      7369676E 
+ 2005      65642069 
+ 2006              	.LASF29:
+ 2007 0295 7072696E 		.ascii	"print\000"
+ 2007      7400
+ 2008              	.LASF46:
+ 2009 029b 73636C6B 		.ascii	"sclk_a_isr_Stop\000"
+ 2009      5F615F69 
+ 2009      73725F53 
+ 2009      746F7000 
+ 2010              	.LASF59:
+ 2011 02ab 5553425F 		.ascii	"USB_CDCIsReady\000"
+ 2011      43444349 
+ 2011      73526561 
+ 2011      647900
+ 2012              	.LASF8:
+ 2013 02ba 756E7369 		.ascii	"unsigned int\000"
+ 2013      676E6564 
+ 2013      20696E74 
+ 2013      00
+ 2014              	.LASF73:
+ 2015 02c7 4C43445F 		.ascii	"LCD_PrintString\000"
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 41
+
+
+ 2015      5072696E 
+ 2015      74537472 
+ 2015      696E6700 
+ 2016              	.LASF31:
+ 2017 02d7 61726773 		.ascii	"args\000"
+ 2017      00
+ 2018              	.LASF44:
+ 2019 02dc 62757430 		.ascii	"but0_StartEx\000"
+ 2019      5F537461 
+ 2019      72744578 
+ 2019      00
+ 2020              	.LASF68:
+ 2021 02e9 72657365 		.ascii	"reset_navigation\000"
+ 2021      745F6E61 
+ 2021      76696761 
+ 2021      74696F6E 
+ 2021      00
+ 2022              	.LASF45:
+ 2023 02fa 62757431 		.ascii	"but1_StartEx\000"
+ 2023      5F537461 
+ 2023      72744578 
+ 2023      00
+ 2024              	.LASF27:
+ 2025 0307 696E6974 		.ascii	"init_mice\000"
+ 2025      5F6D6963 
+ 2025      6500
+ 2026              	.LASF70:
+ 2027 0311 76736E70 		.ascii	"vsnprintf\000"
+ 2027      72696E74 
+ 2027      6600
+ 2028              	.LASF78:
+ 2029 031b 5F5F6170 		.ascii	"__ap\000"
+ 2029      00
+ 2030              	.LASF17:
+ 2031 0320 63686172 		.ascii	"char\000"
+ 2031      00
+ 2032              	.LASF65:
+ 2033 0325 54696D65 		.ascii	"Timer_ReadCounter\000"
+ 2033      725F5265 
+ 2033      6164436F 
+ 2033      756E7465 
+ 2033      7200
+ 2034              	.LASF10:
+ 2035 0337 696E7433 		.ascii	"int32_t\000"
+ 2035      325F7400 
+ 2036              	.LASF3:
+ 2037 033f 73686F72 		.ascii	"short unsigned int\000"
+ 2037      7420756E 
+ 2037      7369676E 
+ 2037      65642069 
+ 2037      6E7400
+ 2038              	.LASF54:
+ 2039 0352 73636C6B 		.ascii	"sclk_a_isr_SetPriority\000"
+ 2039      5F615F69 
+ 2039      73725F53 
+ 2039      65745072 
+ 2039      696F7269 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 42
+
+
+ 2040              	.LASF72:
+ 2041 0369 4C43445F 		.ascii	"LCD_Position\000"
+ 2041      506F7369 
+ 2041      74696F6E 
+ 2041      00
+ 2042              	.LASF42:
+ 2043 0376 62757431 		.ascii	"but1_ClearPending\000"
+ 2043      5F436C65 
+ 2043      61725065 
+ 2043      6E64696E 
+ 2043      6700
+ 2044              	.LASF30:
+ 2045 0388 62756666 		.ascii	"buffer\000"
+ 2045      657200
+ 2046              	.LASF24:
+ 2047 038f 494E435F 		.ascii	"INC_ISR\000"
+ 2047      49535200 
+ 2048              	.LASF12:
+ 2049 0397 75696E74 		.ascii	"uint32\000"
+ 2049      333200
+ 2050              	.LASF55:
+ 2051 039e 73636C6B 		.ascii	"sclk_b_isr_SetPriority\000"
+ 2051      5F625F69 
+ 2051      73725F53 
+ 2051      65745072 
+ 2051      696F7269 
+ 2052              	.LASF5:
+ 2053 03b5 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2053      20756E73 
+ 2053      69676E65 
+ 2053      6420696E 
+ 2053      7400
+ 2054              	.LASF13:
+ 2055 03c7 696E7433 		.ascii	"int32\000"
+ 2055      3200
+ 2056              	.LASF15:
+ 2057 03cd 646F7562 		.ascii	"double\000"
+ 2057      6C6500
+ 2058              	.LASF39:
+ 2059 03d4 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 2059      52784275 
+ 2059      66666572 
+ 2059      00
+ 2060              	.LASF48:
+ 2061 03e1 6D6F7573 		.ascii	"mouse_a_init\000"
+ 2061      655F615F 
+ 2061      696E6974 
+ 2061      00
+ 2062              	.LASF28:
+ 2063 03ee 73746F70 		.ascii	"stop_mice\000"
+ 2063      5F6D6963 
+ 2063      6500
+ 2064              	.LASF67:
+ 2065 03f8 696E6974 		.ascii	"init_navigation\000"
+ 2065      5F6E6176 
+ 2065      69676174 
+ 2065      696F6E00 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cceG904L.s 			page 43
+
+
+ 2066              	.LASF75:
+ 2067 0408 2E5C6D61 		.ascii	".\\main.c\000"
+ 2067      696E2E63 
+ 2067      00
+ 2068              	.LASF9:
+ 2069 0411 5F5F696E 		.ascii	"__int32_t\000"
+ 2069      7433325F 
+ 2069      7400
+ 2070              	.LASF41:
+ 2071 041b 62757430 		.ascii	"but0_ClearPending\000"
+ 2071      5F436C65 
+ 2071      61725065 
+ 2071      6E64696E 
+ 2071      6700
+ 2072              	.LASF20:
+ 2073 042d 73697A65 		.ascii	"sizetype\000"
+ 2073      74797065 
+ 2073      00
+ 2074              	.LASF21:
+ 2075 0436 5F5F676E 		.ascii	"__gnuc_va_list\000"
+ 2075      75635F76 
+ 2075      615F6C69 
+ 2075      737400
+ 2076              	.LASF34:
+ 2077 0445 74696D65 		.ascii	"time\000"
+ 2077      00
+ 2078              	.LASF36:
+ 2079 044a 6C6F635F 		.ascii	"loc_y_a\000"
+ 2079      795F6100 
+ 2080              	.LASF38:
+ 2081 0452 6C6F635F 		.ascii	"loc_y_b\000"
+ 2081      795F6200 
+ 2082              	.LASF63:
+ 2083 045a 43794465 		.ascii	"CyDelay\000"
+ 2083      6C617900 
+ 2084              	.LASF69:
+ 2085 0462 4C43445F 		.ascii	"LCD_WriteControl\000"
+ 2085      57726974 
+ 2085      65436F6E 
+ 2085      74726F6C 
+ 2085      00
+ 2086              	.LASF40:
+ 2087 0473 4F563936 		.ascii	"OV9650_1_framebuffer\000"
+ 2087      35305F31 
+ 2087      5F667261 
+ 2087      6D656275 
+ 2087      66666572 
+ 2088              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.8.4 20140526 (release) [ARM/embedded-4_8-br

@@ -11,6 +11,7 @@
 */
 
 #include <project.h>
+#include <mouse_conf.h>
 
 #define S_STAT_START 0
 #define S_MOVX_START 1
@@ -96,7 +97,7 @@ void mouse_a_init(){
     CyDelay(2);//Wait for ACK
     //Set to 40
     //CHECK_A_Write(1);
-    mouse_a_write(80);
+    mouse_a_write(M_SAMPLE);
     //CHECK_A_Write(0);
     
     CyDelay(2);
@@ -108,12 +109,12 @@ void mouse_a_init(){
     CyDelay(2);
     
     //CHECK_A_Write(1);
-    mouse_a_write(0x02); //Set resolution to 4c/mm
+    mouse_a_write(M_RES); //Set resolution to 4c/mm
     //CHECK_A_Write(0);
     
     
     //CHECK_A_Write(1);
-    mouse_a_write(0xf4);
+    mouse_a_write(0xf4); //Begin streaming data
     //CHECK_A_Write(0);
     
     CyDelay(2);
