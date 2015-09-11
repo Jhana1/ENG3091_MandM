@@ -1,0 +1,967 @@
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccUdLtVF.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"HC_Timer_PM.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.HC_Timer_SaveConfig,"ax",%progbits
+  19              		.align	2
+  20              		.global	HC_Timer_SaveConfig
+  21              		.thumb
+  22              		.thumb_func
+  23              		.type	HC_Timer_SaveConfig, %function
+  24              	HC_Timer_SaveConfig:
+  25              	.LFB0:
+  26              		.file 1 ".\\Generated_Source\\PSoC5\\HC_Timer_PM.c"
+   1:.\Generated_Source\PSoC5/HC_Timer_PM.c **** /*******************************************************************************
+   2:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * File Name: HC_Timer_PM.c
+   3:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * Version 2.70
+   4:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *
+   5:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *  Description:
+   6:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *     This file provides the power management source code to API for the
+   7:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *     Timer.
+   8:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *
+   9:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *   Note:
+  10:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *     None
+  11:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *
+  12:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *******************************************************************************
+  13:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * Copyright 2008-2014, Cypress Semiconductor Corporation.  All rights reserved.
+  14:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * You may use this file only in accordance with the license, terms, conditions,
+  15:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * disclaimers, and limitations in the end user license agreement accompanying
+  16:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * the software package with which this file was provided.
+  17:.\Generated_Source\PSoC5/HC_Timer_PM.c **** ********************************************************************************/
+  18:.\Generated_Source\PSoC5/HC_Timer_PM.c **** 
+  19:.\Generated_Source\PSoC5/HC_Timer_PM.c **** #include "HC_Timer.h"
+  20:.\Generated_Source\PSoC5/HC_Timer_PM.c **** 
+  21:.\Generated_Source\PSoC5/HC_Timer_PM.c **** static HC_Timer_backupStruct HC_Timer_backup;
+  22:.\Generated_Source\PSoC5/HC_Timer_PM.c **** 
+  23:.\Generated_Source\PSoC5/HC_Timer_PM.c **** 
+  24:.\Generated_Source\PSoC5/HC_Timer_PM.c **** /*******************************************************************************
+  25:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * Function Name: HC_Timer_SaveConfig
+  26:.\Generated_Source\PSoC5/HC_Timer_PM.c **** ********************************************************************************
+  27:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *
+  28:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * Summary:
+  29:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *     Save the current user configuration
+  30:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *
+  31:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * Parameters:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccUdLtVF.s 			page 2
+
+
+  32:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *  void
+  33:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *
+  34:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * Return:
+  35:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *  void
+  36:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *
+  37:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * Global variables:
+  38:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *  HC_Timer_backup:  Variables of this global structure are modified to
+  39:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *  store the values of non retention configuration registers when Sleep() API is
+  40:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *  called.
+  41:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *
+  42:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *******************************************************************************/
+  43:.\Generated_Source\PSoC5/HC_Timer_PM.c **** void HC_Timer_SaveConfig(void) 
+  44:.\Generated_Source\PSoC5/HC_Timer_PM.c **** {
+  27              		.loc 1 44 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 08B5     		push	{r3, lr}
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 3, -8
+  34              		.cfi_offset 14, -4
+  45:.\Generated_Source\PSoC5/HC_Timer_PM.c ****     #if (!HC_Timer_UsingFixedFunction)
+  46:.\Generated_Source\PSoC5/HC_Timer_PM.c ****         HC_Timer_backup.TimerUdb = HC_Timer_ReadCounter();
+  35              		.loc 1 46 0
+  36 0002 FFF7FEFF 		bl	HC_Timer_ReadCounter
+  37              	.LVL0:
+  38 0006 034B     		ldr	r3, .L2
+  39 0008 5880     		strh	r0, [r3, #2]	@ movhi
+  47:.\Generated_Source\PSoC5/HC_Timer_PM.c ****         HC_Timer_backup.InterruptMaskValue = HC_Timer_STATUS_MASK;
+  40              		.loc 1 47 0
+  41 000a 034A     		ldr	r2, .L2+4
+  42 000c 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+  43 000e 1A71     		strb	r2, [r3, #4]
+  44 0010 08BD     		pop	{r3, pc}
+  45              	.L3:
+  46 0012 00BF     		.align	2
+  47              	.L2:
+  48 0014 00000000 		.word	.LANCHOR0
+  49 0018 84650040 		.word	1073767812
+  50              		.cfi_endproc
+  51              	.LFE0:
+  52              		.size	HC_Timer_SaveConfig, .-HC_Timer_SaveConfig
+  53              		.section	.text.HC_Timer_RestoreConfig,"ax",%progbits
+  54              		.align	2
+  55              		.global	HC_Timer_RestoreConfig
+  56              		.thumb
+  57              		.thumb_func
+  58              		.type	HC_Timer_RestoreConfig, %function
+  59              	HC_Timer_RestoreConfig:
+  60              	.LFB1:
+  48:.\Generated_Source\PSoC5/HC_Timer_PM.c ****         #if (HC_Timer_UsingHWCaptureCounter)
+  49:.\Generated_Source\PSoC5/HC_Timer_PM.c ****             HC_Timer_backup.TimerCaptureCounter = HC_Timer_ReadCaptureCount();
+  50:.\Generated_Source\PSoC5/HC_Timer_PM.c ****         #endif /* Back Up capture counter register  */
+  51:.\Generated_Source\PSoC5/HC_Timer_PM.c **** 
+  52:.\Generated_Source\PSoC5/HC_Timer_PM.c ****         #if(!HC_Timer_UDB_CONTROL_REG_REMOVED)
+  53:.\Generated_Source\PSoC5/HC_Timer_PM.c ****             HC_Timer_backup.TimerControlRegister = HC_Timer_ReadControlRegister();
+  54:.\Generated_Source\PSoC5/HC_Timer_PM.c ****         #endif /* Backup the enable state of the Timer component */
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccUdLtVF.s 			page 3
+
+
+  55:.\Generated_Source\PSoC5/HC_Timer_PM.c ****     #endif /* Backup non retention registers in UDB implementation. All fixed function registers ar
+  56:.\Generated_Source\PSoC5/HC_Timer_PM.c **** }
+  57:.\Generated_Source\PSoC5/HC_Timer_PM.c **** 
+  58:.\Generated_Source\PSoC5/HC_Timer_PM.c **** 
+  59:.\Generated_Source\PSoC5/HC_Timer_PM.c **** /*******************************************************************************
+  60:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * Function Name: HC_Timer_RestoreConfig
+  61:.\Generated_Source\PSoC5/HC_Timer_PM.c **** ********************************************************************************
+  62:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *
+  63:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * Summary:
+  64:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *  Restores the current user configuration.
+  65:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *
+  66:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * Parameters:
+  67:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *  void
+  68:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *
+  69:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * Return:
+  70:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *  void
+  71:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *
+  72:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * Global variables:
+  73:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *  HC_Timer_backup:  Variables of this global structure are used to
+  74:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *  restore the values of non retention registers on wakeup from sleep mode.
+  75:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *
+  76:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *******************************************************************************/
+  77:.\Generated_Source\PSoC5/HC_Timer_PM.c **** void HC_Timer_RestoreConfig(void) 
+  78:.\Generated_Source\PSoC5/HC_Timer_PM.c **** {   
+  61              		.loc 1 78 0
+  62              		.cfi_startproc
+  63              		@ args = 0, pretend = 0, frame = 0
+  64              		@ frame_needed = 0, uses_anonymous_args = 0
+  65 0000 10B5     		push	{r4, lr}
+  66              		.cfi_def_cfa_offset 8
+  67              		.cfi_offset 4, -8
+  68              		.cfi_offset 14, -4
+  79:.\Generated_Source\PSoC5/HC_Timer_PM.c ****     #if (!HC_Timer_UsingFixedFunction)
+  80:.\Generated_Source\PSoC5/HC_Timer_PM.c **** 
+  81:.\Generated_Source\PSoC5/HC_Timer_PM.c ****         HC_Timer_WriteCounter(HC_Timer_backup.TimerUdb);
+  69              		.loc 1 81 0
+  70 0002 044C     		ldr	r4, .L5
+  71 0004 6088     		ldrh	r0, [r4, #2]
+  72 0006 FFF7FEFF 		bl	HC_Timer_WriteCounter
+  73              	.LVL1:
+  82:.\Generated_Source\PSoC5/HC_Timer_PM.c ****         HC_Timer_STATUS_MASK =HC_Timer_backup.InterruptMaskValue;
+  74              		.loc 1 82 0
+  75 000a 2279     		ldrb	r2, [r4, #4]	@ zero_extendqisi2
+  76 000c 024B     		ldr	r3, .L5+4
+  77 000e 1A70     		strb	r2, [r3]
+  78 0010 10BD     		pop	{r4, pc}
+  79              	.L6:
+  80 0012 00BF     		.align	2
+  81              	.L5:
+  82 0014 00000000 		.word	.LANCHOR0
+  83 0018 84650040 		.word	1073767812
+  84              		.cfi_endproc
+  85              	.LFE1:
+  86              		.size	HC_Timer_RestoreConfig, .-HC_Timer_RestoreConfig
+  87              		.section	.text.HC_Timer_Sleep,"ax",%progbits
+  88              		.align	2
+  89              		.global	HC_Timer_Sleep
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccUdLtVF.s 			page 4
+
+
+  90              		.thumb
+  91              		.thumb_func
+  92              		.type	HC_Timer_Sleep, %function
+  93              	HC_Timer_Sleep:
+  94              	.LFB2:
+  83:.\Generated_Source\PSoC5/HC_Timer_PM.c ****         #if (HC_Timer_UsingHWCaptureCounter)
+  84:.\Generated_Source\PSoC5/HC_Timer_PM.c ****             HC_Timer_SetCaptureCount(HC_Timer_backup.TimerCaptureCounter);
+  85:.\Generated_Source\PSoC5/HC_Timer_PM.c ****         #endif /* Restore Capture counter register*/
+  86:.\Generated_Source\PSoC5/HC_Timer_PM.c **** 
+  87:.\Generated_Source\PSoC5/HC_Timer_PM.c ****         #if(!HC_Timer_UDB_CONTROL_REG_REMOVED)
+  88:.\Generated_Source\PSoC5/HC_Timer_PM.c ****             HC_Timer_WriteControlRegister(HC_Timer_backup.TimerControlRegister);
+  89:.\Generated_Source\PSoC5/HC_Timer_PM.c ****         #endif /* Restore the enable state of the Timer component */
+  90:.\Generated_Source\PSoC5/HC_Timer_PM.c ****     #endif /* Restore non retention registers in the UDB implementation only */
+  91:.\Generated_Source\PSoC5/HC_Timer_PM.c **** }
+  92:.\Generated_Source\PSoC5/HC_Timer_PM.c **** 
+  93:.\Generated_Source\PSoC5/HC_Timer_PM.c **** 
+  94:.\Generated_Source\PSoC5/HC_Timer_PM.c **** /*******************************************************************************
+  95:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * Function Name: HC_Timer_Sleep
+  96:.\Generated_Source\PSoC5/HC_Timer_PM.c **** ********************************************************************************
+  97:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *
+  98:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * Summary:
+  99:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *     Stop and Save the user configuration
+ 100:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *
+ 101:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * Parameters:
+ 102:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *  void
+ 103:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *
+ 104:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * Return:
+ 105:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *  void
+ 106:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *
+ 107:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * Global variables:
+ 108:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *  HC_Timer_backup.TimerEnableState:  Is modified depending on the
+ 109:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *  enable state of the block before entering sleep mode.
+ 110:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *
+ 111:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *******************************************************************************/
+ 112:.\Generated_Source\PSoC5/HC_Timer_PM.c **** void HC_Timer_Sleep(void) 
+ 113:.\Generated_Source\PSoC5/HC_Timer_PM.c **** {
+  95              		.loc 1 113 0
+  96              		.cfi_startproc
+  97              		@ args = 0, pretend = 0, frame = 0
+  98              		@ frame_needed = 0, uses_anonymous_args = 0
+  99 0000 08B5     		push	{r3, lr}
+ 100              		.cfi_def_cfa_offset 8
+ 101              		.cfi_offset 3, -8
+ 102              		.cfi_offset 14, -4
+ 114:.\Generated_Source\PSoC5/HC_Timer_PM.c ****     #if(!HC_Timer_UDB_CONTROL_REG_REMOVED)
+ 115:.\Generated_Source\PSoC5/HC_Timer_PM.c ****         /* Save Counter's enable state */
+ 116:.\Generated_Source\PSoC5/HC_Timer_PM.c ****         if(HC_Timer_CTRL_ENABLE == (HC_Timer_CONTROL & HC_Timer_CTRL_ENABLE))
+ 117:.\Generated_Source\PSoC5/HC_Timer_PM.c ****         {
+ 118:.\Generated_Source\PSoC5/HC_Timer_PM.c ****             /* Timer is enabled */
+ 119:.\Generated_Source\PSoC5/HC_Timer_PM.c ****             HC_Timer_backup.TimerEnableState = 1u;
+ 120:.\Generated_Source\PSoC5/HC_Timer_PM.c ****         }
+ 121:.\Generated_Source\PSoC5/HC_Timer_PM.c ****         else
+ 122:.\Generated_Source\PSoC5/HC_Timer_PM.c ****         {
+ 123:.\Generated_Source\PSoC5/HC_Timer_PM.c ****             /* Timer is disabled */
+ 124:.\Generated_Source\PSoC5/HC_Timer_PM.c ****             HC_Timer_backup.TimerEnableState = 0u;
+ 125:.\Generated_Source\PSoC5/HC_Timer_PM.c ****         }
+ 126:.\Generated_Source\PSoC5/HC_Timer_PM.c ****     #endif /* Back up enable state from the Timer control register */
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccUdLtVF.s 			page 5
+
+
+ 127:.\Generated_Source\PSoC5/HC_Timer_PM.c ****     HC_Timer_Stop();
+ 103              		.loc 1 127 0
+ 104 0002 FFF7FEFF 		bl	HC_Timer_Stop
+ 105              	.LVL2:
+ 128:.\Generated_Source\PSoC5/HC_Timer_PM.c ****     HC_Timer_SaveConfig();
+ 106              		.loc 1 128 0
+ 107 0006 FFF7FEFF 		bl	HC_Timer_SaveConfig
+ 108              	.LVL3:
+ 109 000a 08BD     		pop	{r3, pc}
+ 110              		.cfi_endproc
+ 111              	.LFE2:
+ 112              		.size	HC_Timer_Sleep, .-HC_Timer_Sleep
+ 113              		.section	.text.HC_Timer_Wakeup,"ax",%progbits
+ 114              		.align	2
+ 115              		.global	HC_Timer_Wakeup
+ 116              		.thumb
+ 117              		.thumb_func
+ 118              		.type	HC_Timer_Wakeup, %function
+ 119              	HC_Timer_Wakeup:
+ 120              	.LFB3:
+ 129:.\Generated_Source\PSoC5/HC_Timer_PM.c **** }
+ 130:.\Generated_Source\PSoC5/HC_Timer_PM.c **** 
+ 131:.\Generated_Source\PSoC5/HC_Timer_PM.c **** 
+ 132:.\Generated_Source\PSoC5/HC_Timer_PM.c **** /*******************************************************************************
+ 133:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * Function Name: HC_Timer_Wakeup
+ 134:.\Generated_Source\PSoC5/HC_Timer_PM.c **** ********************************************************************************
+ 135:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *
+ 136:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * Summary:
+ 137:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *  Restores and enables the user configuration
+ 138:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *
+ 139:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * Parameters:
+ 140:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *  void
+ 141:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *
+ 142:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * Return:
+ 143:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *  void
+ 144:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *
+ 145:.\Generated_Source\PSoC5/HC_Timer_PM.c **** * Global variables:
+ 146:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *  HC_Timer_backup.enableState:  Is used to restore the enable state of
+ 147:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *  block on wakeup from sleep mode.
+ 148:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *
+ 149:.\Generated_Source\PSoC5/HC_Timer_PM.c **** *******************************************************************************/
+ 150:.\Generated_Source\PSoC5/HC_Timer_PM.c **** void HC_Timer_Wakeup(void) 
+ 151:.\Generated_Source\PSoC5/HC_Timer_PM.c **** {
+ 121              		.loc 1 151 0
+ 122              		.cfi_startproc
+ 123              		@ args = 0, pretend = 0, frame = 0
+ 124              		@ frame_needed = 0, uses_anonymous_args = 0
+ 125 0000 08B5     		push	{r3, lr}
+ 126              		.cfi_def_cfa_offset 8
+ 127              		.cfi_offset 3, -8
+ 128              		.cfi_offset 14, -4
+ 152:.\Generated_Source\PSoC5/HC_Timer_PM.c ****     HC_Timer_RestoreConfig();
+ 129              		.loc 1 152 0
+ 130 0002 FFF7FEFF 		bl	HC_Timer_RestoreConfig
+ 131              	.LVL4:
+ 132 0006 08BD     		pop	{r3, pc}
+ 133              		.cfi_endproc
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccUdLtVF.s 			page 6
+
+
+ 134              	.LFE3:
+ 135              		.size	HC_Timer_Wakeup, .-HC_Timer_Wakeup
+ 136              		.bss
+ 137              		.align	2
+ 138              		.set	.LANCHOR0,. + 0
+ 139              		.type	HC_Timer_backup, %object
+ 140              		.size	HC_Timer_backup, 6
+ 141              	HC_Timer_backup:
+ 142 0000 00000000 		.space	6
+ 142      0000
+ 143 0006 0000     		.text
+ 144              	.Letext0:
+ 145              		.file 2 ".\\Generated_Source\\PSoC5\\cytypes.h"
+ 146              		.file 3 ".\\Generated_Source\\PSoC5\\HC_Timer.h"
+ 147              		.section	.debug_info,"",%progbits
+ 148              	.Ldebug_info0:
+ 149 0000 9C010000 		.4byte	0x19c
+ 150 0004 0400     		.2byte	0x4
+ 151 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 152 000a 04       		.byte	0x4
+ 153 000b 01       		.uleb128 0x1
+ 154 000c B1010000 		.4byte	.LASF24
+ 155 0010 01       		.byte	0x1
+ 156 0011 8A000000 		.4byte	.LASF25
+ 157 0015 33010000 		.4byte	.LASF26
+ 158 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 159 001d 00000000 		.4byte	0
+ 160 0021 00000000 		.4byte	.Ldebug_line0
+ 161 0025 02       		.uleb128 0x2
+ 162 0026 01       		.byte	0x1
+ 163 0027 06       		.byte	0x6
+ 164 0028 5C020000 		.4byte	.LASF0
+ 165 002c 02       		.uleb128 0x2
+ 166 002d 01       		.byte	0x1
+ 167 002e 08       		.byte	0x8
+ 168 002f 7C000000 		.4byte	.LASF1
+ 169 0033 02       		.uleb128 0x2
+ 170 0034 02       		.byte	0x2
+ 171 0035 05       		.byte	0x5
+ 172 0036 49020000 		.4byte	.LASF2
+ 173 003a 02       		.uleb128 0x2
+ 174 003b 02       		.byte	0x2
+ 175 003c 07       		.byte	0x7
+ 176 003d 44000000 		.4byte	.LASF3
+ 177 0041 02       		.uleb128 0x2
+ 178 0042 04       		.byte	0x4
+ 179 0043 05       		.byte	0x5
+ 180 0044 53020000 		.4byte	.LASF4
+ 181 0048 02       		.uleb128 0x2
+ 182 0049 04       		.byte	0x4
+ 183 004a 07       		.byte	0x7
+ 184 004b B6000000 		.4byte	.LASF5
+ 185 004f 02       		.uleb128 0x2
+ 186 0050 08       		.byte	0x8
+ 187 0051 05       		.byte	0x5
+ 188 0052 36020000 		.4byte	.LASF6
+ 189 0056 02       		.uleb128 0x2
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccUdLtVF.s 			page 7
+
+
+ 190 0057 08       		.byte	0x8
+ 191 0058 07       		.byte	0x7
+ 192 0059 84010000 		.4byte	.LASF7
+ 193 005d 03       		.uleb128 0x3
+ 194 005e 04       		.byte	0x4
+ 195 005f 05       		.byte	0x5
+ 196 0060 696E7400 		.ascii	"int\000"
+ 197 0064 02       		.uleb128 0x2
+ 198 0065 04       		.byte	0x4
+ 199 0066 07       		.byte	0x7
+ 200 0067 26010000 		.4byte	.LASF8
+ 201 006b 04       		.uleb128 0x4
+ 202 006c D8000000 		.4byte	.LASF9
+ 203 0070 02       		.byte	0x2
+ 204 0071 B3       		.byte	0xb3
+ 205 0072 2C000000 		.4byte	0x2c
+ 206 0076 04       		.uleb128 0x4
+ 207 0077 11010000 		.4byte	.LASF10
+ 208 007b 02       		.byte	0x2
+ 209 007c B4       		.byte	0xb4
+ 210 007d 3A000000 		.4byte	0x3a
+ 211 0081 02       		.uleb128 0x2
+ 212 0082 04       		.byte	0x4
+ 213 0083 04       		.byte	0x4
+ 214 0084 76000000 		.4byte	.LASF11
+ 215 0088 02       		.uleb128 0x2
+ 216 0089 08       		.byte	0x8
+ 217 008a 04       		.byte	0x4
+ 218 008b F5000000 		.4byte	.LASF12
+ 219 008f 02       		.uleb128 0x2
+ 220 0090 01       		.byte	0x1
+ 221 0091 08       		.byte	0x8
+ 222 0092 44020000 		.4byte	.LASF13
+ 223 0096 05       		.uleb128 0x5
+ 224 0097 B1000000 		.4byte	.LASF14
+ 225 009b 02       		.byte	0x2
+ 226 009c 5D01     		.2byte	0x15d
+ 227 009e A2000000 		.4byte	0xa2
+ 228 00a2 06       		.uleb128 0x6
+ 229 00a3 6B000000 		.4byte	0x6b
+ 230 00a7 02       		.uleb128 0x2
+ 231 00a8 04       		.byte	0x4
+ 232 00a9 07       		.byte	0x7
+ 233 00aa 2D020000 		.4byte	.LASF15
+ 234 00ae 07       		.uleb128 0x7
+ 235 00af 06       		.byte	0x6
+ 236 00b0 03       		.byte	0x3
+ 237 00b1 43       		.byte	0x43
+ 238 00b2 DB000000 		.4byte	0xdb
+ 239 00b6 08       		.uleb128 0x8
+ 240 00b7 00000000 		.4byte	.LASF16
+ 241 00bb 03       		.byte	0x3
+ 242 00bc 45       		.byte	0x45
+ 243 00bd 6B000000 		.4byte	0x6b
+ 244 00c1 00       		.byte	0
+ 245 00c2 08       		.uleb128 0x8
+ 246 00c3 57000000 		.4byte	.LASF17
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccUdLtVF.s 			page 8
+
+
+ 247 00c7 03       		.byte	0x3
+ 248 00c8 48       		.byte	0x48
+ 249 00c9 76000000 		.4byte	0x76
+ 250 00cd 02       		.byte	0x2
+ 251 00ce 08       		.uleb128 0x8
+ 252 00cf 68020000 		.4byte	.LASF18
+ 253 00d3 03       		.byte	0x3
+ 254 00d4 49       		.byte	0x49
+ 255 00d5 6B000000 		.4byte	0x6b
+ 256 00d9 04       		.byte	0x4
+ 257 00da 00       		.byte	0
+ 258 00db 04       		.uleb128 0x4
+ 259 00dc 9B010000 		.4byte	.LASF19
+ 260 00e0 03       		.byte	0x3
+ 261 00e1 53       		.byte	0x53
+ 262 00e2 AE000000 		.4byte	0xae
+ 263 00e6 09       		.uleb128 0x9
+ 264 00e7 20000000 		.4byte	.LASF20
+ 265 00eb 01       		.byte	0x1
+ 266 00ec 2B       		.byte	0x2b
+ 267 00ed 00000000 		.4byte	.LFB0
+ 268 00f1 1C000000 		.4byte	.LFE0-.LFB0
+ 269 00f5 01       		.uleb128 0x1
+ 270 00f6 9C       		.byte	0x9c
+ 271 00f7 05010000 		.4byte	0x105
+ 272 00fb 0A       		.uleb128 0xa
+ 273 00fc 06000000 		.4byte	.LVL0
+ 274 0100 7C010000 		.4byte	0x17c
+ 275 0104 00       		.byte	0
+ 276 0105 09       		.uleb128 0x9
+ 277 0106 DE000000 		.4byte	.LASF21
+ 278 010a 01       		.byte	0x1
+ 279 010b 4D       		.byte	0x4d
+ 280 010c 00000000 		.4byte	.LFB1
+ 281 0110 1C000000 		.4byte	.LFE1-.LFB1
+ 282 0114 01       		.uleb128 0x1
+ 283 0115 9C       		.byte	0x9c
+ 284 0116 24010000 		.4byte	0x124
+ 285 011a 0A       		.uleb128 0xa
+ 286 011b 0A000000 		.4byte	.LVL1
+ 287 011f 87010000 		.4byte	0x187
+ 288 0123 00       		.byte	0
+ 289 0124 09       		.uleb128 0x9
+ 290 0125 11000000 		.4byte	.LASF22
+ 291 0129 01       		.byte	0x1
+ 292 012a 70       		.byte	0x70
+ 293 012b 00000000 		.4byte	.LFB2
+ 294 012f 0C000000 		.4byte	.LFE2-.LFB2
+ 295 0133 01       		.uleb128 0x1
+ 296 0134 9C       		.byte	0x9c
+ 297 0135 4C010000 		.4byte	0x14c
+ 298 0139 0A       		.uleb128 0xa
+ 299 013a 06000000 		.4byte	.LVL2
+ 300 013e 98010000 		.4byte	0x198
+ 301 0142 0A       		.uleb128 0xa
+ 302 0143 0A000000 		.4byte	.LVL3
+ 303 0147 E6000000 		.4byte	0xe6
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccUdLtVF.s 			page 9
+
+
+ 304 014b 00       		.byte	0
+ 305 014c 09       		.uleb128 0x9
+ 306 014d C8000000 		.4byte	.LASF23
+ 307 0151 01       		.byte	0x1
+ 308 0152 96       		.byte	0x96
+ 309 0153 00000000 		.4byte	.LFB3
+ 310 0157 08000000 		.4byte	.LFE3-.LFB3
+ 311 015b 01       		.uleb128 0x1
+ 312 015c 9C       		.byte	0x9c
+ 313 015d 6B010000 		.4byte	0x16b
+ 314 0161 0A       		.uleb128 0xa
+ 315 0162 06000000 		.4byte	.LVL4
+ 316 0166 05010000 		.4byte	0x105
+ 317 016a 00       		.byte	0
+ 318 016b 0B       		.uleb128 0xb
+ 319 016c 34000000 		.4byte	.LASF27
+ 320 0170 01       		.byte	0x1
+ 321 0171 15       		.byte	0x15
+ 322 0172 DB000000 		.4byte	0xdb
+ 323 0176 05       		.uleb128 0x5
+ 324 0177 03       		.byte	0x3
+ 325 0178 00000000 		.4byte	HC_Timer_backup
+ 326 017c 0C       		.uleb128 0xc
+ 327 017d FC000000 		.4byte	.LASF28
+ 328 0181 03       		.byte	0x3
+ 329 0182 69       		.byte	0x69
+ 330 0183 76000000 		.4byte	0x76
+ 331 0187 0D       		.uleb128 0xd
+ 332 0188 60000000 		.4byte	.LASF29
+ 333 018c 03       		.byte	0x3
+ 334 018d 6A       		.byte	0x6a
+ 335 018e 98010000 		.4byte	0x198
+ 336 0192 0E       		.uleb128 0xe
+ 337 0193 76000000 		.4byte	0x76
+ 338 0197 00       		.byte	0
+ 339 0198 0F       		.uleb128 0xf
+ 340 0199 18010000 		.4byte	.LASF30
+ 341 019d 03       		.byte	0x3
+ 342 019e 5B       		.byte	0x5b
+ 343 019f 00       		.byte	0
+ 344              		.section	.debug_abbrev,"",%progbits
+ 345              	.Ldebug_abbrev0:
+ 346 0000 01       		.uleb128 0x1
+ 347 0001 11       		.uleb128 0x11
+ 348 0002 01       		.byte	0x1
+ 349 0003 25       		.uleb128 0x25
+ 350 0004 0E       		.uleb128 0xe
+ 351 0005 13       		.uleb128 0x13
+ 352 0006 0B       		.uleb128 0xb
+ 353 0007 03       		.uleb128 0x3
+ 354 0008 0E       		.uleb128 0xe
+ 355 0009 1B       		.uleb128 0x1b
+ 356 000a 0E       		.uleb128 0xe
+ 357 000b 55       		.uleb128 0x55
+ 358 000c 17       		.uleb128 0x17
+ 359 000d 11       		.uleb128 0x11
+ 360 000e 01       		.uleb128 0x1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccUdLtVF.s 			page 10
+
+
+ 361 000f 10       		.uleb128 0x10
+ 362 0010 17       		.uleb128 0x17
+ 363 0011 00       		.byte	0
+ 364 0012 00       		.byte	0
+ 365 0013 02       		.uleb128 0x2
+ 366 0014 24       		.uleb128 0x24
+ 367 0015 00       		.byte	0
+ 368 0016 0B       		.uleb128 0xb
+ 369 0017 0B       		.uleb128 0xb
+ 370 0018 3E       		.uleb128 0x3e
+ 371 0019 0B       		.uleb128 0xb
+ 372 001a 03       		.uleb128 0x3
+ 373 001b 0E       		.uleb128 0xe
+ 374 001c 00       		.byte	0
+ 375 001d 00       		.byte	0
+ 376 001e 03       		.uleb128 0x3
+ 377 001f 24       		.uleb128 0x24
+ 378 0020 00       		.byte	0
+ 379 0021 0B       		.uleb128 0xb
+ 380 0022 0B       		.uleb128 0xb
+ 381 0023 3E       		.uleb128 0x3e
+ 382 0024 0B       		.uleb128 0xb
+ 383 0025 03       		.uleb128 0x3
+ 384 0026 08       		.uleb128 0x8
+ 385 0027 00       		.byte	0
+ 386 0028 00       		.byte	0
+ 387 0029 04       		.uleb128 0x4
+ 388 002a 16       		.uleb128 0x16
+ 389 002b 00       		.byte	0
+ 390 002c 03       		.uleb128 0x3
+ 391 002d 0E       		.uleb128 0xe
+ 392 002e 3A       		.uleb128 0x3a
+ 393 002f 0B       		.uleb128 0xb
+ 394 0030 3B       		.uleb128 0x3b
+ 395 0031 0B       		.uleb128 0xb
+ 396 0032 49       		.uleb128 0x49
+ 397 0033 13       		.uleb128 0x13
+ 398 0034 00       		.byte	0
+ 399 0035 00       		.byte	0
+ 400 0036 05       		.uleb128 0x5
+ 401 0037 16       		.uleb128 0x16
+ 402 0038 00       		.byte	0
+ 403 0039 03       		.uleb128 0x3
+ 404 003a 0E       		.uleb128 0xe
+ 405 003b 3A       		.uleb128 0x3a
+ 406 003c 0B       		.uleb128 0xb
+ 407 003d 3B       		.uleb128 0x3b
+ 408 003e 05       		.uleb128 0x5
+ 409 003f 49       		.uleb128 0x49
+ 410 0040 13       		.uleb128 0x13
+ 411 0041 00       		.byte	0
+ 412 0042 00       		.byte	0
+ 413 0043 06       		.uleb128 0x6
+ 414 0044 35       		.uleb128 0x35
+ 415 0045 00       		.byte	0
+ 416 0046 49       		.uleb128 0x49
+ 417 0047 13       		.uleb128 0x13
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccUdLtVF.s 			page 11
+
+
+ 418 0048 00       		.byte	0
+ 419 0049 00       		.byte	0
+ 420 004a 07       		.uleb128 0x7
+ 421 004b 13       		.uleb128 0x13
+ 422 004c 01       		.byte	0x1
+ 423 004d 0B       		.uleb128 0xb
+ 424 004e 0B       		.uleb128 0xb
+ 425 004f 3A       		.uleb128 0x3a
+ 426 0050 0B       		.uleb128 0xb
+ 427 0051 3B       		.uleb128 0x3b
+ 428 0052 0B       		.uleb128 0xb
+ 429 0053 01       		.uleb128 0x1
+ 430 0054 13       		.uleb128 0x13
+ 431 0055 00       		.byte	0
+ 432 0056 00       		.byte	0
+ 433 0057 08       		.uleb128 0x8
+ 434 0058 0D       		.uleb128 0xd
+ 435 0059 00       		.byte	0
+ 436 005a 03       		.uleb128 0x3
+ 437 005b 0E       		.uleb128 0xe
+ 438 005c 3A       		.uleb128 0x3a
+ 439 005d 0B       		.uleb128 0xb
+ 440 005e 3B       		.uleb128 0x3b
+ 441 005f 0B       		.uleb128 0xb
+ 442 0060 49       		.uleb128 0x49
+ 443 0061 13       		.uleb128 0x13
+ 444 0062 38       		.uleb128 0x38
+ 445 0063 0B       		.uleb128 0xb
+ 446 0064 00       		.byte	0
+ 447 0065 00       		.byte	0
+ 448 0066 09       		.uleb128 0x9
+ 449 0067 2E       		.uleb128 0x2e
+ 450 0068 01       		.byte	0x1
+ 451 0069 3F       		.uleb128 0x3f
+ 452 006a 19       		.uleb128 0x19
+ 453 006b 03       		.uleb128 0x3
+ 454 006c 0E       		.uleb128 0xe
+ 455 006d 3A       		.uleb128 0x3a
+ 456 006e 0B       		.uleb128 0xb
+ 457 006f 3B       		.uleb128 0x3b
+ 458 0070 0B       		.uleb128 0xb
+ 459 0071 27       		.uleb128 0x27
+ 460 0072 19       		.uleb128 0x19
+ 461 0073 11       		.uleb128 0x11
+ 462 0074 01       		.uleb128 0x1
+ 463 0075 12       		.uleb128 0x12
+ 464 0076 06       		.uleb128 0x6
+ 465 0077 40       		.uleb128 0x40
+ 466 0078 18       		.uleb128 0x18
+ 467 0079 9742     		.uleb128 0x2117
+ 468 007b 19       		.uleb128 0x19
+ 469 007c 01       		.uleb128 0x1
+ 470 007d 13       		.uleb128 0x13
+ 471 007e 00       		.byte	0
+ 472 007f 00       		.byte	0
+ 473 0080 0A       		.uleb128 0xa
+ 474 0081 898201   		.uleb128 0x4109
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccUdLtVF.s 			page 12
+
+
+ 475 0084 00       		.byte	0
+ 476 0085 11       		.uleb128 0x11
+ 477 0086 01       		.uleb128 0x1
+ 478 0087 31       		.uleb128 0x31
+ 479 0088 13       		.uleb128 0x13
+ 480 0089 00       		.byte	0
+ 481 008a 00       		.byte	0
+ 482 008b 0B       		.uleb128 0xb
+ 483 008c 34       		.uleb128 0x34
+ 484 008d 00       		.byte	0
+ 485 008e 03       		.uleb128 0x3
+ 486 008f 0E       		.uleb128 0xe
+ 487 0090 3A       		.uleb128 0x3a
+ 488 0091 0B       		.uleb128 0xb
+ 489 0092 3B       		.uleb128 0x3b
+ 490 0093 0B       		.uleb128 0xb
+ 491 0094 49       		.uleb128 0x49
+ 492 0095 13       		.uleb128 0x13
+ 493 0096 02       		.uleb128 0x2
+ 494 0097 18       		.uleb128 0x18
+ 495 0098 00       		.byte	0
+ 496 0099 00       		.byte	0
+ 497 009a 0C       		.uleb128 0xc
+ 498 009b 2E       		.uleb128 0x2e
+ 499 009c 00       		.byte	0
+ 500 009d 3F       		.uleb128 0x3f
+ 501 009e 19       		.uleb128 0x19
+ 502 009f 03       		.uleb128 0x3
+ 503 00a0 0E       		.uleb128 0xe
+ 504 00a1 3A       		.uleb128 0x3a
+ 505 00a2 0B       		.uleb128 0xb
+ 506 00a3 3B       		.uleb128 0x3b
+ 507 00a4 0B       		.uleb128 0xb
+ 508 00a5 27       		.uleb128 0x27
+ 509 00a6 19       		.uleb128 0x19
+ 510 00a7 49       		.uleb128 0x49
+ 511 00a8 13       		.uleb128 0x13
+ 512 00a9 3C       		.uleb128 0x3c
+ 513 00aa 19       		.uleb128 0x19
+ 514 00ab 00       		.byte	0
+ 515 00ac 00       		.byte	0
+ 516 00ad 0D       		.uleb128 0xd
+ 517 00ae 2E       		.uleb128 0x2e
+ 518 00af 01       		.byte	0x1
+ 519 00b0 3F       		.uleb128 0x3f
+ 520 00b1 19       		.uleb128 0x19
+ 521 00b2 03       		.uleb128 0x3
+ 522 00b3 0E       		.uleb128 0xe
+ 523 00b4 3A       		.uleb128 0x3a
+ 524 00b5 0B       		.uleb128 0xb
+ 525 00b6 3B       		.uleb128 0x3b
+ 526 00b7 0B       		.uleb128 0xb
+ 527 00b8 27       		.uleb128 0x27
+ 528 00b9 19       		.uleb128 0x19
+ 529 00ba 3C       		.uleb128 0x3c
+ 530 00bb 19       		.uleb128 0x19
+ 531 00bc 01       		.uleb128 0x1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccUdLtVF.s 			page 13
+
+
+ 532 00bd 13       		.uleb128 0x13
+ 533 00be 00       		.byte	0
+ 534 00bf 00       		.byte	0
+ 535 00c0 0E       		.uleb128 0xe
+ 536 00c1 05       		.uleb128 0x5
+ 537 00c2 00       		.byte	0
+ 538 00c3 49       		.uleb128 0x49
+ 539 00c4 13       		.uleb128 0x13
+ 540 00c5 00       		.byte	0
+ 541 00c6 00       		.byte	0
+ 542 00c7 0F       		.uleb128 0xf
+ 543 00c8 2E       		.uleb128 0x2e
+ 544 00c9 00       		.byte	0
+ 545 00ca 3F       		.uleb128 0x3f
+ 546 00cb 19       		.uleb128 0x19
+ 547 00cc 03       		.uleb128 0x3
+ 548 00cd 0E       		.uleb128 0xe
+ 549 00ce 3A       		.uleb128 0x3a
+ 550 00cf 0B       		.uleb128 0xb
+ 551 00d0 3B       		.uleb128 0x3b
+ 552 00d1 0B       		.uleb128 0xb
+ 553 00d2 27       		.uleb128 0x27
+ 554 00d3 19       		.uleb128 0x19
+ 555 00d4 3C       		.uleb128 0x3c
+ 556 00d5 19       		.uleb128 0x19
+ 557 00d6 00       		.byte	0
+ 558 00d7 00       		.byte	0
+ 559 00d8 00       		.byte	0
+ 560              		.section	.debug_aranges,"",%progbits
+ 561 0000 34000000 		.4byte	0x34
+ 562 0004 0200     		.2byte	0x2
+ 563 0006 00000000 		.4byte	.Ldebug_info0
+ 564 000a 04       		.byte	0x4
+ 565 000b 00       		.byte	0
+ 566 000c 0000     		.2byte	0
+ 567 000e 0000     		.2byte	0
+ 568 0010 00000000 		.4byte	.LFB0
+ 569 0014 1C000000 		.4byte	.LFE0-.LFB0
+ 570 0018 00000000 		.4byte	.LFB1
+ 571 001c 1C000000 		.4byte	.LFE1-.LFB1
+ 572 0020 00000000 		.4byte	.LFB2
+ 573 0024 0C000000 		.4byte	.LFE2-.LFB2
+ 574 0028 00000000 		.4byte	.LFB3
+ 575 002c 08000000 		.4byte	.LFE3-.LFB3
+ 576 0030 00000000 		.4byte	0
+ 577 0034 00000000 		.4byte	0
+ 578              		.section	.debug_ranges,"",%progbits
+ 579              	.Ldebug_ranges0:
+ 580 0000 00000000 		.4byte	.LFB0
+ 581 0004 1C000000 		.4byte	.LFE0
+ 582 0008 00000000 		.4byte	.LFB1
+ 583 000c 1C000000 		.4byte	.LFE1
+ 584 0010 00000000 		.4byte	.LFB2
+ 585 0014 0C000000 		.4byte	.LFE2
+ 586 0018 00000000 		.4byte	.LFB3
+ 587 001c 08000000 		.4byte	.LFE3
+ 588 0020 00000000 		.4byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccUdLtVF.s 			page 14
+
+
+ 589 0024 00000000 		.4byte	0
+ 590              		.section	.debug_line,"",%progbits
+ 591              	.Ldebug_line0:
+ 592 0000 A6000000 		.section	.debug_str,"MS",%progbits,1
+ 592      02005800 
+ 592      00000201 
+ 592      FB0E0D00 
+ 592      01010101 
+ 593              	.LASF16:
+ 594 0000 54696D65 		.ascii	"TimerEnableState\000"
+ 594      72456E61 
+ 594      626C6553 
+ 594      74617465 
+ 594      00
+ 595              	.LASF22:
+ 596 0011 48435F54 		.ascii	"HC_Timer_Sleep\000"
+ 596      696D6572 
+ 596      5F536C65 
+ 596      657000
+ 597              	.LASF20:
+ 598 0020 48435F54 		.ascii	"HC_Timer_SaveConfig\000"
+ 598      696D6572 
+ 598      5F536176 
+ 598      65436F6E 
+ 598      66696700 
+ 599              	.LASF27:
+ 600 0034 48435F54 		.ascii	"HC_Timer_backup\000"
+ 600      696D6572 
+ 600      5F626163 
+ 600      6B757000 
+ 601              	.LASF3:
+ 602 0044 73686F72 		.ascii	"short unsigned int\000"
+ 602      7420756E 
+ 602      7369676E 
+ 602      65642069 
+ 602      6E7400
+ 603              	.LASF17:
+ 604 0057 54696D65 		.ascii	"TimerUdb\000"
+ 604      72556462 
+ 604      00
+ 605              	.LASF29:
+ 606 0060 48435F54 		.ascii	"HC_Timer_WriteCounter\000"
+ 606      696D6572 
+ 606      5F577269 
+ 606      7465436F 
+ 606      756E7465 
+ 607              	.LASF11:
+ 608 0076 666C6F61 		.ascii	"float\000"
+ 608      7400
+ 609              	.LASF1:
+ 610 007c 756E7369 		.ascii	"unsigned char\000"
+ 610      676E6564 
+ 610      20636861 
+ 610      7200
+ 611              	.LASF25:
+ 612 008a 2E5C4765 		.ascii	".\\Generated_Source\\PSoC5\\HC_Timer_PM.c\000"
+ 612      6E657261 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccUdLtVF.s 			page 15
+
+
+ 612      7465645F 
+ 612      536F7572 
+ 612      63655C50 
+ 613              	.LASF14:
+ 614 00b1 72656738 		.ascii	"reg8\000"
+ 614      00
+ 615              	.LASF5:
+ 616 00b6 6C6F6E67 		.ascii	"long unsigned int\000"
+ 616      20756E73 
+ 616      69676E65 
+ 616      6420696E 
+ 616      7400
+ 617              	.LASF23:
+ 618 00c8 48435F54 		.ascii	"HC_Timer_Wakeup\000"
+ 618      696D6572 
+ 618      5F57616B 
+ 618      65757000 
+ 619              	.LASF9:
+ 620 00d8 75696E74 		.ascii	"uint8\000"
+ 620      3800
+ 621              	.LASF21:
+ 622 00de 48435F54 		.ascii	"HC_Timer_RestoreConfig\000"
+ 622      696D6572 
+ 622      5F526573 
+ 622      746F7265 
+ 622      436F6E66 
+ 623              	.LASF12:
+ 624 00f5 646F7562 		.ascii	"double\000"
+ 624      6C6500
+ 625              	.LASF28:
+ 626 00fc 48435F54 		.ascii	"HC_Timer_ReadCounter\000"
+ 626      696D6572 
+ 626      5F526561 
+ 626      64436F75 
+ 626      6E746572 
+ 627              	.LASF10:
+ 628 0111 75696E74 		.ascii	"uint16\000"
+ 628      313600
+ 629              	.LASF30:
+ 630 0118 48435F54 		.ascii	"HC_Timer_Stop\000"
+ 630      696D6572 
+ 630      5F53746F 
+ 630      7000
+ 631              	.LASF8:
+ 632 0126 756E7369 		.ascii	"unsigned int\000"
+ 632      676E6564 
+ 632      20696E74 
+ 632      00
+ 633              	.LASF26:
+ 634 0133 433A5C55 		.ascii	"C:\\Users\\xavieran\\Desktop\\ECE3091\\PSOCProjects"
+ 634      73657273 
+ 634      5C786176 
+ 634      69657261 
+ 634      6E5C4465 
+ 635 0161 5C454E47 		.ascii	"\\ENG3091_MandM\\ENG3091_MandM.cydsn\000"
+ 635      33303931 
+ 635      5F4D616E 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccUdLtVF.s 			page 16
+
+
+ 635      644D5C45 
+ 635      4E473330 
+ 636              	.LASF7:
+ 637 0184 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 637      206C6F6E 
+ 637      6720756E 
+ 637      7369676E 
+ 637      65642069 
+ 638              	.LASF19:
+ 639 019b 48435F54 		.ascii	"HC_Timer_backupStruct\000"
+ 639      696D6572 
+ 639      5F626163 
+ 639      6B757053 
+ 639      74727563 
+ 640              	.LASF24:
+ 641 01b1 474E5520 		.ascii	"GNU C 4.8.4 20140526 (release) [ARM/embedded-4_8-br"
+ 641      4320342E 
+ 641      382E3420 
+ 641      32303134 
+ 641      30353236 
+ 642 01e4 616E6368 		.ascii	"anch revision 211358] -mcpu=cortex-m3 -mthumb -g -O"
+ 642      20726576 
+ 642      6973696F 
+ 642      6E203231 
+ 642      31333538 
+ 643 0217 67202D66 		.ascii	"g -ffunction-sections\000"
+ 643      66756E63 
+ 643      74696F6E 
+ 643      2D736563 
+ 643      74696F6E 
+ 644              	.LASF15:
+ 645 022d 73697A65 		.ascii	"sizetype\000"
+ 645      74797065 
+ 645      00
+ 646              	.LASF6:
+ 647 0236 6C6F6E67 		.ascii	"long long int\000"
+ 647      206C6F6E 
+ 647      6720696E 
+ 647      7400
+ 648              	.LASF13:
+ 649 0244 63686172 		.ascii	"char\000"
+ 649      00
+ 650              	.LASF2:
+ 651 0249 73686F72 		.ascii	"short int\000"
+ 651      7420696E 
+ 651      7400
+ 652              	.LASF4:
+ 653 0253 6C6F6E67 		.ascii	"long int\000"
+ 653      20696E74 
+ 653      00
+ 654              	.LASF0:
+ 655 025c 7369676E 		.ascii	"signed char\000"
+ 655      65642063 
+ 655      68617200 
+ 656              	.LASF18:
+ 657 0268 496E7465 		.ascii	"InterruptMaskValue\000"
+ 657      72727570 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccUdLtVF.s 			page 17
+
+
+ 657      744D6173 
+ 657      6B56616C 
+ 657      756500
+ 658              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.8.4 20140526 (release) [ARM/embedded-4_8-br

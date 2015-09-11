@@ -14,7 +14,7 @@
 #include <motor.h>
 #include <navigation.h>
 
-void init_motors(){
+void start_motors(){
     /* Initialize the motor controller */
     MOTOR_L_Start();
     MLIN1_Write(0);

@@ -1,0 +1,1572 @@
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"compass.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.DRDY_INTERRUPT,"ax",%progbits
+  19              		.align	2
+  20              		.global	DRDY_INTERRUPT
+  21              		.thumb
+  22              		.thumb_func
+  23              		.type	DRDY_INTERRUPT, %function
+  24              	DRDY_INTERRUPT:
+  25              	.LFB63:
+  26              		.file 1 ".\\compass.c"
+   1:.\compass.c   **** /* ========================================
+   2:.\compass.c   ****  *
+   3:.\compass.c   ****  * Copyright YOUR COMPANY, THE YEAR
+   4:.\compass.c   ****  * All Rights Reserved
+   5:.\compass.c   ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:.\compass.c   ****  *
+   7:.\compass.c   ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:.\compass.c   ****  * WHICH IS THE PROPERTY OF your company.
+   9:.\compass.c   ****  *
+  10:.\compass.c   ****  * ========================================
+  11:.\compass.c   **** */
+  12:.\compass.c   **** 
+  13:.\compass.c   **** /** HOW TO USE THIS MODULE **
+  14:.\compass.c   ****  * 1. Start the compass with start_compass()
+  15:.\compass.c   ****  * 2. Monitor the compass_ready variable, if it is true, then you
+  16:.\compass.c   ****  *    can call compass_read() to refresh the compass data
+  17:.\compass.c   ****  * 3. Read from compass x,y,z and heading to get the heading info
+  18:.\compass.c   ****  */
+  19:.\compass.c   **** 
+  20:.\compass.c   **** /* Example code to put in main loop
+  21:.\compass.c   **** //Read the compass when it is ready for reading
+  22:.\compass.c   **** if (compass_ready){
+  23:.\compass.c   ****     compass_ready = 0;
+  24:.\compass.c   ****     compass_read();
+  25:.\compass.c   ****     //Access compass_x, compass_y, etc.
+  26:.\compass.c   **** }
+  27:.\compass.c   **** */
+  28:.\compass.c   **** 
+  29:.\compass.c   **** #include <project.h>
+  30:.\compass.c   **** #include <compass.h>
+  31:.\compass.c   **** #include <math.h>
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 2
+
+
+  32:.\compass.c   **** 
+  33:.\compass.c   **** int16 compass_x;
+  34:.\compass.c   **** int16 compass_y;
+  35:.\compass.c   **** int16 compass_z;
+  36:.\compass.c   **** double compass_heading;
+  37:.\compass.c   **** volatile uint8 compass_ready;
+  38:.\compass.c   **** 
+  39:.\compass.c   **** // These calibration values can be found by plotting the x,y pairs
+  40:.\compass.c   **** // whilst turning the compass through 360 degrees, then moving the 
+  41:.\compass.c   **** // resulting circle to center on the origin
+  42:.\compass.c   **** #define CALIBRATION_X 25
+  43:.\compass.c   **** #define CALIBRATION_Y -50
+  44:.\compass.c   **** 
+  45:.\compass.c   **** CY_ISR(DRDY_INTERRUPT){
+  27              		.loc 1 45 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 08B5     		push	{r3, lr}
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 3, -8
+  34              		.cfi_offset 14, -4
+  46:.\compass.c   ****     compass_ready = 1;
+  35              		.loc 1 46 0
+  36 0002 0122     		movs	r2, #1
+  37 0004 024B     		ldr	r3, .L2
+  38 0006 1A70     		strb	r2, [r3]
+  47:.\compass.c   ****     Compass_DRDY_ISR_ClearPending();
+  39              		.loc 1 47 0
+  40 0008 FFF7FEFF 		bl	Compass_DRDY_ISR_ClearPending
+  41              	.LVL0:
+  42 000c 08BD     		pop	{r3, pc}
+  43              	.L3:
+  44 000e 00BF     		.align	2
+  45              	.L2:
+  46 0010 00000000 		.word	compass_ready
+  47              		.cfi_endproc
+  48              	.LFE63:
+  49              		.size	DRDY_INTERRUPT, .-DRDY_INTERRUPT
+  50              		.section	.text.start_compass,"ax",%progbits
+  51              		.align	2
+  52              		.global	start_compass
+  53              		.thumb
+  54              		.thumb_func
+  55              		.type	start_compass, %function
+  56              	start_compass:
+  57              	.LFB64:
+  48:.\compass.c   **** }
+  49:.\compass.c   **** 
+  50:.\compass.c   **** void start_compass(){
+  58              		.loc 1 50 0
+  59              		.cfi_startproc
+  60              		@ args = 0, pretend = 0, frame = 0
+  61              		@ frame_needed = 0, uses_anonymous_args = 0
+  62 0000 10B5     		push	{r4, lr}
+  63              		.cfi_def_cfa_offset 8
+  64              		.cfi_offset 4, -8
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 3
+
+
+  65              		.cfi_offset 14, -4
+  51:.\compass.c   ****     compass_ready = 0;
+  66              		.loc 1 51 0
+  67 0002 0024     		movs	r4, #0
+  68 0004 1B4B     		ldr	r3, .L5
+  69 0006 1C70     		strb	r4, [r3]
+  52:.\compass.c   ****     compass_x = 0;
+  70              		.loc 1 52 0
+  71 0008 1B4B     		ldr	r3, .L5+4
+  72 000a 1C80     		strh	r4, [r3]	@ movhi
+  53:.\compass.c   ****     compass_y = 0;
+  73              		.loc 1 53 0
+  74 000c 1B4B     		ldr	r3, .L5+8
+  75 000e 1C80     		strh	r4, [r3]	@ movhi
+  54:.\compass.c   ****     compass_z = 0;
+  76              		.loc 1 54 0
+  77 0010 1B4B     		ldr	r3, .L5+12
+  78 0012 1C80     		strh	r4, [r3]	@ movhi
+  55:.\compass.c   ****     compass_heading = 0;
+  79              		.loc 1 55 0
+  80 0014 0022     		movs	r2, #0
+  81 0016 0023     		movs	r3, #0
+  82 0018 1A49     		ldr	r1, .L5+16
+  83 001a C1E90023 		strd	r2, [r1]
+  56:.\compass.c   ****     
+  57:.\compass.c   ****     I2C_Start();
+  84              		.loc 1 57 0
+  85 001e FFF7FEFF 		bl	I2C_Start
+  86              	.LVL1:
+  58:.\compass.c   ****     //Write configuration register A
+  59:.\compass.c   ****     I2C_MasterSendStart(COMPASS_ADDR, I2C_WRITE_XFER_MODE); 
+  87              		.loc 1 59 0
+  88 0022 1E20     		movs	r0, #30
+  89 0024 2146     		mov	r1, r4
+  90 0026 FFF7FEFF 		bl	I2C_MasterSendStart
+  91              	.LVL2:
+  60:.\compass.c   ****     I2C_MasterWriteByte(COMPASS_REG_CONF_A);
+  92              		.loc 1 60 0
+  93 002a 2046     		mov	r0, r4
+  94 002c FFF7FEFF 		bl	I2C_MasterWriteByte
+  95              	.LVL3:
+  61:.\compass.c   ****     I2C_MasterWriteByte(COMPASS_DAT_CONF_A);
+  96              		.loc 1 61 0
+  97 0030 7020     		movs	r0, #112
+  98 0032 FFF7FEFF 		bl	I2C_MasterWriteByte
+  99              	.LVL4:
+  62:.\compass.c   ****     I2C_MasterSendStop();
+ 100              		.loc 1 62 0
+ 101 0036 FFF7FEFF 		bl	I2C_MasterSendStop
+ 102              	.LVL5:
+  63:.\compass.c   ****     //Write configuration register A    
+  64:.\compass.c   ****     I2C_MasterSendStart(COMPASS_ADDR, I2C_WRITE_XFER_MODE); 
+ 103              		.loc 1 64 0
+ 104 003a 1E20     		movs	r0, #30
+ 105 003c 2146     		mov	r1, r4
+ 106 003e FFF7FEFF 		bl	I2C_MasterSendStart
+ 107              	.LVL6:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 4
+
+
+  65:.\compass.c   ****     I2C_MasterWriteByte(COMPASS_REG_CONF_B);
+ 108              		.loc 1 65 0
+ 109 0042 0120     		movs	r0, #1
+ 110 0044 FFF7FEFF 		bl	I2C_MasterWriteByte
+ 111              	.LVL7:
+  66:.\compass.c   ****     I2C_MasterWriteByte(COMPASS_DAT_CONF_B);
+ 112              		.loc 1 66 0
+ 113 0048 2020     		movs	r0, #32
+ 114 004a FFF7FEFF 		bl	I2C_MasterWriteByte
+ 115              	.LVL8:
+  67:.\compass.c   ****     I2C_MasterSendStop();
+ 116              		.loc 1 67 0
+ 117 004e FFF7FEFF 		bl	I2C_MasterSendStop
+ 118              	.LVL9:
+  68:.\compass.c   ****     //Write mode register
+  69:.\compass.c   ****     I2C_MasterSendStart(COMPASS_ADDR, I2C_WRITE_XFER_MODE); 
+ 119              		.loc 1 69 0
+ 120 0052 1E20     		movs	r0, #30
+ 121 0054 2146     		mov	r1, r4
+ 122 0056 FFF7FEFF 		bl	I2C_MasterSendStart
+ 123              	.LVL10:
+  70:.\compass.c   ****     I2C_MasterWriteByte(COMPASS_REG_MODE);
+ 124              		.loc 1 70 0
+ 125 005a 0220     		movs	r0, #2
+ 126 005c FFF7FEFF 		bl	I2C_MasterWriteByte
+ 127              	.LVL11:
+  71:.\compass.c   ****     I2C_MasterWriteByte(COMPASS_DAT_MODE);
+ 128              		.loc 1 71 0
+ 129 0060 2046     		mov	r0, r4
+ 130 0062 FFF7FEFF 		bl	I2C_MasterWriteByte
+ 131              	.LVL12:
+  72:.\compass.c   ****     I2C_MasterSendStop();
+ 132              		.loc 1 72 0
+ 133 0066 FFF7FEFF 		bl	I2C_MasterSendStop
+ 134              	.LVL13:
+  73:.\compass.c   ****     
+  74:.\compass.c   ****     Compass_DRDY_ISR_StartEx(DRDY_INTERRUPT);
+ 135              		.loc 1 74 0
+ 136 006a 0748     		ldr	r0, .L5+20
+ 137 006c FFF7FEFF 		bl	Compass_DRDY_ISR_StartEx
+ 138              	.LVL14:
+ 139 0070 10BD     		pop	{r4, pc}
+ 140              	.L6:
+ 141 0072 00BF     		.align	2
+ 142              	.L5:
+ 143 0074 00000000 		.word	compass_ready
+ 144 0078 00000000 		.word	compass_x
+ 145 007c 00000000 		.word	compass_y
+ 146 0080 00000000 		.word	compass_z
+ 147 0084 00000000 		.word	compass_heading
+ 148 0088 00000000 		.word	DRDY_INTERRUPT
+ 149              		.cfi_endproc
+ 150              	.LFE64:
+ 151              		.size	start_compass, .-start_compass
+ 152              		.global	__aeabi_i2d
+ 153              		.section	.text.compass_read,"ax",%progbits
+ 154              		.align	2
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 5
+
+
+ 155              		.global	compass_read
+ 156              		.thumb
+ 157              		.thumb_func
+ 158              		.type	compass_read, %function
+ 159              	compass_read:
+ 160              	.LFB65:
+  75:.\compass.c   **** }
+  76:.\compass.c   **** 
+  77:.\compass.c   **** 
+  78:.\compass.c   **** void compass_read(){
+ 161              		.loc 1 78 0
+ 162              		.cfi_startproc
+ 163              		@ args = 0, pretend = 0, frame = 0
+ 164              		@ frame_needed = 0, uses_anonymous_args = 0
+ 165 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 166              		.cfi_def_cfa_offset 32
+ 167              		.cfi_offset 3, -32
+ 168              		.cfi_offset 4, -28
+ 169              		.cfi_offset 5, -24
+ 170              		.cfi_offset 6, -20
+ 171              		.cfi_offset 7, -16
+ 172              		.cfi_offset 8, -12
+ 173              		.cfi_offset 9, -8
+ 174              		.cfi_offset 14, -4
+  79:.\compass.c   ****     uint8 data[6] = {0, 0, 0, 0, 0, 0};
+  80:.\compass.c   ****     //Set the compass internal address pointer to xh
+  81:.\compass.c   ****     I2C_MasterSendStart(COMPASS_ADDR, I2C_WRITE_XFER_MODE);
+ 175              		.loc 1 81 0
+ 176 0004 1E20     		movs	r0, #30
+ 177 0006 0021     		movs	r1, #0
+ 178 0008 FFF7FEFF 		bl	I2C_MasterSendStart
+ 179              	.LVL15:
+  82:.\compass.c   ****     I2C_MasterWriteByte(0x03);
+ 180              		.loc 1 82 0
+ 181 000c 0320     		movs	r0, #3
+ 182 000e FFF7FEFF 		bl	I2C_MasterWriteByte
+ 183              	.LVL16:
+  83:.\compass.c   ****     I2C_MasterSendStop();
+ 184              		.loc 1 83 0
+ 185 0012 FFF7FEFF 		bl	I2C_MasterSendStop
+ 186              	.LVL17:
+  84:.\compass.c   ****     //Read six bytes
+  85:.\compass.c   ****     I2C_MasterSendStart(COMPASS_ADDR, I2C_READ_XFER_MODE);
+ 187              		.loc 1 85 0
+ 188 0016 1E20     		movs	r0, #30
+ 189 0018 0121     		movs	r1, #1
+ 190 001a FFF7FEFF 		bl	I2C_MasterSendStart
+ 191              	.LVL18:
+  86:.\compass.c   ****     data[0] = I2C_MasterReadByte(I2C_ACK_DATA);
+ 192              		.loc 1 86 0
+ 193 001e 0120     		movs	r0, #1
+ 194 0020 FFF7FEFF 		bl	I2C_MasterReadByte
+ 195              	.LVL19:
+ 196 0024 8146     		mov	r9, r0
+  87:.\compass.c   ****     data[1] = I2C_MasterReadByte(I2C_ACK_DATA);
+ 197              		.loc 1 87 0
+ 198 0026 0120     		movs	r0, #1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 6
+
+
+ 199 0028 FFF7FEFF 		bl	I2C_MasterReadByte
+ 200              	.LVL20:
+ 201 002c 8046     		mov	r8, r0
+  88:.\compass.c   ****     data[2] = I2C_MasterReadByte(I2C_ACK_DATA);
+ 202              		.loc 1 88 0
+ 203 002e 0120     		movs	r0, #1
+ 204 0030 FFF7FEFF 		bl	I2C_MasterReadByte
+ 205              	.LVL21:
+ 206 0034 0746     		mov	r7, r0
+  89:.\compass.c   ****     data[3] = I2C_MasterReadByte(I2C_ACK_DATA);
+ 207              		.loc 1 89 0
+ 208 0036 0120     		movs	r0, #1
+ 209 0038 FFF7FEFF 		bl	I2C_MasterReadByte
+ 210              	.LVL22:
+ 211 003c 0646     		mov	r6, r0
+  90:.\compass.c   ****     data[4] = I2C_MasterReadByte(I2C_ACK_DATA);
+ 212              		.loc 1 90 0
+ 213 003e 0120     		movs	r0, #1
+ 214 0040 FFF7FEFF 		bl	I2C_MasterReadByte
+ 215              	.LVL23:
+ 216 0044 0546     		mov	r5, r0
+  91:.\compass.c   ****     data[5] = I2C_MasterReadByte(I2C_NAK_DATA);
+ 217              		.loc 1 91 0
+ 218 0046 0020     		movs	r0, #0
+ 219 0048 FFF7FEFF 		bl	I2C_MasterReadByte
+ 220              	.LVL24:
+ 221 004c 0446     		mov	r4, r0
+  92:.\compass.c   ****     I2C_MasterSendStop();
+ 222              		.loc 1 92 0
+ 223 004e FFF7FEFF 		bl	I2C_MasterSendStop
+ 224              	.LVL25:
+  93:.\compass.c   ****     
+  94:.\compass.c   ****     compass_x = ((data[0] << 8) | data[1]);
+ 225              		.loc 1 94 0
+ 226 0052 48EA0923 		orr	r3, r8, r9, lsl #8
+ 227 0056 9BB2     		uxth	r3, r3
+ 228 0058 104A     		ldr	r2, .L8
+ 229 005a 1380     		strh	r3, [r2]	@ movhi
+  95:.\compass.c   ****     compass_z = (data[2] << 8) | data[3];//Bizarrely, the device reads x,z,y...
+ 230              		.loc 1 95 0
+ 231 005c 46EA0726 		orr	r6, r6, r7, lsl #8
+ 232 0060 0F4A     		ldr	r2, .L8+4
+ 233 0062 1680     		strh	r6, [r2]	@ movhi
+  96:.\compass.c   ****     compass_y = ((data[4] << 8) | data[5]);
+ 234              		.loc 1 96 0
+ 235 0064 44EA0520 		orr	r0, r4, r5, lsl #8
+ 236 0068 80B2     		uxth	r0, r0
+ 237 006a 0E4A     		ldr	r2, .L8+8
+ 238 006c 1080     		strh	r0, [r2]	@ movhi
+  97:.\compass.c   ****     compass_heading = atan2((double) (compass_y - CALIBRATION_Y), (double) (compass_x - CALIBRATION
+ 239              		.loc 1 97 0
+ 240 006e 00B2     		sxth	r0, r0
+ 241 0070 1BB2     		sxth	r3, r3
+ 242 0072 A3F11906 		sub	r6, r3, #25
+ 243 0076 3230     		adds	r0, r0, #50
+ 244 0078 FFF7FEFF 		bl	__aeabi_i2d
+ 245              	.LVL26:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 7
+
+
+ 246 007c 0446     		mov	r4, r0
+ 247 007e 0D46     		mov	r5, r1
+ 248 0080 3046     		mov	r0, r6
+ 249 0082 FFF7FEFF 		bl	__aeabi_i2d
+ 250              	.LVL27:
+ 251 0086 0246     		mov	r2, r0
+ 252 0088 0B46     		mov	r3, r1
+ 253 008a 2046     		mov	r0, r4
+ 254 008c 2946     		mov	r1, r5
+ 255 008e FFF7FEFF 		bl	atan2
+ 256              	.LVL28:
+ 257 0092 054B     		ldr	r3, .L8+12
+ 258 0094 C3E90001 		strd	r0, [r3]
+ 259 0098 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 260              	.L9:
+ 261              		.align	2
+ 262              	.L8:
+ 263 009c 00000000 		.word	compass_x
+ 264 00a0 00000000 		.word	compass_z
+ 265 00a4 00000000 		.word	compass_y
+ 266 00a8 00000000 		.word	compass_heading
+ 267              		.cfi_endproc
+ 268              	.LFE65:
+ 269              		.size	compass_read, .-compass_read
+ 270              		.comm	compass_ready,1,1
+ 271              		.comm	compass_heading,8,8
+ 272              		.comm	compass_z,2,2
+ 273              		.comm	compass_y,2,2
+ 274              		.comm	compass_x,2,2
+ 275              		.comm	OV9650_1_framebuffer,50688,4
+ 276              		.text
+ 277              	.Letext0:
+ 278              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 279              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 280              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 281              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 282              		.file 6 "Generated_Source\\PSoC5/OV9650_1.h"
+ 283              		.file 7 "Generated_Source\\PSoC5/Compass_DRDY_ISR.h"
+ 284              		.file 8 "Generated_Source\\PSoC5/I2C.h"
+ 285              		.file 9 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 286              		.section	.debug_info,"",%progbits
+ 287              	.Ldebug_info0:
+ 288 0000 14040000 		.4byte	0x414
+ 289 0004 0400     		.2byte	0x4
+ 290 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 291 000a 04       		.byte	0x4
+ 292 000b 01       		.uleb128 0x1
+ 293 000c C6010000 		.4byte	.LASF36
+ 294 0010 01       		.byte	0x1
+ 295 0011 C5020000 		.4byte	.LASF37
+ 296 0015 51010000 		.4byte	.LASF38
+ 297 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 298 001d 00000000 		.4byte	0
+ 299 0021 00000000 		.4byte	.Ldebug_line0
+ 300 0025 02       		.uleb128 0x2
+ 301 0026 01       		.byte	0x1
+ 302 0027 06       		.byte	0x6
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 8
+
+
+ 303 0028 A9020000 		.4byte	.LASF0
+ 304 002c 02       		.uleb128 0x2
+ 305 002d 01       		.byte	0x1
+ 306 002e 08       		.byte	0x8
+ 307 002f B5000000 		.4byte	.LASF1
+ 308 0033 02       		.uleb128 0x2
+ 309 0034 02       		.byte	0x2
+ 310 0035 05       		.byte	0x5
+ 311 0036 77020000 		.4byte	.LASF2
+ 312 003a 02       		.uleb128 0x2
+ 313 003b 02       		.byte	0x2
+ 314 003c 07       		.byte	0x7
+ 315 003d DB000000 		.4byte	.LASF3
+ 316 0041 03       		.uleb128 0x3
+ 317 0042 37000000 		.4byte	.LASF9
+ 318 0046 02       		.byte	0x2
+ 319 0047 37       		.byte	0x37
+ 320 0048 4C000000 		.4byte	0x4c
+ 321 004c 02       		.uleb128 0x2
+ 322 004d 04       		.byte	0x4
+ 323 004e 05       		.byte	0x5
+ 324 004f 94020000 		.4byte	.LASF4
+ 325 0053 02       		.uleb128 0x2
+ 326 0054 04       		.byte	0x4
+ 327 0055 07       		.byte	0x7
+ 328 0056 C9000000 		.4byte	.LASF5
+ 329 005a 02       		.uleb128 0x2
+ 330 005b 08       		.byte	0x8
+ 331 005c 05       		.byte	0x5
+ 332 005d 4B020000 		.4byte	.LASF6
+ 333 0061 02       		.uleb128 0x2
+ 334 0062 08       		.byte	0x8
+ 335 0063 07       		.byte	0x7
+ 336 0064 A2010000 		.4byte	.LASF7
+ 337 0068 04       		.uleb128 0x4
+ 338 0069 04       		.byte	0x4
+ 339 006a 05       		.byte	0x5
+ 340 006b 696E7400 		.ascii	"int\000"
+ 341 006f 02       		.uleb128 0x2
+ 342 0070 04       		.byte	0x4
+ 343 0071 07       		.byte	0x7
+ 344 0072 44010000 		.4byte	.LASF8
+ 345 0076 03       		.uleb128 0x3
+ 346 0077 A2000000 		.4byte	.LASF10
+ 347 007b 03       		.byte	0x3
+ 348 007c 41       		.byte	0x41
+ 349 007d 41000000 		.4byte	0x41
+ 350 0081 03       		.uleb128 0x3
+ 351 0082 81020000 		.4byte	.LASF11
+ 352 0086 04       		.byte	0x4
+ 353 0087 B3       		.byte	0xb3
+ 354 0088 2C000000 		.4byte	0x2c
+ 355 008c 03       		.uleb128 0x3
+ 356 008d C3000000 		.4byte	.LASF12
+ 357 0091 04       		.byte	0x4
+ 358 0092 B7       		.byte	0xb7
+ 359 0093 33000000 		.4byte	0x33
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 9
+
+
+ 360 0097 02       		.uleb128 0x2
+ 361 0098 04       		.byte	0x4
+ 362 0099 04       		.byte	0x4
+ 363 009a AA000000 		.4byte	.LASF13
+ 364 009e 02       		.uleb128 0x2
+ 365 009f 08       		.byte	0x8
+ 366 00a0 04       		.byte	0x4
+ 367 00a1 91000000 		.4byte	.LASF14
+ 368 00a5 02       		.uleb128 0x2
+ 369 00a6 01       		.byte	0x1
+ 370 00a7 08       		.byte	0x8
+ 371 00a8 5F020000 		.4byte	.LASF15
+ 372 00ac 05       		.uleb128 0x5
+ 373 00ad 81000000 		.4byte	0x81
+ 374 00b1 06       		.uleb128 0x6
+ 375 00b2 B9010000 		.4byte	.LASF16
+ 376 00b6 04       		.byte	0x4
+ 377 00b7 6F01     		.2byte	0x16f
+ 378 00b9 BD000000 		.4byte	0xbd
+ 379 00bd 07       		.uleb128 0x7
+ 380 00be 04       		.byte	0x4
+ 381 00bf C3000000 		.4byte	0xc3
+ 382 00c3 08       		.uleb128 0x8
+ 383 00c4 02       		.uleb128 0x2
+ 384 00c5 04       		.byte	0x4
+ 385 00c6 07       		.byte	0x7
+ 386 00c7 42020000 		.4byte	.LASF17
+ 387 00cb 02       		.uleb128 0x2
+ 388 00cc 08       		.byte	0x8
+ 389 00cd 04       		.byte	0x4
+ 390 00ce 9D020000 		.4byte	.LASF18
+ 391 00d2 09       		.uleb128 0x9
+ 392 00d3 00000000 		.4byte	.LASF19
+ 393 00d7 01       		.byte	0x1
+ 394 00d8 2D       		.byte	0x2d
+ 395 00d9 00000000 		.4byte	.LFB63
+ 396 00dd 14000000 		.4byte	.LFE63-.LFB63
+ 397 00e1 01       		.uleb128 0x1
+ 398 00e2 9C       		.byte	0x9c
+ 399 00e3 F1000000 		.4byte	0xf1
+ 400 00e7 0A       		.uleb128 0xa
+ 401 00e8 0C000000 		.4byte	.LVL0
+ 402 00ec 93030000 		.4byte	0x393
+ 403 00f0 00       		.byte	0
+ 404 00f1 09       		.uleb128 0x9
+ 405 00f2 36010000 		.4byte	.LASF20
+ 406 00f6 01       		.byte	0x1
+ 407 00f7 32       		.byte	0x32
+ 408 00f8 00000000 		.4byte	.LFB64
+ 409 00fc 8C000000 		.4byte	.LFE64-.LFB64
+ 410 0100 01       		.uleb128 0x1
+ 411 0101 9C       		.byte	0x9c
+ 412 0102 FF010000 		.4byte	0x1ff
+ 413 0106 0A       		.uleb128 0xa
+ 414 0107 22000000 		.4byte	.LVL1
+ 415 010b 9A030000 		.4byte	0x39a
+ 416 010f 0B       		.uleb128 0xb
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 10
+
+
+ 417 0110 2A000000 		.4byte	.LVL2
+ 418 0114 A1030000 		.4byte	0x3a1
+ 419 0118 28010000 		.4byte	0x128
+ 420 011c 0C       		.uleb128 0xc
+ 421 011d 01       		.uleb128 0x1
+ 422 011e 51       		.byte	0x51
+ 423 011f 02       		.uleb128 0x2
+ 424 0120 74       		.byte	0x74
+ 425 0121 00       		.sleb128 0
+ 426 0122 0C       		.uleb128 0xc
+ 427 0123 01       		.uleb128 0x1
+ 428 0124 50       		.byte	0x50
+ 429 0125 01       		.uleb128 0x1
+ 430 0126 4E       		.byte	0x4e
+ 431 0127 00       		.byte	0
+ 432 0128 0B       		.uleb128 0xb
+ 433 0129 30000000 		.4byte	.LVL3
+ 434 012d BB030000 		.4byte	0x3bb
+ 435 0131 3C010000 		.4byte	0x13c
+ 436 0135 0C       		.uleb128 0xc
+ 437 0136 01       		.uleb128 0x1
+ 438 0137 50       		.byte	0x50
+ 439 0138 02       		.uleb128 0x2
+ 440 0139 74       		.byte	0x74
+ 441 013a 00       		.sleb128 0
+ 442 013b 00       		.byte	0
+ 443 013c 0B       		.uleb128 0xb
+ 444 013d 36000000 		.4byte	.LVL4
+ 445 0141 BB030000 		.4byte	0x3bb
+ 446 0145 50010000 		.4byte	0x150
+ 447 0149 0C       		.uleb128 0xc
+ 448 014a 01       		.uleb128 0x1
+ 449 014b 50       		.byte	0x50
+ 450 014c 02       		.uleb128 0x2
+ 451 014d 08       		.byte	0x8
+ 452 014e 70       		.byte	0x70
+ 453 014f 00       		.byte	0
+ 454 0150 0A       		.uleb128 0xa
+ 455 0151 3A000000 		.4byte	.LVL5
+ 456 0155 D0030000 		.4byte	0x3d0
+ 457 0159 0B       		.uleb128 0xb
+ 458 015a 42000000 		.4byte	.LVL6
+ 459 015e A1030000 		.4byte	0x3a1
+ 460 0162 72010000 		.4byte	0x172
+ 461 0166 0C       		.uleb128 0xc
+ 462 0167 01       		.uleb128 0x1
+ 463 0168 51       		.byte	0x51
+ 464 0169 02       		.uleb128 0x2
+ 465 016a 74       		.byte	0x74
+ 466 016b 00       		.sleb128 0
+ 467 016c 0C       		.uleb128 0xc
+ 468 016d 01       		.uleb128 0x1
+ 469 016e 50       		.byte	0x50
+ 470 016f 01       		.uleb128 0x1
+ 471 0170 4E       		.byte	0x4e
+ 472 0171 00       		.byte	0
+ 473 0172 0B       		.uleb128 0xb
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 11
+
+
+ 474 0173 48000000 		.4byte	.LVL7
+ 475 0177 BB030000 		.4byte	0x3bb
+ 476 017b 85010000 		.4byte	0x185
+ 477 017f 0C       		.uleb128 0xc
+ 478 0180 01       		.uleb128 0x1
+ 479 0181 50       		.byte	0x50
+ 480 0182 01       		.uleb128 0x1
+ 481 0183 31       		.byte	0x31
+ 482 0184 00       		.byte	0
+ 483 0185 0B       		.uleb128 0xb
+ 484 0186 4E000000 		.4byte	.LVL8
+ 485 018a BB030000 		.4byte	0x3bb
+ 486 018e 99010000 		.4byte	0x199
+ 487 0192 0C       		.uleb128 0xc
+ 488 0193 01       		.uleb128 0x1
+ 489 0194 50       		.byte	0x50
+ 490 0195 02       		.uleb128 0x2
+ 491 0196 08       		.byte	0x8
+ 492 0197 20       		.byte	0x20
+ 493 0198 00       		.byte	0
+ 494 0199 0A       		.uleb128 0xa
+ 495 019a 52000000 		.4byte	.LVL9
+ 496 019e D0030000 		.4byte	0x3d0
+ 497 01a2 0B       		.uleb128 0xb
+ 498 01a3 5A000000 		.4byte	.LVL10
+ 499 01a7 A1030000 		.4byte	0x3a1
+ 500 01ab BB010000 		.4byte	0x1bb
+ 501 01af 0C       		.uleb128 0xc
+ 502 01b0 01       		.uleb128 0x1
+ 503 01b1 51       		.byte	0x51
+ 504 01b2 02       		.uleb128 0x2
+ 505 01b3 74       		.byte	0x74
+ 506 01b4 00       		.sleb128 0
+ 507 01b5 0C       		.uleb128 0xc
+ 508 01b6 01       		.uleb128 0x1
+ 509 01b7 50       		.byte	0x50
+ 510 01b8 01       		.uleb128 0x1
+ 511 01b9 4E       		.byte	0x4e
+ 512 01ba 00       		.byte	0
+ 513 01bb 0B       		.uleb128 0xb
+ 514 01bc 60000000 		.4byte	.LVL11
+ 515 01c0 BB030000 		.4byte	0x3bb
+ 516 01c4 CE010000 		.4byte	0x1ce
+ 517 01c8 0C       		.uleb128 0xc
+ 518 01c9 01       		.uleb128 0x1
+ 519 01ca 50       		.byte	0x50
+ 520 01cb 01       		.uleb128 0x1
+ 521 01cc 32       		.byte	0x32
+ 522 01cd 00       		.byte	0
+ 523 01ce 0B       		.uleb128 0xb
+ 524 01cf 66000000 		.4byte	.LVL12
+ 525 01d3 BB030000 		.4byte	0x3bb
+ 526 01d7 E2010000 		.4byte	0x1e2
+ 527 01db 0C       		.uleb128 0xc
+ 528 01dc 01       		.uleb128 0x1
+ 529 01dd 50       		.byte	0x50
+ 530 01de 02       		.uleb128 0x2
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 12
+
+
+ 531 01df 74       		.byte	0x74
+ 532 01e0 00       		.sleb128 0
+ 533 01e1 00       		.byte	0
+ 534 01e2 0A       		.uleb128 0xa
+ 535 01e3 6A000000 		.4byte	.LVL13
+ 536 01e7 D0030000 		.4byte	0x3d0
+ 537 01eb 0D       		.uleb128 0xd
+ 538 01ec 70000000 		.4byte	.LVL14
+ 539 01f0 DB030000 		.4byte	0x3db
+ 540 01f4 0C       		.uleb128 0xc
+ 541 01f5 01       		.uleb128 0x1
+ 542 01f6 50       		.byte	0x50
+ 543 01f7 05       		.uleb128 0x5
+ 544 01f8 03       		.byte	0x3
+ 545 01f9 00000000 		.4byte	DRDY_INTERRUPT
+ 546 01fd 00       		.byte	0
+ 547 01fe 00       		.byte	0
+ 548 01ff 0E       		.uleb128 0xe
+ 549 0200 87020000 		.4byte	.LASF21
+ 550 0204 01       		.byte	0x1
+ 551 0205 4E       		.byte	0x4e
+ 552 0206 00000000 		.4byte	.LFB65
+ 553 020a AC000000 		.4byte	.LFE65-.LFB65
+ 554 020e 01       		.uleb128 0x1
+ 555 020f 9C       		.byte	0x9c
+ 556 0210 F0020000 		.4byte	0x2f0
+ 557 0214 0F       		.uleb128 0xf
+ 558 0215 B0000000 		.4byte	.LASF39
+ 559 0219 01       		.byte	0x1
+ 560 021a 4F       		.byte	0x4f
+ 561 021b F0020000 		.4byte	0x2f0
+ 562 021f 0B       		.uleb128 0xb
+ 563 0220 0C000000 		.4byte	.LVL15
+ 564 0224 A1030000 		.4byte	0x3a1
+ 565 0228 37020000 		.4byte	0x237
+ 566 022c 0C       		.uleb128 0xc
+ 567 022d 01       		.uleb128 0x1
+ 568 022e 51       		.byte	0x51
+ 569 022f 01       		.uleb128 0x1
+ 570 0230 30       		.byte	0x30
+ 571 0231 0C       		.uleb128 0xc
+ 572 0232 01       		.uleb128 0x1
+ 573 0233 50       		.byte	0x50
+ 574 0234 01       		.uleb128 0x1
+ 575 0235 4E       		.byte	0x4e
+ 576 0236 00       		.byte	0
+ 577 0237 0B       		.uleb128 0xb
+ 578 0238 12000000 		.4byte	.LVL16
+ 579 023c BB030000 		.4byte	0x3bb
+ 580 0240 4A020000 		.4byte	0x24a
+ 581 0244 0C       		.uleb128 0xc
+ 582 0245 01       		.uleb128 0x1
+ 583 0246 50       		.byte	0x50
+ 584 0247 01       		.uleb128 0x1
+ 585 0248 33       		.byte	0x33
+ 586 0249 00       		.byte	0
+ 587 024a 0A       		.uleb128 0xa
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 13
+
+
+ 588 024b 16000000 		.4byte	.LVL17
+ 589 024f D0030000 		.4byte	0x3d0
+ 590 0253 0B       		.uleb128 0xb
+ 591 0254 1E000000 		.4byte	.LVL18
+ 592 0258 A1030000 		.4byte	0x3a1
+ 593 025c 6B020000 		.4byte	0x26b
+ 594 0260 0C       		.uleb128 0xc
+ 595 0261 01       		.uleb128 0x1
+ 596 0262 51       		.byte	0x51
+ 597 0263 01       		.uleb128 0x1
+ 598 0264 31       		.byte	0x31
+ 599 0265 0C       		.uleb128 0xc
+ 600 0266 01       		.uleb128 0x1
+ 601 0267 50       		.byte	0x50
+ 602 0268 01       		.uleb128 0x1
+ 603 0269 4E       		.byte	0x4e
+ 604 026a 00       		.byte	0
+ 605 026b 0B       		.uleb128 0xb
+ 606 026c 24000000 		.4byte	.LVL19
+ 607 0270 EC030000 		.4byte	0x3ec
+ 608 0274 7E020000 		.4byte	0x27e
+ 609 0278 0C       		.uleb128 0xc
+ 610 0279 01       		.uleb128 0x1
+ 611 027a 50       		.byte	0x50
+ 612 027b 01       		.uleb128 0x1
+ 613 027c 31       		.byte	0x31
+ 614 027d 00       		.byte	0
+ 615 027e 0B       		.uleb128 0xb
+ 616 027f 2C000000 		.4byte	.LVL20
+ 617 0283 EC030000 		.4byte	0x3ec
+ 618 0287 91020000 		.4byte	0x291
+ 619 028b 0C       		.uleb128 0xc
+ 620 028c 01       		.uleb128 0x1
+ 621 028d 50       		.byte	0x50
+ 622 028e 01       		.uleb128 0x1
+ 623 028f 31       		.byte	0x31
+ 624 0290 00       		.byte	0
+ 625 0291 0B       		.uleb128 0xb
+ 626 0292 34000000 		.4byte	.LVL21
+ 627 0296 EC030000 		.4byte	0x3ec
+ 628 029a A4020000 		.4byte	0x2a4
+ 629 029e 0C       		.uleb128 0xc
+ 630 029f 01       		.uleb128 0x1
+ 631 02a0 50       		.byte	0x50
+ 632 02a1 01       		.uleb128 0x1
+ 633 02a2 31       		.byte	0x31
+ 634 02a3 00       		.byte	0
+ 635 02a4 0B       		.uleb128 0xb
+ 636 02a5 3C000000 		.4byte	.LVL22
+ 637 02a9 EC030000 		.4byte	0x3ec
+ 638 02ad B7020000 		.4byte	0x2b7
+ 639 02b1 0C       		.uleb128 0xc
+ 640 02b2 01       		.uleb128 0x1
+ 641 02b3 50       		.byte	0x50
+ 642 02b4 01       		.uleb128 0x1
+ 643 02b5 31       		.byte	0x31
+ 644 02b6 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 14
+
+
+ 645 02b7 0B       		.uleb128 0xb
+ 646 02b8 44000000 		.4byte	.LVL23
+ 647 02bc EC030000 		.4byte	0x3ec
+ 648 02c0 CA020000 		.4byte	0x2ca
+ 649 02c4 0C       		.uleb128 0xc
+ 650 02c5 01       		.uleb128 0x1
+ 651 02c6 50       		.byte	0x50
+ 652 02c7 01       		.uleb128 0x1
+ 653 02c8 31       		.byte	0x31
+ 654 02c9 00       		.byte	0
+ 655 02ca 0B       		.uleb128 0xb
+ 656 02cb 4C000000 		.4byte	.LVL24
+ 657 02cf EC030000 		.4byte	0x3ec
+ 658 02d3 DD020000 		.4byte	0x2dd
+ 659 02d7 0C       		.uleb128 0xc
+ 660 02d8 01       		.uleb128 0x1
+ 661 02d9 50       		.byte	0x50
+ 662 02da 01       		.uleb128 0x1
+ 663 02db 30       		.byte	0x30
+ 664 02dc 00       		.byte	0
+ 665 02dd 0A       		.uleb128 0xa
+ 666 02de 52000000 		.4byte	.LVL25
+ 667 02e2 D0030000 		.4byte	0x3d0
+ 668 02e6 0A       		.uleb128 0xa
+ 669 02e7 92000000 		.4byte	.LVL28
+ 670 02eb 01040000 		.4byte	0x401
+ 671 02ef 00       		.byte	0
+ 672 02f0 10       		.uleb128 0x10
+ 673 02f1 81000000 		.4byte	0x81
+ 674 02f5 00030000 		.4byte	0x300
+ 675 02f9 11       		.uleb128 0x11
+ 676 02fa C4000000 		.4byte	0xc4
+ 677 02fe 05       		.byte	0x5
+ 678 02ff 00       		.byte	0
+ 679 0300 12       		.uleb128 0x12
+ 680 0301 02010000 		.4byte	.LASF22
+ 681 0305 05       		.byte	0x5
+ 682 0306 2A06     		.2byte	0x62a
+ 683 0308 0C030000 		.4byte	0x30c
+ 684 030c 05       		.uleb128 0x5
+ 685 030d 76000000 		.4byte	0x76
+ 686 0311 10       		.uleb128 0x10
+ 687 0312 81000000 		.4byte	0x81
+ 688 0316 2D030000 		.4byte	0x32d
+ 689 031a 11       		.uleb128 0x11
+ 690 031b C4000000 		.4byte	0xc4
+ 691 031f 8F       		.byte	0x8f
+ 692 0320 11       		.uleb128 0x11
+ 693 0321 C4000000 		.4byte	0xc4
+ 694 0325 57       		.byte	0x57
+ 695 0326 11       		.uleb128 0x11
+ 696 0327 C4000000 		.4byte	0xc4
+ 697 032b 03       		.byte	0x3
+ 698 032c 00       		.byte	0
+ 699 032d 13       		.uleb128 0x13
+ 700 032e 22000000 		.4byte	.LASF23
+ 701 0332 06       		.byte	0x6
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 15
+
+
+ 702 0333 08       		.byte	0x8
+ 703 0334 11030000 		.4byte	0x311
+ 704 0338 05       		.uleb128 0x5
+ 705 0339 03       		.byte	0x3
+ 706 033a 00000000 		.4byte	OV9650_1_framebuffer
+ 707 033e 13       		.uleb128 0x13
+ 708 033f 87000000 		.4byte	.LASF24
+ 709 0343 01       		.byte	0x1
+ 710 0344 21       		.byte	0x21
+ 711 0345 8C000000 		.4byte	0x8c
+ 712 0349 05       		.uleb128 0x5
+ 713 034a 03       		.byte	0x3
+ 714 034b 00000000 		.4byte	compass_x
+ 715 034f 13       		.uleb128 0x13
+ 716 0350 41000000 		.4byte	.LASF25
+ 717 0354 01       		.byte	0x1
+ 718 0355 22       		.byte	0x22
+ 719 0356 8C000000 		.4byte	0x8c
+ 720 035a 05       		.uleb128 0x5
+ 721 035b 03       		.byte	0x3
+ 722 035c 00000000 		.4byte	compass_y
+ 723 0360 13       		.uleb128 0x13
+ 724 0361 4B000000 		.4byte	.LASF26
+ 725 0365 01       		.byte	0x1
+ 726 0366 23       		.byte	0x23
+ 727 0367 8C000000 		.4byte	0x8c
+ 728 036b 05       		.uleb128 0x5
+ 729 036c 03       		.byte	0x3
+ 730 036d 00000000 		.4byte	compass_z
+ 731 0371 13       		.uleb128 0x13
+ 732 0372 B5020000 		.4byte	.LASF27
+ 733 0376 01       		.byte	0x1
+ 734 0377 24       		.byte	0x24
+ 735 0378 9E000000 		.4byte	0x9e
+ 736 037c 05       		.uleb128 0x5
+ 737 037d 03       		.byte	0x3
+ 738 037e 00000000 		.4byte	compass_heading
+ 739 0382 13       		.uleb128 0x13
+ 740 0383 28010000 		.4byte	.LASF28
+ 741 0387 01       		.byte	0x1
+ 742 0388 25       		.byte	0x25
+ 743 0389 AC000000 		.4byte	0xac
+ 744 038d 05       		.uleb128 0x5
+ 745 038e 03       		.byte	0x3
+ 746 038f 00000000 		.4byte	compass_ready
+ 747 0393 14       		.uleb128 0x14
+ 748 0394 69000000 		.4byte	.LASF29
+ 749 0398 07       		.byte	0x7
+ 750 0399 28       		.byte	0x28
+ 751 039a 14       		.uleb128 0x14
+ 752 039b 98000000 		.4byte	.LASF30
+ 753 039f 08       		.byte	0x8
+ 754 03a0 93       		.byte	0x93
+ 755 03a1 15       		.uleb128 0x15
+ 756 03a2 EE000000 		.4byte	.LASF31
+ 757 03a6 08       		.byte	0x8
+ 758 03a7 B1       		.byte	0xb1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 16
+
+
+ 759 03a8 81000000 		.4byte	0x81
+ 760 03ac BB030000 		.4byte	0x3bb
+ 761 03b0 16       		.uleb128 0x16
+ 762 03b1 81000000 		.4byte	0x81
+ 763 03b5 16       		.uleb128 0x16
+ 764 03b6 81000000 		.4byte	0x81
+ 765 03ba 00       		.byte	0
+ 766 03bb 15       		.uleb128 0x15
+ 767 03bc 55000000 		.4byte	.LASF32
+ 768 03c0 08       		.byte	0x8
+ 769 03c1 B6       		.byte	0xb6
+ 770 03c2 81000000 		.4byte	0x81
+ 771 03c6 D0030000 		.4byte	0x3d0
+ 772 03ca 16       		.uleb128 0x16
+ 773 03cb 81000000 		.4byte	0x81
+ 774 03cf 00       		.byte	0
+ 775 03d0 17       		.uleb128 0x17
+ 776 03d1 0F000000 		.4byte	.LASF40
+ 777 03d5 08       		.byte	0x8
+ 778 03d6 B5       		.byte	0xb5
+ 779 03d7 81000000 		.4byte	0x81
+ 780 03db 18       		.uleb128 0x18
+ 781 03dc 0F010000 		.4byte	.LASF34
+ 782 03e0 07       		.byte	0x7
+ 783 03e1 18       		.byte	0x18
+ 784 03e2 EC030000 		.4byte	0x3ec
+ 785 03e6 16       		.uleb128 0x16
+ 786 03e7 B1000000 		.4byte	0xb1
+ 787 03eb 00       		.byte	0
+ 788 03ec 15       		.uleb128 0x15
+ 789 03ed 64020000 		.4byte	.LASF33
+ 790 03f1 08       		.byte	0x8
+ 791 03f2 B7       		.byte	0xb7
+ 792 03f3 81000000 		.4byte	0x81
+ 793 03f7 01040000 		.4byte	0x401
+ 794 03fb 16       		.uleb128 0x16
+ 795 03fc 81000000 		.4byte	0x81
+ 796 0400 00       		.byte	0
+ 797 0401 19       		.uleb128 0x19
+ 798 0402 59020000 		.4byte	.LASF35
+ 799 0406 09       		.byte	0x9
+ 800 0407 7E       		.byte	0x7e
+ 801 0408 9E000000 		.4byte	0x9e
+ 802 040c 16       		.uleb128 0x16
+ 803 040d 9E000000 		.4byte	0x9e
+ 804 0411 16       		.uleb128 0x16
+ 805 0412 9E000000 		.4byte	0x9e
+ 806 0416 00       		.byte	0
+ 807 0417 00       		.byte	0
+ 808              		.section	.debug_abbrev,"",%progbits
+ 809              	.Ldebug_abbrev0:
+ 810 0000 01       		.uleb128 0x1
+ 811 0001 11       		.uleb128 0x11
+ 812 0002 01       		.byte	0x1
+ 813 0003 25       		.uleb128 0x25
+ 814 0004 0E       		.uleb128 0xe
+ 815 0005 13       		.uleb128 0x13
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 17
+
+
+ 816 0006 0B       		.uleb128 0xb
+ 817 0007 03       		.uleb128 0x3
+ 818 0008 0E       		.uleb128 0xe
+ 819 0009 1B       		.uleb128 0x1b
+ 820 000a 0E       		.uleb128 0xe
+ 821 000b 55       		.uleb128 0x55
+ 822 000c 17       		.uleb128 0x17
+ 823 000d 11       		.uleb128 0x11
+ 824 000e 01       		.uleb128 0x1
+ 825 000f 10       		.uleb128 0x10
+ 826 0010 17       		.uleb128 0x17
+ 827 0011 00       		.byte	0
+ 828 0012 00       		.byte	0
+ 829 0013 02       		.uleb128 0x2
+ 830 0014 24       		.uleb128 0x24
+ 831 0015 00       		.byte	0
+ 832 0016 0B       		.uleb128 0xb
+ 833 0017 0B       		.uleb128 0xb
+ 834 0018 3E       		.uleb128 0x3e
+ 835 0019 0B       		.uleb128 0xb
+ 836 001a 03       		.uleb128 0x3
+ 837 001b 0E       		.uleb128 0xe
+ 838 001c 00       		.byte	0
+ 839 001d 00       		.byte	0
+ 840 001e 03       		.uleb128 0x3
+ 841 001f 16       		.uleb128 0x16
+ 842 0020 00       		.byte	0
+ 843 0021 03       		.uleb128 0x3
+ 844 0022 0E       		.uleb128 0xe
+ 845 0023 3A       		.uleb128 0x3a
+ 846 0024 0B       		.uleb128 0xb
+ 847 0025 3B       		.uleb128 0x3b
+ 848 0026 0B       		.uleb128 0xb
+ 849 0027 49       		.uleb128 0x49
+ 850 0028 13       		.uleb128 0x13
+ 851 0029 00       		.byte	0
+ 852 002a 00       		.byte	0
+ 853 002b 04       		.uleb128 0x4
+ 854 002c 24       		.uleb128 0x24
+ 855 002d 00       		.byte	0
+ 856 002e 0B       		.uleb128 0xb
+ 857 002f 0B       		.uleb128 0xb
+ 858 0030 3E       		.uleb128 0x3e
+ 859 0031 0B       		.uleb128 0xb
+ 860 0032 03       		.uleb128 0x3
+ 861 0033 08       		.uleb128 0x8
+ 862 0034 00       		.byte	0
+ 863 0035 00       		.byte	0
+ 864 0036 05       		.uleb128 0x5
+ 865 0037 35       		.uleb128 0x35
+ 866 0038 00       		.byte	0
+ 867 0039 49       		.uleb128 0x49
+ 868 003a 13       		.uleb128 0x13
+ 869 003b 00       		.byte	0
+ 870 003c 00       		.byte	0
+ 871 003d 06       		.uleb128 0x6
+ 872 003e 16       		.uleb128 0x16
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 18
+
+
+ 873 003f 00       		.byte	0
+ 874 0040 03       		.uleb128 0x3
+ 875 0041 0E       		.uleb128 0xe
+ 876 0042 3A       		.uleb128 0x3a
+ 877 0043 0B       		.uleb128 0xb
+ 878 0044 3B       		.uleb128 0x3b
+ 879 0045 05       		.uleb128 0x5
+ 880 0046 49       		.uleb128 0x49
+ 881 0047 13       		.uleb128 0x13
+ 882 0048 00       		.byte	0
+ 883 0049 00       		.byte	0
+ 884 004a 07       		.uleb128 0x7
+ 885 004b 0F       		.uleb128 0xf
+ 886 004c 00       		.byte	0
+ 887 004d 0B       		.uleb128 0xb
+ 888 004e 0B       		.uleb128 0xb
+ 889 004f 49       		.uleb128 0x49
+ 890 0050 13       		.uleb128 0x13
+ 891 0051 00       		.byte	0
+ 892 0052 00       		.byte	0
+ 893 0053 08       		.uleb128 0x8
+ 894 0054 15       		.uleb128 0x15
+ 895 0055 00       		.byte	0
+ 896 0056 27       		.uleb128 0x27
+ 897 0057 19       		.uleb128 0x19
+ 898 0058 00       		.byte	0
+ 899 0059 00       		.byte	0
+ 900 005a 09       		.uleb128 0x9
+ 901 005b 2E       		.uleb128 0x2e
+ 902 005c 01       		.byte	0x1
+ 903 005d 3F       		.uleb128 0x3f
+ 904 005e 19       		.uleb128 0x19
+ 905 005f 03       		.uleb128 0x3
+ 906 0060 0E       		.uleb128 0xe
+ 907 0061 3A       		.uleb128 0x3a
+ 908 0062 0B       		.uleb128 0xb
+ 909 0063 3B       		.uleb128 0x3b
+ 910 0064 0B       		.uleb128 0xb
+ 911 0065 27       		.uleb128 0x27
+ 912 0066 19       		.uleb128 0x19
+ 913 0067 11       		.uleb128 0x11
+ 914 0068 01       		.uleb128 0x1
+ 915 0069 12       		.uleb128 0x12
+ 916 006a 06       		.uleb128 0x6
+ 917 006b 40       		.uleb128 0x40
+ 918 006c 18       		.uleb128 0x18
+ 919 006d 9742     		.uleb128 0x2117
+ 920 006f 19       		.uleb128 0x19
+ 921 0070 01       		.uleb128 0x1
+ 922 0071 13       		.uleb128 0x13
+ 923 0072 00       		.byte	0
+ 924 0073 00       		.byte	0
+ 925 0074 0A       		.uleb128 0xa
+ 926 0075 898201   		.uleb128 0x4109
+ 927 0078 00       		.byte	0
+ 928 0079 11       		.uleb128 0x11
+ 929 007a 01       		.uleb128 0x1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 19
+
+
+ 930 007b 31       		.uleb128 0x31
+ 931 007c 13       		.uleb128 0x13
+ 932 007d 00       		.byte	0
+ 933 007e 00       		.byte	0
+ 934 007f 0B       		.uleb128 0xb
+ 935 0080 898201   		.uleb128 0x4109
+ 936 0083 01       		.byte	0x1
+ 937 0084 11       		.uleb128 0x11
+ 938 0085 01       		.uleb128 0x1
+ 939 0086 31       		.uleb128 0x31
+ 940 0087 13       		.uleb128 0x13
+ 941 0088 01       		.uleb128 0x1
+ 942 0089 13       		.uleb128 0x13
+ 943 008a 00       		.byte	0
+ 944 008b 00       		.byte	0
+ 945 008c 0C       		.uleb128 0xc
+ 946 008d 8A8201   		.uleb128 0x410a
+ 947 0090 00       		.byte	0
+ 948 0091 02       		.uleb128 0x2
+ 949 0092 18       		.uleb128 0x18
+ 950 0093 9142     		.uleb128 0x2111
+ 951 0095 18       		.uleb128 0x18
+ 952 0096 00       		.byte	0
+ 953 0097 00       		.byte	0
+ 954 0098 0D       		.uleb128 0xd
+ 955 0099 898201   		.uleb128 0x4109
+ 956 009c 01       		.byte	0x1
+ 957 009d 11       		.uleb128 0x11
+ 958 009e 01       		.uleb128 0x1
+ 959 009f 31       		.uleb128 0x31
+ 960 00a0 13       		.uleb128 0x13
+ 961 00a1 00       		.byte	0
+ 962 00a2 00       		.byte	0
+ 963 00a3 0E       		.uleb128 0xe
+ 964 00a4 2E       		.uleb128 0x2e
+ 965 00a5 01       		.byte	0x1
+ 966 00a6 3F       		.uleb128 0x3f
+ 967 00a7 19       		.uleb128 0x19
+ 968 00a8 03       		.uleb128 0x3
+ 969 00a9 0E       		.uleb128 0xe
+ 970 00aa 3A       		.uleb128 0x3a
+ 971 00ab 0B       		.uleb128 0xb
+ 972 00ac 3B       		.uleb128 0x3b
+ 973 00ad 0B       		.uleb128 0xb
+ 974 00ae 27       		.uleb128 0x27
+ 975 00af 19       		.uleb128 0x19
+ 976 00b0 11       		.uleb128 0x11
+ 977 00b1 01       		.uleb128 0x1
+ 978 00b2 12       		.uleb128 0x12
+ 979 00b3 06       		.uleb128 0x6
+ 980 00b4 40       		.uleb128 0x40
+ 981 00b5 18       		.uleb128 0x18
+ 982 00b6 9642     		.uleb128 0x2116
+ 983 00b8 19       		.uleb128 0x19
+ 984 00b9 01       		.uleb128 0x1
+ 985 00ba 13       		.uleb128 0x13
+ 986 00bb 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 20
+
+
+ 987 00bc 00       		.byte	0
+ 988 00bd 0F       		.uleb128 0xf
+ 989 00be 34       		.uleb128 0x34
+ 990 00bf 00       		.byte	0
+ 991 00c0 03       		.uleb128 0x3
+ 992 00c1 0E       		.uleb128 0xe
+ 993 00c2 3A       		.uleb128 0x3a
+ 994 00c3 0B       		.uleb128 0xb
+ 995 00c4 3B       		.uleb128 0x3b
+ 996 00c5 0B       		.uleb128 0xb
+ 997 00c6 49       		.uleb128 0x49
+ 998 00c7 13       		.uleb128 0x13
+ 999 00c8 00       		.byte	0
+ 1000 00c9 00       		.byte	0
+ 1001 00ca 10       		.uleb128 0x10
+ 1002 00cb 01       		.uleb128 0x1
+ 1003 00cc 01       		.byte	0x1
+ 1004 00cd 49       		.uleb128 0x49
+ 1005 00ce 13       		.uleb128 0x13
+ 1006 00cf 01       		.uleb128 0x1
+ 1007 00d0 13       		.uleb128 0x13
+ 1008 00d1 00       		.byte	0
+ 1009 00d2 00       		.byte	0
+ 1010 00d3 11       		.uleb128 0x11
+ 1011 00d4 21       		.uleb128 0x21
+ 1012 00d5 00       		.byte	0
+ 1013 00d6 49       		.uleb128 0x49
+ 1014 00d7 13       		.uleb128 0x13
+ 1015 00d8 2F       		.uleb128 0x2f
+ 1016 00d9 0B       		.uleb128 0xb
+ 1017 00da 00       		.byte	0
+ 1018 00db 00       		.byte	0
+ 1019 00dc 12       		.uleb128 0x12
+ 1020 00dd 34       		.uleb128 0x34
+ 1021 00de 00       		.byte	0
+ 1022 00df 03       		.uleb128 0x3
+ 1023 00e0 0E       		.uleb128 0xe
+ 1024 00e1 3A       		.uleb128 0x3a
+ 1025 00e2 0B       		.uleb128 0xb
+ 1026 00e3 3B       		.uleb128 0x3b
+ 1027 00e4 05       		.uleb128 0x5
+ 1028 00e5 49       		.uleb128 0x49
+ 1029 00e6 13       		.uleb128 0x13
+ 1030 00e7 3F       		.uleb128 0x3f
+ 1031 00e8 19       		.uleb128 0x19
+ 1032 00e9 3C       		.uleb128 0x3c
+ 1033 00ea 19       		.uleb128 0x19
+ 1034 00eb 00       		.byte	0
+ 1035 00ec 00       		.byte	0
+ 1036 00ed 13       		.uleb128 0x13
+ 1037 00ee 34       		.uleb128 0x34
+ 1038 00ef 00       		.byte	0
+ 1039 00f0 03       		.uleb128 0x3
+ 1040 00f1 0E       		.uleb128 0xe
+ 1041 00f2 3A       		.uleb128 0x3a
+ 1042 00f3 0B       		.uleb128 0xb
+ 1043 00f4 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 21
+
+
+ 1044 00f5 0B       		.uleb128 0xb
+ 1045 00f6 49       		.uleb128 0x49
+ 1046 00f7 13       		.uleb128 0x13
+ 1047 00f8 3F       		.uleb128 0x3f
+ 1048 00f9 19       		.uleb128 0x19
+ 1049 00fa 02       		.uleb128 0x2
+ 1050 00fb 18       		.uleb128 0x18
+ 1051 00fc 00       		.byte	0
+ 1052 00fd 00       		.byte	0
+ 1053 00fe 14       		.uleb128 0x14
+ 1054 00ff 2E       		.uleb128 0x2e
+ 1055 0100 00       		.byte	0
+ 1056 0101 3F       		.uleb128 0x3f
+ 1057 0102 19       		.uleb128 0x19
+ 1058 0103 03       		.uleb128 0x3
+ 1059 0104 0E       		.uleb128 0xe
+ 1060 0105 3A       		.uleb128 0x3a
+ 1061 0106 0B       		.uleb128 0xb
+ 1062 0107 3B       		.uleb128 0x3b
+ 1063 0108 0B       		.uleb128 0xb
+ 1064 0109 27       		.uleb128 0x27
+ 1065 010a 19       		.uleb128 0x19
+ 1066 010b 3C       		.uleb128 0x3c
+ 1067 010c 19       		.uleb128 0x19
+ 1068 010d 00       		.byte	0
+ 1069 010e 00       		.byte	0
+ 1070 010f 15       		.uleb128 0x15
+ 1071 0110 2E       		.uleb128 0x2e
+ 1072 0111 01       		.byte	0x1
+ 1073 0112 3F       		.uleb128 0x3f
+ 1074 0113 19       		.uleb128 0x19
+ 1075 0114 03       		.uleb128 0x3
+ 1076 0115 0E       		.uleb128 0xe
+ 1077 0116 3A       		.uleb128 0x3a
+ 1078 0117 0B       		.uleb128 0xb
+ 1079 0118 3B       		.uleb128 0x3b
+ 1080 0119 0B       		.uleb128 0xb
+ 1081 011a 27       		.uleb128 0x27
+ 1082 011b 19       		.uleb128 0x19
+ 1083 011c 49       		.uleb128 0x49
+ 1084 011d 13       		.uleb128 0x13
+ 1085 011e 3C       		.uleb128 0x3c
+ 1086 011f 19       		.uleb128 0x19
+ 1087 0120 01       		.uleb128 0x1
+ 1088 0121 13       		.uleb128 0x13
+ 1089 0122 00       		.byte	0
+ 1090 0123 00       		.byte	0
+ 1091 0124 16       		.uleb128 0x16
+ 1092 0125 05       		.uleb128 0x5
+ 1093 0126 00       		.byte	0
+ 1094 0127 49       		.uleb128 0x49
+ 1095 0128 13       		.uleb128 0x13
+ 1096 0129 00       		.byte	0
+ 1097 012a 00       		.byte	0
+ 1098 012b 17       		.uleb128 0x17
+ 1099 012c 2E       		.uleb128 0x2e
+ 1100 012d 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 22
+
+
+ 1101 012e 3F       		.uleb128 0x3f
+ 1102 012f 19       		.uleb128 0x19
+ 1103 0130 03       		.uleb128 0x3
+ 1104 0131 0E       		.uleb128 0xe
+ 1105 0132 3A       		.uleb128 0x3a
+ 1106 0133 0B       		.uleb128 0xb
+ 1107 0134 3B       		.uleb128 0x3b
+ 1108 0135 0B       		.uleb128 0xb
+ 1109 0136 27       		.uleb128 0x27
+ 1110 0137 19       		.uleb128 0x19
+ 1111 0138 49       		.uleb128 0x49
+ 1112 0139 13       		.uleb128 0x13
+ 1113 013a 3C       		.uleb128 0x3c
+ 1114 013b 19       		.uleb128 0x19
+ 1115 013c 00       		.byte	0
+ 1116 013d 00       		.byte	0
+ 1117 013e 18       		.uleb128 0x18
+ 1118 013f 2E       		.uleb128 0x2e
+ 1119 0140 01       		.byte	0x1
+ 1120 0141 3F       		.uleb128 0x3f
+ 1121 0142 19       		.uleb128 0x19
+ 1122 0143 03       		.uleb128 0x3
+ 1123 0144 0E       		.uleb128 0xe
+ 1124 0145 3A       		.uleb128 0x3a
+ 1125 0146 0B       		.uleb128 0xb
+ 1126 0147 3B       		.uleb128 0x3b
+ 1127 0148 0B       		.uleb128 0xb
+ 1128 0149 27       		.uleb128 0x27
+ 1129 014a 19       		.uleb128 0x19
+ 1130 014b 3C       		.uleb128 0x3c
+ 1131 014c 19       		.uleb128 0x19
+ 1132 014d 01       		.uleb128 0x1
+ 1133 014e 13       		.uleb128 0x13
+ 1134 014f 00       		.byte	0
+ 1135 0150 00       		.byte	0
+ 1136 0151 19       		.uleb128 0x19
+ 1137 0152 2E       		.uleb128 0x2e
+ 1138 0153 01       		.byte	0x1
+ 1139 0154 3F       		.uleb128 0x3f
+ 1140 0155 19       		.uleb128 0x19
+ 1141 0156 03       		.uleb128 0x3
+ 1142 0157 0E       		.uleb128 0xe
+ 1143 0158 3A       		.uleb128 0x3a
+ 1144 0159 0B       		.uleb128 0xb
+ 1145 015a 3B       		.uleb128 0x3b
+ 1146 015b 0B       		.uleb128 0xb
+ 1147 015c 27       		.uleb128 0x27
+ 1148 015d 19       		.uleb128 0x19
+ 1149 015e 49       		.uleb128 0x49
+ 1150 015f 13       		.uleb128 0x13
+ 1151 0160 3C       		.uleb128 0x3c
+ 1152 0161 19       		.uleb128 0x19
+ 1153 0162 00       		.byte	0
+ 1154 0163 00       		.byte	0
+ 1155 0164 00       		.byte	0
+ 1156              		.section	.debug_aranges,"",%progbits
+ 1157 0000 2C000000 		.4byte	0x2c
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 23
+
+
+ 1158 0004 0200     		.2byte	0x2
+ 1159 0006 00000000 		.4byte	.Ldebug_info0
+ 1160 000a 04       		.byte	0x4
+ 1161 000b 00       		.byte	0
+ 1162 000c 0000     		.2byte	0
+ 1163 000e 0000     		.2byte	0
+ 1164 0010 00000000 		.4byte	.LFB63
+ 1165 0014 14000000 		.4byte	.LFE63-.LFB63
+ 1166 0018 00000000 		.4byte	.LFB64
+ 1167 001c 8C000000 		.4byte	.LFE64-.LFB64
+ 1168 0020 00000000 		.4byte	.LFB65
+ 1169 0024 AC000000 		.4byte	.LFE65-.LFB65
+ 1170 0028 00000000 		.4byte	0
+ 1171 002c 00000000 		.4byte	0
+ 1172              		.section	.debug_ranges,"",%progbits
+ 1173              	.Ldebug_ranges0:
+ 1174 0000 00000000 		.4byte	.LFB63
+ 1175 0004 14000000 		.4byte	.LFE63
+ 1176 0008 00000000 		.4byte	.LFB64
+ 1177 000c 8C000000 		.4byte	.LFE64
+ 1178 0010 00000000 		.4byte	.LFB65
+ 1179 0014 AC000000 		.4byte	.LFE65
+ 1180 0018 00000000 		.4byte	0
+ 1181 001c 00000000 		.4byte	0
+ 1182              		.section	.debug_line,"",%progbits
+ 1183              	.Ldebug_line0:
+ 1184 0000 DA010000 		.section	.debug_str,"MS",%progbits,1
+ 1184      02008301 
+ 1184      00000201 
+ 1184      FB0E0D00 
+ 1184      01010101 
+ 1185              	.LASF19:
+ 1186 0000 44524459 		.ascii	"DRDY_INTERRUPT\000"
+ 1186      5F494E54 
+ 1186      45525255 
+ 1186      505400
+ 1187              	.LASF40:
+ 1188 000f 4932435F 		.ascii	"I2C_MasterSendStop\000"
+ 1188      4D617374 
+ 1188      65725365 
+ 1188      6E645374 
+ 1188      6F7000
+ 1189              	.LASF23:
+ 1190 0022 4F563936 		.ascii	"OV9650_1_framebuffer\000"
+ 1190      35305F31 
+ 1190      5F667261 
+ 1190      6D656275 
+ 1190      66666572 
+ 1191              	.LASF9:
+ 1192 0037 5F5F696E 		.ascii	"__int32_t\000"
+ 1192      7433325F 
+ 1192      7400
+ 1193              	.LASF25:
+ 1194 0041 636F6D70 		.ascii	"compass_y\000"
+ 1194      6173735F 
+ 1194      7900
+ 1195              	.LASF26:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 24
+
+
+ 1196 004b 636F6D70 		.ascii	"compass_z\000"
+ 1196      6173735F 
+ 1196      7A00
+ 1197              	.LASF32:
+ 1198 0055 4932435F 		.ascii	"I2C_MasterWriteByte\000"
+ 1198      4D617374 
+ 1198      65725772 
+ 1198      69746542 
+ 1198      79746500 
+ 1199              	.LASF29:
+ 1200 0069 436F6D70 		.ascii	"Compass_DRDY_ISR_ClearPending\000"
+ 1200      6173735F 
+ 1200      44524459 
+ 1200      5F495352 
+ 1200      5F436C65 
+ 1201              	.LASF24:
+ 1202 0087 636F6D70 		.ascii	"compass_x\000"
+ 1202      6173735F 
+ 1202      7800
+ 1203              	.LASF14:
+ 1204 0091 646F7562 		.ascii	"double\000"
+ 1204      6C6500
+ 1205              	.LASF30:
+ 1206 0098 4932435F 		.ascii	"I2C_Start\000"
+ 1206      53746172 
+ 1206      7400
+ 1207              	.LASF10:
+ 1208 00a2 696E7433 		.ascii	"int32_t\000"
+ 1208      325F7400 
+ 1209              	.LASF13:
+ 1210 00aa 666C6F61 		.ascii	"float\000"
+ 1210      7400
+ 1211              	.LASF39:
+ 1212 00b0 64617461 		.ascii	"data\000"
+ 1212      00
+ 1213              	.LASF1:
+ 1214 00b5 756E7369 		.ascii	"unsigned char\000"
+ 1214      676E6564 
+ 1214      20636861 
+ 1214      7200
+ 1215              	.LASF12:
+ 1216 00c3 696E7431 		.ascii	"int16\000"
+ 1216      3600
+ 1217              	.LASF5:
+ 1218 00c9 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1218      20756E73 
+ 1218      69676E65 
+ 1218      6420696E 
+ 1218      7400
+ 1219              	.LASF3:
+ 1220 00db 73686F72 		.ascii	"short unsigned int\000"
+ 1220      7420756E 
+ 1220      7369676E 
+ 1220      65642069 
+ 1220      6E7400
+ 1221              	.LASF31:
+ 1222 00ee 4932435F 		.ascii	"I2C_MasterSendStart\000"
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 25
+
+
+ 1222      4D617374 
+ 1222      65725365 
+ 1222      6E645374 
+ 1222      61727400 
+ 1223              	.LASF22:
+ 1224 0102 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1224      52784275 
+ 1224      66666572 
+ 1224      00
+ 1225              	.LASF34:
+ 1226 010f 436F6D70 		.ascii	"Compass_DRDY_ISR_StartEx\000"
+ 1226      6173735F 
+ 1226      44524459 
+ 1226      5F495352 
+ 1226      5F537461 
+ 1227              	.LASF28:
+ 1228 0128 636F6D70 		.ascii	"compass_ready\000"
+ 1228      6173735F 
+ 1228      72656164 
+ 1228      7900
+ 1229              	.LASF20:
+ 1230 0136 73746172 		.ascii	"start_compass\000"
+ 1230      745F636F 
+ 1230      6D706173 
+ 1230      7300
+ 1231              	.LASF8:
+ 1232 0144 756E7369 		.ascii	"unsigned int\000"
+ 1232      676E6564 
+ 1232      20696E74 
+ 1232      00
+ 1233              	.LASF38:
+ 1234 0151 433A5C55 		.ascii	"C:\\Users\\xavieran\\Desktop\\ECE3091\\PSOCProjects"
+ 1234      73657273 
+ 1234      5C786176 
+ 1234      69657261 
+ 1234      6E5C4465 
+ 1235 017f 5C454E47 		.ascii	"\\ENG3091_MandM\\ENG3091_MandM.cydsn\000"
+ 1235      33303931 
+ 1235      5F4D616E 
+ 1235      644D5C45 
+ 1235      4E473330 
+ 1236              	.LASF7:
+ 1237 01a2 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1237      206C6F6E 
+ 1237      6720756E 
+ 1237      7369676E 
+ 1237      65642069 
+ 1238              	.LASF16:
+ 1239 01b9 63796973 		.ascii	"cyisraddress\000"
+ 1239      72616464 
+ 1239      72657373 
+ 1239      00
+ 1240              	.LASF36:
+ 1241 01c6 474E5520 		.ascii	"GNU C 4.8.4 20140526 (release) [ARM/embedded-4_8-br"
+ 1241      4320342E 
+ 1241      382E3420 
+ 1241      32303134 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 26
+
+
+ 1241      30353236 
+ 1242 01f9 616E6368 		.ascii	"anch revision 211358] -mcpu=cortex-m3 -mthumb -g -O"
+ 1242      20726576 
+ 1242      6973696F 
+ 1242      6E203231 
+ 1242      31333538 
+ 1243 022c 67202D66 		.ascii	"g -ffunction-sections\000"
+ 1243      66756E63 
+ 1243      74696F6E 
+ 1243      2D736563 
+ 1243      74696F6E 
+ 1244              	.LASF17:
+ 1245 0242 73697A65 		.ascii	"sizetype\000"
+ 1245      74797065 
+ 1245      00
+ 1246              	.LASF6:
+ 1247 024b 6C6F6E67 		.ascii	"long long int\000"
+ 1247      206C6F6E 
+ 1247      6720696E 
+ 1247      7400
+ 1248              	.LASF35:
+ 1249 0259 6174616E 		.ascii	"atan2\000"
+ 1249      3200
+ 1250              	.LASF15:
+ 1251 025f 63686172 		.ascii	"char\000"
+ 1251      00
+ 1252              	.LASF33:
+ 1253 0264 4932435F 		.ascii	"I2C_MasterReadByte\000"
+ 1253      4D617374 
+ 1253      65725265 
+ 1253      61644279 
+ 1253      746500
+ 1254              	.LASF2:
+ 1255 0277 73686F72 		.ascii	"short int\000"
+ 1255      7420696E 
+ 1255      7400
+ 1256              	.LASF11:
+ 1257 0281 75696E74 		.ascii	"uint8\000"
+ 1257      3800
+ 1258              	.LASF21:
+ 1259 0287 636F6D70 		.ascii	"compass_read\000"
+ 1259      6173735F 
+ 1259      72656164 
+ 1259      00
+ 1260              	.LASF4:
+ 1261 0294 6C6F6E67 		.ascii	"long int\000"
+ 1261      20696E74 
+ 1261      00
+ 1262              	.LASF18:
+ 1263 029d 6C6F6E67 		.ascii	"long double\000"
+ 1263      20646F75 
+ 1263      626C6500 
+ 1264              	.LASF0:
+ 1265 02a9 7369676E 		.ascii	"signed char\000"
+ 1265      65642063 
+ 1265      68617200 
+ 1266              	.LASF27:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEXpt88.s 			page 27
+
+
+ 1267 02b5 636F6D70 		.ascii	"compass_heading\000"
+ 1267      6173735F 
+ 1267      68656164 
+ 1267      696E6700 
+ 1268              	.LASF37:
+ 1269 02c5 2E5C636F 		.ascii	".\\compass.c\000"
+ 1269      6D706173 
+ 1269      732E6300 
+ 1270              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.8.4 20140526 (release) [ARM/embedded-4_8-br

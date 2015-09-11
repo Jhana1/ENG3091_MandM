@@ -18,8 +18,9 @@
     #define MRIGHT 0x2
     #define MBOTH 0x3
     
+    void start_motors(void);
+    
     void refresh_motor(int32 delta);
-    void init_motors(void);
     void setRightRotate();
     void setLeftRotate();
     void setSpeed(uint8 motor, uint8 speed);

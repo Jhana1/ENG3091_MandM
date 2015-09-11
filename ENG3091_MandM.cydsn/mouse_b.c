@@ -11,7 +11,7 @@
 */
 
 #include <project.h>
-#include <mouse_conf.h>
+#include <mice.h>
 
 #define S_STAT_START 0
 #define S_MOVX_START 1
@@ -81,6 +81,7 @@ void mouse_b_write(uint8 data){
 }
 
 void mouse_b_init(){
+    CYGlobalIntDisable;
     //CHECK_B_Write(1);
     mouse_b_write(0xff);  // reset
     //CHECK_B_Write(0);
@@ -93,7 +94,7 @@ void mouse_b_init(){
     CyDelay(2);
     
     //CHECK_B_Write(1);
-    mouse_b_write(M_SAMPLE); //Set sample rate to 80 (DEC)
+    mouse_b_write(M_SAMPLE); //Set sample rate to 80 (but1)
     //CHECK_B_Write(0);
     
     CyDelay(2);
@@ -113,6 +114,7 @@ void mouse_b_init(){
     //CHECK_B_Write(1);
     mouse_b_write(0xf4);
     //CHECK_B_Write(0);
+    CYGlobalIntEnable;
 }
 
 

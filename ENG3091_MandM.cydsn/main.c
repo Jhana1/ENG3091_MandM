@@ -14,65 +14,31 @@
 #include <stdarg.h>
 #include <math.h>
 
-
+#include <mice.h>
 #include <mouse_a.h>
 #include <mouse_b.h>
 #include <motor.h>
 #include <navigation.h>
+#include <buttons.h>
+#include <compass.h>
+#include <ultrasonic.h>
 
 //this is in navigation.c
 extern struct Position location;
-
-uint8 inc;
-uint8 dec;
-
-CY_ISR(INC_ISR){
-    inc = 1;
-    but0_ClearPending();
-}
-
-CY_ISR(DEC_ISR){
-    dec = 1;
-    but1_ClearPending();
-}
-
-void init_buttons(){
-    Button_Start();
-    but0_StartEx(INC_ISR);
-    but1_StartEx(DEC_ISR);
-    
-    dec = 0;
-    inc = 0;
-}
-
-void init_mice(){
-    sclk_a_isr_Stop();
-    sclk_b_isr_Stop();
-    
-    CyGlobalIntDisable; /* Disable global interrupts. */
-    
-    mouse_a_init();
-    mouse_b_init();
-    
-    reset_sclk_a_isr();
-    reset_sclk_b_isr();
-    
-    CyGlobalIntEnable; /* Enable global interrupts. */
-    
-    SCLK_A_ClearInterrupt();
-    SCLK_B_ClearInterrupt();
-    sclk_a_isr_SetPriority(0);
-    sclk_b_isr_SetPriority(0);
-    sclk_a_isr_StartEx(MY_SCLK_A_ISR);
-    sclk_b_isr_StartEx(MY_SCLK_B_ISR);    
-}
-
-void stop_mice(){
-    sclk_a_isr_Stop();
-    sclk_b_isr_Stop();
-}
+//these are in button.c
+extern volatile uint8 but0_b;
+extern volatile uint8 but1_b;
+//These are in compass.c
+extern int16 compass_x;
+extern int16 compass_y;
+extern int16 compass_z;
+extern double compass_heading;
+extern volatile uint8 compass_ready;
+//This is in ultrasonic.c
+extern volatile uint16 ultra_distance;
 
 // print() function, works like snprintf(). See: http://www.cplusplus.com/reference/cstdio/snprintf/
+
 void print(const char *fmt, ...)
 {
    if(!USB_GetConfiguration()) return;  // Do nothing if the USB cable is not connected.
@@ -90,52 +56,52 @@ int main()
     /* ** INITIALIZE COMPONENTS ** */
     LCD_Start();
     Timer_Start();
+    USB_Start(0, USB_DWR_VDDD_OPERATION);
+    //CyDelay(1000); give camera time to boot up
     
-    CyDelay(200);//give mice time to boot up
-    init_mice();
-    init_navigation();
-    init_buttons();
-    init_motors();
- 
+    //start_mice();
+    //start_navigation();
+    //start_motors();
+    start_buttons();
+    start_compass();
+    //start_ultrasonic();
     
-    /* ** Variables used in main ** */
+    /* ** DECLARE VARIABLES ** */
     char outString[16];  // String to hold the ascii result
-    uint32 time = Timer_ReadCounter();
-    uint32 delta;
-    extern volatile int32 loc_x_a;
-    extern volatile int32 loc_y_a;
-    extern volatile int32 loc_x_b;
-    extern volatile int32 loc_y_b;
-    setCoast(MBOTH);
+    uint32 time;
+    CyGlobalIntEnable;
+    /* INFINITE LOOP */
     for(;;)
     {   
-        delta = Timer_ReadCounter() - time;
         time = Timer_ReadCounter();
         
+        //Read the compass when it is ready for reading
+        if (compass_ready){
+            compass_ready = 0;
+            compass_read();
+            print("%d %d %d\n", compass_x, compass_y, compass_z);
+        }
         
-        if (dec){
-            dec = 0;
-            reset_navigation();
-        } else if (inc){
-            inc = 0;
-            
-        } 
+        if ((time % 2500) < 1250){
+            BLUE_Write(0);
+            RED_Write(0);
+        } else {
+            BLUE_Write(0);
+            RED_Write(0);
+        }
         
-        if ((time % 400) == 0){
+        if ((time % 1000) == 0){
+            sprintf(outString, "x%d y%d", compass_x, compass_y);
             LCD_ClearDisplay();
-            
-            sprintf(outString, "x%ld y%ld - L", loc_x_a, loc_y_a);
-            LCD_PosPrintString(0,0, outString);
-            sprintf(outString, "x%ld y%ld - R", loc_x_b, loc_y_b);
-            LCD_PosPrintString(1,0, outString);
-            /*
-            sprintf(outString, "X%ld Y%ld", (int32) (location.x), (int32) (location.y));
-            LCD_PosPrintString(0, 0, outString);
-            sprintf(outString, "A:%d ", (int) (location.angle*180.0/M_PI));
-            LCD_PosPrintString(1, 0, outString);
-            sprintf(outString, "l%d r%d", MOTOR_L_ReadCompare(), MOTOR_R_ReadCompare());
-            LCD_PrintString(outString);
-            */
+            LCD_PosPrintString(0,0,outString);
+            sprintf(outString, "z%d h%d", compass_z, (int16) (compass_heading * 180.0/M_PI));
+            LCD_PosPrintString(1,0,outString);
+        }
+        
+        if (but1_b){
+            but1_b = 0;
+        } else if (but0_b){
+            but0_b = 0;
         }
     }
 }

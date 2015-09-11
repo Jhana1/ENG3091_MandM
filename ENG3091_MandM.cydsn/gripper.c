@@ -41,11 +41,12 @@
 int PWM_VAL = 25;
 char outString[40];
 
-void init_gripper(){
+void start_gripper(){
     int i;
     /* Initialize the motor controller */
     Gripper_PWM_Start();
     Gripper_PWM_WriteCompare(MAXIMUM_POINT);
+    /* Whats this for?
     while(1)
     {   
         for(i = 0; i <= 100; i += 2)
@@ -55,7 +56,7 @@ void init_gripper(){
             Gripper_PWM_WriteCompare(i-1);
             CyDelay(500);
         }
-    }
+    }*/
 }
 
 void pickup_puck(){
@@ -77,8 +78,6 @@ void pickup_angled_puck(){
     Gripper_PWM_WriteCompare(PICKUP_ANGLE_POINT);
     CyDelay(PAUSE);
 }
-
-
 
 
 /* LEGACY FUNCTIONS FOR TESTING */

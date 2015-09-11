@@ -162,7 +162,7 @@ void reset_navigation(){
     location.angle = 0.0;
 }
 
-void init_navigation(){
+void start_navigation(){
     reset_navigation();
 }
 

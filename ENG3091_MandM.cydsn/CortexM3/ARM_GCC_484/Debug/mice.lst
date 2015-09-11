@@ -1,0 +1,972 @@
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccETCvFO.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"mice.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.start_mice,"ax",%progbits
+  19              		.align	2
+  20              		.global	start_mice
+  21              		.thumb
+  22              		.thumb_func
+  23              		.type	start_mice, %function
+  24              	start_mice:
+  25              	.LFB63:
+  26              		.file 1 ".\\mice.c"
+   1:.\mice.c      **** /* ========================================
+   2:.\mice.c      ****  *
+   3:.\mice.c      ****  * Copyright YOUR COMPANY, THE YEAR
+   4:.\mice.c      ****  * All Rights Reserved
+   5:.\mice.c      ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:.\mice.c      ****  *
+   7:.\mice.c      ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:.\mice.c      ****  * WHICH IS THE PROPERTY OF your company.
+   9:.\mice.c      ****  *
+  10:.\mice.c      ****  * ========================================
+  11:.\mice.c      **** */
+  12:.\mice.c      **** 
+  13:.\mice.c      **** #include <project.h>
+  14:.\mice.c      **** #include <mouse_a.h>
+  15:.\mice.c      **** #include <mouse_b.h>
+  16:.\mice.c      **** 
+  17:.\mice.c      **** void start_mice(){
+  27              		.loc 1 17 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 08B5     		push	{r3, lr}
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 3, -8
+  34              		.cfi_offset 14, -4
+  18:.\mice.c      ****     sclk_a_isr_Stop();
+  35              		.loc 1 18 0
+  36 0002 FFF7FEFF 		bl	sclk_a_isr_Stop
+  37              	.LVL0:
+  19:.\mice.c      ****     sclk_b_isr_Stop();
+  38              		.loc 1 19 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccETCvFO.s 			page 2
+
+
+  39 0006 FFF7FEFF 		bl	sclk_b_isr_Stop
+  40              	.LVL1:
+  20:.\mice.c      ****     
+  21:.\mice.c      ****     mouse_a_init();
+  41              		.loc 1 21 0
+  42 000a FFF7FEFF 		bl	mouse_a_init
+  43              	.LVL2:
+  22:.\mice.c      ****     mouse_b_init();
+  44              		.loc 1 22 0
+  45 000e FFF7FEFF 		bl	mouse_b_init
+  46              	.LVL3:
+  23:.\mice.c      ****     
+  24:.\mice.c      ****     reset_sclk_a_isr();
+  47              		.loc 1 24 0
+  48 0012 FFF7FEFF 		bl	reset_sclk_a_isr
+  49              	.LVL4:
+  25:.\mice.c      ****     reset_sclk_b_isr();
+  50              		.loc 1 25 0
+  51 0016 FFF7FEFF 		bl	reset_sclk_b_isr
+  52              	.LVL5:
+  26:.\mice.c      ****     
+  27:.\mice.c      ****     SCLK_A_ClearInterrupt();
+  53              		.loc 1 27 0
+  54 001a FFF7FEFF 		bl	SCLK_A_ClearInterrupt
+  55              	.LVL6:
+  28:.\mice.c      ****     SCLK_B_ClearInterrupt();
+  56              		.loc 1 28 0
+  57 001e FFF7FEFF 		bl	SCLK_B_ClearInterrupt
+  58              	.LVL7:
+  29:.\mice.c      ****     sclk_a_isr_SetPriority(0);
+  59              		.loc 1 29 0
+  60 0022 0020     		movs	r0, #0
+  61 0024 FFF7FEFF 		bl	sclk_a_isr_SetPriority
+  62              	.LVL8:
+  30:.\mice.c      ****     sclk_b_isr_SetPriority(0);
+  63              		.loc 1 30 0
+  64 0028 0020     		movs	r0, #0
+  65 002a FFF7FEFF 		bl	sclk_b_isr_SetPriority
+  66              	.LVL9:
+  31:.\mice.c      ****     sclk_a_isr_StartEx(MY_SCLK_A_ISR);
+  67              		.loc 1 31 0
+  68 002e 0348     		ldr	r0, .L2
+  69 0030 FFF7FEFF 		bl	sclk_a_isr_StartEx
+  70              	.LVL10:
+  32:.\mice.c      ****     sclk_b_isr_StartEx(MY_SCLK_B_ISR);    
+  71              		.loc 1 32 0
+  72 0034 0248     		ldr	r0, .L2+4
+  73 0036 FFF7FEFF 		bl	sclk_b_isr_StartEx
+  74              	.LVL11:
+  75 003a 08BD     		pop	{r3, pc}
+  76              	.L3:
+  77              		.align	2
+  78              	.L2:
+  79 003c 00000000 		.word	MY_SCLK_A_ISR
+  80 0040 00000000 		.word	MY_SCLK_B_ISR
+  81              		.cfi_endproc
+  82              	.LFE63:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccETCvFO.s 			page 3
+
+
+  83              		.size	start_mice, .-start_mice
+  84              		.section	.text.stop_mice,"ax",%progbits
+  85              		.align	2
+  86              		.global	stop_mice
+  87              		.thumb
+  88              		.thumb_func
+  89              		.type	stop_mice, %function
+  90              	stop_mice:
+  91              	.LFB64:
+  33:.\mice.c      **** }
+  34:.\mice.c      **** 
+  35:.\mice.c      **** void stop_mice(){
+  92              		.loc 1 35 0
+  93              		.cfi_startproc
+  94              		@ args = 0, pretend = 0, frame = 0
+  95              		@ frame_needed = 0, uses_anonymous_args = 0
+  96 0000 08B5     		push	{r3, lr}
+  97              		.cfi_def_cfa_offset 8
+  98              		.cfi_offset 3, -8
+  99              		.cfi_offset 14, -4
+  36:.\mice.c      ****     sclk_a_isr_Stop();
+ 100              		.loc 1 36 0
+ 101 0002 FFF7FEFF 		bl	sclk_a_isr_Stop
+ 102              	.LVL12:
+  37:.\mice.c      ****     sclk_b_isr_Stop();
+ 103              		.loc 1 37 0
+ 104 0006 FFF7FEFF 		bl	sclk_b_isr_Stop
+ 105              	.LVL13:
+ 106 000a 08BD     		pop	{r3, pc}
+ 107              		.cfi_endproc
+ 108              	.LFE64:
+ 109              		.size	stop_mice, .-stop_mice
+ 110              		.comm	OV9650_1_framebuffer,50688,4
+ 111              		.text
+ 112              	.Letext0:
+ 113              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 114              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 115              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 116              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 117              		.file 6 "Generated_Source\\PSoC5/OV9650_1.h"
+ 118              		.file 7 "Generated_Source\\PSoC5/sclk_a_isr.h"
+ 119              		.file 8 "Generated_Source\\PSoC5/sclk_b_isr.h"
+ 120              		.file 9 "./mouse_a.h"
+ 121              		.file 10 "./mouse_b.h"
+ 122              		.file 11 "Generated_Source\\PSoC5/SCLK_A.h"
+ 123              		.file 12 "Generated_Source\\PSoC5/SCLK_B.h"
+ 124              		.section	.debug_info,"",%progbits
+ 125              	.Ldebug_info0:
+ 126 0000 34020000 		.4byte	0x234
+ 127 0004 0400     		.2byte	0x4
+ 128 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 129 000a 04       		.byte	0x4
+ 130 000b 01       		.uleb128 0x1
+ 131 000c AB010000 		.4byte	.LASF32
+ 132 0010 01       		.byte	0x1
+ 133 0011 2A000000 		.4byte	.LASF33
+ 134 0015 09010000 		.4byte	.LASF34
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccETCvFO.s 			page 4
+
+
+ 135 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 136 001d 00000000 		.4byte	0
+ 137 0021 00000000 		.4byte	.Ldebug_line0
+ 138 0025 02       		.uleb128 0x2
+ 139 0026 01       		.byte	0x1
+ 140 0027 06       		.byte	0x6
+ 141 0028 90020000 		.4byte	.LASF0
+ 142 002c 02       		.uleb128 0x2
+ 143 002d 01       		.byte	0x1
+ 144 002e 08       		.byte	0x8
+ 145 002f 73000000 		.4byte	.LASF1
+ 146 0033 02       		.uleb128 0x2
+ 147 0034 02       		.byte	0x2
+ 148 0035 05       		.byte	0x5
+ 149 0036 77020000 		.4byte	.LASF2
+ 150 003a 02       		.uleb128 0x2
+ 151 003b 02       		.byte	0x2
+ 152 003c 07       		.byte	0x7
+ 153 003d AD000000 		.4byte	.LASF3
+ 154 0041 03       		.uleb128 0x3
+ 155 0042 48000000 		.4byte	.LASF9
+ 156 0046 02       		.byte	0x2
+ 157 0047 37       		.byte	0x37
+ 158 0048 4C000000 		.4byte	0x4c
+ 159 004c 02       		.uleb128 0x2
+ 160 004d 04       		.byte	0x4
+ 161 004e 05       		.byte	0x5
+ 162 004f 87020000 		.4byte	.LASF4
+ 163 0053 02       		.uleb128 0x2
+ 164 0054 04       		.byte	0x4
+ 165 0055 07       		.byte	0x7
+ 166 0056 9B000000 		.4byte	.LASF5
+ 167 005a 02       		.uleb128 0x2
+ 168 005b 08       		.byte	0x8
+ 169 005c 05       		.byte	0x5
+ 170 005d 41020000 		.4byte	.LASF6
+ 171 0061 02       		.uleb128 0x2
+ 172 0062 08       		.byte	0x8
+ 173 0063 07       		.byte	0x7
+ 174 0064 70010000 		.4byte	.LASF7
+ 175 0068 04       		.uleb128 0x4
+ 176 0069 04       		.byte	0x4
+ 177 006a 05       		.byte	0x5
+ 178 006b 696E7400 		.ascii	"int\000"
+ 179 006f 02       		.uleb128 0x2
+ 180 0070 04       		.byte	0x4
+ 181 0071 07       		.byte	0x7
+ 182 0072 FC000000 		.4byte	.LASF8
+ 183 0076 03       		.uleb128 0x3
+ 184 0077 52000000 		.4byte	.LASF10
+ 185 007b 03       		.byte	0x3
+ 186 007c 41       		.byte	0x41
+ 187 007d 41000000 		.4byte	0x41
+ 188 0081 03       		.uleb128 0x3
+ 189 0082 81020000 		.4byte	.LASF11
+ 190 0086 04       		.byte	0x4
+ 191 0087 B3       		.byte	0xb3
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccETCvFO.s 			page 5
+
+
+ 192 0088 2C000000 		.4byte	0x2c
+ 193 008c 02       		.uleb128 0x2
+ 194 008d 04       		.byte	0x4
+ 195 008e 04       		.byte	0x4
+ 196 008f 5A000000 		.4byte	.LASF12
+ 197 0093 02       		.uleb128 0x2
+ 198 0094 08       		.byte	0x8
+ 199 0095 04       		.byte	0x4
+ 200 0096 DA000000 		.4byte	.LASF13
+ 201 009a 02       		.uleb128 0x2
+ 202 009b 01       		.byte	0x1
+ 203 009c 08       		.byte	0x8
+ 204 009d 4F020000 		.4byte	.LASF14
+ 205 00a1 05       		.uleb128 0x5
+ 206 00a2 9E010000 		.4byte	.LASF15
+ 207 00a6 04       		.byte	0x4
+ 208 00a7 6F01     		.2byte	0x16f
+ 209 00a9 AD000000 		.4byte	0xad
+ 210 00ad 06       		.uleb128 0x6
+ 211 00ae 04       		.byte	0x4
+ 212 00af B3000000 		.4byte	0xb3
+ 213 00b3 07       		.uleb128 0x7
+ 214 00b4 02       		.uleb128 0x2
+ 215 00b5 04       		.byte	0x4
+ 216 00b6 07       		.byte	0x7
+ 217 00b7 27020000 		.4byte	.LASF16
+ 218 00bb 08       		.uleb128 0x8
+ 219 00bc F1000000 		.4byte	.LASF17
+ 220 00c0 01       		.byte	0x1
+ 221 00c1 11       		.byte	0x11
+ 222 00c2 00000000 		.4byte	.LFB63
+ 223 00c6 44000000 		.4byte	.LFE63-.LFB63
+ 224 00ca 01       		.uleb128 0x1
+ 225 00cb 9C       		.byte	0x9c
+ 226 00cc 51010000 		.4byte	0x151
+ 227 00d0 09       		.uleb128 0x9
+ 228 00d1 06000000 		.4byte	.LVL0
+ 229 00d5 B7010000 		.4byte	0x1b7
+ 230 00d9 09       		.uleb128 0x9
+ 231 00da 0A000000 		.4byte	.LVL1
+ 232 00de BE010000 		.4byte	0x1be
+ 233 00e2 09       		.uleb128 0x9
+ 234 00e3 0E000000 		.4byte	.LVL2
+ 235 00e7 C5010000 		.4byte	0x1c5
+ 236 00eb 09       		.uleb128 0x9
+ 237 00ec 12000000 		.4byte	.LVL3
+ 238 00f0 CC010000 		.4byte	0x1cc
+ 239 00f4 09       		.uleb128 0x9
+ 240 00f5 16000000 		.4byte	.LVL4
+ 241 00f9 D3010000 		.4byte	0x1d3
+ 242 00fd 09       		.uleb128 0x9
+ 243 00fe 1A000000 		.4byte	.LVL5
+ 244 0102 DA010000 		.4byte	0x1da
+ 245 0106 09       		.uleb128 0x9
+ 246 0107 1E000000 		.4byte	.LVL6
+ 247 010b E1010000 		.4byte	0x1e1
+ 248 010f 09       		.uleb128 0x9
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccETCvFO.s 			page 6
+
+
+ 249 0110 22000000 		.4byte	.LVL7
+ 250 0114 EC010000 		.4byte	0x1ec
+ 251 0118 0A       		.uleb128 0xa
+ 252 0119 28000000 		.4byte	.LVL8
+ 253 011d F7010000 		.4byte	0x1f7
+ 254 0121 2B010000 		.4byte	0x12b
+ 255 0125 0B       		.uleb128 0xb
+ 256 0126 01       		.uleb128 0x1
+ 257 0127 50       		.byte	0x50
+ 258 0128 01       		.uleb128 0x1
+ 259 0129 30       		.byte	0x30
+ 260 012a 00       		.byte	0
+ 261 012b 0A       		.uleb128 0xa
+ 262 012c 2E000000 		.4byte	.LVL9
+ 263 0130 08020000 		.4byte	0x208
+ 264 0134 3E010000 		.4byte	0x13e
+ 265 0138 0B       		.uleb128 0xb
+ 266 0139 01       		.uleb128 0x1
+ 267 013a 50       		.byte	0x50
+ 268 013b 01       		.uleb128 0x1
+ 269 013c 30       		.byte	0x30
+ 270 013d 00       		.byte	0
+ 271 013e 09       		.uleb128 0x9
+ 272 013f 34000000 		.4byte	.LVL10
+ 273 0143 19020000 		.4byte	0x219
+ 274 0147 09       		.uleb128 0x9
+ 275 0148 3A000000 		.4byte	.LVL11
+ 276 014c 2A020000 		.4byte	0x22a
+ 277 0150 00       		.byte	0
+ 278 0151 08       		.uleb128 0x8
+ 279 0152 91000000 		.4byte	.LASF18
+ 280 0156 01       		.byte	0x1
+ 281 0157 23       		.byte	0x23
+ 282 0158 00000000 		.4byte	.LFB64
+ 283 015c 0C000000 		.4byte	.LFE64-.LFB64
+ 284 0160 01       		.uleb128 0x1
+ 285 0161 9C       		.byte	0x9c
+ 286 0162 79010000 		.4byte	0x179
+ 287 0166 09       		.uleb128 0x9
+ 288 0167 06000000 		.4byte	.LVL12
+ 289 016b B7010000 		.4byte	0x1b7
+ 290 016f 09       		.uleb128 0x9
+ 291 0170 0A000000 		.4byte	.LVL13
+ 292 0174 BE010000 		.4byte	0x1be
+ 293 0178 00       		.byte	0
+ 294 0179 0C       		.uleb128 0xc
+ 295 017a C0000000 		.4byte	.LASF19
+ 296 017e 05       		.byte	0x5
+ 297 017f 2A06     		.2byte	0x62a
+ 298 0181 85010000 		.4byte	0x185
+ 299 0185 0D       		.uleb128 0xd
+ 300 0186 76000000 		.4byte	0x76
+ 301 018a 0E       		.uleb128 0xe
+ 302 018b 81000000 		.4byte	0x81
+ 303 018f A6010000 		.4byte	0x1a6
+ 304 0193 0F       		.uleb128 0xf
+ 305 0194 B4000000 		.4byte	0xb4
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccETCvFO.s 			page 7
+
+
+ 306 0198 8F       		.byte	0x8f
+ 307 0199 0F       		.uleb128 0xf
+ 308 019a B4000000 		.4byte	0xb4
+ 309 019e 57       		.byte	0x57
+ 310 019f 0F       		.uleb128 0xf
+ 311 01a0 B4000000 		.4byte	0xb4
+ 312 01a4 03       		.byte	0x3
+ 313 01a5 00       		.byte	0
+ 314 01a6 10       		.uleb128 0x10
+ 315 01a7 33000000 		.4byte	.LASF20
+ 316 01ab 06       		.byte	0x6
+ 317 01ac 08       		.byte	0x8
+ 318 01ad 8A010000 		.4byte	0x18a
+ 319 01b1 05       		.uleb128 0x5
+ 320 01b2 03       		.byte	0x3
+ 321 01b3 00000000 		.4byte	OV9650_1_framebuffer
+ 322 01b7 11       		.uleb128 0x11
+ 323 01b8 E1000000 		.4byte	.LASF21
+ 324 01bc 07       		.byte	0x7
+ 325 01bd 19       		.byte	0x19
+ 326 01be 11       		.uleb128 0x11
+ 327 01bf 81000000 		.4byte	.LASF22
+ 328 01c3 08       		.byte	0x8
+ 329 01c4 19       		.byte	0x19
+ 330 01c5 11       		.uleb128 0x11
+ 331 01c6 CD000000 		.4byte	.LASF23
+ 332 01ca 09       		.byte	0x9
+ 333 01cb 12       		.byte	0x12
+ 334 01cc 11       		.uleb128 0x11
+ 335 01cd 6A020000 		.4byte	.LASF24
+ 336 01d1 0A       		.byte	0xa
+ 337 01d2 12       		.byte	0x12
+ 338 01d3 11       		.uleb128 0x11
+ 339 01d4 30020000 		.4byte	.LASF25
+ 340 01d8 09       		.byte	0x9
+ 341 01d9 13       		.byte	0x13
+ 342 01da 11       		.uleb128 0x11
+ 343 01db 9C020000 		.4byte	.LASF26
+ 344 01df 0A       		.byte	0xa
+ 345 01e0 13       		.byte	0x13
+ 346 01e1 12       		.uleb128 0x12
+ 347 01e2 5A010000 		.4byte	.LASF27
+ 348 01e6 0B       		.byte	0xb
+ 349 01e7 2C       		.byte	0x2c
+ 350 01e8 81000000 		.4byte	0x81
+ 351 01ec 12       		.uleb128 0x12
+ 352 01ed 54020000 		.4byte	.LASF28
+ 353 01f1 0C       		.byte	0xc
+ 354 01f2 2C       		.byte	0x2c
+ 355 01f3 81000000 		.4byte	0x81
+ 356 01f7 13       		.uleb128 0x13
+ 357 01f8 00000000 		.4byte	.LASF29
+ 358 01fc 07       		.byte	0x7
+ 359 01fd 20       		.byte	0x20
+ 360 01fe 08020000 		.4byte	0x208
+ 361 0202 14       		.uleb128 0x14
+ 362 0203 81000000 		.4byte	0x81
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccETCvFO.s 			page 8
+
+
+ 363 0207 00       		.byte	0
+ 364 0208 13       		.uleb128 0x13
+ 365 0209 87010000 		.4byte	.LASF30
+ 366 020d 08       		.byte	0x8
+ 367 020e 20       		.byte	0x20
+ 368 020f 19020000 		.4byte	0x219
+ 369 0213 14       		.uleb128 0x14
+ 370 0214 81000000 		.4byte	0x81
+ 371 0218 00       		.byte	0
+ 372 0219 13       		.uleb128 0x13
+ 373 021a 60000000 		.4byte	.LASF31
+ 374 021e 07       		.byte	0x7
+ 375 021f 18       		.byte	0x18
+ 376 0220 2A020000 		.4byte	0x22a
+ 377 0224 14       		.uleb128 0x14
+ 378 0225 A1000000 		.4byte	0xa1
+ 379 0229 00       		.byte	0
+ 380 022a 15       		.uleb128 0x15
+ 381 022b 17000000 		.4byte	.LASF35
+ 382 022f 08       		.byte	0x8
+ 383 0230 18       		.byte	0x18
+ 384 0231 14       		.uleb128 0x14
+ 385 0232 A1000000 		.4byte	0xa1
+ 386 0236 00       		.byte	0
+ 387 0237 00       		.byte	0
+ 388              		.section	.debug_abbrev,"",%progbits
+ 389              	.Ldebug_abbrev0:
+ 390 0000 01       		.uleb128 0x1
+ 391 0001 11       		.uleb128 0x11
+ 392 0002 01       		.byte	0x1
+ 393 0003 25       		.uleb128 0x25
+ 394 0004 0E       		.uleb128 0xe
+ 395 0005 13       		.uleb128 0x13
+ 396 0006 0B       		.uleb128 0xb
+ 397 0007 03       		.uleb128 0x3
+ 398 0008 0E       		.uleb128 0xe
+ 399 0009 1B       		.uleb128 0x1b
+ 400 000a 0E       		.uleb128 0xe
+ 401 000b 55       		.uleb128 0x55
+ 402 000c 17       		.uleb128 0x17
+ 403 000d 11       		.uleb128 0x11
+ 404 000e 01       		.uleb128 0x1
+ 405 000f 10       		.uleb128 0x10
+ 406 0010 17       		.uleb128 0x17
+ 407 0011 00       		.byte	0
+ 408 0012 00       		.byte	0
+ 409 0013 02       		.uleb128 0x2
+ 410 0014 24       		.uleb128 0x24
+ 411 0015 00       		.byte	0
+ 412 0016 0B       		.uleb128 0xb
+ 413 0017 0B       		.uleb128 0xb
+ 414 0018 3E       		.uleb128 0x3e
+ 415 0019 0B       		.uleb128 0xb
+ 416 001a 03       		.uleb128 0x3
+ 417 001b 0E       		.uleb128 0xe
+ 418 001c 00       		.byte	0
+ 419 001d 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccETCvFO.s 			page 9
+
+
+ 420 001e 03       		.uleb128 0x3
+ 421 001f 16       		.uleb128 0x16
+ 422 0020 00       		.byte	0
+ 423 0021 03       		.uleb128 0x3
+ 424 0022 0E       		.uleb128 0xe
+ 425 0023 3A       		.uleb128 0x3a
+ 426 0024 0B       		.uleb128 0xb
+ 427 0025 3B       		.uleb128 0x3b
+ 428 0026 0B       		.uleb128 0xb
+ 429 0027 49       		.uleb128 0x49
+ 430 0028 13       		.uleb128 0x13
+ 431 0029 00       		.byte	0
+ 432 002a 00       		.byte	0
+ 433 002b 04       		.uleb128 0x4
+ 434 002c 24       		.uleb128 0x24
+ 435 002d 00       		.byte	0
+ 436 002e 0B       		.uleb128 0xb
+ 437 002f 0B       		.uleb128 0xb
+ 438 0030 3E       		.uleb128 0x3e
+ 439 0031 0B       		.uleb128 0xb
+ 440 0032 03       		.uleb128 0x3
+ 441 0033 08       		.uleb128 0x8
+ 442 0034 00       		.byte	0
+ 443 0035 00       		.byte	0
+ 444 0036 05       		.uleb128 0x5
+ 445 0037 16       		.uleb128 0x16
+ 446 0038 00       		.byte	0
+ 447 0039 03       		.uleb128 0x3
+ 448 003a 0E       		.uleb128 0xe
+ 449 003b 3A       		.uleb128 0x3a
+ 450 003c 0B       		.uleb128 0xb
+ 451 003d 3B       		.uleb128 0x3b
+ 452 003e 05       		.uleb128 0x5
+ 453 003f 49       		.uleb128 0x49
+ 454 0040 13       		.uleb128 0x13
+ 455 0041 00       		.byte	0
+ 456 0042 00       		.byte	0
+ 457 0043 06       		.uleb128 0x6
+ 458 0044 0F       		.uleb128 0xf
+ 459 0045 00       		.byte	0
+ 460 0046 0B       		.uleb128 0xb
+ 461 0047 0B       		.uleb128 0xb
+ 462 0048 49       		.uleb128 0x49
+ 463 0049 13       		.uleb128 0x13
+ 464 004a 00       		.byte	0
+ 465 004b 00       		.byte	0
+ 466 004c 07       		.uleb128 0x7
+ 467 004d 15       		.uleb128 0x15
+ 468 004e 00       		.byte	0
+ 469 004f 27       		.uleb128 0x27
+ 470 0050 19       		.uleb128 0x19
+ 471 0051 00       		.byte	0
+ 472 0052 00       		.byte	0
+ 473 0053 08       		.uleb128 0x8
+ 474 0054 2E       		.uleb128 0x2e
+ 475 0055 01       		.byte	0x1
+ 476 0056 3F       		.uleb128 0x3f
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccETCvFO.s 			page 10
+
+
+ 477 0057 19       		.uleb128 0x19
+ 478 0058 03       		.uleb128 0x3
+ 479 0059 0E       		.uleb128 0xe
+ 480 005a 3A       		.uleb128 0x3a
+ 481 005b 0B       		.uleb128 0xb
+ 482 005c 3B       		.uleb128 0x3b
+ 483 005d 0B       		.uleb128 0xb
+ 484 005e 11       		.uleb128 0x11
+ 485 005f 01       		.uleb128 0x1
+ 486 0060 12       		.uleb128 0x12
+ 487 0061 06       		.uleb128 0x6
+ 488 0062 40       		.uleb128 0x40
+ 489 0063 18       		.uleb128 0x18
+ 490 0064 9742     		.uleb128 0x2117
+ 491 0066 19       		.uleb128 0x19
+ 492 0067 01       		.uleb128 0x1
+ 493 0068 13       		.uleb128 0x13
+ 494 0069 00       		.byte	0
+ 495 006a 00       		.byte	0
+ 496 006b 09       		.uleb128 0x9
+ 497 006c 898201   		.uleb128 0x4109
+ 498 006f 00       		.byte	0
+ 499 0070 11       		.uleb128 0x11
+ 500 0071 01       		.uleb128 0x1
+ 501 0072 31       		.uleb128 0x31
+ 502 0073 13       		.uleb128 0x13
+ 503 0074 00       		.byte	0
+ 504 0075 00       		.byte	0
+ 505 0076 0A       		.uleb128 0xa
+ 506 0077 898201   		.uleb128 0x4109
+ 507 007a 01       		.byte	0x1
+ 508 007b 11       		.uleb128 0x11
+ 509 007c 01       		.uleb128 0x1
+ 510 007d 31       		.uleb128 0x31
+ 511 007e 13       		.uleb128 0x13
+ 512 007f 01       		.uleb128 0x1
+ 513 0080 13       		.uleb128 0x13
+ 514 0081 00       		.byte	0
+ 515 0082 00       		.byte	0
+ 516 0083 0B       		.uleb128 0xb
+ 517 0084 8A8201   		.uleb128 0x410a
+ 518 0087 00       		.byte	0
+ 519 0088 02       		.uleb128 0x2
+ 520 0089 18       		.uleb128 0x18
+ 521 008a 9142     		.uleb128 0x2111
+ 522 008c 18       		.uleb128 0x18
+ 523 008d 00       		.byte	0
+ 524 008e 00       		.byte	0
+ 525 008f 0C       		.uleb128 0xc
+ 526 0090 34       		.uleb128 0x34
+ 527 0091 00       		.byte	0
+ 528 0092 03       		.uleb128 0x3
+ 529 0093 0E       		.uleb128 0xe
+ 530 0094 3A       		.uleb128 0x3a
+ 531 0095 0B       		.uleb128 0xb
+ 532 0096 3B       		.uleb128 0x3b
+ 533 0097 05       		.uleb128 0x5
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccETCvFO.s 			page 11
+
+
+ 534 0098 49       		.uleb128 0x49
+ 535 0099 13       		.uleb128 0x13
+ 536 009a 3F       		.uleb128 0x3f
+ 537 009b 19       		.uleb128 0x19
+ 538 009c 3C       		.uleb128 0x3c
+ 539 009d 19       		.uleb128 0x19
+ 540 009e 00       		.byte	0
+ 541 009f 00       		.byte	0
+ 542 00a0 0D       		.uleb128 0xd
+ 543 00a1 35       		.uleb128 0x35
+ 544 00a2 00       		.byte	0
+ 545 00a3 49       		.uleb128 0x49
+ 546 00a4 13       		.uleb128 0x13
+ 547 00a5 00       		.byte	0
+ 548 00a6 00       		.byte	0
+ 549 00a7 0E       		.uleb128 0xe
+ 550 00a8 01       		.uleb128 0x1
+ 551 00a9 01       		.byte	0x1
+ 552 00aa 49       		.uleb128 0x49
+ 553 00ab 13       		.uleb128 0x13
+ 554 00ac 01       		.uleb128 0x1
+ 555 00ad 13       		.uleb128 0x13
+ 556 00ae 00       		.byte	0
+ 557 00af 00       		.byte	0
+ 558 00b0 0F       		.uleb128 0xf
+ 559 00b1 21       		.uleb128 0x21
+ 560 00b2 00       		.byte	0
+ 561 00b3 49       		.uleb128 0x49
+ 562 00b4 13       		.uleb128 0x13
+ 563 00b5 2F       		.uleb128 0x2f
+ 564 00b6 0B       		.uleb128 0xb
+ 565 00b7 00       		.byte	0
+ 566 00b8 00       		.byte	0
+ 567 00b9 10       		.uleb128 0x10
+ 568 00ba 34       		.uleb128 0x34
+ 569 00bb 00       		.byte	0
+ 570 00bc 03       		.uleb128 0x3
+ 571 00bd 0E       		.uleb128 0xe
+ 572 00be 3A       		.uleb128 0x3a
+ 573 00bf 0B       		.uleb128 0xb
+ 574 00c0 3B       		.uleb128 0x3b
+ 575 00c1 0B       		.uleb128 0xb
+ 576 00c2 49       		.uleb128 0x49
+ 577 00c3 13       		.uleb128 0x13
+ 578 00c4 3F       		.uleb128 0x3f
+ 579 00c5 19       		.uleb128 0x19
+ 580 00c6 02       		.uleb128 0x2
+ 581 00c7 18       		.uleb128 0x18
+ 582 00c8 00       		.byte	0
+ 583 00c9 00       		.byte	0
+ 584 00ca 11       		.uleb128 0x11
+ 585 00cb 2E       		.uleb128 0x2e
+ 586 00cc 00       		.byte	0
+ 587 00cd 3F       		.uleb128 0x3f
+ 588 00ce 19       		.uleb128 0x19
+ 589 00cf 03       		.uleb128 0x3
+ 590 00d0 0E       		.uleb128 0xe
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccETCvFO.s 			page 12
+
+
+ 591 00d1 3A       		.uleb128 0x3a
+ 592 00d2 0B       		.uleb128 0xb
+ 593 00d3 3B       		.uleb128 0x3b
+ 594 00d4 0B       		.uleb128 0xb
+ 595 00d5 27       		.uleb128 0x27
+ 596 00d6 19       		.uleb128 0x19
+ 597 00d7 3C       		.uleb128 0x3c
+ 598 00d8 19       		.uleb128 0x19
+ 599 00d9 00       		.byte	0
+ 600 00da 00       		.byte	0
+ 601 00db 12       		.uleb128 0x12
+ 602 00dc 2E       		.uleb128 0x2e
+ 603 00dd 00       		.byte	0
+ 604 00de 3F       		.uleb128 0x3f
+ 605 00df 19       		.uleb128 0x19
+ 606 00e0 03       		.uleb128 0x3
+ 607 00e1 0E       		.uleb128 0xe
+ 608 00e2 3A       		.uleb128 0x3a
+ 609 00e3 0B       		.uleb128 0xb
+ 610 00e4 3B       		.uleb128 0x3b
+ 611 00e5 0B       		.uleb128 0xb
+ 612 00e6 27       		.uleb128 0x27
+ 613 00e7 19       		.uleb128 0x19
+ 614 00e8 49       		.uleb128 0x49
+ 615 00e9 13       		.uleb128 0x13
+ 616 00ea 3C       		.uleb128 0x3c
+ 617 00eb 19       		.uleb128 0x19
+ 618 00ec 00       		.byte	0
+ 619 00ed 00       		.byte	0
+ 620 00ee 13       		.uleb128 0x13
+ 621 00ef 2E       		.uleb128 0x2e
+ 622 00f0 01       		.byte	0x1
+ 623 00f1 3F       		.uleb128 0x3f
+ 624 00f2 19       		.uleb128 0x19
+ 625 00f3 03       		.uleb128 0x3
+ 626 00f4 0E       		.uleb128 0xe
+ 627 00f5 3A       		.uleb128 0x3a
+ 628 00f6 0B       		.uleb128 0xb
+ 629 00f7 3B       		.uleb128 0x3b
+ 630 00f8 0B       		.uleb128 0xb
+ 631 00f9 27       		.uleb128 0x27
+ 632 00fa 19       		.uleb128 0x19
+ 633 00fb 3C       		.uleb128 0x3c
+ 634 00fc 19       		.uleb128 0x19
+ 635 00fd 01       		.uleb128 0x1
+ 636 00fe 13       		.uleb128 0x13
+ 637 00ff 00       		.byte	0
+ 638 0100 00       		.byte	0
+ 639 0101 14       		.uleb128 0x14
+ 640 0102 05       		.uleb128 0x5
+ 641 0103 00       		.byte	0
+ 642 0104 49       		.uleb128 0x49
+ 643 0105 13       		.uleb128 0x13
+ 644 0106 00       		.byte	0
+ 645 0107 00       		.byte	0
+ 646 0108 15       		.uleb128 0x15
+ 647 0109 2E       		.uleb128 0x2e
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccETCvFO.s 			page 13
+
+
+ 648 010a 01       		.byte	0x1
+ 649 010b 3F       		.uleb128 0x3f
+ 650 010c 19       		.uleb128 0x19
+ 651 010d 03       		.uleb128 0x3
+ 652 010e 0E       		.uleb128 0xe
+ 653 010f 3A       		.uleb128 0x3a
+ 654 0110 0B       		.uleb128 0xb
+ 655 0111 3B       		.uleb128 0x3b
+ 656 0112 0B       		.uleb128 0xb
+ 657 0113 27       		.uleb128 0x27
+ 658 0114 19       		.uleb128 0x19
+ 659 0115 3C       		.uleb128 0x3c
+ 660 0116 19       		.uleb128 0x19
+ 661 0117 00       		.byte	0
+ 662 0118 00       		.byte	0
+ 663 0119 00       		.byte	0
+ 664              		.section	.debug_aranges,"",%progbits
+ 665 0000 24000000 		.4byte	0x24
+ 666 0004 0200     		.2byte	0x2
+ 667 0006 00000000 		.4byte	.Ldebug_info0
+ 668 000a 04       		.byte	0x4
+ 669 000b 00       		.byte	0
+ 670 000c 0000     		.2byte	0
+ 671 000e 0000     		.2byte	0
+ 672 0010 00000000 		.4byte	.LFB63
+ 673 0014 44000000 		.4byte	.LFE63-.LFB63
+ 674 0018 00000000 		.4byte	.LFB64
+ 675 001c 0C000000 		.4byte	.LFE64-.LFB64
+ 676 0020 00000000 		.4byte	0
+ 677 0024 00000000 		.4byte	0
+ 678              		.section	.debug_ranges,"",%progbits
+ 679              	.Ldebug_ranges0:
+ 680 0000 00000000 		.4byte	.LFB63
+ 681 0004 44000000 		.4byte	.LFE63
+ 682 0008 00000000 		.4byte	.LFB64
+ 683 000c 0C000000 		.4byte	.LFE64
+ 684 0010 00000000 		.4byte	0
+ 685 0014 00000000 		.4byte	0
+ 686              		.section	.debug_line,"",%progbits
+ 687              	.Ldebug_line0:
+ 688 0000 DF010000 		.section	.debug_str,"MS",%progbits,1
+ 688      0200AD01 
+ 688      00000201 
+ 688      FB0E0D00 
+ 688      01010101 
+ 689              	.LASF29:
+ 690 0000 73636C6B 		.ascii	"sclk_a_isr_SetPriority\000"
+ 690      5F615F69 
+ 690      73725F53 
+ 690      65745072 
+ 690      696F7269 
+ 691              	.LASF35:
+ 692 0017 73636C6B 		.ascii	"sclk_b_isr_StartEx\000"
+ 692      5F625F69 
+ 692      73725F53 
+ 692      74617274 
+ 692      457800
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccETCvFO.s 			page 14
+
+
+ 693              	.LASF33:
+ 694 002a 2E5C6D69 		.ascii	".\\mice.c\000"
+ 694      63652E63 
+ 694      00
+ 695              	.LASF20:
+ 696 0033 4F563936 		.ascii	"OV9650_1_framebuffer\000"
+ 696      35305F31 
+ 696      5F667261 
+ 696      6D656275 
+ 696      66666572 
+ 697              	.LASF9:
+ 698 0048 5F5F696E 		.ascii	"__int32_t\000"
+ 698      7433325F 
+ 698      7400
+ 699              	.LASF10:
+ 700 0052 696E7433 		.ascii	"int32_t\000"
+ 700      325F7400 
+ 701              	.LASF12:
+ 702 005a 666C6F61 		.ascii	"float\000"
+ 702      7400
+ 703              	.LASF31:
+ 704 0060 73636C6B 		.ascii	"sclk_a_isr_StartEx\000"
+ 704      5F615F69 
+ 704      73725F53 
+ 704      74617274 
+ 704      457800
+ 705              	.LASF1:
+ 706 0073 756E7369 		.ascii	"unsigned char\000"
+ 706      676E6564 
+ 706      20636861 
+ 706      7200
+ 707              	.LASF22:
+ 708 0081 73636C6B 		.ascii	"sclk_b_isr_Stop\000"
+ 708      5F625F69 
+ 708      73725F53 
+ 708      746F7000 
+ 709              	.LASF18:
+ 710 0091 73746F70 		.ascii	"stop_mice\000"
+ 710      5F6D6963 
+ 710      6500
+ 711              	.LASF5:
+ 712 009b 6C6F6E67 		.ascii	"long unsigned int\000"
+ 712      20756E73 
+ 712      69676E65 
+ 712      6420696E 
+ 712      7400
+ 713              	.LASF3:
+ 714 00ad 73686F72 		.ascii	"short unsigned int\000"
+ 714      7420756E 
+ 714      7369676E 
+ 714      65642069 
+ 714      6E7400
+ 715              	.LASF19:
+ 716 00c0 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 716      52784275 
+ 716      66666572 
+ 716      00
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccETCvFO.s 			page 15
+
+
+ 717              	.LASF23:
+ 718 00cd 6D6F7573 		.ascii	"mouse_a_init\000"
+ 718      655F615F 
+ 718      696E6974 
+ 718      00
+ 719              	.LASF13:
+ 720 00da 646F7562 		.ascii	"double\000"
+ 720      6C6500
+ 721              	.LASF21:
+ 722 00e1 73636C6B 		.ascii	"sclk_a_isr_Stop\000"
+ 722      5F615F69 
+ 722      73725F53 
+ 722      746F7000 
+ 723              	.LASF17:
+ 724 00f1 73746172 		.ascii	"start_mice\000"
+ 724      745F6D69 
+ 724      636500
+ 725              	.LASF8:
+ 726 00fc 756E7369 		.ascii	"unsigned int\000"
+ 726      676E6564 
+ 726      20696E74 
+ 726      00
+ 727              	.LASF34:
+ 728 0109 433A5C55 		.ascii	"C:\\Users\\xavieran\\Desktop\\ECE3091\\PSOCProjects"
+ 728      73657273 
+ 728      5C786176 
+ 728      69657261 
+ 728      6E5C4465 
+ 729 0137 5C454E47 		.ascii	"\\ENG3091_MandM\\ENG3091_MandM.cydsn\000"
+ 729      33303931 
+ 729      5F4D616E 
+ 729      644D5C45 
+ 729      4E473330 
+ 730              	.LASF27:
+ 731 015a 53434C4B 		.ascii	"SCLK_A_ClearInterrupt\000"
+ 731      5F415F43 
+ 731      6C656172 
+ 731      496E7465 
+ 731      72727570 
+ 732              	.LASF7:
+ 733 0170 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 733      206C6F6E 
+ 733      6720756E 
+ 733      7369676E 
+ 733      65642069 
+ 734              	.LASF30:
+ 735 0187 73636C6B 		.ascii	"sclk_b_isr_SetPriority\000"
+ 735      5F625F69 
+ 735      73725F53 
+ 735      65745072 
+ 735      696F7269 
+ 736              	.LASF15:
+ 737 019e 63796973 		.ascii	"cyisraddress\000"
+ 737      72616464 
+ 737      72657373 
+ 737      00
+ 738              	.LASF32:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccETCvFO.s 			page 16
+
+
+ 739 01ab 474E5520 		.ascii	"GNU C 4.8.4 20140526 (release) [ARM/embedded-4_8-br"
+ 739      4320342E 
+ 739      382E3420 
+ 739      32303134 
+ 739      30353236 
+ 740 01de 616E6368 		.ascii	"anch revision 211358] -mcpu=cortex-m3 -mthumb -g -O"
+ 740      20726576 
+ 740      6973696F 
+ 740      6E203231 
+ 740      31333538 
+ 741 0211 67202D66 		.ascii	"g -ffunction-sections\000"
+ 741      66756E63 
+ 741      74696F6E 
+ 741      2D736563 
+ 741      74696F6E 
+ 742              	.LASF16:
+ 743 0227 73697A65 		.ascii	"sizetype\000"
+ 743      74797065 
+ 743      00
+ 744              	.LASF25:
+ 745 0230 72657365 		.ascii	"reset_sclk_a_isr\000"
+ 745      745F7363 
+ 745      6C6B5F61 
+ 745      5F697372 
+ 745      00
+ 746              	.LASF6:
+ 747 0241 6C6F6E67 		.ascii	"long long int\000"
+ 747      206C6F6E 
+ 747      6720696E 
+ 747      7400
+ 748              	.LASF14:
+ 749 024f 63686172 		.ascii	"char\000"
+ 749      00
+ 750              	.LASF28:
+ 751 0254 53434C4B 		.ascii	"SCLK_B_ClearInterrupt\000"
+ 751      5F425F43 
+ 751      6C656172 
+ 751      496E7465 
+ 751      72727570 
+ 752              	.LASF24:
+ 753 026a 6D6F7573 		.ascii	"mouse_b_init\000"
+ 753      655F625F 
+ 753      696E6974 
+ 753      00
+ 754              	.LASF2:
+ 755 0277 73686F72 		.ascii	"short int\000"
+ 755      7420696E 
+ 755      7400
+ 756              	.LASF11:
+ 757 0281 75696E74 		.ascii	"uint8\000"
+ 757      3800
+ 758              	.LASF4:
+ 759 0287 6C6F6E67 		.ascii	"long int\000"
+ 759      20696E74 
+ 759      00
+ 760              	.LASF0:
+ 761 0290 7369676E 		.ascii	"signed char\000"
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccETCvFO.s 			page 17
+
+
+ 761      65642063 
+ 761      68617200 
+ 762              	.LASF26:
+ 763 029c 72657365 		.ascii	"reset_sclk_b_isr\000"
+ 763      745F7363 
+ 763      6C6B5F62 
+ 763      5F697372 
+ 763      00
+ 764              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.8.4 20140526 (release) [ARM/embedded-4_8-br

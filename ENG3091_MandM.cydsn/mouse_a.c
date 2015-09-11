@@ -11,7 +11,7 @@
 */
 
 #include <project.h>
-#include <mouse_conf.h>
+#include <mice.h>
 
 #define S_STAT_START 0
 #define S_MOVX_START 1
@@ -82,7 +82,7 @@ void mouse_a_write(uint8 data){
 
 
 void mouse_a_init(){
-        
+    CyGlobalIntDisable;
     //CHECK_A_Write(1);
     mouse_a_write(0xff);  // reset
     //CHECK_A_Write(0);
@@ -118,7 +118,7 @@ void mouse_a_init(){
     //CHECK_A_Write(0);
     
     CyDelay(2);
-    
+    CYGlobalIntEnable;
 }
 
 

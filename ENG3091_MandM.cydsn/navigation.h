@@ -19,7 +19,7 @@
     };
     
     void reset_navigation();
-    void init_navigation();
+    void start_navigation();
     void refresh_position();
     
     CY_ISR_PROTO(REFRESH_POSITION);
