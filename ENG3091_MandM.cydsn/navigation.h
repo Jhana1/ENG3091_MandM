@@ -13,16 +13,17 @@
 #ifndef MY_NAVIGATION
     #include <project.h>
     struct Position {
-        double x;
-        double y;
-        double angle;
+        int32 x;
+        int32 y;
+        int16 angle;
     };
     
     void reset_navigation();
+    void calculate_circular_functions();
     void start_navigation();
-    void refresh_position();
+    void update_position();
     
-    CY_ISR_PROTO(REFRESH_POSITION);
+    //CY_ISR_PROTO(REFRESH_POSITION);
 #endif
 
 

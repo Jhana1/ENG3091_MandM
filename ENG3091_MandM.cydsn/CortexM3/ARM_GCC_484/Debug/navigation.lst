@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cclr33xI.s 			page 1
 
 
    1              		.syntax unified
@@ -49,29 +49,36 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 1
   19:.\navigation.c **** #include <stdlib.h>
   20:.\navigation.c **** 
   21:.\navigation.c **** #include <navigation.h>
-  22:.\navigation.c **** 
-  23:.\navigation.c **** //this is in mouse_a.c
-  24:.\navigation.c **** extern volatile int32 loc_x_a;
-  25:.\navigation.c **** extern volatile int32 loc_y_a;
-  26:.\navigation.c **** extern volatile uint8 data_ready_a;
-  27:.\navigation.c **** //this is in mouse_b.c
-  28:.\navigation.c **** extern volatile int32 loc_x_b;
-  29:.\navigation.c **** extern volatile int32 loc_y_b;
-  30:.\navigation.c **** extern volatile uint8 data_ready_b;
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 2
+  22:.\navigation.c **** #include <compass.h>
+  23:.\navigation.c **** #include <motor.h>
+  24:.\navigation.c **** 
+  25:.\navigation.c **** //These are in compass.c
+  26:.\navigation.c **** extern int16 compass_heading;
+  27:.\navigation.c **** extern double SinDeg[];
+  28:.\navigation.c **** extern double CosDeg[];
+  29:.\navigation.c **** 
+  30:.\navigation.c **** //this is in mouse_a.c
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cclr33xI.s 			page 2
 
 
-  31:.\navigation.c **** 
-  32:.\navigation.c **** //We store the navigation info here
-  33:.\navigation.c **** struct Position location;
-  34:.\navigation.c **** 
-  35:.\navigation.c **** struct Position calculate_dposition(double dxl, double dyl, double dxr, double dyr);
-  36:.\navigation.c **** 
-  37:.\navigation.c **** //9.4cm = 94mm = 94*4 counts/mm = 376.0 counts
-  38:.\navigation.c **** #define SEPARATION 400
-  39:.\navigation.c **** 
-  40:.\navigation.c **** double signum(double x){
-  28              		.loc 1 40 0
+  31:.\navigation.c **** extern volatile int32 loc_x_a;
+  32:.\navigation.c **** extern volatile int32 loc_y_a;
+  33:.\navigation.c **** extern volatile uint8 data_ready_a;
+  34:.\navigation.c **** //this is in mouse_b.c
+  35:.\navigation.c **** extern volatile int32 loc_x_b;
+  36:.\navigation.c **** extern volatile int32 loc_y_b;
+  37:.\navigation.c **** extern volatile uint8 data_ready_b;
+  38:.\navigation.c **** 
+  39:.\navigation.c **** //We store the navigation info here
+  40:.\navigation.c **** struct Position location;
+  41:.\navigation.c **** 
+  42:.\navigation.c **** struct Position calculate_dposition(double dxl, double dyl, double dxr, double dyr);
+  43:.\navigation.c **** 
+  44:.\navigation.c **** //9.4cm = 94mm = 94*4 counts/mm = 376.0 counts
+  45:.\navigation.c **** #define SEPARATION 400
+  46:.\navigation.c **** 
+  47:.\navigation.c **** double signum(double x){
+  28              		.loc 1 47 0
   29              		.cfi_startproc
   30              		@ args = 0, pretend = 0, frame = 0
   31              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -80,27 +87,27 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 1
   34              		.cfi_def_cfa_offset 8
   35              		.cfi_offset 3, -8
   36              		.cfi_offset 14, -4
-  41:.\navigation.c ****     if (x >= 0){
-  37              		.loc 1 41 0
+  48:.\navigation.c ****     if (x >= 0){
+  37              		.loc 1 48 0
   38 0002 0022     		movs	r2, #0
   39 0004 0023     		movs	r3, #0
   40 0006 FFF7FEFF 		bl	__aeabi_dcmpge
   41              	.LVL1:
   42 000a 10B1     		cbz	r0, .L6
-  42:.\navigation.c ****         return 1.0; 
-  43              		.loc 1 42 0
+  49:.\navigation.c ****         return 1.0; 
+  43              		.loc 1 49 0
   44 000c 0020     		movs	r0, #0
   45 000e 0249     		ldr	r1, .L7
   46 0010 08BD     		pop	{r3, pc}
   47              	.L6:
-  43:.\navigation.c ****     } else {
-  44:.\navigation.c ****         return -1.0;
-  48              		.loc 1 44 0
+  50:.\navigation.c ****     } else {
+  51:.\navigation.c ****         return -1.0;
+  48              		.loc 1 51 0
   49 0012 0020     		movs	r0, #0
   50 0014 0149     		ldr	r1, .L7+4
-  45:.\navigation.c ****     }
-  46:.\navigation.c **** }
-  51              		.loc 1 46 0
+  52:.\navigation.c ****     }
+  53:.\navigation.c **** }
+  51              		.loc 1 53 0
   52 0016 08BD     		pop	{r3, pc}
   53              	.L8:
   54              		.align	2
@@ -110,2940 +117,1110 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 1
   58              		.cfi_endproc
   59              	.LFE63:
   60              		.size	signum, .-signum
-  61              		.global	__aeabi_dmul
-  62              		.global	__aeabi_dcmpeq
-  63              		.global	__aeabi_dcmplt
-  64              		.global	__aeabi_dcmpgt
-  65              		.global	__aeabi_ddiv
-  66              		.global	__aeabi_dsub
-  67              		.global	__aeabi_dadd
-  68              		.section	.text.calculate_dposition,"ax",%progbits
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 3
-
-
-  69              		.align	2
-  70              		.global	calculate_dposition
-  71              		.thumb
-  72              		.thumb_func
-  73              		.type	calculate_dposition, %function
-  74              	calculate_dposition:
-  75              	.LFB65:
-  47:.\navigation.c **** 
-  48:.\navigation.c **** void refresh_position(){
-  49:.\navigation.c ****     //If either mouse has given us more than 5 readings we recalculate position
-  50:.\navigation.c ****     if (data_ready_a > 5 || data_ready_b > 5){
-  51:.\navigation.c ****         struct Position delta = calculate_dposition((double) loc_x_a, (double) loc_y_a, (double) lo
-  52:.\navigation.c ****         
-  53:.\navigation.c ****         loc_x_a = 0;
-  54:.\navigation.c ****         loc_y_a = 0;
-  55:.\navigation.c ****         data_ready_a = 0;
-  56:.\navigation.c ****         
-  57:.\navigation.c ****         loc_x_b = 0;
-  58:.\navigation.c ****         loc_y_b = 0;
-  59:.\navigation.c ****         data_ready_b = 0;
-  60:.\navigation.c ****             
-  61:.\navigation.c ****         double angle = location.angle + atan2(delta.y, delta.x);
-  62:.\navigation.c ****         double length = sqrt(delta.x*delta.x + delta.y*delta.y);
-  63:.\navigation.c ****         
-  64:.\navigation.c ****         location.x += length*cos(angle);
-  65:.\navigation.c ****         location.y += length*sin(angle);
-  66:.\navigation.c ****         location.angle += delta.angle;
-  67:.\navigation.c ****     }
-  68:.\navigation.c **** }
-  69:.\navigation.c **** 
-  70:.\navigation.c **** 
-  71:.\navigation.c **** /* Call this every x times per second to calculate the current position and heading*/
-  72:.\navigation.c **** struct Position calculate_dposition(double dxl, double dyl, double dxr, double dyr){
-  76              		.loc 1 72 0
-  77              		.cfi_startproc
-  78              		@ args = 24, pretend = 0, frame = 48
-  79              		@ frame_needed = 0, uses_anonymous_args = 0
-  80              	.LVL2:
-  81 0000 2DE9F04D 		push	{r4, r5, r6, r7, r8, r10, fp, lr}
-  82              		.cfi_def_cfa_offset 32
-  83              		.cfi_offset 4, -32
-  84              		.cfi_offset 5, -28
-  85              		.cfi_offset 6, -24
-  86              		.cfi_offset 7, -20
-  87              		.cfi_offset 8, -16
-  88              		.cfi_offset 10, -12
-  89              		.cfi_offset 11, -8
-  90              		.cfi_offset 14, -4
-  91 0004 8CB0     		sub	sp, sp, #48
-  92              		.cfi_def_cfa_offset 80
-  93 0006 8046     		mov	r8, r0
-  94 0008 1646     		mov	r6, r2
-  95 000a 1F46     		mov	r7, r3
-  73:.\navigation.c ****     ISR_CHECKP_Write(1); //for timing purposes
-  96              		.loc 1 73 0
-  97 000c 0120     		movs	r0, #1
-  98              	.LVL3:
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 4
-
-
-  99 000e FFF7FEFF 		bl	ISR_CHECKP_Write
- 100              	.LVL4:
-  74:.\navigation.c ****     //Let the A mouse be LEFT and the B mouse be RIGHT
-  75:.\navigation.c ****     double rl, ll, rr, lr, al, ar;
-  76:.\navigation.c ****     double xpl, xpr, ypl, ypr;
-  77:.\navigation.c ****     
-  78:.\navigation.c ****     struct Position delta = {.x = 0,.y = 0, .angle = 0};
- 101              		.loc 1 78 0
- 102 0012 0024     		movs	r4, #0
- 103 0014 0025     		movs	r5, #0
- 104 0016 C8E90045 		strd	r4, [r8]
- 105 001a C8E90245 		strd	r4, [r8, #8]
- 106 001e C8E90445 		strd	r4, [r8, #16]
-  79:.\navigation.c ****     
-  80:.\navigation.c ****     // Correct for error in y
-  81:.\navigation.c ****     dyl *= 1.089;
- 107              		.loc 1 81 0
- 108 0022 DDE91401 		ldrd	r0, [sp, #80]
- 109 0026 4AA3     		adr	r3, .L37
- 110 0028 D3E90023 		ldrd	r2, [r3]
- 111 002c FFF7FEFF 		bl	__aeabi_dmul
- 112              	.LVL5:
- 113 0030 CDE90801 		strd	r0, [sp, #32]
- 114              	.LVL6:
-  82:.\navigation.c ****     dxl *= 1.089;
- 115              		.loc 1 82 0
- 116 0034 3046     		mov	r0, r6
- 117              	.LVL7:
- 118 0036 3946     		mov	r1, r7
- 119 0038 45A3     		adr	r3, .L37
- 120 003a D3E90023 		ldrd	r2, [r3]
- 121 003e FFF7FEFF 		bl	__aeabi_dmul
- 122              	.LVL8:
- 123 0042 0646     		mov	r6, r0
- 124 0044 0F46     		mov	r7, r1
- 125              	.LVL9:
-  83:.\navigation.c ****     
-  84:.\navigation.c ****     //If no change, don't bother going through this whole routine
-  85:.\navigation.c ****     if (dxl == 0 && dyl == 0 && dxr == 0 && dyr == 0){
- 126              		.loc 1 85 0
- 127 0046 2246     		mov	r2, r4
- 128 0048 2B46     		mov	r3, r5
- 129 004a FFF7FEFF 		bl	__aeabi_dcmpeq
- 130              	.LVL10:
- 131 004e C0B1     		cbz	r0, .L10
- 132              		.loc 1 85 0 is_stmt 0 discriminator 1
- 133 0050 DDE90801 		ldrd	r0, [sp, #32]
- 134 0054 2246     		mov	r2, r4
- 135 0056 2B46     		mov	r3, r5
- 136 0058 FFF7FEFF 		bl	__aeabi_dcmpeq
- 137              	.LVL11:
- 138 005c 88B1     		cbz	r0, .L10
- 139 005e DDE91601 		ldrd	r0, [sp, #88]
- 140 0062 2246     		mov	r2, r4
- 141 0064 2B46     		mov	r3, r5
- 142 0066 FFF7FEFF 		bl	__aeabi_dcmpeq
- 143              	.LVL12:
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 5
-
-
- 144 006a 50B1     		cbz	r0, .L10
- 145 006c DDE91801 		ldrd	r0, [sp, #96]
- 146 0070 2246     		mov	r2, r4
- 147 0072 2B46     		mov	r3, r5
- 148 0074 FFF7FEFF 		bl	__aeabi_dcmpeq
- 149              	.LVL13:
- 150 0078 18B1     		cbz	r0, .L10
-  86:.\navigation.c ****         //nav_clock_ClearPending();
-  87:.\navigation.c ****         ISR_CHECKP_Write(0);
- 151              		.loc 1 87 0 is_stmt 1
- 152 007a 0020     		movs	r0, #0
- 153 007c FFF7FEFF 		bl	ISR_CHECKP_Write
- 154              	.LVL14:
-  88:.\navigation.c ****         return delta;
- 155              		.loc 1 88 0
- 156 0080 8AE1     		b	.L9
- 157              	.L10:
-  89:.\navigation.c ****     }
-  90:.\navigation.c ****     
-  91:.\navigation.c ****     //We ignore x noise
-  92:.\navigation.c ****     if (fabs(dxl) < 4 && fabs(dxr) < 4){
- 158              		.loc 1 92 0
- 159 0082 B246     		mov	r10, r6
- 160 0084 27F0004B 		bic	fp, r7, #-2147483648
- 161 0088 3046     		mov	r0, r6
- 162 008a 5946     		mov	r1, fp
- 163 008c 0022     		movs	r2, #0
- 164 008e 344B     		ldr	r3, .L37+16
- 165 0090 FFF7FEFF 		bl	__aeabi_dcmplt
- 166              	.LVL15:
- 167 0094 C0B1     		cbz	r0, .L16
- 168              		.loc 1 92 0 is_stmt 0 discriminator 1
- 169 0096 1698     		ldr	r0, [sp, #88]
- 170 0098 179A     		ldr	r2, [sp, #92]
- 171 009a 22F00041 		bic	r1, r2, #-2147483648
- 172 009e 0022     		movs	r2, #0
- 173 00a0 2F4B     		ldr	r3, .L37+16
- 174 00a2 FFF7FEFF 		bl	__aeabi_dcmplt
- 175              	.LVL16:
- 176 00a6 78B1     		cbz	r0, .L16
-  93:.\navigation.c ****         //And correct the y axis values accordingly
-  94:.\navigation.c ****         if (dyl > dyr){
- 177              		.loc 1 94 0 is_stmt 1
- 178 00a8 DDE90801 		ldrd	r0, [sp, #32]
- 179 00ac DDE91823 		ldrd	r2, [sp, #96]
- 180 00b0 FFF7FEFF 		bl	__aeabi_dcmpgt
- 181              	.LVL17:
- 182 00b4 20B1     		cbz	r0, .L35
-  95:.\navigation.c ****             dyr = dyl;
- 183              		.loc 1 95 0
- 184 00b6 DDE90823 		ldrd	r2, [sp, #32]
- 185 00ba CDE91823 		strd	r2, [sp, #96]
- 186 00be 03E0     		b	.L16
- 187              	.L35:
-  96:.\navigation.c ****         } else {
-  97:.\navigation.c ****             dyl = dyr;
- 188              		.loc 1 97 0
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 6
-
-
- 189 00c0 DDE91823 		ldrd	r2, [sp, #96]
- 190 00c4 CDE90823 		strd	r2, [sp, #32]
- 191              	.LVL18:
- 192              	.L16:
-  98:.\navigation.c ****         }
-  99:.\navigation.c ****     }
- 100:.\navigation.c ****     
- 101:.\navigation.c ****     //calculate new values for location_x and location_y using dloc_x and dloc_y
- 102:.\navigation.c ****     //Using the method in the italian paper (Bonarini, Matteucci, Restelli)
- 103:.\navigation.c ****     //alpha a and alpha b
- 104:.\navigation.c ****     al = atan2(dyl, dxl); // Note that atan2 handles x = 0 correctly
- 193              		.loc 1 104 0
- 194 00c8 DDE90801 		ldrd	r0, [sp, #32]
- 195 00cc 3246     		mov	r2, r6
- 196 00ce 3B46     		mov	r3, r7
- 197 00d0 FFF7FEFF 		bl	atan2
- 198              	.LVL19:
- 199 00d4 CDE90401 		strd	r0, [sp, #16]
- 200              	.LVL20:
- 105:.\navigation.c ****     ar = atan2(dyr, dxr);
- 201              		.loc 1 105 0
- 202 00d8 DDE91801 		ldrd	r0, [sp, #96]
- 203              	.LVL21:
- 204 00dc DDE91623 		ldrd	r2, [sp, #88]
- 205 00e0 FFF7FEFF 		bl	atan2
- 206              	.LVL22:
- 207 00e4 CDE90A01 		strd	r0, [sp, #40]
- 208              	.LVL23:
- 106:.\navigation.c ****     
- 107:.\navigation.c ****     //radius of arc a and b
- 108:.\navigation.c ****     if (al == 0 || al == M_PI){
- 209              		.loc 1 108 0
- 210 00e8 DDE90401 		ldrd	r0, [sp, #16]
- 211              	.LVL24:
- 212 00ec 0022     		movs	r2, #0
- 213 00ee 0023     		movs	r3, #0
- 214 00f0 FFF7FEFF 		bl	__aeabi_dcmpeq
- 215              	.LVL25:
- 216 00f4 98B9     		cbnz	r0, .L20
- 217              		.loc 1 108 0 is_stmt 0 discriminator 1
- 218 00f6 DDE90401 		ldrd	r0, [sp, #16]
- 219 00fa 17A3     		adr	r3, .L37+8
- 220 00fc D3E90023 		ldrd	r2, [r3]
- 221 0100 FFF7FEFF 		bl	__aeabi_dcmpeq
- 222              	.LVL26:
- 223 0104 58B9     		cbnz	r0, .L20
- 109:.\navigation.c ****         ll = fabs(dxl);
- 110:.\navigation.c ****     } else {
- 111:.\navigation.c ****         ll = dyl/sin(al);
- 224              		.loc 1 111 0 is_stmt 1
- 225 0106 DDE90401 		ldrd	r0, [sp, #16]
- 226 010a FFF7FEFF 		bl	sin
- 227              	.LVL27:
- 228 010e 0246     		mov	r2, r0
- 229 0110 0B46     		mov	r3, r1
- 230 0112 DDE90801 		ldrd	r0, [sp, #32]
- 231 0116 FFF7FEFF 		bl	__aeabi_ddiv
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 7
-
-
- 232              	.LVL28:
- 233 011a 8246     		mov	r10, r0
- 234 011c 8B46     		mov	fp, r1
- 235              	.LVL29:
- 236              	.L20:
- 112:.\navigation.c ****     }    
- 113:.\navigation.c ****     
- 114:.\navigation.c ****     if (ar == 0 || ar == M_PI){
- 237              		.loc 1 114 0
- 238 011e DDE90A01 		ldrd	r0, [sp, #40]
- 239 0122 0022     		movs	r2, #0
- 240 0124 0023     		movs	r3, #0
- 241 0126 FFF7FEFF 		bl	__aeabi_dcmpeq
- 242              	.LVL30:
- 243 012a 38B9     		cbnz	r0, .L21
- 244              		.loc 1 114 0 is_stmt 0 discriminator 1
- 245 012c DDE90A01 		ldrd	r0, [sp, #40]
- 246 0130 09A3     		adr	r3, .L37+8
- 247 0132 D3E90023 		ldrd	r2, [r3]
- 248 0136 FFF7FEFF 		bl	__aeabi_dcmpeq
- 249              	.LVL31:
- 250 013a 98B1     		cbz	r0, .L36
- 251              	.L21:
- 115:.\navigation.c ****         lr =fabs(dxr);
- 252              		.loc 1 115 0 is_stmt 1
- 253 013c 169B     		ldr	r3, [sp, #88]
- 254 013e 0093     		str	r3, [sp]
- 255 0140 179A     		ldr	r2, [sp, #92]
- 256 0142 22F00042 		bic	r2, r2, #-2147483648
- 257 0146 0192     		str	r2, [sp, #4]
- 258              	.LVL32:
- 259 0148 18E0     		b	.L24
- 260              	.L38:
- 261 014a 00BFAFF3 		.align	3
- 261      0080
- 262              	.L37:
- 263 0150 06819543 		.word	1133871366
- 264 0154 8B6CF13F 		.word	1072786571
- 265 0158 182D4454 		.word	1413754136
- 266 015c FB210940 		.word	1074340347
- 267 0160 00001040 		.word	1074790400
- 268              	.LVL33:
- 269              	.L36:
- 116:.\navigation.c ****     } else {
- 117:.\navigation.c ****         lr = dyr/sin(ar);
- 270              		.loc 1 117 0
- 271 0164 DDE90A01 		ldrd	r0, [sp, #40]
- 272 0168 FFF7FEFF 		bl	sin
- 273              	.LVL34:
- 274 016c 0246     		mov	r2, r0
- 275 016e 0B46     		mov	r3, r1
- 276 0170 DDE91801 		ldrd	r0, [sp, #96]
- 277 0174 FFF7FEFF 		bl	__aeabi_ddiv
- 278              	.LVL35:
- 279 0178 CDE90001 		strd	r0, [sp]
- 280              	.LVL36:
- 281              	.L24:
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 8
-
-
- 118:.\navigation.c ****     }  
- 119:.\navigation.c ****     
- 120:.\navigation.c ****     //Take the absolute value of alpha a - alpha b to get gamma
- 121:.\navigation.c ****     double gamma = fabs(al - ar);
- 282              		.loc 1 121 0
- 283 017c DDE90401 		ldrd	r0, [sp, #16]
- 284 0180 DDE90A23 		ldrd	r2, [sp, #40]
- 285 0184 FFF7FEFF 		bl	__aeabi_dsub
- 286              	.LVL37:
- 287 0188 0446     		mov	r4, r0
- 288 018a 21F00045 		bic	r5, r1, #-2147483648
- 289              	.LVL38:
- 122:.\navigation.c ****     
- 123:.\navigation.c ****     double dtheta = signum(dyr - dyl)*sqrt(ll*ll + lr*lr - 2.0*cos(gamma)*ll*lr) / SEPARATION;
- 290              		.loc 1 123 0
- 291 018e DDE91801 		ldrd	r0, [sp, #96]
- 292 0192 DDE90823 		ldrd	r2, [sp, #32]
- 293 0196 FFF7FEFF 		bl	__aeabi_dsub
- 294              	.LVL39:
- 295 019a FFF7FEFF 		bl	signum
- 296              	.LVL40:
- 297 019e CDE90201 		strd	r0, [sp, #8]
- 298 01a2 5046     		mov	r0, r10
- 299 01a4 5946     		mov	r1, fp
- 300 01a6 5246     		mov	r2, r10
- 301 01a8 5B46     		mov	r3, fp
- 302 01aa FFF7FEFF 		bl	__aeabi_dmul
- 303              	.LVL41:
- 304 01ae 0646     		mov	r6, r0
- 305              	.LVL42:
- 306 01b0 0F46     		mov	r7, r1
- 307 01b2 DDE90001 		ldrd	r0, [sp]
- 308 01b6 0246     		mov	r2, r0
- 309 01b8 0B46     		mov	r3, r1
- 310 01ba FFF7FEFF 		bl	__aeabi_dmul
- 311              	.LVL43:
- 312 01be 0246     		mov	r2, r0
- 313 01c0 0B46     		mov	r3, r1
- 314 01c2 3046     		mov	r0, r6
- 315 01c4 3946     		mov	r1, r7
- 316 01c6 FFF7FEFF 		bl	__aeabi_dadd
- 317              	.LVL44:
- 318 01ca 0646     		mov	r6, r0
- 319 01cc 0F46     		mov	r7, r1
- 320 01ce 2046     		mov	r0, r4
- 321 01d0 2946     		mov	r1, r5
- 322 01d2 FFF7FEFF 		bl	cos
- 323              	.LVL45:
- 324 01d6 0246     		mov	r2, r0
- 325 01d8 0B46     		mov	r3, r1
- 326 01da FFF7FEFF 		bl	__aeabi_dadd
- 327              	.LVL46:
- 328 01de 5246     		mov	r2, r10
- 329 01e0 5B46     		mov	r3, fp
- 330 01e2 FFF7FEFF 		bl	__aeabi_dmul
- 331              	.LVL47:
- 332 01e6 DDE90023 		ldrd	r2, [sp]
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 9
-
-
- 333 01ea FFF7FEFF 		bl	__aeabi_dmul
- 334              	.LVL48:
- 335 01ee 0446     		mov	r4, r0
- 336              	.LVL49:
- 337 01f0 0D46     		mov	r5, r1
- 338 01f2 3046     		mov	r0, r6
- 339 01f4 3946     		mov	r1, r7
- 340 01f6 2246     		mov	r2, r4
- 341 01f8 2B46     		mov	r3, r5
- 342 01fa FFF7FEFF 		bl	__aeabi_dsub
- 343              	.LVL50:
- 344 01fe FFF7FEFF 		bl	sqrt
- 345              	.LVL51:
- 346 0202 0246     		mov	r2, r0
- 347 0204 0B46     		mov	r3, r1
- 348 0206 DDE90201 		ldrd	r0, [sp, #8]
- 349 020a FFF7FEFF 		bl	__aeabi_dmul
- 350              	.LVL52:
- 351 020e 0022     		movs	r2, #0
- 352 0210 654B     		ldr	r3, .L39+8
- 353 0212 FFF7FEFF 		bl	__aeabi_ddiv
- 354              	.LVL53:
- 355 0216 0646     		mov	r6, r0
- 356 0218 0F46     		mov	r7, r1
- 357              	.LVL54:
- 124:.\navigation.c ****     
- 125:.\navigation.c ****     if (fabs(dtheta) < .00001){ //dtheta == 0...
- 358              		.loc 1 125 0
- 359 021a 21F00045 		bic	r5, r1, #-2147483648
- 360 021e 2946     		mov	r1, r5
- 361 0220 5FA3     		adr	r3, .L39
- 362 0222 D3E90023 		ldrd	r2, [r3]
- 363 0226 FFF7FEFF 		bl	__aeabi_dcmplt
- 364              	.LVL55:
- 365 022a 0028     		cmp	r0, #0
- 366 022c 40F09380 		bne	.L27
- 367              	.LBB2:
- 126:.\navigation.c ****         xpr = 0;
- 127:.\navigation.c ****         xpl = 0;
- 128:.\navigation.c ****         ypl = ll;
- 129:.\navigation.c ****         ypr = lr;
- 130:.\navigation.c ****     } else { //dtheta != 0...
- 131:.\navigation.c ****         rl = ll / fabs(dtheta);
- 368              		.loc 1 131 0
- 369 0230 5046     		mov	r0, r10
- 370 0232 5946     		mov	r1, fp
- 371 0234 3246     		mov	r2, r6
- 372 0236 2B46     		mov	r3, r5
- 373 0238 FFF7FEFF 		bl	__aeabi_ddiv
- 374              	.LVL56:
- 375 023c 8246     		mov	r10, r0
- 376              	.LVL57:
- 377 023e 8B46     		mov	fp, r1
- 378              	.LVL58:
- 132:.\navigation.c ****         rr = lr / fabs(dtheta);
- 379              		.loc 1 132 0
- 380 0240 DDE90001 		ldrd	r0, [sp]
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 10
-
-
- 381 0244 3246     		mov	r2, r6
- 382 0246 2B46     		mov	r3, r5
- 383 0248 FFF7FEFF 		bl	__aeabi_ddiv
- 384              	.LVL59:
- 385 024c CDE90801 		strd	r0, [sp, #32]
- 386              	.LVL60:
- 133:.\navigation.c ****         
- 134:.\navigation.c ****         double sdtheta = signum(dtheta);
- 387              		.loc 1 134 0
- 388 0250 3046     		mov	r0, r6
- 389              	.LVL61:
- 390 0252 3946     		mov	r1, r7
- 391 0254 FFF7FEFF 		bl	signum
- 392              	.LVL62:
- 393 0258 CDE90001 		strd	r0, [sp]
- 394              	.LVL63:
- 135:.\navigation.c ****     
- 136:.\navigation.c ****         xpl = rl*(sin(al + dtheta) - sin(al))*sdtheta - SEPARATION/2;
- 395              		.loc 1 136 0
- 396 025c DDE90401 		ldrd	r0, [sp, #16]
- 397              	.LVL64:
- 398 0260 3246     		mov	r2, r6
- 399 0262 3B46     		mov	r3, r7
- 400 0264 FFF7FEFF 		bl	__aeabi_dadd
- 401              	.LVL65:
- 402 0268 CDE90601 		strd	r0, [sp, #24]
- 403 026c FFF7FEFF 		bl	sin
- 404              	.LVL66:
- 405 0270 0446     		mov	r4, r0
- 406 0272 0D46     		mov	r5, r1
- 407 0274 DDE90401 		ldrd	r0, [sp, #16]
- 408 0278 FFF7FEFF 		bl	sin
- 409              	.LVL67:
- 410 027c 0246     		mov	r2, r0
- 411 027e 0B46     		mov	r3, r1
- 412 0280 2046     		mov	r0, r4
- 413 0282 2946     		mov	r1, r5
- 414 0284 FFF7FEFF 		bl	__aeabi_dsub
- 415              	.LVL68:
- 416 0288 5246     		mov	r2, r10
- 417 028a 5B46     		mov	r3, fp
- 418 028c FFF7FEFF 		bl	__aeabi_dmul
- 419              	.LVL69:
- 420 0290 DDE90023 		ldrd	r2, [sp]
- 421 0294 FFF7FEFF 		bl	__aeabi_dmul
- 422              	.LVL70:
- 423 0298 0022     		movs	r2, #0
- 424 029a 444B     		ldr	r3, .L39+12
- 425 029c FFF7FEFF 		bl	__aeabi_dsub
- 426              	.LVL71:
- 427 02a0 CDE90201 		strd	r0, [sp, #8]
- 428              	.LVL72:
- 137:.\navigation.c ****         ypl = rl*(cos(al) - cos(al + dtheta))*sdtheta;
- 429              		.loc 1 137 0
- 430 02a4 DDE90401 		ldrd	r0, [sp, #16]
- 431              	.LVL73:
- 432 02a8 FFF7FEFF 		bl	cos
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 11
-
-
- 433              	.LVL74:
- 434 02ac 0446     		mov	r4, r0
- 435 02ae 0D46     		mov	r5, r1
- 436 02b0 DDE90601 		ldrd	r0, [sp, #24]
- 437 02b4 FFF7FEFF 		bl	cos
- 438              	.LVL75:
- 439 02b8 0246     		mov	r2, r0
- 440 02ba 0B46     		mov	r3, r1
- 441 02bc 2046     		mov	r0, r4
- 442 02be 2946     		mov	r1, r5
- 443 02c0 FFF7FEFF 		bl	__aeabi_dsub
- 444              	.LVL76:
- 445 02c4 5246     		mov	r2, r10
- 446 02c6 5B46     		mov	r3, fp
- 447 02c8 FFF7FEFF 		bl	__aeabi_dmul
- 448              	.LVL77:
- 449 02cc DDE90023 		ldrd	r2, [sp]
- 450 02d0 FFF7FEFF 		bl	__aeabi_dmul
- 451              	.LVL78:
- 452 02d4 8246     		mov	r10, r0
- 453              	.LVL79:
- 454 02d6 8B46     		mov	fp, r1
- 455              	.LVL80:
- 138:.\navigation.c ****         
- 139:.\navigation.c ****         xpr = rr*(sin(ar + dtheta) - sin(ar))*sdtheta + SEPARATION/2;
- 456              		.loc 1 139 0
- 457 02d8 DDE90A01 		ldrd	r0, [sp, #40]
- 458 02dc 3246     		mov	r2, r6
- 459 02de 3B46     		mov	r3, r7
- 460 02e0 FFF7FEFF 		bl	__aeabi_dadd
- 461              	.LVL81:
- 462 02e4 CDE90601 		strd	r0, [sp, #24]
- 463 02e8 FFF7FEFF 		bl	sin
- 464              	.LVL82:
- 465 02ec 0446     		mov	r4, r0
- 466 02ee 0D46     		mov	r5, r1
- 467 02f0 DDE90A01 		ldrd	r0, [sp, #40]
- 468 02f4 FFF7FEFF 		bl	sin
- 469              	.LVL83:
- 470 02f8 0246     		mov	r2, r0
- 471 02fa 0B46     		mov	r3, r1
- 472 02fc 2046     		mov	r0, r4
- 473 02fe 2946     		mov	r1, r5
- 474 0300 FFF7FEFF 		bl	__aeabi_dsub
- 475              	.LVL84:
- 476 0304 DDE90823 		ldrd	r2, [sp, #32]
- 477 0308 FFF7FEFF 		bl	__aeabi_dmul
- 478              	.LVL85:
- 479 030c DDE90023 		ldrd	r2, [sp]
- 480 0310 FFF7FEFF 		bl	__aeabi_dmul
- 481              	.LVL86:
- 482 0314 0022     		movs	r2, #0
- 483 0316 254B     		ldr	r3, .L39+12
- 484 0318 FFF7FEFF 		bl	__aeabi_dadd
- 485              	.LVL87:
- 486 031c 0446     		mov	r4, r0
- 487 031e 0D46     		mov	r5, r1
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 12
-
-
- 488              	.LVL88:
- 140:.\navigation.c ****         ypr = rr*(cos(ar) - cos(ar + dtheta))*sdtheta;
- 489              		.loc 1 140 0
- 490 0320 DDE90A01 		ldrd	r0, [sp, #40]
- 491 0324 FFF7FEFF 		bl	cos
- 492              	.LVL89:
- 493 0328 CDE90401 		strd	r0, [sp, #16]
- 494              	.LVL90:
- 495 032c DDE90601 		ldrd	r0, [sp, #24]
- 496 0330 FFF7FEFF 		bl	cos
- 497              	.LVL91:
- 498 0334 0246     		mov	r2, r0
- 499 0336 0B46     		mov	r3, r1
- 500 0338 DDE90401 		ldrd	r0, [sp, #16]
- 501 033c FFF7FEFF 		bl	__aeabi_dsub
- 502              	.LVL92:
- 503 0340 DDE90823 		ldrd	r2, [sp, #32]
- 504 0344 FFF7FEFF 		bl	__aeabi_dmul
- 505              	.LVL93:
- 506 0348 DDE90023 		ldrd	r2, [sp]
- 507 034c FFF7FEFF 		bl	__aeabi_dmul
- 508              	.LVL94:
- 509 0350 CDE90001 		strd	r0, [sp]
- 510              	.LVL95:
- 511 0354 03E0     		b	.L25
- 512              	.LVL96:
- 513              	.L27:
- 514              	.LBE2:
- 126:.\navigation.c ****         xpr = 0;
- 515              		.loc 1 126 0
- 516 0356 0024     		movs	r4, #0
- 517 0358 0025     		movs	r5, #0
- 127:.\navigation.c ****         xpl = 0;
- 518              		.loc 1 127 0
- 519 035a CDE90245 		strd	r4, [sp, #8]
- 520              	.LVL97:
- 521              	.L25:
- 141:.\navigation.c ****     }
- 142:.\navigation.c ****     
- 143:.\navigation.c ****     
- 144:.\navigation.c ****     delta.x = (xpr + xpl)/2.0;
- 522              		.loc 1 144 0
- 523 035e 2046     		mov	r0, r4
- 524 0360 2946     		mov	r1, r5
- 525 0362 DDE90223 		ldrd	r2, [sp, #8]
- 526 0366 FFF7FEFF 		bl	__aeabi_dadd
- 527              	.LVL98:
- 528 036a 0022     		movs	r2, #0
- 529 036c 104B     		ldr	r3, .L39+16
- 530 036e FFF7FEFF 		bl	__aeabi_dmul
- 531              	.LVL99:
- 532 0372 C8E90001 		strd	r0, [r8]
- 145:.\navigation.c ****     delta.y = (ypr + ypl)/2.0;
- 533              		.loc 1 145 0
- 534 0376 DDE90001 		ldrd	r0, [sp]
- 535 037a 5246     		mov	r2, r10
- 536 037c 5B46     		mov	r3, fp
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 13
-
-
- 537 037e FFF7FEFF 		bl	__aeabi_dadd
- 538              	.LVL100:
- 539 0382 0022     		movs	r2, #0
- 540 0384 0A4B     		ldr	r3, .L39+16
- 541 0386 FFF7FEFF 		bl	__aeabi_dmul
- 542              	.LVL101:
- 543 038a C8E90201 		strd	r0, [r8, #8]
- 146:.\navigation.c ****     delta.angle = dtheta;
- 544              		.loc 1 146 0
- 545 038e C8E90467 		strd	r6, [r8, #16]
- 147:.\navigation.c ****     
- 148:.\navigation.c ****     ISR_CHECKP_Write(0); 
- 546              		.loc 1 148 0
- 547 0392 0020     		movs	r0, #0
- 548 0394 FFF7FEFF 		bl	ISR_CHECKP_Write
- 549              	.LVL102:
- 550              	.L9:
- 149:.\navigation.c ****     return delta;
- 150:.\navigation.c **** }
- 551              		.loc 1 150 0
- 552 0398 4046     		mov	r0, r8
- 553 039a 0CB0     		add	sp, sp, #48
- 554              		@ sp needed
- 555 039c BDE8F08D 		pop	{r4, r5, r6, r7, r8, r10, fp, pc}
- 556              	.LVL103:
- 557              	.L40:
- 558              		.align	3
- 559              	.L39:
- 560 03a0 F168E388 		.word	-1998362383
- 561 03a4 B5F8E43E 		.word	1055193269
- 562 03a8 00007940 		.word	1081671680
- 563 03ac 00006940 		.word	1080623104
- 564 03b0 0000E03F 		.word	1071644672
- 565              		.cfi_endproc
- 566              	.LFE65:
- 567              		.size	calculate_dposition, .-calculate_dposition
- 568              		.global	__aeabi_i2d
- 569 03b4 AFF30080 		.section	.text.refresh_position,"ax",%progbits
- 570              		.align	2
- 571              		.global	refresh_position
- 572              		.thumb
- 573              		.thumb_func
- 574              		.type	refresh_position, %function
- 575              	refresh_position:
- 576              	.LFB64:
-  48:.\navigation.c **** void refresh_position(){
- 577              		.loc 1 48 0
- 578              		.cfi_startproc
- 579              		@ args = 0, pretend = 0, frame = 32
- 580              		@ frame_needed = 0, uses_anonymous_args = 0
- 581 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
- 582              		.cfi_def_cfa_offset 36
- 583              		.cfi_offset 4, -36
- 584              		.cfi_offset 5, -32
- 585              		.cfi_offset 6, -28
- 586              		.cfi_offset 7, -24
- 587              		.cfi_offset 8, -20
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 14
-
-
- 588              		.cfi_offset 9, -16
- 589              		.cfi_offset 10, -12
- 590              		.cfi_offset 11, -8
- 591              		.cfi_offset 14, -4
- 592 0004 8FB0     		sub	sp, sp, #60
- 593              		.cfi_def_cfa_offset 96
-  50:.\navigation.c ****     if (data_ready_a > 5 || data_ready_b > 5){
- 594              		.loc 1 50 0
- 595 0006 4D4B     		ldr	r3, .L44
- 596 0008 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 597 000a DBB2     		uxtb	r3, r3
- 598 000c 052B     		cmp	r3, #5
- 599 000e 05D8     		bhi	.L42
-  50:.\navigation.c ****     if (data_ready_a > 5 || data_ready_b > 5){
- 600              		.loc 1 50 0 is_stmt 0 discriminator 1
- 601 0010 4B4B     		ldr	r3, .L44+4
- 602 0012 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 603 0014 DBB2     		uxtb	r3, r3
- 604 0016 052B     		cmp	r3, #5
- 605 0018 40F28C80 		bls	.L41
- 606              	.L42:
- 607              	.LBB3:
-  51:.\navigation.c ****         struct Position delta = calculate_dposition((double) loc_x_a, (double) loc_y_a, (double) lo
- 608              		.loc 1 51 0 is_stmt 1
- 609 001c DFF824B1 		ldr	fp, .L44+8
- 610 0020 DBF80000 		ldr	r0, [fp]
- 611 0024 FFF7FEFF 		bl	__aeabi_i2d
- 612              	.LVL104:
- 613 0028 CDE90601 		strd	r0, [sp, #24]
- 614 002c DFF818A1 		ldr	r10, .L44+12
- 615 0030 DAF80000 		ldr	r0, [r10]
- 616 0034 FFF7FEFF 		bl	__aeabi_i2d
- 617              	.LVL105:
- 618 0038 0646     		mov	r6, r0
- 619 003a 0F46     		mov	r7, r1
- 620 003c DFF80C91 		ldr	r9, .L44+16
- 621 0040 D9F80000 		ldr	r0, [r9]
- 622 0044 FFF7FEFF 		bl	__aeabi_i2d
- 623              	.LVL106:
- 624 0048 0446     		mov	r4, r0
- 625 004a 0D46     		mov	r5, r1
- 626 004c DFF80081 		ldr	r8, .L44+20
- 627 0050 D8F80000 		ldr	r0, [r8]
- 628 0054 FFF7FEFF 		bl	__aeabi_i2d
- 629              	.LVL107:
- 630 0058 CDE90067 		strd	r6, [sp]
- 631 005c CDE90245 		strd	r4, [sp, #8]
- 632 0060 CDE90401 		strd	r0, [sp, #16]
- 633 0064 08A8     		add	r0, sp, #32
- 634 0066 DDE90623 		ldrd	r2, [sp, #24]
- 635 006a FFF7FEFF 		bl	calculate_dposition
- 636              	.LVL108:
-  53:.\navigation.c ****         loc_x_a = 0;
- 637              		.loc 1 53 0
- 638 006e 0023     		movs	r3, #0
- 639 0070 CBF80030 		str	r3, [fp]
-  54:.\navigation.c ****         loc_y_a = 0;
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 15
-
-
- 640              		.loc 1 54 0
- 641 0074 CAF80030 		str	r3, [r10]
-  55:.\navigation.c ****         data_ready_a = 0;
- 642              		.loc 1 55 0
- 643 0078 304A     		ldr	r2, .L44
- 644 007a 1370     		strb	r3, [r2]
-  57:.\navigation.c ****         loc_x_b = 0;
- 645              		.loc 1 57 0
- 646 007c C9F80030 		str	r3, [r9]
-  58:.\navigation.c ****         loc_y_b = 0;
- 647              		.loc 1 58 0
- 648 0080 C8F80030 		str	r3, [r8]
-  59:.\navigation.c ****         data_ready_b = 0;
- 649              		.loc 1 59 0
- 650 0084 2E4A     		ldr	r2, .L44+4
- 651 0086 1370     		strb	r3, [r2]
-  61:.\navigation.c ****         double angle = location.angle + atan2(delta.y, delta.x);
- 652              		.loc 1 61 0
- 653 0088 DFF8C8A0 		ldr	r10, .L44+24
- 654 008c DAE90467 		ldrd	r6, [r10, #16]
- 655 0090 DDE90A45 		ldrd	r4, [sp, #40]
- 656 0094 DDE90889 		ldrd	r8, [sp, #32]
- 657 0098 2046     		mov	r0, r4
- 658 009a 2946     		mov	r1, r5
- 659 009c 4246     		mov	r2, r8
- 660 009e 4B46     		mov	r3, r9
- 661 00a0 FFF7FEFF 		bl	atan2
- 662              	.LVL109:
- 663 00a4 0246     		mov	r2, r0
- 664 00a6 0B46     		mov	r3, r1
- 665 00a8 3046     		mov	r0, r6
- 666 00aa 3946     		mov	r1, r7
- 667 00ac FFF7FEFF 		bl	__aeabi_dadd
- 668              	.LVL110:
- 669 00b0 0646     		mov	r6, r0
- 670 00b2 0F46     		mov	r7, r1
- 671              	.LVL111:
-  62:.\navigation.c ****         double length = sqrt(delta.x*delta.x + delta.y*delta.y);
- 672              		.loc 1 62 0
- 673 00b4 4046     		mov	r0, r8
- 674 00b6 4946     		mov	r1, r9
- 675 00b8 4246     		mov	r2, r8
- 676 00ba 4B46     		mov	r3, r9
- 677 00bc FFF7FEFF 		bl	__aeabi_dmul
- 678              	.LVL112:
- 679 00c0 8046     		mov	r8, r0
- 680 00c2 8946     		mov	r9, r1
- 681 00c4 2046     		mov	r0, r4
- 682 00c6 2946     		mov	r1, r5
- 683 00c8 2246     		mov	r2, r4
- 684 00ca 2B46     		mov	r3, r5
- 685 00cc FFF7FEFF 		bl	__aeabi_dmul
- 686              	.LVL113:
- 687 00d0 0246     		mov	r2, r0
- 688 00d2 0B46     		mov	r3, r1
- 689 00d4 4046     		mov	r0, r8
- 690 00d6 4946     		mov	r1, r9
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 16
-
-
- 691 00d8 FFF7FEFF 		bl	__aeabi_dadd
- 692              	.LVL114:
- 693 00dc FFF7FEFF 		bl	sqrt
- 694              	.LVL115:
- 695 00e0 0446     		mov	r4, r0
- 696 00e2 0D46     		mov	r5, r1
- 697              	.LVL116:
-  64:.\navigation.c ****         location.x += length*cos(angle);
- 698              		.loc 1 64 0
- 699 00e4 3046     		mov	r0, r6
- 700 00e6 3946     		mov	r1, r7
- 701 00e8 FFF7FEFF 		bl	cos
- 702              	.LVL117:
- 703 00ec 2246     		mov	r2, r4
- 704 00ee 2B46     		mov	r3, r5
- 705 00f0 FFF7FEFF 		bl	__aeabi_dmul
- 706              	.LVL118:
- 707 00f4 0246     		mov	r2, r0
- 708 00f6 0B46     		mov	r3, r1
- 709 00f8 DAE90001 		ldrd	r0, [r10]
- 710 00fc FFF7FEFF 		bl	__aeabi_dadd
- 711              	.LVL119:
- 712 0100 CAE90001 		strd	r0, [r10]
-  65:.\navigation.c ****         location.y += length*sin(angle);
- 713              		.loc 1 65 0
- 714 0104 3046     		mov	r0, r6
- 715 0106 3946     		mov	r1, r7
- 716 0108 FFF7FEFF 		bl	sin
- 717              	.LVL120:
- 718 010c 2246     		mov	r2, r4
- 719 010e 2B46     		mov	r3, r5
- 720 0110 FFF7FEFF 		bl	__aeabi_dmul
- 721              	.LVL121:
- 722 0114 0246     		mov	r2, r0
- 723 0116 0B46     		mov	r3, r1
- 724 0118 DAE90201 		ldrd	r0, [r10, #8]
- 725 011c FFF7FEFF 		bl	__aeabi_dadd
- 726              	.LVL122:
- 727 0120 CAE90201 		strd	r0, [r10, #8]
-  66:.\navigation.c ****         location.angle += delta.angle;
- 728              		.loc 1 66 0
- 729 0124 DAE90401 		ldrd	r0, [r10, #16]
- 730 0128 DDE90C23 		ldrd	r2, [sp, #48]
- 731 012c FFF7FEFF 		bl	__aeabi_dadd
- 732              	.LVL123:
- 733 0130 CAE90401 		strd	r0, [r10, #16]
- 734              	.LVL124:
- 735              	.L41:
- 736              	.LBE3:
-  68:.\navigation.c **** }
- 737              		.loc 1 68 0
- 738 0134 0FB0     		add	sp, sp, #60
- 739              		@ sp needed
- 740 0136 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
- 741              	.L45:
- 742 013a 00BF     		.align	2
- 743              	.L44:
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 17
-
-
- 744 013c 00000000 		.word	data_ready_a
- 745 0140 00000000 		.word	data_ready_b
- 746 0144 00000000 		.word	loc_x_a
- 747 0148 00000000 		.word	loc_y_a
- 748 014c 00000000 		.word	loc_x_b
- 749 0150 00000000 		.word	loc_y_b
- 750 0154 00000000 		.word	location
- 751              		.cfi_endproc
- 752              	.LFE64:
- 753              		.size	refresh_position, .-refresh_position
- 754              		.section	.text.reset_navigation,"ax",%progbits
- 755              		.align	2
- 756              		.global	reset_navigation
- 757              		.thumb
- 758              		.thumb_func
- 759              		.type	reset_navigation, %function
- 760              	reset_navigation:
- 761              	.LFB66:
- 151:.\navigation.c **** 
- 152:.\navigation.c **** void reset_navigation(){
- 762              		.loc 1 152 0
- 763              		.cfi_startproc
- 764              		@ args = 0, pretend = 0, frame = 0
- 765              		@ frame_needed = 0, uses_anonymous_args = 0
- 766              		@ link register save eliminated.
- 153:.\navigation.c ****     loc_x_a = 0;
- 767              		.loc 1 153 0
- 768 0000 0023     		movs	r3, #0
- 769 0002 0B4A     		ldr	r2, .L47
- 770 0004 1360     		str	r3, [r2]
- 154:.\navigation.c ****     loc_y_a = 0;
- 771              		.loc 1 154 0
- 772 0006 0B4A     		ldr	r2, .L47+4
- 773 0008 1360     		str	r3, [r2]
- 155:.\navigation.c ****     data_ready_a = 0;
- 774              		.loc 1 155 0
- 775 000a 0B4A     		ldr	r2, .L47+8
- 776 000c 1370     		strb	r3, [r2]
- 156:.\navigation.c ****     loc_x_b = 0;
- 777              		.loc 1 156 0
- 778 000e 0B4A     		ldr	r2, .L47+12
- 779 0010 1360     		str	r3, [r2]
- 157:.\navigation.c ****     loc_y_b = 0;
- 780              		.loc 1 157 0
- 781 0012 0B4A     		ldr	r2, .L47+16
- 782 0014 1360     		str	r3, [r2]
- 158:.\navigation.c ****     data_ready_b = 0;
- 783              		.loc 1 158 0
- 784 0016 0B4A     		ldr	r2, .L47+20
- 785 0018 1370     		strb	r3, [r2]
- 159:.\navigation.c ****     
- 160:.\navigation.c ****     location.x = 0.0;
- 786              		.loc 1 160 0
- 787 001a 0B49     		ldr	r1, .L47+24
- 788 001c 0022     		movs	r2, #0
- 789 001e 0023     		movs	r3, #0
- 790 0020 C1E90023 		strd	r2, [r1]
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 18
-
-
- 161:.\navigation.c ****     location.y = 0.0;
- 791              		.loc 1 161 0
- 792 0024 C1E90223 		strd	r2, [r1, #8]
- 162:.\navigation.c ****     location.angle = 0.0;
- 793              		.loc 1 162 0
- 794 0028 C1E90423 		strd	r2, [r1, #16]
- 795 002c 7047     		bx	lr
- 796              	.L48:
- 797 002e 00BF     		.align	2
- 798              	.L47:
- 799 0030 00000000 		.word	loc_x_a
- 800 0034 00000000 		.word	loc_y_a
- 801 0038 00000000 		.word	data_ready_a
- 802 003c 00000000 		.word	loc_x_b
- 803 0040 00000000 		.word	loc_y_b
- 804 0044 00000000 		.word	data_ready_b
- 805 0048 00000000 		.word	location
- 806              		.cfi_endproc
- 807              	.LFE66:
- 808              		.size	reset_navigation, .-reset_navigation
- 809              		.section	.text.start_navigation,"ax",%progbits
- 810              		.align	2
- 811              		.global	start_navigation
- 812              		.thumb
- 813              		.thumb_func
- 814              		.type	start_navigation, %function
- 815              	start_navigation:
- 816              	.LFB67:
- 163:.\navigation.c **** }
- 164:.\navigation.c **** 
- 165:.\navigation.c **** void start_navigation(){
- 817              		.loc 1 165 0
- 818              		.cfi_startproc
- 819              		@ args = 0, pretend = 0, frame = 0
- 820              		@ frame_needed = 0, uses_anonymous_args = 0
- 821 0000 08B5     		push	{r3, lr}
- 822              		.cfi_def_cfa_offset 8
- 823              		.cfi_offset 3, -8
- 824              		.cfi_offset 14, -4
- 166:.\navigation.c ****     reset_navigation();
- 825              		.loc 1 166 0
- 826 0002 FFF7FEFF 		bl	reset_navigation
- 827              	.LVL125:
- 828 0006 08BD     		pop	{r3, pc}
- 829              		.cfi_endproc
- 830              	.LFE67:
- 831              		.size	start_navigation, .-start_navigation
- 832              		.comm	location,24,8
- 833              		.comm	OV9650_1_framebuffer,50688,4
- 834              		.text
- 835              	.Letext0:
- 836              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
- 837              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
- 838              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
- 839              		.file 5 "./navigation.h"
- 840              		.file 6 "Generated_Source\\PSoC5/core_cm3.h"
- 841              		.file 7 "Generated_Source\\PSoC5/OV9650_1.h"
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 19
-
-
- 842              		.file 8 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
- 843              		.file 9 "Generated_Source\\PSoC5/ISR_CHECKP.h"
- 844              		.section	.debug_info,"",%progbits
- 845              	.Ldebug_info0:
- 846 0000 C3050000 		.4byte	0x5c3
- 847 0004 0400     		.2byte	0x4
- 848 0006 00000000 		.4byte	.Ldebug_abbrev0
- 849 000a 04       		.byte	0x4
- 850 000b 01       		.uleb128 0x1
- 851 000c 72000000 		.4byte	.LASF40
- 852 0010 01       		.byte	0x1
- 853 0011 11020000 		.4byte	.LASF41
- 854 0015 F7000000 		.4byte	.LASF42
- 855 0019 00000000 		.4byte	.Ldebug_ranges0+0
- 856 001d 00000000 		.4byte	0
- 857 0021 00000000 		.4byte	.Ldebug_line0
- 858 0025 02       		.uleb128 0x2
- 859 0026 08       		.byte	0x8
- 860 0027 04       		.byte	0x4
- 861 0028 26020000 		.4byte	.LASF0
- 862 002c 02       		.uleb128 0x2
- 863 002d 01       		.byte	0x1
- 864 002e 06       		.byte	0x6
- 865 002f 81010000 		.4byte	.LASF1
- 866 0033 02       		.uleb128 0x2
- 867 0034 01       		.byte	0x1
- 868 0035 08       		.byte	0x8
- 869 0036 6B010000 		.4byte	.LASF2
- 870 003a 02       		.uleb128 0x2
- 871 003b 02       		.byte	0x2
- 872 003c 05       		.byte	0x5
- 873 003d 32000000 		.4byte	.LASF3
- 874 0041 02       		.uleb128 0x2
- 875 0042 02       		.byte	0x2
- 876 0043 07       		.byte	0x7
- 877 0044 C2010000 		.4byte	.LASF4
- 878 0048 03       		.uleb128 0x3
- 879 0049 3F020000 		.4byte	.LASF10
- 880 004d 02       		.byte	0x2
- 881 004e 37       		.byte	0x37
- 882 004f 53000000 		.4byte	0x53
- 883 0053 02       		.uleb128 0x2
- 884 0054 04       		.byte	0x4
- 885 0055 05       		.byte	0x5
- 886 0056 EE000000 		.4byte	.LASF5
- 887 005a 02       		.uleb128 0x2
- 888 005b 04       		.byte	0x4
- 889 005c 07       		.byte	0x7
- 890 005d FF010000 		.4byte	.LASF6
- 891 0061 02       		.uleb128 0x2
- 892 0062 08       		.byte	0x8
- 893 0063 05       		.byte	0x5
- 894 0064 64000000 		.4byte	.LASF7
- 895 0068 02       		.uleb128 0x2
- 896 0069 08       		.byte	0x8
- 897 006a 07       		.byte	0x7
- 898 006b 8D010000 		.4byte	.LASF8
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 20
-
-
- 899 006f 04       		.uleb128 0x4
- 900 0070 04       		.byte	0x4
- 901 0071 05       		.byte	0x5
- 902 0072 696E7400 		.ascii	"int\000"
- 903 0076 02       		.uleb128 0x2
- 904 0077 04       		.byte	0x4
- 905 0078 07       		.byte	0x7
- 906 0079 A4010000 		.4byte	.LASF9
- 907 007d 03       		.uleb128 0x3
- 908 007e DA010000 		.4byte	.LASF11
- 909 0082 03       		.byte	0x3
- 910 0083 41       		.byte	0x41
- 911 0084 48000000 		.4byte	0x48
- 912 0088 03       		.uleb128 0x3
- 913 0089 51000000 		.4byte	.LASF12
- 914 008d 04       		.byte	0x4
- 915 008e B3       		.byte	0xb3
- 916 008f 33000000 		.4byte	0x33
- 917 0093 03       		.uleb128 0x3
- 918 0094 20020000 		.4byte	.LASF13
- 919 0098 04       		.byte	0x4
- 920 0099 B8       		.byte	0xb8
- 921 009a 53000000 		.4byte	0x53
- 922 009e 02       		.uleb128 0x2
- 923 009f 04       		.byte	0x4
- 924 00a0 04       		.byte	0x4
- 925 00a1 5E000000 		.4byte	.LASF14
- 926 00a5 02       		.uleb128 0x2
- 927 00a6 01       		.byte	0x1
- 928 00a7 08       		.byte	0x8
- 929 00a8 D5010000 		.4byte	.LASF15
- 930 00ac 05       		.uleb128 0x5
- 931 00ad 88000000 		.4byte	0x88
- 932 00b1 02       		.uleb128 0x2
- 933 00b2 04       		.byte	0x4
- 934 00b3 07       		.byte	0x7
- 935 00b4 3C000000 		.4byte	.LASF16
- 936 00b8 02       		.uleb128 0x2
- 937 00b9 08       		.byte	0x8
- 938 00ba 04       		.byte	0x4
- 939 00bb 5F010000 		.4byte	.LASF17
- 940 00bf 06       		.uleb128 0x6
- 941 00c0 E2010000 		.4byte	.LASF43
- 942 00c4 18       		.byte	0x18
- 943 00c5 05       		.byte	0x5
- 944 00c6 0F       		.byte	0xf
- 945 00c7 EC000000 		.4byte	0xec
- 946 00cb 07       		.uleb128 0x7
- 947 00cc 7800     		.ascii	"x\000"
- 948 00ce 05       		.byte	0x5
- 949 00cf 10       		.byte	0x10
- 950 00d0 25000000 		.4byte	0x25
- 951 00d4 00       		.byte	0
- 952 00d5 07       		.uleb128 0x7
- 953 00d6 7900     		.ascii	"y\000"
- 954 00d8 05       		.byte	0x5
- 955 00d9 11       		.byte	0x11
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 21
-
-
- 956 00da 25000000 		.4byte	0x25
- 957 00de 08       		.byte	0x8
- 958 00df 08       		.uleb128 0x8
- 959 00e0 52020000 		.4byte	.LASF18
- 960 00e4 05       		.byte	0x5
- 961 00e5 12       		.byte	0x12
- 962 00e6 25000000 		.4byte	0x25
- 963 00ea 10       		.byte	0x10
- 964 00eb 00       		.byte	0
- 965 00ec 09       		.uleb128 0x9
- 966 00ed 89020000 		.4byte	.LASF19
- 967 00f1 01       		.byte	0x1
- 968 00f2 28       		.byte	0x28
- 969 00f3 25000000 		.4byte	0x25
- 970 00f7 00000000 		.4byte	.LFB63
- 971 00fb 20000000 		.4byte	.LFE63-.LFB63
- 972 00ff 01       		.uleb128 0x1
- 973 0100 9C       		.byte	0x9c
- 974 0101 13010000 		.4byte	0x113
- 975 0105 0A       		.uleb128 0xa
- 976 0106 7800     		.ascii	"x\000"
- 977 0108 01       		.byte	0x1
- 978 0109 28       		.byte	0x28
- 979 010a 25000000 		.4byte	0x25
- 980 010e 00000000 		.4byte	.LLST0
- 981 0112 00       		.byte	0
- 982 0113 09       		.uleb128 0x9
- 983 0114 EB010000 		.4byte	.LASF20
- 984 0118 01       		.byte	0x1
- 985 0119 48       		.byte	0x48
- 986 011a BF000000 		.4byte	0xbf
- 987 011e 00000000 		.4byte	.LFB65
- 988 0122 B4030000 		.4byte	.LFE65-.LFB65
- 989 0126 01       		.uleb128 0x1
- 990 0127 9C       		.byte	0x9c
- 991 0128 F7030000 		.4byte	0x3f7
- 992 012c 0A       		.uleb128 0xa
- 993 012d 64786C00 		.ascii	"dxl\000"
- 994 0131 01       		.byte	0x1
- 995 0132 48       		.byte	0x48
- 996 0133 25000000 		.4byte	0x25
- 997 0137 28000000 		.4byte	.LLST1
- 998 013b 0A       		.uleb128 0xa
- 999 013c 64796C00 		.ascii	"dyl\000"
- 1000 0140 01       		.byte	0x1
- 1001 0141 48       		.byte	0x48
- 1002 0142 25000000 		.4byte	0x25
- 1003 0146 60000000 		.4byte	.LLST2
- 1004 014a 0A       		.uleb128 0xa
- 1005 014b 64787200 		.ascii	"dxr\000"
- 1006 014f 01       		.byte	0x1
- 1007 0150 48       		.byte	0x48
- 1008 0151 25000000 		.4byte	0x25
- 1009 0155 9C000000 		.4byte	.LLST3
- 1010 0159 0A       		.uleb128 0xa
- 1011 015a 64797200 		.ascii	"dyr\000"
- 1012 015e 01       		.byte	0x1
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 22
-
-
- 1013 015f 48       		.byte	0x48
- 1014 0160 25000000 		.4byte	0x25
- 1015 0164 BC000000 		.4byte	.LLST4
- 1016 0168 0B       		.uleb128 0xb
- 1017 0169 726C00   		.ascii	"rl\000"
- 1018 016c 01       		.byte	0x1
- 1019 016d 4B       		.byte	0x4b
- 1020 016e 25000000 		.4byte	0x25
- 1021 0172 DC000000 		.4byte	.LLST5
- 1022 0176 0B       		.uleb128 0xb
- 1023 0177 6C6C00   		.ascii	"ll\000"
- 1024 017a 01       		.byte	0x1
- 1025 017b 4B       		.byte	0x4b
- 1026 017c 25000000 		.4byte	0x25
- 1027 0180 F4000000 		.4byte	.LLST6
- 1028 0184 0B       		.uleb128 0xb
- 1029 0185 727200   		.ascii	"rr\000"
- 1030 0188 01       		.byte	0x1
- 1031 0189 4B       		.byte	0x4b
- 1032 018a 25000000 		.4byte	0x25
- 1033 018e 1C010000 		.4byte	.LLST7
- 1034 0192 0B       		.uleb128 0xb
- 1035 0193 6C7200   		.ascii	"lr\000"
- 1036 0196 01       		.byte	0x1
- 1037 0197 4B       		.byte	0x4b
- 1038 0198 25000000 		.4byte	0x25
- 1039 019c 40010000 		.4byte	.LLST8
- 1040 01a0 0B       		.uleb128 0xb
- 1041 01a1 616C00   		.ascii	"al\000"
- 1042 01a4 01       		.byte	0x1
- 1043 01a5 4B       		.byte	0x4b
- 1044 01a6 25000000 		.4byte	0x25
- 1045 01aa 6C010000 		.4byte	.LLST9
- 1046 01ae 0B       		.uleb128 0xb
- 1047 01af 617200   		.ascii	"ar\000"
- 1048 01b2 01       		.byte	0x1
- 1049 01b3 4B       		.byte	0x4b
- 1050 01b4 25000000 		.4byte	0x25
- 1051 01b8 9C010000 		.4byte	.LLST10
- 1052 01bc 0B       		.uleb128 0xb
- 1053 01bd 78706C00 		.ascii	"xpl\000"
- 1054 01c1 01       		.byte	0x1
- 1055 01c2 4C       		.byte	0x4c
- 1056 01c3 25000000 		.4byte	0x25
- 1057 01c7 C0010000 		.4byte	.LLST11
- 1058 01cb 0B       		.uleb128 0xb
- 1059 01cc 78707200 		.ascii	"xpr\000"
- 1060 01d0 01       		.byte	0x1
- 1061 01d1 4C       		.byte	0x4c
- 1062 01d2 25000000 		.4byte	0x25
- 1063 01d6 F2010000 		.4byte	.LLST12
- 1064 01da 0B       		.uleb128 0xb
- 1065 01db 79706C00 		.ascii	"ypl\000"
- 1066 01df 01       		.byte	0x1
- 1067 01e0 4C       		.byte	0x4c
- 1068 01e1 25000000 		.4byte	0x25
- 1069 01e5 1A020000 		.4byte	.LLST13
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 23
-
-
- 1070 01e9 0B       		.uleb128 0xb
- 1071 01ea 79707200 		.ascii	"ypr\000"
- 1072 01ee 01       		.byte	0x1
- 1073 01ef 4C       		.byte	0x4c
- 1074 01f0 25000000 		.4byte	0x25
- 1075 01f4 42020000 		.4byte	.LLST14
- 1076 01f8 0C       		.uleb128 0xc
- 1077 01f9 45000000 		.4byte	.LASF21
- 1078 01fd 01       		.byte	0x1
- 1079 01fe 4E       		.byte	0x4e
- 1080 01ff BF000000 		.4byte	0xbf
- 1081 0203 66020000 		.4byte	.LLST15
- 1082 0207 0C       		.uleb128 0xc
- 1083 0208 4B000000 		.4byte	.LASF22
- 1084 020c 01       		.byte	0x1
- 1085 020d 79       		.byte	0x79
- 1086 020e 25000000 		.4byte	0x25
- 1087 0212 92020000 		.4byte	.LLST16
- 1088 0216 0C       		.uleb128 0xc
- 1089 0217 72020000 		.4byte	.LASF23
- 1090 021b 01       		.byte	0x1
- 1091 021c 7B       		.byte	0x7b
- 1092 021d 25000000 		.4byte	0x25
- 1093 0221 AA020000 		.4byte	.LLST17
- 1094 0225 0D       		.uleb128 0xd
- 1095 0226 30020000 		.4byte	.LBB2
- 1096 022a 26010000 		.4byte	.LBE2-.LBB2
- 1097 022e 27030000 		.4byte	0x327
- 1098 0232 0C       		.uleb128 0xc
- 1099 0233 79010000 		.4byte	.LASF24
- 1100 0237 01       		.byte	0x1
- 1101 0238 86       		.byte	0x86
- 1102 0239 25000000 		.4byte	0x25
- 1103 023d C2020000 		.4byte	.LLST18
- 1104 0241 0E       		.uleb128 0xe
- 1105 0242 58020000 		.4byte	.LVL62
- 1106 0246 EC000000 		.4byte	0xec
- 1107 024a 0F       		.uleb128 0xf
- 1108 024b 70020000 		.4byte	.LVL66
- 1109 024f 60050000 		.4byte	0x560
- 1110 0253 66020000 		.4byte	0x266
- 1111 0257 10       		.uleb128 0x10
- 1112 0258 06       		.uleb128 0x6
- 1113 0259 50       		.byte	0x50
- 1114 025a 93       		.byte	0x93
- 1115 025b 04       		.uleb128 0x4
- 1116 025c 51       		.byte	0x51
- 1117 025d 93       		.byte	0x93
- 1118 025e 04       		.uleb128 0x4
- 1119 025f 05       		.uleb128 0x5
- 1120 0260 91       		.byte	0x91
- 1121 0261 48       		.sleb128 -56
- 1122 0262 F6       		.byte	0xf6
- 1123 0263 08       		.byte	0x8
- 1124 0264 25       		.uleb128 0x25
- 1125 0265 00       		.byte	0
- 1126 0266 0F       		.uleb128 0xf
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 24
-
-
- 1127 0267 7C020000 		.4byte	.LVL67
- 1128 026b 60050000 		.4byte	0x560
- 1129 026f 82020000 		.4byte	0x282
- 1130 0273 10       		.uleb128 0x10
- 1131 0274 06       		.uleb128 0x6
- 1132 0275 50       		.byte	0x50
- 1133 0276 93       		.byte	0x93
- 1134 0277 04       		.uleb128 0x4
- 1135 0278 51       		.byte	0x51
- 1136 0279 93       		.byte	0x93
- 1137 027a 04       		.uleb128 0x4
- 1138 027b 05       		.uleb128 0x5
- 1139 027c 91       		.byte	0x91
- 1140 027d 40       		.sleb128 -64
- 1141 027e F6       		.byte	0xf6
- 1142 027f 08       		.byte	0x8
- 1143 0280 25       		.uleb128 0x25
- 1144 0281 00       		.byte	0
- 1145 0282 0F       		.uleb128 0xf
- 1146 0283 AC020000 		.4byte	.LVL74
- 1147 0287 75050000 		.4byte	0x575
- 1148 028b 9E020000 		.4byte	0x29e
- 1149 028f 10       		.uleb128 0x10
- 1150 0290 06       		.uleb128 0x6
- 1151 0291 50       		.byte	0x50
- 1152 0292 93       		.byte	0x93
- 1153 0293 04       		.uleb128 0x4
- 1154 0294 51       		.byte	0x51
- 1155 0295 93       		.byte	0x93
- 1156 0296 04       		.uleb128 0x4
- 1157 0297 05       		.uleb128 0x5
- 1158 0298 91       		.byte	0x91
- 1159 0299 40       		.sleb128 -64
- 1160 029a F6       		.byte	0xf6
- 1161 029b 08       		.byte	0x8
- 1162 029c 25       		.uleb128 0x25
- 1163 029d 00       		.byte	0
- 1164 029e 0F       		.uleb128 0xf
- 1165 029f B8020000 		.4byte	.LVL75
- 1166 02a3 75050000 		.4byte	0x575
- 1167 02a7 BA020000 		.4byte	0x2ba
- 1168 02ab 10       		.uleb128 0x10
- 1169 02ac 06       		.uleb128 0x6
- 1170 02ad 50       		.byte	0x50
- 1171 02ae 93       		.byte	0x93
- 1172 02af 04       		.uleb128 0x4
- 1173 02b0 51       		.byte	0x51
- 1174 02b1 93       		.byte	0x93
- 1175 02b2 04       		.uleb128 0x4
- 1176 02b3 05       		.uleb128 0x5
- 1177 02b4 91       		.byte	0x91
- 1178 02b5 48       		.sleb128 -56
- 1179 02b6 F6       		.byte	0xf6
- 1180 02b7 08       		.byte	0x8
- 1181 02b8 25       		.uleb128 0x25
- 1182 02b9 00       		.byte	0
- 1183 02ba 0F       		.uleb128 0xf
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 25
-
-
- 1184 02bb EC020000 		.4byte	.LVL82
- 1185 02bf 60050000 		.4byte	0x560
- 1186 02c3 D6020000 		.4byte	0x2d6
- 1187 02c7 10       		.uleb128 0x10
- 1188 02c8 06       		.uleb128 0x6
- 1189 02c9 50       		.byte	0x50
- 1190 02ca 93       		.byte	0x93
- 1191 02cb 04       		.uleb128 0x4
- 1192 02cc 51       		.byte	0x51
- 1193 02cd 93       		.byte	0x93
- 1194 02ce 04       		.uleb128 0x4
- 1195 02cf 05       		.uleb128 0x5
- 1196 02d0 91       		.byte	0x91
- 1197 02d1 48       		.sleb128 -56
- 1198 02d2 F6       		.byte	0xf6
- 1199 02d3 08       		.byte	0x8
- 1200 02d4 25       		.uleb128 0x25
- 1201 02d5 00       		.byte	0
- 1202 02d6 0F       		.uleb128 0xf
- 1203 02d7 F8020000 		.4byte	.LVL83
- 1204 02db 60050000 		.4byte	0x560
- 1205 02df F2020000 		.4byte	0x2f2
- 1206 02e3 10       		.uleb128 0x10
- 1207 02e4 06       		.uleb128 0x6
- 1208 02e5 50       		.byte	0x50
- 1209 02e6 93       		.byte	0x93
- 1210 02e7 04       		.uleb128 0x4
- 1211 02e8 51       		.byte	0x51
- 1212 02e9 93       		.byte	0x93
- 1213 02ea 04       		.uleb128 0x4
- 1214 02eb 05       		.uleb128 0x5
- 1215 02ec 91       		.byte	0x91
- 1216 02ed 58       		.sleb128 -40
- 1217 02ee F6       		.byte	0xf6
- 1218 02ef 08       		.byte	0x8
- 1219 02f0 25       		.uleb128 0x25
- 1220 02f1 00       		.byte	0
- 1221 02f2 0F       		.uleb128 0xf
- 1222 02f3 28030000 		.4byte	.LVL89
- 1223 02f7 75050000 		.4byte	0x575
- 1224 02fb 0E030000 		.4byte	0x30e
- 1225 02ff 10       		.uleb128 0x10
- 1226 0300 06       		.uleb128 0x6
- 1227 0301 50       		.byte	0x50
- 1228 0302 93       		.byte	0x93
- 1229 0303 04       		.uleb128 0x4
- 1230 0304 51       		.byte	0x51
- 1231 0305 93       		.byte	0x93
- 1232 0306 04       		.uleb128 0x4
- 1233 0307 05       		.uleb128 0x5
- 1234 0308 91       		.byte	0x91
- 1235 0309 58       		.sleb128 -40
- 1236 030a F6       		.byte	0xf6
- 1237 030b 08       		.byte	0x8
- 1238 030c 25       		.uleb128 0x25
- 1239 030d 00       		.byte	0
- 1240 030e 11       		.uleb128 0x11
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 26
-
-
- 1241 030f 34030000 		.4byte	.LVL91
- 1242 0313 75050000 		.4byte	0x575
- 1243 0317 10       		.uleb128 0x10
- 1244 0318 06       		.uleb128 0x6
- 1245 0319 50       		.byte	0x50
- 1246 031a 93       		.byte	0x93
- 1247 031b 04       		.uleb128 0x4
- 1248 031c 51       		.byte	0x51
- 1249 031d 93       		.byte	0x93
- 1250 031e 04       		.uleb128 0x4
- 1251 031f 05       		.uleb128 0x5
- 1252 0320 91       		.byte	0x91
- 1253 0321 48       		.sleb128 -56
- 1254 0322 F6       		.byte	0xf6
- 1255 0323 08       		.byte	0x8
- 1256 0324 25       		.uleb128 0x25
- 1257 0325 00       		.byte	0
- 1258 0326 00       		.byte	0
- 1259 0327 0F       		.uleb128 0xf
- 1260 0328 12000000 		.4byte	.LVL4
- 1261 032c 8A050000 		.4byte	0x58a
- 1262 0330 3A030000 		.4byte	0x33a
- 1263 0334 10       		.uleb128 0x10
- 1264 0335 01       		.uleb128 0x1
- 1265 0336 50       		.byte	0x50
- 1266 0337 01       		.uleb128 0x1
- 1267 0338 31       		.byte	0x31
- 1268 0339 00       		.byte	0
- 1269 033a 0F       		.uleb128 0xf
- 1270 033b 80000000 		.4byte	.LVL14
- 1271 033f 8A050000 		.4byte	0x58a
- 1272 0343 4E030000 		.4byte	0x34e
- 1273 0347 10       		.uleb128 0x10
- 1274 0348 01       		.uleb128 0x1
- 1275 0349 50       		.byte	0x50
- 1276 034a 02       		.uleb128 0x2
- 1277 034b 74       		.byte	0x74
- 1278 034c 00       		.sleb128 0
- 1279 034d 00       		.byte	0
- 1280 034e 0F       		.uleb128 0xf
- 1281 034f D4000000 		.4byte	.LVL19
- 1282 0353 9B050000 		.4byte	0x59b
- 1283 0357 6A030000 		.4byte	0x36a
- 1284 035b 10       		.uleb128 0x10
- 1285 035c 06       		.uleb128 0x6
- 1286 035d 50       		.byte	0x50
- 1287 035e 93       		.byte	0x93
- 1288 035f 04       		.uleb128 0x4
- 1289 0360 51       		.byte	0x51
- 1290 0361 93       		.byte	0x93
- 1291 0362 04       		.uleb128 0x4
- 1292 0363 05       		.uleb128 0x5
- 1293 0364 91       		.byte	0x91
- 1294 0365 50       		.sleb128 -48
- 1295 0366 F6       		.byte	0xf6
- 1296 0367 08       		.byte	0x8
- 1297 0368 25       		.uleb128 0x25
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 27
-
-
- 1298 0369 00       		.byte	0
- 1299 036a 0F       		.uleb128 0xf
- 1300 036b E4000000 		.4byte	.LVL22
- 1301 036f 9B050000 		.4byte	0x59b
- 1302 0373 94030000 		.4byte	0x394
- 1303 0377 10       		.uleb128 0x10
- 1304 0378 06       		.uleb128 0x6
- 1305 0379 52       		.byte	0x52
- 1306 037a 93       		.byte	0x93
- 1307 037b 04       		.uleb128 0x4
- 1308 037c 53       		.byte	0x53
- 1309 037d 93       		.byte	0x93
- 1310 037e 04       		.uleb128 0x4
- 1311 037f 05       		.uleb128 0x5
- 1312 0380 91       		.byte	0x91
- 1313 0381 08       		.sleb128 8
- 1314 0382 F6       		.byte	0xf6
- 1315 0383 08       		.byte	0x8
- 1316 0384 25       		.uleb128 0x25
- 1317 0385 10       		.uleb128 0x10
- 1318 0386 06       		.uleb128 0x6
- 1319 0387 50       		.byte	0x50
- 1320 0388 93       		.byte	0x93
- 1321 0389 04       		.uleb128 0x4
- 1322 038a 51       		.byte	0x51
- 1323 038b 93       		.byte	0x93
- 1324 038c 04       		.uleb128 0x4
- 1325 038d 05       		.uleb128 0x5
- 1326 038e 91       		.byte	0x91
- 1327 038f 10       		.sleb128 16
- 1328 0390 F6       		.byte	0xf6
- 1329 0391 08       		.byte	0x8
- 1330 0392 25       		.uleb128 0x25
- 1331 0393 00       		.byte	0
- 1332 0394 0F       		.uleb128 0xf
- 1333 0395 0E010000 		.4byte	.LVL27
- 1334 0399 60050000 		.4byte	0x560
- 1335 039d B0030000 		.4byte	0x3b0
- 1336 03a1 10       		.uleb128 0x10
- 1337 03a2 06       		.uleb128 0x6
- 1338 03a3 50       		.byte	0x50
- 1339 03a4 93       		.byte	0x93
- 1340 03a5 04       		.uleb128 0x4
- 1341 03a6 51       		.byte	0x51
- 1342 03a7 93       		.byte	0x93
- 1343 03a8 04       		.uleb128 0x4
- 1344 03a9 05       		.uleb128 0x5
- 1345 03aa 91       		.byte	0x91
- 1346 03ab 40       		.sleb128 -64
- 1347 03ac F6       		.byte	0xf6
- 1348 03ad 08       		.byte	0x8
- 1349 03ae 25       		.uleb128 0x25
- 1350 03af 00       		.byte	0
- 1351 03b0 0F       		.uleb128 0xf
- 1352 03b1 6C010000 		.4byte	.LVL34
- 1353 03b5 60050000 		.4byte	0x560
- 1354 03b9 CC030000 		.4byte	0x3cc
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 28
-
-
- 1355 03bd 10       		.uleb128 0x10
- 1356 03be 06       		.uleb128 0x6
- 1357 03bf 50       		.byte	0x50
- 1358 03c0 93       		.byte	0x93
- 1359 03c1 04       		.uleb128 0x4
- 1360 03c2 51       		.byte	0x51
- 1361 03c3 93       		.byte	0x93
- 1362 03c4 04       		.uleb128 0x4
- 1363 03c5 05       		.uleb128 0x5
- 1364 03c6 91       		.byte	0x91
- 1365 03c7 58       		.sleb128 -40
- 1366 03c8 F6       		.byte	0xf6
- 1367 03c9 08       		.byte	0x8
- 1368 03ca 25       		.uleb128 0x25
- 1369 03cb 00       		.byte	0
- 1370 03cc 0E       		.uleb128 0xe
- 1371 03cd 9E010000 		.4byte	.LVL40
- 1372 03d1 EC000000 		.4byte	0xec
- 1373 03d5 0E       		.uleb128 0xe
- 1374 03d6 D6010000 		.4byte	.LVL45
- 1375 03da 75050000 		.4byte	0x575
- 1376 03de 0E       		.uleb128 0xe
- 1377 03df 02020000 		.4byte	.LVL51
- 1378 03e3 B5050000 		.4byte	0x5b5
- 1379 03e7 11       		.uleb128 0x11
- 1380 03e8 98030000 		.4byte	.LVL102
- 1381 03ec 8A050000 		.4byte	0x58a
- 1382 03f0 10       		.uleb128 0x10
- 1383 03f1 01       		.uleb128 0x1
- 1384 03f2 50       		.byte	0x50
- 1385 03f3 01       		.uleb128 0x1
- 1386 03f4 30       		.byte	0x30
- 1387 03f5 00       		.byte	0
- 1388 03f6 00       		.byte	0
- 1389 03f7 12       		.uleb128 0x12
- 1390 03f8 48010000 		.4byte	.LASF26
- 1391 03fc 01       		.byte	0x1
- 1392 03fd 30       		.byte	0x30
- 1393 03fe 00000000 		.4byte	.LFB64
- 1394 0402 58010000 		.4byte	.LFE64-.LFB64
- 1395 0406 01       		.uleb128 0x1
- 1396 0407 9C       		.byte	0x9c
- 1397 0408 9A040000 		.4byte	0x49a
- 1398 040c 13       		.uleb128 0x13
- 1399 040d 1C000000 		.4byte	.LBB3
- 1400 0411 18010000 		.4byte	.LBE3-.LBB3
- 1401 0415 14       		.uleb128 0x14
- 1402 0416 45000000 		.4byte	.LASF21
- 1403 041a 01       		.byte	0x1
- 1404 041b 33       		.byte	0x33
- 1405 041c BF000000 		.4byte	0xbf
- 1406 0420 02       		.uleb128 0x2
- 1407 0421 91       		.byte	0x91
- 1408 0422 40       		.sleb128 -64
- 1409 0423 0C       		.uleb128 0xc
- 1410 0424 52020000 		.4byte	.LASF18
- 1411 0428 01       		.byte	0x1
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 29
-
-
- 1412 0429 3D       		.byte	0x3d
- 1413 042a 25000000 		.4byte	0x25
- 1414 042e E6020000 		.4byte	.LLST19
- 1415 0432 0C       		.uleb128 0xc
- 1416 0433 57000000 		.4byte	.LASF25
- 1417 0437 01       		.byte	0x1
- 1418 0438 3E       		.byte	0x3e
- 1419 0439 25000000 		.4byte	0x25
- 1420 043d FE020000 		.4byte	.LLST20
- 1421 0441 0F       		.uleb128 0xf
- 1422 0442 6E000000 		.4byte	.LVL108
- 1423 0446 13010000 		.4byte	0x113
- 1424 044a 74040000 		.4byte	0x474
- 1425 044e 10       		.uleb128 0x10
- 1426 044f 06       		.uleb128 0x6
- 1427 0450 52       		.byte	0x52
- 1428 0451 93       		.byte	0x93
- 1429 0452 04       		.uleb128 0x4
- 1430 0453 53       		.byte	0x53
- 1431 0454 93       		.byte	0x93
- 1432 0455 04       		.uleb128 0x4
- 1433 0456 06       		.uleb128 0x6
- 1434 0457 91       		.byte	0x91
- 1435 0458 B87F     		.sleb128 -72
- 1436 045a F6       		.byte	0xf6
- 1437 045b 08       		.byte	0x8
- 1438 045c 25       		.uleb128 0x25
- 1439 045d 10       		.uleb128 0x10
- 1440 045e 01       		.uleb128 0x1
- 1441 045f 50       		.byte	0x50
- 1442 0460 02       		.uleb128 0x2
- 1443 0461 91       		.byte	0x91
- 1444 0462 40       		.sleb128 -64
- 1445 0463 10       		.uleb128 0x10
- 1446 0464 02       		.uleb128 0x2
- 1447 0465 7D       		.byte	0x7d
- 1448 0466 08       		.sleb128 8
- 1449 0467 03       		.uleb128 0x3
- 1450 0468 F5       		.byte	0xf5
- 1451 0469 04       		.uleb128 0x4
- 1452 046a 25       		.uleb128 0x25
- 1453 046b 10       		.uleb128 0x10
- 1454 046c 02       		.uleb128 0x2
- 1455 046d 7D       		.byte	0x7d
- 1456 046e 00       		.sleb128 0
- 1457 046f 03       		.uleb128 0x3
- 1458 0470 F5       		.byte	0xf5
- 1459 0471 06       		.uleb128 0x6
- 1460 0472 25       		.uleb128 0x25
- 1461 0473 00       		.byte	0
- 1462 0474 0E       		.uleb128 0xe
- 1463 0475 A4000000 		.4byte	.LVL109
- 1464 0479 9B050000 		.4byte	0x59b
- 1465 047d 0E       		.uleb128 0xe
- 1466 047e E0000000 		.4byte	.LVL115
- 1467 0482 B5050000 		.4byte	0x5b5
- 1468 0486 0E       		.uleb128 0xe
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 30
-
-
- 1469 0487 EC000000 		.4byte	.LVL117
- 1470 048b 75050000 		.4byte	0x575
- 1471 048f 0E       		.uleb128 0xe
- 1472 0490 0C010000 		.4byte	.LVL120
- 1473 0494 60050000 		.4byte	0x560
- 1474 0498 00       		.byte	0
- 1475 0499 00       		.byte	0
- 1476 049a 15       		.uleb128 0x15
- 1477 049b B1010000 		.4byte	.LASF44
- 1478 049f 01       		.byte	0x1
- 1479 04a0 98       		.byte	0x98
- 1480 04a1 00000000 		.4byte	.LFB66
- 1481 04a5 4C000000 		.4byte	.LFE66-.LFB66
- 1482 04a9 01       		.uleb128 0x1
- 1483 04aa 9C       		.byte	0x9c
- 1484 04ab 16       		.uleb128 0x16
- 1485 04ac 11000000 		.4byte	.LASF27
- 1486 04b0 01       		.byte	0x1
- 1487 04b1 A5       		.byte	0xa5
- 1488 04b2 00000000 		.4byte	.LFB67
- 1489 04b6 08000000 		.4byte	.LFE67-.LFB67
- 1490 04ba 01       		.uleb128 0x1
- 1491 04bb 9C       		.byte	0x9c
- 1492 04bc CA040000 		.4byte	0x4ca
- 1493 04c0 0E       		.uleb128 0xe
- 1494 04c1 06000000 		.4byte	.LVL125
- 1495 04c5 9A040000 		.4byte	0x49a
- 1496 04c9 00       		.byte	0
- 1497 04ca 17       		.uleb128 0x17
- 1498 04cb 2D020000 		.4byte	.LASF28
- 1499 04cf 06       		.byte	0x6
- 1500 04d0 2A06     		.2byte	0x62a
- 1501 04d2 D6040000 		.4byte	0x4d6
- 1502 04d6 05       		.uleb128 0x5
- 1503 04d7 7D000000 		.4byte	0x7d
- 1504 04db 18       		.uleb128 0x18
- 1505 04dc 88000000 		.4byte	0x88
- 1506 04e0 F7040000 		.4byte	0x4f7
- 1507 04e4 19       		.uleb128 0x19
- 1508 04e5 B1000000 		.4byte	0xb1
- 1509 04e9 8F       		.byte	0x8f
- 1510 04ea 19       		.uleb128 0x19
- 1511 04eb B1000000 		.4byte	0xb1
- 1512 04ef 57       		.byte	0x57
- 1513 04f0 19       		.uleb128 0x19
- 1514 04f1 B1000000 		.4byte	0xb1
- 1515 04f5 03       		.byte	0x3
- 1516 04f6 00       		.byte	0
- 1517 04f7 1A       		.uleb128 0x1a
- 1518 04f8 90020000 		.4byte	.LASF29
- 1519 04fc 07       		.byte	0x7
- 1520 04fd 08       		.byte	0x8
- 1521 04fe DB040000 		.4byte	0x4db
- 1522 0502 05       		.uleb128 0x5
- 1523 0503 03       		.byte	0x3
- 1524 0504 00000000 		.4byte	OV9650_1_framebuffer
- 1525 0508 1B       		.uleb128 0x1b
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 31
-
-
- 1526 0509 22000000 		.4byte	.LASF30
- 1527 050d 01       		.byte	0x1
- 1528 050e 18       		.byte	0x18
- 1529 050f 13050000 		.4byte	0x513
- 1530 0513 05       		.uleb128 0x5
- 1531 0514 93000000 		.4byte	0x93
- 1532 0518 1B       		.uleb128 0x1b
- 1533 0519 79020000 		.4byte	.LASF31
- 1534 051d 01       		.byte	0x1
- 1535 051e 19       		.byte	0x19
- 1536 051f 13050000 		.4byte	0x513
- 1537 0523 1B       		.uleb128 0x1b
- 1538 0524 58020000 		.4byte	.LASF32
- 1539 0528 01       		.byte	0x1
- 1540 0529 1A       		.byte	0x1a
- 1541 052a AC000000 		.4byte	0xac
- 1542 052e 1B       		.uleb128 0x1b
- 1543 052f 2A000000 		.4byte	.LASF33
- 1544 0533 01       		.byte	0x1
- 1545 0534 1C       		.byte	0x1c
- 1546 0535 13050000 		.4byte	0x513
- 1547 0539 1B       		.uleb128 0x1b
- 1548 053a 81020000 		.4byte	.LASF34
- 1549 053e 01       		.byte	0x1
- 1550 053f 1D       		.byte	0x1d
- 1551 0540 13050000 		.4byte	0x513
- 1552 0544 1B       		.uleb128 0x1b
- 1553 0545 65020000 		.4byte	.LASF35
- 1554 0549 01       		.byte	0x1
- 1555 054a 1E       		.byte	0x1e
- 1556 054b AC000000 		.4byte	0xac
- 1557 054f 1A       		.uleb128 0x1a
- 1558 0550 49020000 		.4byte	.LASF36
- 1559 0554 01       		.byte	0x1
- 1560 0555 21       		.byte	0x21
- 1561 0556 BF000000 		.4byte	0xbf
- 1562 055a 05       		.uleb128 0x5
- 1563 055b 03       		.byte	0x3
- 1564 055c 00000000 		.4byte	location
- 1565 0560 1C       		.uleb128 0x1c
- 1566 0561 73696E00 		.ascii	"sin\000"
- 1567 0565 08       		.byte	0x8
- 1568 0566 6E       		.byte	0x6e
- 1569 0567 25000000 		.4byte	0x25
- 1570 056b 75050000 		.4byte	0x575
- 1571 056f 1D       		.uleb128 0x1d
- 1572 0570 25000000 		.4byte	0x25
- 1573 0574 00       		.byte	0
- 1574 0575 1C       		.uleb128 0x1c
- 1575 0576 636F7300 		.ascii	"cos\000"
- 1576 057a 08       		.byte	0x8
- 1577 057b 6D       		.byte	0x6d
- 1578 057c 25000000 		.4byte	0x25
- 1579 0580 8A050000 		.4byte	0x58a
- 1580 0584 1D       		.uleb128 0x1d
- 1581 0585 25000000 		.4byte	0x25
- 1582 0589 00       		.byte	0
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 32
-
-
- 1583 058a 1E       		.uleb128 0x1e
- 1584 058b 00000000 		.4byte	.LASF38
- 1585 058f 09       		.byte	0x9
- 1586 0590 28       		.byte	0x28
- 1587 0591 9B050000 		.4byte	0x59b
- 1588 0595 1D       		.uleb128 0x1d
- 1589 0596 88000000 		.4byte	0x88
- 1590 059a 00       		.byte	0
- 1591 059b 1F       		.uleb128 0x1f
- 1592 059c 59010000 		.4byte	.LASF37
- 1593 05a0 08       		.byte	0x8
- 1594 05a1 7E       		.byte	0x7e
- 1595 05a2 25000000 		.4byte	0x25
- 1596 05a6 B5050000 		.4byte	0x5b5
- 1597 05aa 1D       		.uleb128 0x1d
- 1598 05ab 25000000 		.4byte	0x25
- 1599 05af 1D       		.uleb128 0x1d
- 1600 05b0 25000000 		.4byte	0x25
- 1601 05b4 00       		.byte	0
- 1602 05b5 20       		.uleb128 0x20
- 1603 05b6 3A020000 		.4byte	.LASF39
- 1604 05ba 08       		.byte	0x8
- 1605 05bb 86       		.byte	0x86
- 1606 05bc 25000000 		.4byte	0x25
- 1607 05c0 1D       		.uleb128 0x1d
- 1608 05c1 25000000 		.4byte	0x25
- 1609 05c5 00       		.byte	0
- 1610 05c6 00       		.byte	0
- 1611              		.section	.debug_abbrev,"",%progbits
- 1612              	.Ldebug_abbrev0:
- 1613 0000 01       		.uleb128 0x1
- 1614 0001 11       		.uleb128 0x11
- 1615 0002 01       		.byte	0x1
- 1616 0003 25       		.uleb128 0x25
- 1617 0004 0E       		.uleb128 0xe
- 1618 0005 13       		.uleb128 0x13
- 1619 0006 0B       		.uleb128 0xb
- 1620 0007 03       		.uleb128 0x3
- 1621 0008 0E       		.uleb128 0xe
- 1622 0009 1B       		.uleb128 0x1b
- 1623 000a 0E       		.uleb128 0xe
- 1624 000b 55       		.uleb128 0x55
- 1625 000c 17       		.uleb128 0x17
- 1626 000d 11       		.uleb128 0x11
- 1627 000e 01       		.uleb128 0x1
- 1628 000f 10       		.uleb128 0x10
- 1629 0010 17       		.uleb128 0x17
- 1630 0011 00       		.byte	0
- 1631 0012 00       		.byte	0
- 1632 0013 02       		.uleb128 0x2
- 1633 0014 24       		.uleb128 0x24
- 1634 0015 00       		.byte	0
- 1635 0016 0B       		.uleb128 0xb
- 1636 0017 0B       		.uleb128 0xb
- 1637 0018 3E       		.uleb128 0x3e
- 1638 0019 0B       		.uleb128 0xb
- 1639 001a 03       		.uleb128 0x3
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 33
-
-
- 1640 001b 0E       		.uleb128 0xe
- 1641 001c 00       		.byte	0
- 1642 001d 00       		.byte	0
- 1643 001e 03       		.uleb128 0x3
- 1644 001f 16       		.uleb128 0x16
- 1645 0020 00       		.byte	0
- 1646 0021 03       		.uleb128 0x3
- 1647 0022 0E       		.uleb128 0xe
- 1648 0023 3A       		.uleb128 0x3a
- 1649 0024 0B       		.uleb128 0xb
- 1650 0025 3B       		.uleb128 0x3b
- 1651 0026 0B       		.uleb128 0xb
- 1652 0027 49       		.uleb128 0x49
- 1653 0028 13       		.uleb128 0x13
- 1654 0029 00       		.byte	0
- 1655 002a 00       		.byte	0
- 1656 002b 04       		.uleb128 0x4
- 1657 002c 24       		.uleb128 0x24
- 1658 002d 00       		.byte	0
- 1659 002e 0B       		.uleb128 0xb
- 1660 002f 0B       		.uleb128 0xb
- 1661 0030 3E       		.uleb128 0x3e
- 1662 0031 0B       		.uleb128 0xb
- 1663 0032 03       		.uleb128 0x3
- 1664 0033 08       		.uleb128 0x8
- 1665 0034 00       		.byte	0
- 1666 0035 00       		.byte	0
- 1667 0036 05       		.uleb128 0x5
- 1668 0037 35       		.uleb128 0x35
- 1669 0038 00       		.byte	0
- 1670 0039 49       		.uleb128 0x49
- 1671 003a 13       		.uleb128 0x13
- 1672 003b 00       		.byte	0
- 1673 003c 00       		.byte	0
- 1674 003d 06       		.uleb128 0x6
- 1675 003e 13       		.uleb128 0x13
- 1676 003f 01       		.byte	0x1
- 1677 0040 03       		.uleb128 0x3
- 1678 0041 0E       		.uleb128 0xe
- 1679 0042 0B       		.uleb128 0xb
- 1680 0043 0B       		.uleb128 0xb
- 1681 0044 3A       		.uleb128 0x3a
- 1682 0045 0B       		.uleb128 0xb
- 1683 0046 3B       		.uleb128 0x3b
- 1684 0047 0B       		.uleb128 0xb
- 1685 0048 01       		.uleb128 0x1
- 1686 0049 13       		.uleb128 0x13
- 1687 004a 00       		.byte	0
- 1688 004b 00       		.byte	0
- 1689 004c 07       		.uleb128 0x7
- 1690 004d 0D       		.uleb128 0xd
- 1691 004e 00       		.byte	0
- 1692 004f 03       		.uleb128 0x3
- 1693 0050 08       		.uleb128 0x8
- 1694 0051 3A       		.uleb128 0x3a
- 1695 0052 0B       		.uleb128 0xb
- 1696 0053 3B       		.uleb128 0x3b
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 34
-
-
- 1697 0054 0B       		.uleb128 0xb
- 1698 0055 49       		.uleb128 0x49
- 1699 0056 13       		.uleb128 0x13
- 1700 0057 38       		.uleb128 0x38
- 1701 0058 0B       		.uleb128 0xb
- 1702 0059 00       		.byte	0
- 1703 005a 00       		.byte	0
- 1704 005b 08       		.uleb128 0x8
- 1705 005c 0D       		.uleb128 0xd
- 1706 005d 00       		.byte	0
- 1707 005e 03       		.uleb128 0x3
- 1708 005f 0E       		.uleb128 0xe
- 1709 0060 3A       		.uleb128 0x3a
- 1710 0061 0B       		.uleb128 0xb
- 1711 0062 3B       		.uleb128 0x3b
- 1712 0063 0B       		.uleb128 0xb
- 1713 0064 49       		.uleb128 0x49
- 1714 0065 13       		.uleb128 0x13
- 1715 0066 38       		.uleb128 0x38
- 1716 0067 0B       		.uleb128 0xb
- 1717 0068 00       		.byte	0
- 1718 0069 00       		.byte	0
- 1719 006a 09       		.uleb128 0x9
- 1720 006b 2E       		.uleb128 0x2e
- 1721 006c 01       		.byte	0x1
- 1722 006d 3F       		.uleb128 0x3f
- 1723 006e 19       		.uleb128 0x19
- 1724 006f 03       		.uleb128 0x3
- 1725 0070 0E       		.uleb128 0xe
- 1726 0071 3A       		.uleb128 0x3a
- 1727 0072 0B       		.uleb128 0xb
- 1728 0073 3B       		.uleb128 0x3b
- 1729 0074 0B       		.uleb128 0xb
- 1730 0075 27       		.uleb128 0x27
- 1731 0076 19       		.uleb128 0x19
- 1732 0077 49       		.uleb128 0x49
- 1733 0078 13       		.uleb128 0x13
- 1734 0079 11       		.uleb128 0x11
- 1735 007a 01       		.uleb128 0x1
- 1736 007b 12       		.uleb128 0x12
- 1737 007c 06       		.uleb128 0x6
- 1738 007d 40       		.uleb128 0x40
- 1739 007e 18       		.uleb128 0x18
- 1740 007f 9642     		.uleb128 0x2116
- 1741 0081 19       		.uleb128 0x19
- 1742 0082 01       		.uleb128 0x1
- 1743 0083 13       		.uleb128 0x13
- 1744 0084 00       		.byte	0
- 1745 0085 00       		.byte	0
- 1746 0086 0A       		.uleb128 0xa
- 1747 0087 05       		.uleb128 0x5
- 1748 0088 00       		.byte	0
- 1749 0089 03       		.uleb128 0x3
- 1750 008a 08       		.uleb128 0x8
- 1751 008b 3A       		.uleb128 0x3a
- 1752 008c 0B       		.uleb128 0xb
- 1753 008d 3B       		.uleb128 0x3b
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 35
-
-
- 1754 008e 0B       		.uleb128 0xb
- 1755 008f 49       		.uleb128 0x49
- 1756 0090 13       		.uleb128 0x13
- 1757 0091 02       		.uleb128 0x2
- 1758 0092 17       		.uleb128 0x17
- 1759 0093 00       		.byte	0
- 1760 0094 00       		.byte	0
- 1761 0095 0B       		.uleb128 0xb
- 1762 0096 34       		.uleb128 0x34
- 1763 0097 00       		.byte	0
- 1764 0098 03       		.uleb128 0x3
- 1765 0099 08       		.uleb128 0x8
- 1766 009a 3A       		.uleb128 0x3a
- 1767 009b 0B       		.uleb128 0xb
- 1768 009c 3B       		.uleb128 0x3b
- 1769 009d 0B       		.uleb128 0xb
- 1770 009e 49       		.uleb128 0x49
- 1771 009f 13       		.uleb128 0x13
- 1772 00a0 02       		.uleb128 0x2
- 1773 00a1 17       		.uleb128 0x17
- 1774 00a2 00       		.byte	0
- 1775 00a3 00       		.byte	0
- 1776 00a4 0C       		.uleb128 0xc
- 1777 00a5 34       		.uleb128 0x34
- 1778 00a6 00       		.byte	0
- 1779 00a7 03       		.uleb128 0x3
- 1780 00a8 0E       		.uleb128 0xe
- 1781 00a9 3A       		.uleb128 0x3a
- 1782 00aa 0B       		.uleb128 0xb
- 1783 00ab 3B       		.uleb128 0x3b
- 1784 00ac 0B       		.uleb128 0xb
- 1785 00ad 49       		.uleb128 0x49
- 1786 00ae 13       		.uleb128 0x13
- 1787 00af 02       		.uleb128 0x2
- 1788 00b0 17       		.uleb128 0x17
- 1789 00b1 00       		.byte	0
- 1790 00b2 00       		.byte	0
- 1791 00b3 0D       		.uleb128 0xd
- 1792 00b4 0B       		.uleb128 0xb
- 1793 00b5 01       		.byte	0x1
- 1794 00b6 11       		.uleb128 0x11
- 1795 00b7 01       		.uleb128 0x1
- 1796 00b8 12       		.uleb128 0x12
- 1797 00b9 06       		.uleb128 0x6
- 1798 00ba 01       		.uleb128 0x1
- 1799 00bb 13       		.uleb128 0x13
- 1800 00bc 00       		.byte	0
- 1801 00bd 00       		.byte	0
- 1802 00be 0E       		.uleb128 0xe
- 1803 00bf 898201   		.uleb128 0x4109
- 1804 00c2 00       		.byte	0
- 1805 00c3 11       		.uleb128 0x11
- 1806 00c4 01       		.uleb128 0x1
- 1807 00c5 31       		.uleb128 0x31
- 1808 00c6 13       		.uleb128 0x13
- 1809 00c7 00       		.byte	0
- 1810 00c8 00       		.byte	0
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 36
-
-
- 1811 00c9 0F       		.uleb128 0xf
- 1812 00ca 898201   		.uleb128 0x4109
- 1813 00cd 01       		.byte	0x1
- 1814 00ce 11       		.uleb128 0x11
- 1815 00cf 01       		.uleb128 0x1
- 1816 00d0 31       		.uleb128 0x31
- 1817 00d1 13       		.uleb128 0x13
- 1818 00d2 01       		.uleb128 0x1
- 1819 00d3 13       		.uleb128 0x13
- 1820 00d4 00       		.byte	0
- 1821 00d5 00       		.byte	0
- 1822 00d6 10       		.uleb128 0x10
- 1823 00d7 8A8201   		.uleb128 0x410a
- 1824 00da 00       		.byte	0
- 1825 00db 02       		.uleb128 0x2
- 1826 00dc 18       		.uleb128 0x18
- 1827 00dd 9142     		.uleb128 0x2111
- 1828 00df 18       		.uleb128 0x18
- 1829 00e0 00       		.byte	0
- 1830 00e1 00       		.byte	0
- 1831 00e2 11       		.uleb128 0x11
- 1832 00e3 898201   		.uleb128 0x4109
- 1833 00e6 01       		.byte	0x1
- 1834 00e7 11       		.uleb128 0x11
- 1835 00e8 01       		.uleb128 0x1
- 1836 00e9 31       		.uleb128 0x31
- 1837 00ea 13       		.uleb128 0x13
- 1838 00eb 00       		.byte	0
- 1839 00ec 00       		.byte	0
- 1840 00ed 12       		.uleb128 0x12
- 1841 00ee 2E       		.uleb128 0x2e
- 1842 00ef 01       		.byte	0x1
- 1843 00f0 3F       		.uleb128 0x3f
- 1844 00f1 19       		.uleb128 0x19
- 1845 00f2 03       		.uleb128 0x3
- 1846 00f3 0E       		.uleb128 0xe
- 1847 00f4 3A       		.uleb128 0x3a
- 1848 00f5 0B       		.uleb128 0xb
- 1849 00f6 3B       		.uleb128 0x3b
- 1850 00f7 0B       		.uleb128 0xb
- 1851 00f8 11       		.uleb128 0x11
- 1852 00f9 01       		.uleb128 0x1
- 1853 00fa 12       		.uleb128 0x12
- 1854 00fb 06       		.uleb128 0x6
- 1855 00fc 40       		.uleb128 0x40
- 1856 00fd 18       		.uleb128 0x18
- 1857 00fe 9642     		.uleb128 0x2116
- 1858 0100 19       		.uleb128 0x19
- 1859 0101 01       		.uleb128 0x1
- 1860 0102 13       		.uleb128 0x13
- 1861 0103 00       		.byte	0
- 1862 0104 00       		.byte	0
- 1863 0105 13       		.uleb128 0x13
- 1864 0106 0B       		.uleb128 0xb
- 1865 0107 01       		.byte	0x1
- 1866 0108 11       		.uleb128 0x11
- 1867 0109 01       		.uleb128 0x1
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 37
-
-
- 1868 010a 12       		.uleb128 0x12
- 1869 010b 06       		.uleb128 0x6
- 1870 010c 00       		.byte	0
- 1871 010d 00       		.byte	0
- 1872 010e 14       		.uleb128 0x14
- 1873 010f 34       		.uleb128 0x34
- 1874 0110 00       		.byte	0
- 1875 0111 03       		.uleb128 0x3
- 1876 0112 0E       		.uleb128 0xe
- 1877 0113 3A       		.uleb128 0x3a
- 1878 0114 0B       		.uleb128 0xb
- 1879 0115 3B       		.uleb128 0x3b
- 1880 0116 0B       		.uleb128 0xb
- 1881 0117 49       		.uleb128 0x49
- 1882 0118 13       		.uleb128 0x13
- 1883 0119 02       		.uleb128 0x2
- 1884 011a 18       		.uleb128 0x18
- 1885 011b 00       		.byte	0
- 1886 011c 00       		.byte	0
- 1887 011d 15       		.uleb128 0x15
- 1888 011e 2E       		.uleb128 0x2e
- 1889 011f 00       		.byte	0
- 1890 0120 3F       		.uleb128 0x3f
- 1891 0121 19       		.uleb128 0x19
- 1892 0122 03       		.uleb128 0x3
- 1893 0123 0E       		.uleb128 0xe
- 1894 0124 3A       		.uleb128 0x3a
- 1895 0125 0B       		.uleb128 0xb
- 1896 0126 3B       		.uleb128 0x3b
- 1897 0127 0B       		.uleb128 0xb
- 1898 0128 11       		.uleb128 0x11
- 1899 0129 01       		.uleb128 0x1
- 1900 012a 12       		.uleb128 0x12
- 1901 012b 06       		.uleb128 0x6
- 1902 012c 40       		.uleb128 0x40
- 1903 012d 18       		.uleb128 0x18
- 1904 012e 9742     		.uleb128 0x2117
- 1905 0130 19       		.uleb128 0x19
- 1906 0131 00       		.byte	0
- 1907 0132 00       		.byte	0
- 1908 0133 16       		.uleb128 0x16
- 1909 0134 2E       		.uleb128 0x2e
- 1910 0135 01       		.byte	0x1
- 1911 0136 3F       		.uleb128 0x3f
- 1912 0137 19       		.uleb128 0x19
- 1913 0138 03       		.uleb128 0x3
- 1914 0139 0E       		.uleb128 0xe
- 1915 013a 3A       		.uleb128 0x3a
- 1916 013b 0B       		.uleb128 0xb
- 1917 013c 3B       		.uleb128 0x3b
- 1918 013d 0B       		.uleb128 0xb
- 1919 013e 11       		.uleb128 0x11
- 1920 013f 01       		.uleb128 0x1
- 1921 0140 12       		.uleb128 0x12
- 1922 0141 06       		.uleb128 0x6
- 1923 0142 40       		.uleb128 0x40
- 1924 0143 18       		.uleb128 0x18
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 38
-
-
- 1925 0144 9742     		.uleb128 0x2117
- 1926 0146 19       		.uleb128 0x19
- 1927 0147 01       		.uleb128 0x1
- 1928 0148 13       		.uleb128 0x13
- 1929 0149 00       		.byte	0
- 1930 014a 00       		.byte	0
- 1931 014b 17       		.uleb128 0x17
- 1932 014c 34       		.uleb128 0x34
- 1933 014d 00       		.byte	0
- 1934 014e 03       		.uleb128 0x3
- 1935 014f 0E       		.uleb128 0xe
- 1936 0150 3A       		.uleb128 0x3a
- 1937 0151 0B       		.uleb128 0xb
- 1938 0152 3B       		.uleb128 0x3b
- 1939 0153 05       		.uleb128 0x5
- 1940 0154 49       		.uleb128 0x49
- 1941 0155 13       		.uleb128 0x13
- 1942 0156 3F       		.uleb128 0x3f
- 1943 0157 19       		.uleb128 0x19
- 1944 0158 3C       		.uleb128 0x3c
- 1945 0159 19       		.uleb128 0x19
- 1946 015a 00       		.byte	0
- 1947 015b 00       		.byte	0
- 1948 015c 18       		.uleb128 0x18
- 1949 015d 01       		.uleb128 0x1
- 1950 015e 01       		.byte	0x1
- 1951 015f 49       		.uleb128 0x49
- 1952 0160 13       		.uleb128 0x13
- 1953 0161 01       		.uleb128 0x1
- 1954 0162 13       		.uleb128 0x13
- 1955 0163 00       		.byte	0
- 1956 0164 00       		.byte	0
- 1957 0165 19       		.uleb128 0x19
- 1958 0166 21       		.uleb128 0x21
- 1959 0167 00       		.byte	0
- 1960 0168 49       		.uleb128 0x49
- 1961 0169 13       		.uleb128 0x13
- 1962 016a 2F       		.uleb128 0x2f
- 1963 016b 0B       		.uleb128 0xb
- 1964 016c 00       		.byte	0
- 1965 016d 00       		.byte	0
- 1966 016e 1A       		.uleb128 0x1a
- 1967 016f 34       		.uleb128 0x34
- 1968 0170 00       		.byte	0
- 1969 0171 03       		.uleb128 0x3
- 1970 0172 0E       		.uleb128 0xe
- 1971 0173 3A       		.uleb128 0x3a
- 1972 0174 0B       		.uleb128 0xb
- 1973 0175 3B       		.uleb128 0x3b
- 1974 0176 0B       		.uleb128 0xb
- 1975 0177 49       		.uleb128 0x49
- 1976 0178 13       		.uleb128 0x13
- 1977 0179 3F       		.uleb128 0x3f
- 1978 017a 19       		.uleb128 0x19
- 1979 017b 02       		.uleb128 0x2
- 1980 017c 18       		.uleb128 0x18
- 1981 017d 00       		.byte	0
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 39
-
-
- 1982 017e 00       		.byte	0
- 1983 017f 1B       		.uleb128 0x1b
- 1984 0180 34       		.uleb128 0x34
- 1985 0181 00       		.byte	0
- 1986 0182 03       		.uleb128 0x3
- 1987 0183 0E       		.uleb128 0xe
- 1988 0184 3A       		.uleb128 0x3a
- 1989 0185 0B       		.uleb128 0xb
- 1990 0186 3B       		.uleb128 0x3b
- 1991 0187 0B       		.uleb128 0xb
- 1992 0188 49       		.uleb128 0x49
- 1993 0189 13       		.uleb128 0x13
- 1994 018a 3F       		.uleb128 0x3f
- 1995 018b 19       		.uleb128 0x19
- 1996 018c 3C       		.uleb128 0x3c
- 1997 018d 19       		.uleb128 0x19
- 1998 018e 00       		.byte	0
- 1999 018f 00       		.byte	0
- 2000 0190 1C       		.uleb128 0x1c
- 2001 0191 2E       		.uleb128 0x2e
- 2002 0192 01       		.byte	0x1
- 2003 0193 3F       		.uleb128 0x3f
- 2004 0194 19       		.uleb128 0x19
- 2005 0195 03       		.uleb128 0x3
- 2006 0196 08       		.uleb128 0x8
- 2007 0197 3A       		.uleb128 0x3a
- 2008 0198 0B       		.uleb128 0xb
- 2009 0199 3B       		.uleb128 0x3b
- 2010 019a 0B       		.uleb128 0xb
- 2011 019b 27       		.uleb128 0x27
- 2012 019c 19       		.uleb128 0x19
- 2013 019d 49       		.uleb128 0x49
- 2014 019e 13       		.uleb128 0x13
- 2015 019f 3C       		.uleb128 0x3c
- 2016 01a0 19       		.uleb128 0x19
- 2017 01a1 01       		.uleb128 0x1
- 2018 01a2 13       		.uleb128 0x13
- 2019 01a3 00       		.byte	0
- 2020 01a4 00       		.byte	0
- 2021 01a5 1D       		.uleb128 0x1d
- 2022 01a6 05       		.uleb128 0x5
- 2023 01a7 00       		.byte	0
- 2024 01a8 49       		.uleb128 0x49
- 2025 01a9 13       		.uleb128 0x13
- 2026 01aa 00       		.byte	0
- 2027 01ab 00       		.byte	0
- 2028 01ac 1E       		.uleb128 0x1e
- 2029 01ad 2E       		.uleb128 0x2e
- 2030 01ae 01       		.byte	0x1
- 2031 01af 3F       		.uleb128 0x3f
- 2032 01b0 19       		.uleb128 0x19
- 2033 01b1 03       		.uleb128 0x3
- 2034 01b2 0E       		.uleb128 0xe
- 2035 01b3 3A       		.uleb128 0x3a
- 2036 01b4 0B       		.uleb128 0xb
- 2037 01b5 3B       		.uleb128 0x3b
- 2038 01b6 0B       		.uleb128 0xb
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 40
-
-
- 2039 01b7 27       		.uleb128 0x27
- 2040 01b8 19       		.uleb128 0x19
- 2041 01b9 3C       		.uleb128 0x3c
- 2042 01ba 19       		.uleb128 0x19
- 2043 01bb 01       		.uleb128 0x1
- 2044 01bc 13       		.uleb128 0x13
- 2045 01bd 00       		.byte	0
- 2046 01be 00       		.byte	0
- 2047 01bf 1F       		.uleb128 0x1f
- 2048 01c0 2E       		.uleb128 0x2e
- 2049 01c1 01       		.byte	0x1
- 2050 01c2 3F       		.uleb128 0x3f
- 2051 01c3 19       		.uleb128 0x19
- 2052 01c4 03       		.uleb128 0x3
- 2053 01c5 0E       		.uleb128 0xe
- 2054 01c6 3A       		.uleb128 0x3a
- 2055 01c7 0B       		.uleb128 0xb
- 2056 01c8 3B       		.uleb128 0x3b
- 2057 01c9 0B       		.uleb128 0xb
- 2058 01ca 27       		.uleb128 0x27
- 2059 01cb 19       		.uleb128 0x19
- 2060 01cc 49       		.uleb128 0x49
- 2061 01cd 13       		.uleb128 0x13
- 2062 01ce 3C       		.uleb128 0x3c
- 2063 01cf 19       		.uleb128 0x19
- 2064 01d0 01       		.uleb128 0x1
- 2065 01d1 13       		.uleb128 0x13
- 2066 01d2 00       		.byte	0
- 2067 01d3 00       		.byte	0
- 2068 01d4 20       		.uleb128 0x20
- 2069 01d5 2E       		.uleb128 0x2e
- 2070 01d6 01       		.byte	0x1
- 2071 01d7 3F       		.uleb128 0x3f
- 2072 01d8 19       		.uleb128 0x19
- 2073 01d9 03       		.uleb128 0x3
- 2074 01da 0E       		.uleb128 0xe
- 2075 01db 3A       		.uleb128 0x3a
- 2076 01dc 0B       		.uleb128 0xb
- 2077 01dd 3B       		.uleb128 0x3b
- 2078 01de 0B       		.uleb128 0xb
- 2079 01df 27       		.uleb128 0x27
- 2080 01e0 19       		.uleb128 0x19
- 2081 01e1 49       		.uleb128 0x49
- 2082 01e2 13       		.uleb128 0x13
- 2083 01e3 3C       		.uleb128 0x3c
- 2084 01e4 19       		.uleb128 0x19
- 2085 01e5 00       		.byte	0
- 2086 01e6 00       		.byte	0
- 2087 01e7 00       		.byte	0
- 2088              		.section	.debug_loc,"",%progbits
- 2089              	.Ldebug_loc0:
- 2090              	.LLST0:
- 2091 0000 00000000 		.4byte	.LVL0
- 2092 0004 09000000 		.4byte	.LVL1-1
- 2093 0008 0600     		.2byte	0x6
- 2094 000a 50       		.byte	0x50
- 2095 000b 93       		.byte	0x93
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 41
-
-
- 2096 000c 04       		.uleb128 0x4
- 2097 000d 51       		.byte	0x51
- 2098 000e 93       		.byte	0x93
- 2099 000f 04       		.uleb128 0x4
- 2100 0010 09000000 		.4byte	.LVL1-1
- 2101 0014 20000000 		.4byte	.LFE63
- 2102 0018 0600     		.2byte	0x6
- 2103 001a F3       		.byte	0xf3
- 2104 001b 03       		.uleb128 0x3
- 2105 001c F5       		.byte	0xf5
- 2106 001d 00       		.uleb128 0
- 2107 001e 25       		.uleb128 0x25
- 2108 001f 9F       		.byte	0x9f
- 2109 0020 00000000 		.4byte	0
- 2110 0024 00000000 		.4byte	0
- 2111              	.LLST1:
- 2112 0028 00000000 		.4byte	.LVL2
- 2113 002c 11000000 		.4byte	.LVL4-1
- 2114 0030 0600     		.2byte	0x6
- 2115 0032 52       		.byte	0x52
- 2116 0033 93       		.byte	0x93
- 2117 0034 04       		.uleb128 0x4
- 2118 0035 53       		.byte	0x53
- 2119 0036 93       		.byte	0x93
- 2120 0037 04       		.uleb128 0x4
- 2121 0038 11000000 		.4byte	.LVL4-1
- 2122 003c 46000000 		.4byte	.LVL9
- 2123 0040 0600     		.2byte	0x6
- 2124 0042 F3       		.byte	0xf3
- 2125 0043 03       		.uleb128 0x3
- 2126 0044 F5       		.byte	0xf5
- 2127 0045 02       		.uleb128 0x2
- 2128 0046 25       		.uleb128 0x25
- 2129 0047 9F       		.byte	0x9f
- 2130 0048 46000000 		.4byte	.LVL9
- 2131 004c B0010000 		.4byte	.LVL42
- 2132 0050 0600     		.2byte	0x6
- 2133 0052 56       		.byte	0x56
- 2134 0053 93       		.byte	0x93
- 2135 0054 04       		.uleb128 0x4
- 2136 0055 57       		.byte	0x57
- 2137 0056 93       		.byte	0x93
- 2138 0057 04       		.uleb128 0x4
- 2139 0058 00000000 		.4byte	0
- 2140 005c 00000000 		.4byte	0
- 2141              	.LLST2:
- 2142 0060 00000000 		.4byte	.LVL2
- 2143 0064 34000000 		.4byte	.LVL6
- 2144 0068 0200     		.2byte	0x2
- 2145 006a 91       		.byte	0x91
- 2146 006b 00       		.sleb128 0
- 2147 006c 34000000 		.4byte	.LVL6
- 2148 0070 36000000 		.4byte	.LVL7
- 2149 0074 0600     		.2byte	0x6
- 2150 0076 50       		.byte	0x50
- 2151 0077 93       		.byte	0x93
- 2152 0078 04       		.uleb128 0x4
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 42
-
-
- 2153 0079 51       		.byte	0x51
- 2154 007a 93       		.byte	0x93
- 2155 007b 04       		.uleb128 0x4
- 2156 007c 36000000 		.4byte	.LVL7
- 2157 0080 50020000 		.4byte	.LVL60
- 2158 0084 0200     		.2byte	0x2
- 2159 0086 91       		.byte	0x91
- 2160 0087 50       		.sleb128 -48
- 2161 0088 56030000 		.4byte	.LVL96
- 2162 008c 5E030000 		.4byte	.LVL97
- 2163 0090 0200     		.2byte	0x2
- 2164 0092 91       		.byte	0x91
- 2165 0093 50       		.sleb128 -48
- 2166 0094 00000000 		.4byte	0
- 2167 0098 00000000 		.4byte	0
- 2168              	.LLST3:
- 2169 009c 00000000 		.4byte	.LVL2
- 2170 00a0 A0030000 		.4byte	.LVL103
- 2171 00a4 0200     		.2byte	0x2
- 2172 00a6 91       		.byte	0x91
- 2173 00a7 08       		.sleb128 8
- 2174 00a8 A0030000 		.4byte	.LVL103
- 2175 00ac B4030000 		.4byte	.LFE65
- 2176 00b0 0200     		.2byte	0x2
- 2177 00b2 7D       		.byte	0x7d
- 2178 00b3 08       		.sleb128 8
- 2179 00b4 00000000 		.4byte	0
- 2180 00b8 00000000 		.4byte	0
- 2181              	.LLST4:
- 2182 00bc 00000000 		.4byte	.LVL2
- 2183 00c0 A0030000 		.4byte	.LVL103
- 2184 00c4 0200     		.2byte	0x2
- 2185 00c6 91       		.byte	0x91
- 2186 00c7 10       		.sleb128 16
- 2187 00c8 A0030000 		.4byte	.LVL103
- 2188 00cc B4030000 		.4byte	.LFE65
- 2189 00d0 0200     		.2byte	0x2
- 2190 00d2 7D       		.byte	0x7d
- 2191 00d3 10       		.sleb128 16
- 2192 00d4 00000000 		.4byte	0
- 2193 00d8 00000000 		.4byte	0
- 2194              	.LLST5:
- 2195 00dc 40020000 		.4byte	.LVL58
- 2196 00e0 D6020000 		.4byte	.LVL79
- 2197 00e4 0600     		.2byte	0x6
- 2198 00e6 5A       		.byte	0x5a
- 2199 00e7 93       		.byte	0x93
- 2200 00e8 04       		.uleb128 0x4
- 2201 00e9 5B       		.byte	0x5b
- 2202 00ea 93       		.byte	0x93
- 2203 00eb 04       		.uleb128 0x4
- 2204 00ec 00000000 		.4byte	0
- 2205 00f0 00000000 		.4byte	0
- 2206              	.LLST6:
- 2207 00f4 1E010000 		.4byte	.LVL29
- 2208 00f8 3E020000 		.4byte	.LVL57
- 2209 00fc 0600     		.2byte	0x6
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 43
-
-
- 2210 00fe 5A       		.byte	0x5a
- 2211 00ff 93       		.byte	0x93
- 2212 0100 04       		.uleb128 0x4
- 2213 0101 5B       		.byte	0x5b
- 2214 0102 93       		.byte	0x93
- 2215 0103 04       		.uleb128 0x4
- 2216 0104 56030000 		.4byte	.LVL96
- 2217 0108 5E030000 		.4byte	.LVL97
- 2218 010c 0600     		.2byte	0x6
- 2219 010e 5A       		.byte	0x5a
- 2220 010f 93       		.byte	0x93
- 2221 0110 04       		.uleb128 0x4
- 2222 0111 5B       		.byte	0x5b
- 2223 0112 93       		.byte	0x93
- 2224 0113 04       		.uleb128 0x4
- 2225 0114 00000000 		.4byte	0
- 2226 0118 00000000 		.4byte	0
- 2227              	.LLST7:
- 2228 011c 50020000 		.4byte	.LVL60
- 2229 0120 52020000 		.4byte	.LVL61
- 2230 0124 0600     		.2byte	0x6
- 2231 0126 50       		.byte	0x50
- 2232 0127 93       		.byte	0x93
- 2233 0128 04       		.uleb128 0x4
- 2234 0129 51       		.byte	0x51
- 2235 012a 93       		.byte	0x93
- 2236 012b 04       		.uleb128 0x4
- 2237 012c 52020000 		.4byte	.LVL61
- 2238 0130 56030000 		.4byte	.LVL96
- 2239 0134 0200     		.2byte	0x2
- 2240 0136 91       		.byte	0x91
- 2241 0137 50       		.sleb128 -48
- 2242 0138 00000000 		.4byte	0
- 2243 013c 00000000 		.4byte	0
- 2244              	.LLST8:
- 2245 0140 48010000 		.4byte	.LVL32
- 2246 0144 64010000 		.4byte	.LVL33
- 2247 0148 0200     		.2byte	0x2
- 2248 014a 7D       		.byte	0x7d
- 2249 014b 00       		.sleb128 0
- 2250 014c 7C010000 		.4byte	.LVL36
- 2251 0150 5C020000 		.4byte	.LVL63
- 2252 0154 0200     		.2byte	0x2
- 2253 0156 7D       		.byte	0x7d
- 2254 0157 00       		.sleb128 0
- 2255 0158 56030000 		.4byte	.LVL96
- 2256 015c 5E030000 		.4byte	.LVL97
- 2257 0160 0200     		.2byte	0x2
- 2258 0162 7D       		.byte	0x7d
- 2259 0163 00       		.sleb128 0
- 2260 0164 00000000 		.4byte	0
- 2261 0168 00000000 		.4byte	0
- 2262              	.LLST9:
- 2263 016c D8000000 		.4byte	.LVL20
- 2264 0170 DC000000 		.4byte	.LVL21
- 2265 0174 0600     		.2byte	0x6
- 2266 0176 50       		.byte	0x50
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 44
-
-
- 2267 0177 93       		.byte	0x93
- 2268 0178 04       		.uleb128 0x4
- 2269 0179 51       		.byte	0x51
- 2270 017a 93       		.byte	0x93
- 2271 017b 04       		.uleb128 0x4
- 2272 017c DC000000 		.4byte	.LVL21
- 2273 0180 2C030000 		.4byte	.LVL90
- 2274 0184 0200     		.2byte	0x2
- 2275 0186 91       		.byte	0x91
- 2276 0187 40       		.sleb128 -64
- 2277 0188 56030000 		.4byte	.LVL96
- 2278 018c 5E030000 		.4byte	.LVL97
- 2279 0190 0200     		.2byte	0x2
- 2280 0192 91       		.byte	0x91
- 2281 0193 40       		.sleb128 -64
- 2282 0194 00000000 		.4byte	0
- 2283 0198 00000000 		.4byte	0
- 2284              	.LLST10:
- 2285 019c E8000000 		.4byte	.LVL23
- 2286 01a0 EC000000 		.4byte	.LVL24
- 2287 01a4 0600     		.2byte	0x6
- 2288 01a6 50       		.byte	0x50
- 2289 01a7 93       		.byte	0x93
- 2290 01a8 04       		.uleb128 0x4
- 2291 01a9 51       		.byte	0x51
- 2292 01aa 93       		.byte	0x93
- 2293 01ab 04       		.uleb128 0x4
- 2294 01ac EC000000 		.4byte	.LVL24
- 2295 01b0 98030000 		.4byte	.LVL102
- 2296 01b4 0200     		.2byte	0x2
- 2297 01b6 91       		.byte	0x91
- 2298 01b7 58       		.sleb128 -40
- 2299 01b8 00000000 		.4byte	0
- 2300 01bc 00000000 		.4byte	0
- 2301              	.LLST11:
- 2302 01c0 A4020000 		.4byte	.LVL72
- 2303 01c4 A8020000 		.4byte	.LVL73
- 2304 01c8 0600     		.2byte	0x6
- 2305 01ca 50       		.byte	0x50
- 2306 01cb 93       		.byte	0x93
- 2307 01cc 04       		.uleb128 0x4
- 2308 01cd 51       		.byte	0x51
- 2309 01ce 93       		.byte	0x93
- 2310 01cf 04       		.uleb128 0x4
- 2311 01d0 A8020000 		.4byte	.LVL73
- 2312 01d4 56030000 		.4byte	.LVL96
- 2313 01d8 0300     		.2byte	0x3
- 2314 01da 91       		.byte	0x91
- 2315 01db B87F     		.sleb128 -72
- 2316 01dd 5E030000 		.4byte	.LVL97
- 2317 01e1 98030000 		.4byte	.LVL102
- 2318 01e5 0300     		.2byte	0x3
- 2319 01e7 91       		.byte	0x91
- 2320 01e8 B87F     		.sleb128 -72
- 2321 01ea 00000000 		.4byte	0
- 2322 01ee 00000000 		.4byte	0
- 2323              	.LLST12:
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 45
-
-
- 2324 01f2 20030000 		.4byte	.LVL88
- 2325 01f6 56030000 		.4byte	.LVL96
- 2326 01fa 0600     		.2byte	0x6
- 2327 01fc 54       		.byte	0x54
- 2328 01fd 93       		.byte	0x93
- 2329 01fe 04       		.uleb128 0x4
- 2330 01ff 55       		.byte	0x55
- 2331 0200 93       		.byte	0x93
- 2332 0201 04       		.uleb128 0x4
- 2333 0202 5E030000 		.4byte	.LVL97
- 2334 0206 98030000 		.4byte	.LVL102
- 2335 020a 0600     		.2byte	0x6
- 2336 020c 54       		.byte	0x54
- 2337 020d 93       		.byte	0x93
- 2338 020e 04       		.uleb128 0x4
- 2339 020f 55       		.byte	0x55
- 2340 0210 93       		.byte	0x93
- 2341 0211 04       		.uleb128 0x4
- 2342 0212 00000000 		.4byte	0
- 2343 0216 00000000 		.4byte	0
- 2344              	.LLST13:
- 2345 021a D8020000 		.4byte	.LVL80
- 2346 021e 56030000 		.4byte	.LVL96
- 2347 0222 0600     		.2byte	0x6
- 2348 0224 5A       		.byte	0x5a
- 2349 0225 93       		.byte	0x93
- 2350 0226 04       		.uleb128 0x4
- 2351 0227 5B       		.byte	0x5b
- 2352 0228 93       		.byte	0x93
- 2353 0229 04       		.uleb128 0x4
- 2354 022a 5E030000 		.4byte	.LVL97
- 2355 022e 98030000 		.4byte	.LVL102
- 2356 0232 0600     		.2byte	0x6
- 2357 0234 5A       		.byte	0x5a
- 2358 0235 93       		.byte	0x93
- 2359 0236 04       		.uleb128 0x4
- 2360 0237 5B       		.byte	0x5b
- 2361 0238 93       		.byte	0x93
- 2362 0239 04       		.uleb128 0x4
- 2363 023a 00000000 		.4byte	0
- 2364 023e 00000000 		.4byte	0
- 2365              	.LLST14:
- 2366 0242 54030000 		.4byte	.LVL95
- 2367 0246 56030000 		.4byte	.LVL96
- 2368 024a 0600     		.2byte	0x6
- 2369 024c 50       		.byte	0x50
- 2370 024d 93       		.byte	0x93
- 2371 024e 04       		.uleb128 0x4
- 2372 024f 51       		.byte	0x51
- 2373 0250 93       		.byte	0x93
- 2374 0251 04       		.uleb128 0x4
- 2375 0252 5E030000 		.4byte	.LVL97
- 2376 0256 98030000 		.4byte	.LVL102
- 2377 025a 0200     		.2byte	0x2
- 2378 025c 7D       		.byte	0x7d
- 2379 025d 00       		.sleb128 0
- 2380 025e 00000000 		.4byte	0
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 46
-
-
- 2381 0262 00000000 		.4byte	0
- 2382              	.LLST15:
- 2383 0266 00000000 		.4byte	.LVL2
- 2384 026a 0E000000 		.4byte	.LVL3
- 2385 026e 0200     		.2byte	0x2
- 2386 0270 70       		.byte	0x70
- 2387 0271 00       		.sleb128 0
- 2388 0272 0E000000 		.4byte	.LVL3
- 2389 0276 A0030000 		.4byte	.LVL103
- 2390 027a 0200     		.2byte	0x2
- 2391 027c 78       		.byte	0x78
- 2392 027d 00       		.sleb128 0
- 2393 027e A0030000 		.4byte	.LVL103
- 2394 0282 B4030000 		.4byte	.LFE65
- 2395 0286 0200     		.2byte	0x2
- 2396 0288 70       		.byte	0x70
- 2397 0289 00       		.sleb128 0
- 2398 028a 00000000 		.4byte	0
- 2399 028e 00000000 		.4byte	0
- 2400              	.LLST16:
- 2401 0292 8E010000 		.4byte	.LVL38
- 2402 0296 F0010000 		.4byte	.LVL49
- 2403 029a 0600     		.2byte	0x6
- 2404 029c 54       		.byte	0x54
- 2405 029d 93       		.byte	0x93
- 2406 029e 04       		.uleb128 0x4
- 2407 029f 55       		.byte	0x55
- 2408 02a0 93       		.byte	0x93
- 2409 02a1 04       		.uleb128 0x4
- 2410 02a2 00000000 		.4byte	0
- 2411 02a6 00000000 		.4byte	0
- 2412              	.LLST17:
- 2413 02aa 1A020000 		.4byte	.LVL54
- 2414 02ae 98030000 		.4byte	.LVL102
- 2415 02b2 0600     		.2byte	0x6
- 2416 02b4 56       		.byte	0x56
- 2417 02b5 93       		.byte	0x93
- 2418 02b6 04       		.uleb128 0x4
- 2419 02b7 57       		.byte	0x57
- 2420 02b8 93       		.byte	0x93
- 2421 02b9 04       		.uleb128 0x4
- 2422 02ba 00000000 		.4byte	0
- 2423 02be 00000000 		.4byte	0
- 2424              	.LLST18:
- 2425 02c2 5C020000 		.4byte	.LVL63
- 2426 02c6 60020000 		.4byte	.LVL64
- 2427 02ca 0600     		.2byte	0x6
- 2428 02cc 50       		.byte	0x50
- 2429 02cd 93       		.byte	0x93
- 2430 02ce 04       		.uleb128 0x4
- 2431 02cf 51       		.byte	0x51
- 2432 02d0 93       		.byte	0x93
- 2433 02d1 04       		.uleb128 0x4
- 2434 02d2 60020000 		.4byte	.LVL64
- 2435 02d6 54030000 		.4byte	.LVL95
- 2436 02da 0200     		.2byte	0x2
- 2437 02dc 7D       		.byte	0x7d
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 47
-
-
- 2438 02dd 00       		.sleb128 0
- 2439 02de 00000000 		.4byte	0
- 2440 02e2 00000000 		.4byte	0
- 2441              	.LLST19:
- 2442 02e6 B4000000 		.4byte	.LVL111
- 2443 02ea 34010000 		.4byte	.LVL124
- 2444 02ee 0600     		.2byte	0x6
- 2445 02f0 56       		.byte	0x56
- 2446 02f1 93       		.byte	0x93
- 2447 02f2 04       		.uleb128 0x4
- 2448 02f3 57       		.byte	0x57
- 2449 02f4 93       		.byte	0x93
- 2450 02f5 04       		.uleb128 0x4
- 2451 02f6 00000000 		.4byte	0
- 2452 02fa 00000000 		.4byte	0
- 2453              	.LLST20:
- 2454 02fe E4000000 		.4byte	.LVL116
- 2455 0302 34010000 		.4byte	.LVL124
- 2456 0306 0600     		.2byte	0x6
- 2457 0308 54       		.byte	0x54
- 2458 0309 93       		.byte	0x93
- 2459 030a 04       		.uleb128 0x4
- 2460 030b 55       		.byte	0x55
- 2461 030c 93       		.byte	0x93
- 2462 030d 04       		.uleb128 0x4
- 2463 030e 00000000 		.4byte	0
- 2464 0312 00000000 		.4byte	0
- 2465              		.section	.debug_aranges,"",%progbits
- 2466 0000 3C000000 		.4byte	0x3c
- 2467 0004 0200     		.2byte	0x2
- 2468 0006 00000000 		.4byte	.Ldebug_info0
- 2469 000a 04       		.byte	0x4
- 2470 000b 00       		.byte	0
- 2471 000c 0000     		.2byte	0
- 2472 000e 0000     		.2byte	0
- 2473 0010 00000000 		.4byte	.LFB63
- 2474 0014 20000000 		.4byte	.LFE63-.LFB63
- 2475 0018 00000000 		.4byte	.LFB65
- 2476 001c B4030000 		.4byte	.LFE65-.LFB65
- 2477 0020 00000000 		.4byte	.LFB64
- 2478 0024 58010000 		.4byte	.LFE64-.LFB64
- 2479 0028 00000000 		.4byte	.LFB66
- 2480 002c 4C000000 		.4byte	.LFE66-.LFB66
- 2481 0030 00000000 		.4byte	.LFB67
- 2482 0034 08000000 		.4byte	.LFE67-.LFB67
- 2483 0038 00000000 		.4byte	0
- 2484 003c 00000000 		.4byte	0
- 2485              		.section	.debug_ranges,"",%progbits
- 2486              	.Ldebug_ranges0:
- 2487 0000 00000000 		.4byte	.LFB63
- 2488 0004 20000000 		.4byte	.LFE63
- 2489 0008 00000000 		.4byte	.LFB65
- 2490 000c B4030000 		.4byte	.LFE65
- 2491 0010 00000000 		.4byte	.LFB64
- 2492 0014 58010000 		.4byte	.LFE64
- 2493 0018 00000000 		.4byte	.LFB66
- 2494 001c 4C000000 		.4byte	.LFE66
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 48
-
-
- 2495 0020 00000000 		.4byte	.LFB67
- 2496 0024 08000000 		.4byte	.LFE67
- 2497 0028 00000000 		.4byte	0
- 2498 002c 00000000 		.4byte	0
- 2499              		.section	.debug_line,"",%progbits
- 2500              	.Ldebug_line0:
- 2501 0000 51020000 		.section	.debug_str,"MS",%progbits,1
- 2501      02008901 
- 2501      00000201 
- 2501      FB0E0D00 
- 2501      01010101 
- 2502              	.LASF38:
- 2503 0000 4953525F 		.ascii	"ISR_CHECKP_Write\000"
- 2503      43484543 
- 2503      4B505F57 
- 2503      72697465 
- 2503      00
- 2504              	.LASF27:
- 2505 0011 73746172 		.ascii	"start_navigation\000"
- 2505      745F6E61 
- 2505      76696761 
- 2505      74696F6E 
- 2505      00
- 2506              	.LASF30:
- 2507 0022 6C6F635F 		.ascii	"loc_x_a\000"
- 2507      785F6100 
- 2508              	.LASF33:
- 2509 002a 6C6F635F 		.ascii	"loc_x_b\000"
- 2509      785F6200 
- 2510              	.LASF3:
- 2511 0032 73686F72 		.ascii	"short int\000"
- 2511      7420696E 
- 2511      7400
- 2512              	.LASF16:
- 2513 003c 73697A65 		.ascii	"sizetype\000"
- 2513      74797065 
- 2513      00
- 2514              	.LASF21:
- 2515 0045 64656C74 		.ascii	"delta\000"
- 2515      6100
- 2516              	.LASF22:
- 2517 004b 67616D6D 		.ascii	"gamma\000"
- 2517      6100
- 2518              	.LASF12:
- 2519 0051 75696E74 		.ascii	"uint8\000"
- 2519      3800
- 2520              	.LASF25:
- 2521 0057 6C656E67 		.ascii	"length\000"
- 2521      746800
- 2522              	.LASF14:
- 2523 005e 666C6F61 		.ascii	"float\000"
- 2523      7400
- 2524              	.LASF7:
- 2525 0064 6C6F6E67 		.ascii	"long long int\000"
- 2525      206C6F6E 
- 2525      6720696E 
- 2525      7400
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 49
-
-
- 2526              	.LASF40:
- 2527 0072 474E5520 		.ascii	"GNU C 4.8.4 20140526 (release) [ARM/embedded-4_8-br"
- 2527      4320342E 
- 2527      382E3420 
- 2527      32303134 
- 2527      30353236 
- 2528 00a5 616E6368 		.ascii	"anch revision 211358] -mcpu=cortex-m3 -mthumb -g -O"
- 2528      20726576 
- 2528      6973696F 
- 2528      6E203231 
- 2528      31333538 
- 2529 00d8 67202D66 		.ascii	"g -ffunction-sections\000"
- 2529      66756E63 
- 2529      74696F6E 
- 2529      2D736563 
- 2529      74696F6E 
- 2530              	.LASF5:
- 2531 00ee 6C6F6E67 		.ascii	"long int\000"
- 2531      20696E74 
- 2531      00
- 2532              	.LASF42:
- 2533 00f7 433A5C55 		.ascii	"C:\\Users\\xavieran\\Desktop\\ECE3091\\PSOCProjects"
- 2533      73657273 
- 2533      5C786176 
- 2533      69657261 
- 2533      6E5C4465 
- 2534 0125 5C454E47 		.ascii	"\\ENG3091_MandM\\ENG3091_MandM.cydsn\000"
- 2534      33303931 
- 2534      5F4D616E 
- 2534      644D5C45 
- 2534      4E473330 
- 2535              	.LASF26:
- 2536 0148 72656672 		.ascii	"refresh_position\000"
- 2536      6573685F 
- 2536      706F7369 
- 2536      74696F6E 
- 2536      00
- 2537              	.LASF37:
- 2538 0159 6174616E 		.ascii	"atan2\000"
- 2538      3200
- 2539              	.LASF17:
- 2540 015f 6C6F6E67 		.ascii	"long double\000"
- 2540      20646F75 
- 2540      626C6500 
- 2541              	.LASF2:
- 2542 016b 756E7369 		.ascii	"unsigned char\000"
- 2542      676E6564 
- 2542      20636861 
- 2542      7200
- 2543              	.LASF24:
- 2544 0179 73647468 		.ascii	"sdtheta\000"
- 2544      65746100 
- 2545              	.LASF1:
- 2546 0181 7369676E 		.ascii	"signed char\000"
- 2546      65642063 
- 2546      68617200 
- 2547              	.LASF8:
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 50
-
-
- 2548 018d 6C6F6E67 		.ascii	"long long unsigned int\000"
- 2548      206C6F6E 
- 2548      6720756E 
- 2548      7369676E 
- 2548      65642069 
- 2549              	.LASF9:
- 2550 01a4 756E7369 		.ascii	"unsigned int\000"
- 2550      676E6564 
- 2550      20696E74 
- 2550      00
- 2551              	.LASF44:
- 2552 01b1 72657365 		.ascii	"reset_navigation\000"
- 2552      745F6E61 
- 2552      76696761 
- 2552      74696F6E 
- 2552      00
- 2553              	.LASF4:
- 2554 01c2 73686F72 		.ascii	"short unsigned int\000"
- 2554      7420756E 
- 2554      7369676E 
- 2554      65642069 
- 2554      6E7400
- 2555              	.LASF15:
- 2556 01d5 63686172 		.ascii	"char\000"
- 2556      00
- 2557              	.LASF11:
- 2558 01da 696E7433 		.ascii	"int32_t\000"
- 2558      325F7400 
- 2559              	.LASF43:
- 2560 01e2 506F7369 		.ascii	"Position\000"
- 2560      74696F6E 
- 2560      00
- 2561              	.LASF20:
- 2562 01eb 63616C63 		.ascii	"calculate_dposition\000"
- 2562      756C6174 
- 2562      655F6470 
- 2562      6F736974 
- 2562      696F6E00 
- 2563              	.LASF6:
- 2564 01ff 6C6F6E67 		.ascii	"long unsigned int\000"
- 2564      20756E73 
- 2564      69676E65 
- 2564      6420696E 
- 2564      7400
- 2565              	.LASF41:
- 2566 0211 2E5C6E61 		.ascii	".\\navigation.c\000"
- 2566      76696761 
- 2566      74696F6E 
- 2566      2E6300
- 2567              	.LASF13:
- 2568 0220 696E7433 		.ascii	"int32\000"
- 2568      3200
- 2569              	.LASF0:
- 2570 0226 646F7562 		.ascii	"double\000"
- 2570      6C6500
- 2571              	.LASF28:
- 2572 022d 49544D5F 		.ascii	"ITM_RxBuffer\000"
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccy2tiBw.s 			page 51
-
-
- 2572      52784275 
- 2572      66666572 
- 2572      00
- 2573              	.LASF39:
- 2574 023a 73717274 		.ascii	"sqrt\000"
- 2574      00
- 2575              	.LASF10:
- 2576 023f 5F5F696E 		.ascii	"__int32_t\000"
- 2576      7433325F 
- 2576      7400
- 2577              	.LASF36:
- 2578 0249 6C6F6361 		.ascii	"location\000"
- 2578      74696F6E 
- 2578      00
- 2579              	.LASF18:
- 2580 0252 616E676C 		.ascii	"angle\000"
- 2580      6500
- 2581              	.LASF32:
- 2582 0258 64617461 		.ascii	"data_ready_a\000"
- 2582      5F726561 
- 2582      64795F61 
- 2582      00
- 2583              	.LASF35:
- 2584 0265 64617461 		.ascii	"data_ready_b\000"
- 2584      5F726561 
- 2584      64795F62 
- 2584      00
- 2585              	.LASF23:
- 2586 0272 64746865 		.ascii	"dtheta\000"
- 2586      746100
- 2587              	.LASF31:
- 2588 0279 6C6F635F 		.ascii	"loc_y_a\000"
- 2588      795F6100 
- 2589              	.LASF34:
- 2590 0281 6C6F635F 		.ascii	"loc_y_b\000"
- 2590      795F6200 
- 2591              	.LASF19:
- 2592 0289 7369676E 		.ascii	"signum\000"
- 2592      756D00
- 2593              	.LASF29:
- 2594 0290 4F563936 		.ascii	"OV9650_1_framebuffer\000"
- 2594      35305F31 
- 2594      5F667261 
- 2594      6D656275 
- 2594      66666572 
- 2595              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.8.4 20140526 (release) [ARM/embedded-4_8-br
+  61              		.global	__aeabi_i2d
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cclr33xI.s 			page 3
+
+
+  62              		.global	__aeabi_dmul
+  63              		.global	__aeabi_d2iz
+  64              		.section	.text.update_position,"ax",%progbits
+  65              		.align	2
+  66              		.global	update_position
+  67              		.thumb
+  68              		.thumb_func
+  69              		.type	update_position, %function
+  70              	update_position:
+  71              	.LFB64:
+  54:.\navigation.c **** 
+  55:.\navigation.c **** void update_position(){
+  72              		.loc 1 55 0
+  73              		.cfi_startproc
+  74              		@ args = 0, pretend = 0, frame = 0
+  75              		@ frame_needed = 0, uses_anonymous_args = 0
+  76 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+  77              		.cfi_def_cfa_offset 24
+  78              		.cfi_offset 4, -24
+  79              		.cfi_offset 5, -20
+  80              		.cfi_offset 6, -16
+  81              		.cfi_offset 7, -12
+  82              		.cfi_offset 8, -8
+  83              		.cfi_offset 14, -4
+  56:.\navigation.c ****     if (!isRotating()){//Ignore y changes when rotating
+  84              		.loc 1 56 0
+  85 0004 FFF7FEFF 		bl	isRotating
+  86              	.LVL2:
+  87 0008 0028     		cmp	r0, #0
+  88 000a 2AD1     		bne	.L10
+  57:.\navigation.c ****         location.x += (int32) (CosDeg[compass_heading]*((double) loc_y_b));
+  89              		.loc 1 57 0
+  90 000c 194B     		ldr	r3, .L11
+  91 000e B3F90080 		ldrsh	r8, [r3]
+  92 0012 4FEAC808 		lsl	r8, r8, #3
+  93 0016 184B     		ldr	r3, .L11+4
+  94 0018 4344     		add	r3, r3, r8
+  95 001a D3E90045 		ldrd	r4, [r3]
+  96 001e 174F     		ldr	r7, .L11+8
+  97 0020 3868     		ldr	r0, [r7]
+  98 0022 FFF7FEFF 		bl	__aeabi_i2d
+  99              	.LVL3:
+ 100 0026 0246     		mov	r2, r0
+ 101 0028 0B46     		mov	r3, r1
+ 102 002a 2046     		mov	r0, r4
+ 103 002c 2946     		mov	r1, r5
+ 104 002e FFF7FEFF 		bl	__aeabi_dmul
+ 105              	.LVL4:
+ 106 0032 FFF7FEFF 		bl	__aeabi_d2iz
+ 107              	.LVL5:
+ 108 0036 124E     		ldr	r6, .L11+12
+ 109 0038 3368     		ldr	r3, [r6]
+ 110 003a 1844     		add	r0, r0, r3
+ 111 003c 3060     		str	r0, [r6]
+  58:.\navigation.c ****         location.y += (int32) (SinDeg[compass_heading]*((double) loc_y_b));
+ 112              		.loc 1 58 0
+ 113 003e 114B     		ldr	r3, .L11+16
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cclr33xI.s 			page 4
+
+
+ 114 0040 9844     		add	r8, r8, r3
+ 115 0042 D8E90045 		ldrd	r4, [r8]
+ 116 0046 3868     		ldr	r0, [r7]
+ 117 0048 FFF7FEFF 		bl	__aeabi_i2d
+ 118              	.LVL6:
+ 119 004c 0246     		mov	r2, r0
+ 120 004e 0B46     		mov	r3, r1
+ 121 0050 2046     		mov	r0, r4
+ 122 0052 2946     		mov	r1, r5
+ 123 0054 FFF7FEFF 		bl	__aeabi_dmul
+ 124              	.LVL7:
+ 125 0058 FFF7FEFF 		bl	__aeabi_d2iz
+ 126              	.LVL8:
+ 127 005c 7368     		ldr	r3, [r6, #4]
+ 128 005e 1844     		add	r0, r0, r3
+ 129 0060 7060     		str	r0, [r6, #4]
+ 130              	.L10:
+  59:.\navigation.c ****     }
+  60:.\navigation.c ****     location.angle = compass_heading;
+ 131              		.loc 1 60 0
+ 132 0062 044B     		ldr	r3, .L11
+ 133 0064 1A88     		ldrh	r2, [r3]
+ 134 0066 064B     		ldr	r3, .L11+12
+ 135 0068 1A81     		strh	r2, [r3, #8]	@ movhi
+  61:.\navigation.c ****     loc_y_b = 0;
+ 136              		.loc 1 61 0
+ 137 006a 0022     		movs	r2, #0
+ 138 006c 034B     		ldr	r3, .L11+8
+ 139 006e 1A60     		str	r2, [r3]
+ 140 0070 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 141              	.L12:
+ 142              		.align	2
+ 143              	.L11:
+ 144 0074 00000000 		.word	compass_heading
+ 145 0078 00000000 		.word	CosDeg
+ 146 007c 00000000 		.word	loc_y_b
+ 147 0080 00000000 		.word	location
+ 148 0084 00000000 		.word	SinDeg
+ 149              		.cfi_endproc
+ 150              	.LFE64:
+ 151              		.size	update_position, .-update_position
+ 152              		.section	.text.reset_navigation,"ax",%progbits
+ 153              		.align	2
+ 154              		.global	reset_navigation
+ 155              		.thumb
+ 156              		.thumb_func
+ 157              		.type	reset_navigation, %function
+ 158              	reset_navigation:
+ 159              	.LFB65:
+  62:.\navigation.c **** }
+  63:.\navigation.c **** 
+  64:.\navigation.c **** void reset_navigation(){
+ 160              		.loc 1 64 0
+ 161              		.cfi_startproc
+ 162              		@ args = 0, pretend = 0, frame = 0
+ 163              		@ frame_needed = 0, uses_anonymous_args = 0
+ 164              		@ link register save eliminated.
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cclr33xI.s 			page 5
+
+
+  65:.\navigation.c ****     loc_x_a = 0;
+ 165              		.loc 1 65 0
+ 166 0000 0023     		movs	r3, #0
+ 167 0002 084A     		ldr	r2, .L14
+ 168 0004 1360     		str	r3, [r2]
+  66:.\navigation.c ****     loc_y_a = 0;
+ 169              		.loc 1 66 0
+ 170 0006 084A     		ldr	r2, .L14+4
+ 171 0008 1360     		str	r3, [r2]
+  67:.\navigation.c ****     data_ready_a = 0;
+ 172              		.loc 1 67 0
+ 173 000a 084A     		ldr	r2, .L14+8
+ 174 000c 1370     		strb	r3, [r2]
+  68:.\navigation.c ****     loc_x_b = 0;
+ 175              		.loc 1 68 0
+ 176 000e 084A     		ldr	r2, .L14+12
+ 177 0010 1360     		str	r3, [r2]
+  69:.\navigation.c ****     loc_y_b = 0;
+ 178              		.loc 1 69 0
+ 179 0012 084A     		ldr	r2, .L14+16
+ 180 0014 1360     		str	r3, [r2]
+  70:.\navigation.c ****     data_ready_b = 0;
+ 181              		.loc 1 70 0
+ 182 0016 084A     		ldr	r2, .L14+20
+ 183 0018 1370     		strb	r3, [r2]
+  71:.\navigation.c ****     
+  72:.\navigation.c ****     location.x = 0;
+ 184              		.loc 1 72 0
+ 185 001a 084A     		ldr	r2, .L14+24
+ 186 001c 1360     		str	r3, [r2]
+  73:.\navigation.c ****     location.y = 0;
+ 187              		.loc 1 73 0
+ 188 001e 5360     		str	r3, [r2, #4]
+  74:.\navigation.c ****     location.angle = 0;
+ 189              		.loc 1 74 0
+ 190 0020 1381     		strh	r3, [r2, #8]	@ movhi
+ 191 0022 7047     		bx	lr
+ 192              	.L15:
+ 193              		.align	2
+ 194              	.L14:
+ 195 0024 00000000 		.word	loc_x_a
+ 196 0028 00000000 		.word	loc_y_a
+ 197 002c 00000000 		.word	data_ready_a
+ 198 0030 00000000 		.word	loc_x_b
+ 199 0034 00000000 		.word	loc_y_b
+ 200 0038 00000000 		.word	data_ready_b
+ 201 003c 00000000 		.word	location
+ 202              		.cfi_endproc
+ 203              	.LFE65:
+ 204              		.size	reset_navigation, .-reset_navigation
+ 205              		.section	.text.start_navigation,"ax",%progbits
+ 206              		.align	2
+ 207              		.global	start_navigation
+ 208              		.thumb
+ 209              		.thumb_func
+ 210              		.type	start_navigation, %function
+ 211              	start_navigation:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cclr33xI.s 			page 6
+
+
+ 212              	.LFB66:
+  75:.\navigation.c **** }
+  76:.\navigation.c **** 
+  77:.\navigation.c **** void start_navigation(){
+ 213              		.loc 1 77 0
+ 214              		.cfi_startproc
+ 215              		@ args = 0, pretend = 0, frame = 0
+ 216              		@ frame_needed = 0, uses_anonymous_args = 0
+ 217 0000 08B5     		push	{r3, lr}
+ 218              		.cfi_def_cfa_offset 8
+ 219              		.cfi_offset 3, -8
+ 220              		.cfi_offset 14, -4
+  78:.\navigation.c ****     
+  79:.\navigation.c ****     reset_navigation();
+ 221              		.loc 1 79 0
+ 222 0002 FFF7FEFF 		bl	reset_navigation
+ 223              	.LVL9:
+ 224 0006 08BD     		pop	{r3, pc}
+ 225              		.cfi_endproc
+ 226              	.LFE66:
+ 227              		.size	start_navigation, .-start_navigation
+ 228              		.comm	location,12,4
+ 229              		.comm	OV9650_1_framebuffer,50688,4
+ 230              		.text
+ 231              	.Letext0:
+ 232              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 233              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 234              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 235              		.file 5 "./navigation.h"
+ 236              		.file 6 "Generated_Source\\PSoC5/core_cm3.h"
+ 237              		.file 7 "Generated_Source\\PSoC5/OV9650_1.h"
+ 238              		.file 8 "./motor.h"
+ 239              		.section	.debug_info,"",%progbits
+ 240              	.Ldebug_info0:
+ 241 0000 39020000 		.4byte	0x239
+ 242 0004 0400     		.2byte	0x4
+ 243 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 244 000a 04       		.byte	0x4
+ 245 000b 01       		.uleb128 0x1
+ 246 000c 52010000 		.4byte	.LASF34
+ 247 0010 01       		.byte	0x1
+ 248 0011 1C000000 		.4byte	.LASF35
+ 249 0015 35000000 		.4byte	.LASF36
+ 250 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 251 001d 00000000 		.4byte	0
+ 252 0021 00000000 		.4byte	.Ldebug_line0
+ 253 0025 02       		.uleb128 0x2
+ 254 0026 08       		.byte	0x8
+ 255 0027 04       		.byte	0x4
+ 256 0028 99000000 		.4byte	.LASF0
+ 257 002c 02       		.uleb128 0x2
+ 258 002d 01       		.byte	0x1
+ 259 002e 06       		.byte	0x6
+ 260 002f 45020000 		.4byte	.LASF1
+ 261 0033 02       		.uleb128 0x2
+ 262 0034 01       		.byte	0x1
+ 263 0035 08       		.byte	0x8
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cclr33xI.s 			page 7
+
+
+ 264 0036 AE000000 		.4byte	.LASF2
+ 265 003a 02       		.uleb128 0x2
+ 266 003b 02       		.byte	0x2
+ 267 003c 05       		.byte	0x5
+ 268 003d EA010000 		.4byte	.LASF3
+ 269 0041 02       		.uleb128 0x2
+ 270 0042 02       		.byte	0x2
+ 271 0043 07       		.byte	0x7
+ 272 0044 86000000 		.4byte	.LASF4
+ 273 0048 03       		.uleb128 0x3
+ 274 0049 2B000000 		.4byte	.LASF10
+ 275 004d 02       		.byte	0x2
+ 276 004e 37       		.byte	0x37
+ 277 004f 53000000 		.4byte	0x53
+ 278 0053 02       		.uleb128 0x2
+ 279 0054 04       		.byte	0x4
+ 280 0055 05       		.byte	0x5
+ 281 0056 25020000 		.4byte	.LASF5
+ 282 005a 02       		.uleb128 0x2
+ 283 005b 04       		.byte	0x4
+ 284 005c 07       		.byte	0x7
+ 285 005d F5000000 		.4byte	.LASF6
+ 286 0061 02       		.uleb128 0x2
+ 287 0062 08       		.byte	0x8
+ 288 0063 05       		.byte	0x5
+ 289 0064 D7010000 		.4byte	.LASF7
+ 290 0068 02       		.uleb128 0x2
+ 291 0069 08       		.byte	0x8
+ 292 006a 07       		.byte	0x7
+ 293 006b 24010000 		.4byte	.LASF8
+ 294 006f 04       		.uleb128 0x4
+ 295 0070 04       		.byte	0x4
+ 296 0071 05       		.byte	0x5
+ 297 0072 696E7400 		.ascii	"int\000"
+ 298 0076 02       		.uleb128 0x2
+ 299 0077 04       		.byte	0x4
+ 300 0078 07       		.byte	0x7
+ 301 0079 0E010000 		.4byte	.LASF9
+ 302 007d 03       		.uleb128 0x3
+ 303 007e A0000000 		.4byte	.LASF11
+ 304 0082 03       		.byte	0x3
+ 305 0083 41       		.byte	0x41
+ 306 0084 48000000 		.4byte	0x48
+ 307 0088 03       		.uleb128 0x3
+ 308 0089 0E020000 		.4byte	.LASF12
+ 309 008d 04       		.byte	0x4
+ 310 008e B3       		.byte	0xb3
+ 311 008f 33000000 		.4byte	0x33
+ 312 0093 03       		.uleb128 0x3
+ 313 0094 BC000000 		.4byte	.LASF13
+ 314 0098 04       		.byte	0x4
+ 315 0099 B7       		.byte	0xb7
+ 316 009a 3A000000 		.4byte	0x3a
+ 317 009e 03       		.uleb128 0x3
+ 318 009f CB000000 		.4byte	.LASF14
+ 319 00a3 04       		.byte	0x4
+ 320 00a4 B8       		.byte	0xb8
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cclr33xI.s 			page 8
+
+
+ 321 00a5 53000000 		.4byte	0x53
+ 322 00a9 02       		.uleb128 0x2
+ 323 00aa 04       		.byte	0x4
+ 324 00ab 04       		.byte	0x4
+ 325 00ac A8000000 		.4byte	.LASF15
+ 326 00b0 02       		.uleb128 0x2
+ 327 00b1 01       		.byte	0x1
+ 328 00b2 08       		.byte	0x8
+ 329 00b3 E5010000 		.4byte	.LASF16
+ 330 00b7 05       		.uleb128 0x5
+ 331 00b8 88000000 		.4byte	0x88
+ 332 00bc 02       		.uleb128 0x2
+ 333 00bd 04       		.byte	0x4
+ 334 00be 07       		.byte	0x7
+ 335 00bf CE010000 		.4byte	.LASF17
+ 336 00c3 02       		.uleb128 0x2
+ 337 00c4 08       		.byte	0x8
+ 338 00c5 04       		.byte	0x4
+ 339 00c6 39020000 		.4byte	.LASF18
+ 340 00ca 06       		.uleb128 0x6
+ 341 00cb 1B010000 		.4byte	.LASF37
+ 342 00cf 0C       		.byte	0xc
+ 343 00d0 05       		.byte	0x5
+ 344 00d1 0F       		.byte	0xf
+ 345 00d2 F7000000 		.4byte	0xf7
+ 346 00d6 07       		.uleb128 0x7
+ 347 00d7 7800     		.ascii	"x\000"
+ 348 00d9 05       		.byte	0x5
+ 349 00da 10       		.byte	0x10
+ 350 00db 9E000000 		.4byte	0x9e
+ 351 00df 00       		.byte	0
+ 352 00e0 07       		.uleb128 0x7
+ 353 00e1 7900     		.ascii	"y\000"
+ 354 00e3 05       		.byte	0x5
+ 355 00e4 11       		.byte	0x11
+ 356 00e5 9E000000 		.4byte	0x9e
+ 357 00e9 04       		.byte	0x4
+ 358 00ea 08       		.uleb128 0x8
+ 359 00eb D1000000 		.4byte	.LASF19
+ 360 00ef 05       		.byte	0x5
+ 361 00f0 12       		.byte	0x12
+ 362 00f1 93000000 		.4byte	0x93
+ 363 00f5 08       		.byte	0x8
+ 364 00f6 00       		.byte	0
+ 365 00f7 09       		.uleb128 0x9
+ 366 00f8 4B010000 		.4byte	.LASF38
+ 367 00fc 01       		.byte	0x1
+ 368 00fd 2F       		.byte	0x2f
+ 369 00fe 25000000 		.4byte	0x25
+ 370 0102 00000000 		.4byte	.LFB63
+ 371 0106 20000000 		.4byte	.LFE63-.LFB63
+ 372 010a 01       		.uleb128 0x1
+ 373 010b 9C       		.byte	0x9c
+ 374 010c 1E010000 		.4byte	0x11e
+ 375 0110 0A       		.uleb128 0xa
+ 376 0111 7800     		.ascii	"x\000"
+ 377 0113 01       		.byte	0x1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cclr33xI.s 			page 9
+
+
+ 378 0114 2F       		.byte	0x2f
+ 379 0115 25000000 		.4byte	0x25
+ 380 0119 00000000 		.4byte	.LLST0
+ 381 011d 00       		.byte	0
+ 382 011e 0B       		.uleb128 0xb
+ 383 011f 51020000 		.4byte	.LASF20
+ 384 0123 01       		.byte	0x1
+ 385 0124 37       		.byte	0x37
+ 386 0125 00000000 		.4byte	.LFB64
+ 387 0129 88000000 		.4byte	.LFE64-.LFB64
+ 388 012d 01       		.uleb128 0x1
+ 389 012e 9C       		.byte	0x9c
+ 390 012f 3D010000 		.4byte	0x13d
+ 391 0133 0C       		.uleb128 0xc
+ 392 0134 08000000 		.4byte	.LVL2
+ 393 0138 2F020000 		.4byte	0x22f
+ 394 013c 00       		.byte	0
+ 395 013d 0D       		.uleb128 0xd
+ 396 013e E4000000 		.4byte	.LASF39
+ 397 0142 01       		.byte	0x1
+ 398 0143 40       		.byte	0x40
+ 399 0144 00000000 		.4byte	.LFB65
+ 400 0148 40000000 		.4byte	.LFE65-.LFB65
+ 401 014c 01       		.uleb128 0x1
+ 402 014d 9C       		.byte	0x9c
+ 403 014e 0E       		.uleb128 0xe
+ 404 014f 14020000 		.4byte	.LASF21
+ 405 0153 01       		.byte	0x1
+ 406 0154 4D       		.byte	0x4d
+ 407 0155 00000000 		.4byte	.LFB66
+ 408 0159 08000000 		.4byte	.LFE66-.LFB66
+ 409 015d 01       		.uleb128 0x1
+ 410 015e 9C       		.byte	0x9c
+ 411 015f 6D010000 		.4byte	0x16d
+ 412 0163 0C       		.uleb128 0xc
+ 413 0164 06000000 		.4byte	.LVL9
+ 414 0168 3D010000 		.4byte	0x13d
+ 415 016c 00       		.byte	0
+ 416 016d 0F       		.uleb128 0xf
+ 417 016e D7000000 		.4byte	.LASF22
+ 418 0172 06       		.byte	0x6
+ 419 0173 2A06     		.2byte	0x62a
+ 420 0175 79010000 		.4byte	0x179
+ 421 0179 05       		.uleb128 0x5
+ 422 017a 7D000000 		.4byte	0x7d
+ 423 017e 10       		.uleb128 0x10
+ 424 017f 88000000 		.4byte	0x88
+ 425 0183 9A010000 		.4byte	0x19a
+ 426 0187 11       		.uleb128 0x11
+ 427 0188 BC000000 		.4byte	0xbc
+ 428 018c 8F       		.byte	0x8f
+ 429 018d 11       		.uleb128 0x11
+ 430 018e BC000000 		.4byte	0xbc
+ 431 0192 57       		.byte	0x57
+ 432 0193 11       		.uleb128 0x11
+ 433 0194 BC000000 		.4byte	0xbc
+ 434 0198 03       		.byte	0x3
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cclr33xI.s 			page 10
+
+
+ 435 0199 00       		.byte	0
+ 436 019a 12       		.uleb128 0x12
+ 437 019b 07000000 		.4byte	.LASF23
+ 438 019f 07       		.byte	0x7
+ 439 01a0 08       		.byte	0x8
+ 440 01a1 7E010000 		.4byte	0x17e
+ 441 01a5 05       		.uleb128 0x5
+ 442 01a6 03       		.byte	0x3
+ 443 01a7 00000000 		.4byte	OV9650_1_framebuffer
+ 444 01ab 13       		.uleb128 0x13
+ 445 01ac 61020000 		.4byte	.LASF24
+ 446 01b0 01       		.byte	0x1
+ 447 01b1 1A       		.byte	0x1a
+ 448 01b2 93000000 		.4byte	0x93
+ 449 01b6 10       		.uleb128 0x10
+ 450 01b7 25000000 		.4byte	0x25
+ 451 01bb C1010000 		.4byte	0x1c1
+ 452 01bf 14       		.uleb128 0x14
+ 453 01c0 00       		.byte	0
+ 454 01c1 13       		.uleb128 0x13
+ 455 01c2 00000000 		.4byte	.LASF25
+ 456 01c6 01       		.byte	0x1
+ 457 01c7 1B       		.byte	0x1b
+ 458 01c8 B6010000 		.4byte	0x1b6
+ 459 01cc 13       		.uleb128 0x13
+ 460 01cd 07010000 		.4byte	.LASF26
+ 461 01d1 01       		.byte	0x1
+ 462 01d2 1C       		.byte	0x1c
+ 463 01d3 B6010000 		.4byte	0x1b6
+ 464 01d7 13       		.uleb128 0x13
+ 465 01d8 3B010000 		.4byte	.LASF27
+ 466 01dc 01       		.byte	0x1
+ 467 01dd 1F       		.byte	0x1f
+ 468 01de E2010000 		.4byte	0x1e2
+ 469 01e2 05       		.uleb128 0x5
+ 470 01e3 9E000000 		.4byte	0x9e
+ 471 01e7 13       		.uleb128 0x13
+ 472 01e8 71020000 		.4byte	.LASF28
+ 473 01ec 01       		.byte	0x1
+ 474 01ed 20       		.byte	0x20
+ 475 01ee E2010000 		.4byte	0x1e2
+ 476 01f2 13       		.uleb128 0x13
+ 477 01f3 F4010000 		.4byte	.LASF29
+ 478 01f7 01       		.byte	0x1
+ 479 01f8 21       		.byte	0x21
+ 480 01f9 B7000000 		.4byte	0xb7
+ 481 01fd 13       		.uleb128 0x13
+ 482 01fe 43010000 		.4byte	.LASF30
+ 483 0202 01       		.byte	0x1
+ 484 0203 23       		.byte	0x23
+ 485 0204 E2010000 		.4byte	0x1e2
+ 486 0208 13       		.uleb128 0x13
+ 487 0209 79020000 		.4byte	.LASF31
+ 488 020d 01       		.byte	0x1
+ 489 020e 24       		.byte	0x24
+ 490 020f E2010000 		.4byte	0x1e2
+ 491 0213 13       		.uleb128 0x13
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cclr33xI.s 			page 11
+
+
+ 492 0214 01020000 		.4byte	.LASF32
+ 493 0218 01       		.byte	0x1
+ 494 0219 25       		.byte	0x25
+ 495 021a B7000000 		.4byte	0xb7
+ 496 021e 12       		.uleb128 0x12
+ 497 021f C2000000 		.4byte	.LASF33
+ 498 0223 01       		.byte	0x1
+ 499 0224 28       		.byte	0x28
+ 500 0225 CA000000 		.4byte	0xca
+ 501 0229 05       		.uleb128 0x5
+ 502 022a 03       		.byte	0x3
+ 503 022b 00000000 		.4byte	location
+ 504 022f 15       		.uleb128 0x15
+ 505 0230 2E020000 		.4byte	.LASF40
+ 506 0234 08       		.byte	0x8
+ 507 0235 1F       		.byte	0x1f
+ 508 0236 88000000 		.4byte	0x88
+ 509 023a 16       		.uleb128 0x16
+ 510 023b 00       		.byte	0
+ 511 023c 00       		.byte	0
+ 512              		.section	.debug_abbrev,"",%progbits
+ 513              	.Ldebug_abbrev0:
+ 514 0000 01       		.uleb128 0x1
+ 515 0001 11       		.uleb128 0x11
+ 516 0002 01       		.byte	0x1
+ 517 0003 25       		.uleb128 0x25
+ 518 0004 0E       		.uleb128 0xe
+ 519 0005 13       		.uleb128 0x13
+ 520 0006 0B       		.uleb128 0xb
+ 521 0007 03       		.uleb128 0x3
+ 522 0008 0E       		.uleb128 0xe
+ 523 0009 1B       		.uleb128 0x1b
+ 524 000a 0E       		.uleb128 0xe
+ 525 000b 55       		.uleb128 0x55
+ 526 000c 17       		.uleb128 0x17
+ 527 000d 11       		.uleb128 0x11
+ 528 000e 01       		.uleb128 0x1
+ 529 000f 10       		.uleb128 0x10
+ 530 0010 17       		.uleb128 0x17
+ 531 0011 00       		.byte	0
+ 532 0012 00       		.byte	0
+ 533 0013 02       		.uleb128 0x2
+ 534 0014 24       		.uleb128 0x24
+ 535 0015 00       		.byte	0
+ 536 0016 0B       		.uleb128 0xb
+ 537 0017 0B       		.uleb128 0xb
+ 538 0018 3E       		.uleb128 0x3e
+ 539 0019 0B       		.uleb128 0xb
+ 540 001a 03       		.uleb128 0x3
+ 541 001b 0E       		.uleb128 0xe
+ 542 001c 00       		.byte	0
+ 543 001d 00       		.byte	0
+ 544 001e 03       		.uleb128 0x3
+ 545 001f 16       		.uleb128 0x16
+ 546 0020 00       		.byte	0
+ 547 0021 03       		.uleb128 0x3
+ 548 0022 0E       		.uleb128 0xe
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cclr33xI.s 			page 12
+
+
+ 549 0023 3A       		.uleb128 0x3a
+ 550 0024 0B       		.uleb128 0xb
+ 551 0025 3B       		.uleb128 0x3b
+ 552 0026 0B       		.uleb128 0xb
+ 553 0027 49       		.uleb128 0x49
+ 554 0028 13       		.uleb128 0x13
+ 555 0029 00       		.byte	0
+ 556 002a 00       		.byte	0
+ 557 002b 04       		.uleb128 0x4
+ 558 002c 24       		.uleb128 0x24
+ 559 002d 00       		.byte	0
+ 560 002e 0B       		.uleb128 0xb
+ 561 002f 0B       		.uleb128 0xb
+ 562 0030 3E       		.uleb128 0x3e
+ 563 0031 0B       		.uleb128 0xb
+ 564 0032 03       		.uleb128 0x3
+ 565 0033 08       		.uleb128 0x8
+ 566 0034 00       		.byte	0
+ 567 0035 00       		.byte	0
+ 568 0036 05       		.uleb128 0x5
+ 569 0037 35       		.uleb128 0x35
+ 570 0038 00       		.byte	0
+ 571 0039 49       		.uleb128 0x49
+ 572 003a 13       		.uleb128 0x13
+ 573 003b 00       		.byte	0
+ 574 003c 00       		.byte	0
+ 575 003d 06       		.uleb128 0x6
+ 576 003e 13       		.uleb128 0x13
+ 577 003f 01       		.byte	0x1
+ 578 0040 03       		.uleb128 0x3
+ 579 0041 0E       		.uleb128 0xe
+ 580 0042 0B       		.uleb128 0xb
+ 581 0043 0B       		.uleb128 0xb
+ 582 0044 3A       		.uleb128 0x3a
+ 583 0045 0B       		.uleb128 0xb
+ 584 0046 3B       		.uleb128 0x3b
+ 585 0047 0B       		.uleb128 0xb
+ 586 0048 01       		.uleb128 0x1
+ 587 0049 13       		.uleb128 0x13
+ 588 004a 00       		.byte	0
+ 589 004b 00       		.byte	0
+ 590 004c 07       		.uleb128 0x7
+ 591 004d 0D       		.uleb128 0xd
+ 592 004e 00       		.byte	0
+ 593 004f 03       		.uleb128 0x3
+ 594 0050 08       		.uleb128 0x8
+ 595 0051 3A       		.uleb128 0x3a
+ 596 0052 0B       		.uleb128 0xb
+ 597 0053 3B       		.uleb128 0x3b
+ 598 0054 0B       		.uleb128 0xb
+ 599 0055 49       		.uleb128 0x49
+ 600 0056 13       		.uleb128 0x13
+ 601 0057 38       		.uleb128 0x38
+ 602 0058 0B       		.uleb128 0xb
+ 603 0059 00       		.byte	0
+ 604 005a 00       		.byte	0
+ 605 005b 08       		.uleb128 0x8
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cclr33xI.s 			page 13
+
+
+ 606 005c 0D       		.uleb128 0xd
+ 607 005d 00       		.byte	0
+ 608 005e 03       		.uleb128 0x3
+ 609 005f 0E       		.uleb128 0xe
+ 610 0060 3A       		.uleb128 0x3a
+ 611 0061 0B       		.uleb128 0xb
+ 612 0062 3B       		.uleb128 0x3b
+ 613 0063 0B       		.uleb128 0xb
+ 614 0064 49       		.uleb128 0x49
+ 615 0065 13       		.uleb128 0x13
+ 616 0066 38       		.uleb128 0x38
+ 617 0067 0B       		.uleb128 0xb
+ 618 0068 00       		.byte	0
+ 619 0069 00       		.byte	0
+ 620 006a 09       		.uleb128 0x9
+ 621 006b 2E       		.uleb128 0x2e
+ 622 006c 01       		.byte	0x1
+ 623 006d 3F       		.uleb128 0x3f
+ 624 006e 19       		.uleb128 0x19
+ 625 006f 03       		.uleb128 0x3
+ 626 0070 0E       		.uleb128 0xe
+ 627 0071 3A       		.uleb128 0x3a
+ 628 0072 0B       		.uleb128 0xb
+ 629 0073 3B       		.uleb128 0x3b
+ 630 0074 0B       		.uleb128 0xb
+ 631 0075 27       		.uleb128 0x27
+ 632 0076 19       		.uleb128 0x19
+ 633 0077 49       		.uleb128 0x49
+ 634 0078 13       		.uleb128 0x13
+ 635 0079 11       		.uleb128 0x11
+ 636 007a 01       		.uleb128 0x1
+ 637 007b 12       		.uleb128 0x12
+ 638 007c 06       		.uleb128 0x6
+ 639 007d 40       		.uleb128 0x40
+ 640 007e 18       		.uleb128 0x18
+ 641 007f 9642     		.uleb128 0x2116
+ 642 0081 19       		.uleb128 0x19
+ 643 0082 01       		.uleb128 0x1
+ 644 0083 13       		.uleb128 0x13
+ 645 0084 00       		.byte	0
+ 646 0085 00       		.byte	0
+ 647 0086 0A       		.uleb128 0xa
+ 648 0087 05       		.uleb128 0x5
+ 649 0088 00       		.byte	0
+ 650 0089 03       		.uleb128 0x3
+ 651 008a 08       		.uleb128 0x8
+ 652 008b 3A       		.uleb128 0x3a
+ 653 008c 0B       		.uleb128 0xb
+ 654 008d 3B       		.uleb128 0x3b
+ 655 008e 0B       		.uleb128 0xb
+ 656 008f 49       		.uleb128 0x49
+ 657 0090 13       		.uleb128 0x13
+ 658 0091 02       		.uleb128 0x2
+ 659 0092 17       		.uleb128 0x17
+ 660 0093 00       		.byte	0
+ 661 0094 00       		.byte	0
+ 662 0095 0B       		.uleb128 0xb
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cclr33xI.s 			page 14
+
+
+ 663 0096 2E       		.uleb128 0x2e
+ 664 0097 01       		.byte	0x1
+ 665 0098 3F       		.uleb128 0x3f
+ 666 0099 19       		.uleb128 0x19
+ 667 009a 03       		.uleb128 0x3
+ 668 009b 0E       		.uleb128 0xe
+ 669 009c 3A       		.uleb128 0x3a
+ 670 009d 0B       		.uleb128 0xb
+ 671 009e 3B       		.uleb128 0x3b
+ 672 009f 0B       		.uleb128 0xb
+ 673 00a0 11       		.uleb128 0x11
+ 674 00a1 01       		.uleb128 0x1
+ 675 00a2 12       		.uleb128 0x12
+ 676 00a3 06       		.uleb128 0x6
+ 677 00a4 40       		.uleb128 0x40
+ 678 00a5 18       		.uleb128 0x18
+ 679 00a6 9642     		.uleb128 0x2116
+ 680 00a8 19       		.uleb128 0x19
+ 681 00a9 01       		.uleb128 0x1
+ 682 00aa 13       		.uleb128 0x13
+ 683 00ab 00       		.byte	0
+ 684 00ac 00       		.byte	0
+ 685 00ad 0C       		.uleb128 0xc
+ 686 00ae 898201   		.uleb128 0x4109
+ 687 00b1 00       		.byte	0
+ 688 00b2 11       		.uleb128 0x11
+ 689 00b3 01       		.uleb128 0x1
+ 690 00b4 31       		.uleb128 0x31
+ 691 00b5 13       		.uleb128 0x13
+ 692 00b6 00       		.byte	0
+ 693 00b7 00       		.byte	0
+ 694 00b8 0D       		.uleb128 0xd
+ 695 00b9 2E       		.uleb128 0x2e
+ 696 00ba 00       		.byte	0
+ 697 00bb 3F       		.uleb128 0x3f
+ 698 00bc 19       		.uleb128 0x19
+ 699 00bd 03       		.uleb128 0x3
+ 700 00be 0E       		.uleb128 0xe
+ 701 00bf 3A       		.uleb128 0x3a
+ 702 00c0 0B       		.uleb128 0xb
+ 703 00c1 3B       		.uleb128 0x3b
+ 704 00c2 0B       		.uleb128 0xb
+ 705 00c3 11       		.uleb128 0x11
+ 706 00c4 01       		.uleb128 0x1
+ 707 00c5 12       		.uleb128 0x12
+ 708 00c6 06       		.uleb128 0x6
+ 709 00c7 40       		.uleb128 0x40
+ 710 00c8 18       		.uleb128 0x18
+ 711 00c9 9742     		.uleb128 0x2117
+ 712 00cb 19       		.uleb128 0x19
+ 713 00cc 00       		.byte	0
+ 714 00cd 00       		.byte	0
+ 715 00ce 0E       		.uleb128 0xe
+ 716 00cf 2E       		.uleb128 0x2e
+ 717 00d0 01       		.byte	0x1
+ 718 00d1 3F       		.uleb128 0x3f
+ 719 00d2 19       		.uleb128 0x19
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cclr33xI.s 			page 15
+
+
+ 720 00d3 03       		.uleb128 0x3
+ 721 00d4 0E       		.uleb128 0xe
+ 722 00d5 3A       		.uleb128 0x3a
+ 723 00d6 0B       		.uleb128 0xb
+ 724 00d7 3B       		.uleb128 0x3b
+ 725 00d8 0B       		.uleb128 0xb
+ 726 00d9 11       		.uleb128 0x11
+ 727 00da 01       		.uleb128 0x1
+ 728 00db 12       		.uleb128 0x12
+ 729 00dc 06       		.uleb128 0x6
+ 730 00dd 40       		.uleb128 0x40
+ 731 00de 18       		.uleb128 0x18
+ 732 00df 9742     		.uleb128 0x2117
+ 733 00e1 19       		.uleb128 0x19
+ 734 00e2 01       		.uleb128 0x1
+ 735 00e3 13       		.uleb128 0x13
+ 736 00e4 00       		.byte	0
+ 737 00e5 00       		.byte	0
+ 738 00e6 0F       		.uleb128 0xf
+ 739 00e7 34       		.uleb128 0x34
+ 740 00e8 00       		.byte	0
+ 741 00e9 03       		.uleb128 0x3
+ 742 00ea 0E       		.uleb128 0xe
+ 743 00eb 3A       		.uleb128 0x3a
+ 744 00ec 0B       		.uleb128 0xb
+ 745 00ed 3B       		.uleb128 0x3b
+ 746 00ee 05       		.uleb128 0x5
+ 747 00ef 49       		.uleb128 0x49
+ 748 00f0 13       		.uleb128 0x13
+ 749 00f1 3F       		.uleb128 0x3f
+ 750 00f2 19       		.uleb128 0x19
+ 751 00f3 3C       		.uleb128 0x3c
+ 752 00f4 19       		.uleb128 0x19
+ 753 00f5 00       		.byte	0
+ 754 00f6 00       		.byte	0
+ 755 00f7 10       		.uleb128 0x10
+ 756 00f8 01       		.uleb128 0x1
+ 757 00f9 01       		.byte	0x1
+ 758 00fa 49       		.uleb128 0x49
+ 759 00fb 13       		.uleb128 0x13
+ 760 00fc 01       		.uleb128 0x1
+ 761 00fd 13       		.uleb128 0x13
+ 762 00fe 00       		.byte	0
+ 763 00ff 00       		.byte	0
+ 764 0100 11       		.uleb128 0x11
+ 765 0101 21       		.uleb128 0x21
+ 766 0102 00       		.byte	0
+ 767 0103 49       		.uleb128 0x49
+ 768 0104 13       		.uleb128 0x13
+ 769 0105 2F       		.uleb128 0x2f
+ 770 0106 0B       		.uleb128 0xb
+ 771 0107 00       		.byte	0
+ 772 0108 00       		.byte	0
+ 773 0109 12       		.uleb128 0x12
+ 774 010a 34       		.uleb128 0x34
+ 775 010b 00       		.byte	0
+ 776 010c 03       		.uleb128 0x3
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cclr33xI.s 			page 16
+
+
+ 777 010d 0E       		.uleb128 0xe
+ 778 010e 3A       		.uleb128 0x3a
+ 779 010f 0B       		.uleb128 0xb
+ 780 0110 3B       		.uleb128 0x3b
+ 781 0111 0B       		.uleb128 0xb
+ 782 0112 49       		.uleb128 0x49
+ 783 0113 13       		.uleb128 0x13
+ 784 0114 3F       		.uleb128 0x3f
+ 785 0115 19       		.uleb128 0x19
+ 786 0116 02       		.uleb128 0x2
+ 787 0117 18       		.uleb128 0x18
+ 788 0118 00       		.byte	0
+ 789 0119 00       		.byte	0
+ 790 011a 13       		.uleb128 0x13
+ 791 011b 34       		.uleb128 0x34
+ 792 011c 00       		.byte	0
+ 793 011d 03       		.uleb128 0x3
+ 794 011e 0E       		.uleb128 0xe
+ 795 011f 3A       		.uleb128 0x3a
+ 796 0120 0B       		.uleb128 0xb
+ 797 0121 3B       		.uleb128 0x3b
+ 798 0122 0B       		.uleb128 0xb
+ 799 0123 49       		.uleb128 0x49
+ 800 0124 13       		.uleb128 0x13
+ 801 0125 3F       		.uleb128 0x3f
+ 802 0126 19       		.uleb128 0x19
+ 803 0127 3C       		.uleb128 0x3c
+ 804 0128 19       		.uleb128 0x19
+ 805 0129 00       		.byte	0
+ 806 012a 00       		.byte	0
+ 807 012b 14       		.uleb128 0x14
+ 808 012c 21       		.uleb128 0x21
+ 809 012d 00       		.byte	0
+ 810 012e 00       		.byte	0
+ 811 012f 00       		.byte	0
+ 812 0130 15       		.uleb128 0x15
+ 813 0131 2E       		.uleb128 0x2e
+ 814 0132 01       		.byte	0x1
+ 815 0133 3F       		.uleb128 0x3f
+ 816 0134 19       		.uleb128 0x19
+ 817 0135 03       		.uleb128 0x3
+ 818 0136 0E       		.uleb128 0xe
+ 819 0137 3A       		.uleb128 0x3a
+ 820 0138 0B       		.uleb128 0xb
+ 821 0139 3B       		.uleb128 0x3b
+ 822 013a 0B       		.uleb128 0xb
+ 823 013b 49       		.uleb128 0x49
+ 824 013c 13       		.uleb128 0x13
+ 825 013d 3C       		.uleb128 0x3c
+ 826 013e 19       		.uleb128 0x19
+ 827 013f 00       		.byte	0
+ 828 0140 00       		.byte	0
+ 829 0141 16       		.uleb128 0x16
+ 830 0142 18       		.uleb128 0x18
+ 831 0143 00       		.byte	0
+ 832 0144 00       		.byte	0
+ 833 0145 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cclr33xI.s 			page 17
+
+
+ 834 0146 00       		.byte	0
+ 835              		.section	.debug_loc,"",%progbits
+ 836              	.Ldebug_loc0:
+ 837              	.LLST0:
+ 838 0000 00000000 		.4byte	.LVL0
+ 839 0004 09000000 		.4byte	.LVL1-1
+ 840 0008 0600     		.2byte	0x6
+ 841 000a 50       		.byte	0x50
+ 842 000b 93       		.byte	0x93
+ 843 000c 04       		.uleb128 0x4
+ 844 000d 51       		.byte	0x51
+ 845 000e 93       		.byte	0x93
+ 846 000f 04       		.uleb128 0x4
+ 847 0010 09000000 		.4byte	.LVL1-1
+ 848 0014 20000000 		.4byte	.LFE63
+ 849 0018 0600     		.2byte	0x6
+ 850 001a F3       		.byte	0xf3
+ 851 001b 03       		.uleb128 0x3
+ 852 001c F5       		.byte	0xf5
+ 853 001d 00       		.uleb128 0
+ 854 001e 25       		.uleb128 0x25
+ 855 001f 9F       		.byte	0x9f
+ 856 0020 00000000 		.4byte	0
+ 857 0024 00000000 		.4byte	0
+ 858              		.section	.debug_aranges,"",%progbits
+ 859 0000 34000000 		.4byte	0x34
+ 860 0004 0200     		.2byte	0x2
+ 861 0006 00000000 		.4byte	.Ldebug_info0
+ 862 000a 04       		.byte	0x4
+ 863 000b 00       		.byte	0
+ 864 000c 0000     		.2byte	0
+ 865 000e 0000     		.2byte	0
+ 866 0010 00000000 		.4byte	.LFB63
+ 867 0014 20000000 		.4byte	.LFE63-.LFB63
+ 868 0018 00000000 		.4byte	.LFB64
+ 869 001c 88000000 		.4byte	.LFE64-.LFB64
+ 870 0020 00000000 		.4byte	.LFB65
+ 871 0024 40000000 		.4byte	.LFE65-.LFB65
+ 872 0028 00000000 		.4byte	.LFB66
+ 873 002c 08000000 		.4byte	.LFE66-.LFB66
+ 874 0030 00000000 		.4byte	0
+ 875 0034 00000000 		.4byte	0
+ 876              		.section	.debug_ranges,"",%progbits
+ 877              	.Ldebug_ranges0:
+ 878 0000 00000000 		.4byte	.LFB63
+ 879 0004 20000000 		.4byte	.LFE63
+ 880 0008 00000000 		.4byte	.LFB64
+ 881 000c 88000000 		.4byte	.LFE64
+ 882 0010 00000000 		.4byte	.LFB65
+ 883 0014 40000000 		.4byte	.LFE65
+ 884 0018 00000000 		.4byte	.LFB66
+ 885 001c 08000000 		.4byte	.LFE66
+ 886 0020 00000000 		.4byte	0
+ 887 0024 00000000 		.4byte	0
+ 888              		.section	.debug_line,"",%progbits
+ 889              	.Ldebug_line0:
+ 890 0000 D4010000 		.section	.debug_str,"MS",%progbits,1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cclr33xI.s 			page 18
+
+
+ 890      02007C01 
+ 890      00000201 
+ 890      FB0E0D00 
+ 890      01010101 
+ 891              	.LASF25:
+ 892 0000 53696E44 		.ascii	"SinDeg\000"
+ 892      656700
+ 893              	.LASF23:
+ 894 0007 4F563936 		.ascii	"OV9650_1_framebuffer\000"
+ 894      35305F31 
+ 894      5F667261 
+ 894      6D656275 
+ 894      66666572 
+ 895              	.LASF35:
+ 896 001c 2E5C6E61 		.ascii	".\\navigation.c\000"
+ 896      76696761 
+ 896      74696F6E 
+ 896      2E6300
+ 897              	.LASF10:
+ 898 002b 5F5F696E 		.ascii	"__int32_t\000"
+ 898      7433325F 
+ 898      7400
+ 899              	.LASF36:
+ 900 0035 433A5C55 		.ascii	"C:\\Users\\xavieran\\Desktop\\ECE3091\\PSOCProjects"
+ 900      73657273 
+ 900      5C786176 
+ 900      69657261 
+ 900      6E5C4465 
+ 901 0063 5C454E47 		.ascii	"\\ENG3091_MandM\\ENG3091_MandM.cydsn\000"
+ 901      33303931 
+ 901      5F4D616E 
+ 901      644D5C45 
+ 901      4E473330 
+ 902              	.LASF4:
+ 903 0086 73686F72 		.ascii	"short unsigned int\000"
+ 903      7420756E 
+ 903      7369676E 
+ 903      65642069 
+ 903      6E7400
+ 904              	.LASF0:
+ 905 0099 646F7562 		.ascii	"double\000"
+ 905      6C6500
+ 906              	.LASF11:
+ 907 00a0 696E7433 		.ascii	"int32_t\000"
+ 907      325F7400 
+ 908              	.LASF15:
+ 909 00a8 666C6F61 		.ascii	"float\000"
+ 909      7400
+ 910              	.LASF2:
+ 911 00ae 756E7369 		.ascii	"unsigned char\000"
+ 911      676E6564 
+ 911      20636861 
+ 911      7200
+ 912              	.LASF13:
+ 913 00bc 696E7431 		.ascii	"int16\000"
+ 913      3600
+ 914              	.LASF33:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cclr33xI.s 			page 19
+
+
+ 915 00c2 6C6F6361 		.ascii	"location\000"
+ 915      74696F6E 
+ 915      00
+ 916              	.LASF14:
+ 917 00cb 696E7433 		.ascii	"int32\000"
+ 917      3200
+ 918              	.LASF19:
+ 919 00d1 616E676C 		.ascii	"angle\000"
+ 919      6500
+ 920              	.LASF22:
+ 921 00d7 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 921      52784275 
+ 921      66666572 
+ 921      00
+ 922              	.LASF39:
+ 923 00e4 72657365 		.ascii	"reset_navigation\000"
+ 923      745F6E61 
+ 923      76696761 
+ 923      74696F6E 
+ 923      00
+ 924              	.LASF6:
+ 925 00f5 6C6F6E67 		.ascii	"long unsigned int\000"
+ 925      20756E73 
+ 925      69676E65 
+ 925      6420696E 
+ 925      7400
+ 926              	.LASF26:
+ 927 0107 436F7344 		.ascii	"CosDeg\000"
+ 927      656700
+ 928              	.LASF9:
+ 929 010e 756E7369 		.ascii	"unsigned int\000"
+ 929      676E6564 
+ 929      20696E74 
+ 929      00
+ 930              	.LASF37:
+ 931 011b 506F7369 		.ascii	"Position\000"
+ 931      74696F6E 
+ 931      00
+ 932              	.LASF8:
+ 933 0124 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 933      206C6F6E 
+ 933      6720756E 
+ 933      7369676E 
+ 933      65642069 
+ 934              	.LASF27:
+ 935 013b 6C6F635F 		.ascii	"loc_x_a\000"
+ 935      785F6100 
+ 936              	.LASF30:
+ 937 0143 6C6F635F 		.ascii	"loc_x_b\000"
+ 937      785F6200 
+ 938              	.LASF38:
+ 939 014b 7369676E 		.ascii	"signum\000"
+ 939      756D00
+ 940              	.LASF34:
+ 941 0152 474E5520 		.ascii	"GNU C 4.8.4 20140526 (release) [ARM/embedded-4_8-br"
+ 941      4320342E 
+ 941      382E3420 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cclr33xI.s 			page 20
+
+
+ 941      32303134 
+ 941      30353236 
+ 942 0185 616E6368 		.ascii	"anch revision 211358] -mcpu=cortex-m3 -mthumb -g -O"
+ 942      20726576 
+ 942      6973696F 
+ 942      6E203231 
+ 942      31333538 
+ 943 01b8 67202D66 		.ascii	"g -ffunction-sections\000"
+ 943      66756E63 
+ 943      74696F6E 
+ 943      2D736563 
+ 943      74696F6E 
+ 944              	.LASF17:
+ 945 01ce 73697A65 		.ascii	"sizetype\000"
+ 945      74797065 
+ 945      00
+ 946              	.LASF7:
+ 947 01d7 6C6F6E67 		.ascii	"long long int\000"
+ 947      206C6F6E 
+ 947      6720696E 
+ 947      7400
+ 948              	.LASF16:
+ 949 01e5 63686172 		.ascii	"char\000"
+ 949      00
+ 950              	.LASF3:
+ 951 01ea 73686F72 		.ascii	"short int\000"
+ 951      7420696E 
+ 951      7400
+ 952              	.LASF29:
+ 953 01f4 64617461 		.ascii	"data_ready_a\000"
+ 953      5F726561 
+ 953      64795F61 
+ 953      00
+ 954              	.LASF32:
+ 955 0201 64617461 		.ascii	"data_ready_b\000"
+ 955      5F726561 
+ 955      64795F62 
+ 955      00
+ 956              	.LASF12:
+ 957 020e 75696E74 		.ascii	"uint8\000"
+ 957      3800
+ 958              	.LASF21:
+ 959 0214 73746172 		.ascii	"start_navigation\000"
+ 959      745F6E61 
+ 959      76696761 
+ 959      74696F6E 
+ 959      00
+ 960              	.LASF5:
+ 961 0225 6C6F6E67 		.ascii	"long int\000"
+ 961      20696E74 
+ 961      00
+ 962              	.LASF40:
+ 963 022e 6973526F 		.ascii	"isRotating\000"
+ 963      74617469 
+ 963      6E6700
+ 964              	.LASF18:
+ 965 0239 6C6F6E67 		.ascii	"long double\000"
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cclr33xI.s 			page 21
+
+
+ 965      20646F75 
+ 965      626C6500 
+ 966              	.LASF1:
+ 967 0245 7369676E 		.ascii	"signed char\000"
+ 967      65642063 
+ 967      68617200 
+ 968              	.LASF20:
+ 969 0251 75706461 		.ascii	"update_position\000"
+ 969      74655F70 
+ 969      6F736974 
+ 969      696F6E00 
+ 970              	.LASF24:
+ 971 0261 636F6D70 		.ascii	"compass_heading\000"
+ 971      6173735F 
+ 971      68656164 
+ 971      696E6700 
+ 972              	.LASF28:
+ 973 0271 6C6F635F 		.ascii	"loc_y_a\000"
+ 973      795F6100 
+ 974              	.LASF31:
+ 975 0279 6C6F635F 		.ascii	"loc_y_b\000"
+ 975      795F6200 
+ 976              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.8.4 20140526 (release) [ARM/embedded-4_8-br

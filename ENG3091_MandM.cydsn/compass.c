@@ -33,8 +33,10 @@ if (compass_ready){
 int16 compass_x;
 int16 compass_y;
 int16 compass_z;
-double compass_heading;
+int16 compass_heading; //0-360 degrees
 volatile uint8 compass_ready;
+
+int16 original_compass_heading; //this makes our compass relative
 
 // These calibration values can be found by plotting the x,y pairs
 // whilst turning the compass through 360 degrees, then moving the 
@@ -47,12 +49,25 @@ CY_ISR(DRDY_INTERRUPT){
     Compass_DRDY_ISR_ClearPending();
 }
 
+//These are lookup tables storing sin and cos values in degrees
+double SinDeg[360];
+double CosDeg[360];
+
+void calculate_circular_functions(){
+    int i;
+    for (i = 0; i < 360; i++){
+        SinDeg[i] = sin((((double) i) - 180) * (M_PI / 180.0));
+        CosDeg[i] = cos((((double) i) - 180) * (M_PI / 180.0));
+    }
+}
+
 void start_compass(){
     compass_ready = 0;
     compass_x = 0;
     compass_y = 0;
     compass_z = 0;
     compass_heading = 0;
+    original_compass_heading = 0;
     
     I2C_Start();
     //Write configuration register A
@@ -94,7 +109,9 @@ void compass_read(){
     compass_x = ((data[0] << 8) | data[1]);
     compass_z = (data[2] << 8) | data[3];//Bizarrely, the device reads x,z,y...
     compass_y = ((data[4] << 8) | data[5]);
-    compass_heading = atan2((double) (compass_y - CALIBRATION_Y), (double) (compass_x - CALIBRATION_X));
+    compass_heading = atan2((double) (compass_y - CALIBRATION_Y), 
+                            (double) (compass_x - CALIBRATION_X)) * 
+                            (180/M_PI) + 180 - original_compass_heading;
 }
 
 /* [] END OF FILE */

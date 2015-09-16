@@ -18,9 +18,24 @@
     #define MRIGHT 0x2
     #define MBOTH 0x3
     
+    #define MOTOR_S_STOPPED 0
+    #define MOTOR_S_ROTATING 1
+    #define MOTOR_S_FORWARD 2
+    #define MOTOR_S_ARRIVED 3
+    
+    #define HEADING_ERROR_LIMIT 4
+    #define LEFT_MOTOR_SPEED_CORRECTION 30 //attempt to correct for unmatched motors
+    
     void start_motors(void);
     
-    void refresh_motor(int32 delta);
+    uint8 isRotating(); //Return true if a heading correction is taking place
+    
+    //Makes the robot drive to x,y position
+    void goto_position(int32 x, int32 y);
+    
+    void control_motors();
+    void setHeading(int16 new_heading);
+    void setDistance(int32 distance);
     void setRightRotate();
     void setLeftRotate();
     void setSpeed(uint8 motor, uint8 speed);

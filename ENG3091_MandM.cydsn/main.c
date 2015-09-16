@@ -9,11 +9,12 @@
  *
  * ========================================
 */
+
 #include <project.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <math.h>
-
+#include <stdlib.h>
 #include <mice.h>
 #include <mouse_a.h>
 #include <mouse_b.h>
@@ -22,18 +23,23 @@
 #include <buttons.h>
 #include <compass.h>
 #include <ultrasonic.h>
+#include <gripper.h>
 
 //this is in navigation.c
 extern struct Position location;
+
 //these are in button.c
 extern volatile uint8 but0_b;
 extern volatile uint8 but1_b;
+
 //These are in compass.c
 extern int16 compass_x;
 extern int16 compass_y;
 extern int16 compass_z;
-extern double compass_heading;
+extern int16 compass_heading;
 extern volatile uint8 compass_ready;
+extern int16 original_compass_heading; //We set this to make the angles relative
+
 //This is in ultrasonic.c
 extern volatile uint16 ultra_distance;
 
@@ -56,52 +62,72 @@ int main()
     /* ** INITIALIZE COMPONENTS ** */
     LCD_Start();
     Timer_Start();
-    USB_Start(0, USB_DWR_VDDD_OPERATION);
+    //USB_Start(0, USB_DWR_VDDD_OPERATION);
     //CyDelay(1000); give camera time to boot up
-    
-    //start_mice();
-    //start_navigation();
-    //start_motors();
+    calculate_circular_functions();
+    start_mice();
+    start_navigation();
+    start_motors();
     start_buttons();
     start_compass();
-    //start_ultrasonic();
+    start_gripper();
+    start_ultrasonic();
+    
+    BLUE_Write(1); //For some bizarre reason the blue led is inverted.??
     
     /* ** DECLARE VARIABLES ** */
     char outString[16];  // String to hold the ascii result
     uint32 time;
+    extern volatile int32 loc_y_a;
+    extern volatile int32 loc_y_b;
+    
     CyGlobalIntEnable;
     /* INFINITE LOOP */
+    //Wait for compass to be ready for reading
+    while (!compass_ready){;}
+    compass_read();
+    compass_ready = 0;
+    int state = 0;
+    original_compass_heading = compass_heading;
+    setHeading(0);
     for(;;)
     {   
+        //Update current time
         time = Timer_ReadCounter();
         
         //Read the compass when it is ready for reading
         if (compass_ready){
-            compass_ready = 0;
             compass_read();
-            print("%d %d %d\n", compass_x, compass_y, compass_z);
+            compass_ready = 0;
+            //print("%d %d %d\n", compass_x, compass_y, compass_z);
         }
         
-        if ((time % 2500) < 1250){
-            BLUE_Write(0);
-            RED_Write(0);
-        } else {
-            BLUE_Write(0);
-            RED_Write(0);
-        }
+        //Update the current position
+        update_position();
         
-        if ((time % 1000) == 0){
-            sprintf(outString, "x%d y%d", compass_x, compass_y);
-            LCD_ClearDisplay();
-            LCD_PosPrintString(0,0,outString);
-            sprintf(outString, "z%d h%d", compass_z, (int16) (compass_heading * 180.0/M_PI));
-            LCD_PosPrintString(1,0,outString);
-        }
-        
+        //Execute any motor control
+        control_motors();
+
+        //Handle buttons
         if (but1_b){
             but1_b = 0;
+            loc_y_b = 0;
+            goto_position(4000,4000);
+            //drop_puck();
         } else if (but0_b){
             but0_b = 0;
+            loc_y_b = 0;
+            //pickup_puck();
+            goto_position(0,0);
+        }
+        
+        //Print some info to the screen
+        if ((time % 1000) == 0){
+            LCD_ClearDisplay();
+            sprintf(outString, "x%ld y%ld a%d", location.x, location.y, location.angle);
+            LCD_PosPrintString(0,0,outString);
+            sprintf(outString, "yl%ld yr%ld u%d", loc_y_a, loc_y_b, ultra_distance);
+            LCD_PosPrintString(1,0,outString);
         }
     }
 }
