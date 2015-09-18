@@ -15,8 +15,6 @@
     #include <project.h>
     
     #define COMPASS_ADDR 0x1E
-    #define COMPASS_WADDR 0x3C
-    #define COMPASS_RADDR 0x3D
     
     //Moving average, Measurement Rate, Measurement Mode
     //0-MA2-MR3-MM

@@ -26,6 +26,8 @@
 #include <project.h>
 #include <stdio.h>
 
+/* ***** GRIPPER IS THE GREEN CABLE ******/
+
 /* SERVO CONSTANTS */
 #define MINIMUM_POINT 18
 #define MAXIMUM_POINT 50
@@ -35,28 +37,11 @@
 
 /* EXTRA CONSTANTS */
 #define PAUSE 50
- 
-
-
-int PWM_VAL = 25;
-char outString[40];
 
 void start_gripper(){
-    int i;
     /* Initialize the motor controller */
     Gripper_PWM_Start();
     Gripper_PWM_WriteCompare(MAXIMUM_POINT);
-    /* Whats this for?
-    while(1)
-    {   
-        for(i = 0; i <= 100; i += 2)
-        {
-            Gripper_PWM_WriteCompare(i);
-            CyDelay(500);
-            Gripper_PWM_WriteCompare(i-1);
-            CyDelay(500);
-        }
-    }*/
 }
 
 void pickup_puck(){
@@ -81,7 +66,7 @@ void pickup_angled_puck(){
 
 
 /* LEGACY FUNCTIONS FOR TESTING */
-
+/*
 void inc_gripper(){
     Gripper_PWM_WriteCompare(++PWM_VAL);
     LCD_ClearDisplay();
@@ -105,5 +90,5 @@ void dec_gripper(){
     //    CyDelay(10);
     //}
 }
-
+*/
 /* [] END OF FILE */

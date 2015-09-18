@@ -1,9 +1,10 @@
 -- Project:   C:\Users\xavieran\Desktop\ECE3091\PSOCProjects\ENG3091_MandM\ENG3091_MandM.cydsn\ENG3091_MandM.cyprj
--- Generated: 09/13/2015 14:16:58
+-- Generated: 09/16/2015 13:24:17
 -- PSoC Creator  3.2 SP1
 
 ENTITY ENG3091_MandM IS
     PORT(
+        ARM_PIN(0)_PAD : OUT std_ulogic;
         BLUE(0)_PAD : OUT std_ulogic;
         COMPASS_DRDY(0)_PAD : IN std_ulogic;
         D4(0)_PAD : OUT std_ulogic;
@@ -59,6 +60,7 @@ ENTITY ENG3091_MandM IS
 END ENG3091_MandM;
 
 ARCHITECTURE __DEFAULT__ OF ENG3091_MandM IS
+    SIGNAL ARM_PIN(0)__PA : bit;
     SIGNAL BLUE(0)__PA : bit;
     SIGNAL COMPASS_DRDY(0)__PA : bit;
     SIGNAL ClockBlock_100k : bit;
@@ -101,18 +103,20 @@ ARCHITECTURE __DEFAULT__ OF ENG3091_MandM IS
     SIGNAL Net_1273 : bit;
     SIGNAL Net_15 : bit;
     SIGNAL Net_1697 : bit;
-    ATTRIBUTE placement_force OF Net_1697 : SIGNAL IS "U(3,1,A)1";
+    ATTRIBUTE placement_force OF Net_1697 : SIGNAL IS "U(2,0,A)1";
     SIGNAL Net_2330 : bit;
-    ATTRIBUTE placement_force OF Net_2330 : SIGNAL IS "U(2,1,B)2";
+    ATTRIBUTE placement_force OF Net_2330 : SIGNAL IS "U(2,0,B)1";
     SIGNAL Net_242 : bit;
     SIGNAL Net_254 : bit;
     ATTRIBUTE udbclken_assigned OF Net_254 : SIGNAL IS "True";
     ATTRIBUTE global_signal OF Net_254 : SIGNAL IS true;
     SIGNAL Net_254_local : bit;
     SIGNAL Net_325 : bit;
+    SIGNAL Net_4370 : bit;
+    ATTRIBUTE placement_force OF Net_4370 : SIGNAL IS "U(3,4,A)3";
     SIGNAL Net_4376 : bit;
     SIGNAL Net_4378 : bit;
-    ATTRIBUTE placement_force OF Net_4378 : SIGNAL IS "U(0,0,B)1";
+    ATTRIBUTE placement_force OF Net_4378 : SIGNAL IS "U(2,0,A)0";
     SIGNAL Net_4386 : bit;
     ATTRIBUTE udbclken_assigned OF Net_4386 : SIGNAL IS "True";
     ATTRIBUTE global_signal OF Net_4386 : SIGNAL IS true;
@@ -123,9 +127,9 @@ ARCHITECTURE __DEFAULT__ OF ENG3091_MandM IS
     SIGNAL Net_52_local : bit;
     SIGNAL Net_53 : bit;
     SIGNAL Net_54 : bit;
-    ATTRIBUTE placement_force OF Net_54 : SIGNAL IS "U(2,3,B)3";
+    ATTRIBUTE placement_force OF Net_54 : SIGNAL IS "U(0,2,A)1";
     SIGNAL Net_55 : bit;
-    ATTRIBUTE placement_force OF Net_55 : SIGNAL IS "U(2,3,B)0";
+    ATTRIBUTE placement_force OF Net_55 : SIGNAL IS "U(0,4,B)2";
     SIGNAL Net_7 : bit;
     SIGNAL Net_8 : bit;
     SIGNAL Net_871 : bit;
@@ -151,14 +155,14 @@ ARCHITECTURE __DEFAULT__ OF ENG3091_MandM IS
     SIGNAL \Arm_PWM:PWMUDB:control_6\ : bit;
     SIGNAL \Arm_PWM:PWMUDB:control_7\ : bit;
     SIGNAL \Arm_PWM:PWMUDB:prevCompare1\ : bit;
-    ATTRIBUTE placement_force OF \Arm_PWM:PWMUDB:prevCompare1\ : SIGNAL IS "U(3,0,A)1";
+    ATTRIBUTE placement_force OF \Arm_PWM:PWMUDB:prevCompare1\ : SIGNAL IS "U(2,4,A)3";
     SIGNAL \Arm_PWM:PWMUDB:runmode_enable\ : bit;
-    ATTRIBUTE placement_force OF \Arm_PWM:PWMUDB:runmode_enable\ : SIGNAL IS "U(2,2,B)0";
+    ATTRIBUTE placement_force OF \Arm_PWM:PWMUDB:runmode_enable\ : SIGNAL IS "U(2,4,A)0";
     SIGNAL \HC_PWM:PWMUDB:sP16:pwmdp:u0.ce0__sig\ : bit;
     SIGNAL \Arm_PWM:PWMUDB:status_0\ : bit;
-    ATTRIBUTE placement_force OF \Arm_PWM:PWMUDB:status_0\ : SIGNAL IS "U(3,0,B)1";
+    ATTRIBUTE placement_force OF \Arm_PWM:PWMUDB:status_0\ : SIGNAL IS "U(2,4,A)2";
     SIGNAL \Arm_PWM:PWMUDB:status_2\ : bit;
-    ATTRIBUTE placement_force OF \Arm_PWM:PWMUDB:status_2\ : SIGNAL IS "U(3,0,A)2";
+    ATTRIBUTE placement_force OF \Arm_PWM:PWMUDB:status_2\ : SIGNAL IS "U(2,4,A)1";
     SIGNAL \Arm_PWM:PWMUDB:status_3\ : bit;
     SIGNAL \Arm_PWM:PWMUDB:tc_i\ : bit;
     SIGNAL \\\Button:Button(0)\\__PA\ : bit;
@@ -181,14 +185,14 @@ ARCHITECTURE __DEFAULT__ OF ENG3091_MandM IS
     SIGNAL \HC_PWM:PWMUDB:control_6\ : bit;
     SIGNAL \HC_PWM:PWMUDB:control_7\ : bit;
     SIGNAL \HC_PWM:PWMUDB:prevCompare1\ : bit;
-    ATTRIBUTE placement_force OF \HC_PWM:PWMUDB:prevCompare1\ : SIGNAL IS "U(2,1,B)3";
+    ATTRIBUTE placement_force OF \HC_PWM:PWMUDB:prevCompare1\ : SIGNAL IS "U(2,1,A)1";
     SIGNAL \HC_PWM:PWMUDB:prevCompare2\ : bit;
-    ATTRIBUTE placement_force OF \HC_PWM:PWMUDB:prevCompare2\ : SIGNAL IS "U(2,2,A)2";
+    ATTRIBUTE placement_force OF \HC_PWM:PWMUDB:prevCompare2\ : SIGNAL IS "U(2,1,B)0";
     SIGNAL \HC_PWM:PWMUDB:runmode_enable\ : bit;
-    ATTRIBUTE placement_force OF \HC_PWM:PWMUDB:runmode_enable\ : SIGNAL IS "U(3,1,B)2";
+    ATTRIBUTE placement_force OF \HC_PWM:PWMUDB:runmode_enable\ : SIGNAL IS "U(2,0,A)3";
     SIGNAL \HC_Timer:TimerUDB:sT16:timerdp:u0.ce0__sig\ : bit;
     SIGNAL \HC_PWM:PWMUDB:status_0\ : bit;
-    ATTRIBUTE placement_force OF \HC_PWM:PWMUDB:status_0\ : SIGNAL IS "U(2,1,A)1";
+    ATTRIBUTE placement_force OF \HC_PWM:PWMUDB:status_0\ : SIGNAL IS "U(2,1,B)2";
     SIGNAL \HC_PWM:PWMUDB:status_1\ : bit;
     ATTRIBUTE placement_force OF \HC_PWM:PWMUDB:status_1\ : SIGNAL IS "U(2,1,A)0";
     SIGNAL \HC_PWM:PWMUDB:status_2\ : bit;
@@ -200,28 +204,28 @@ ARCHITECTURE __DEFAULT__ OF ENG3091_MandM IS
     SIGNAL \HC_Timer:TimerUDB:status_2\ : bit;
     SIGNAL \HC_Timer:TimerUDB:status_3\ : bit;
     SIGNAL \HC_Timer:TimerUDB:status_tc\ : bit;
-    ATTRIBUTE placement_force OF \HC_Timer:TimerUDB:status_tc\ : SIGNAL IS "U(2,0,B)0";
+    ATTRIBUTE placement_force OF \HC_Timer:TimerUDB:status_tc\ : SIGNAL IS "U(3,1,A)0";
     SIGNAL \I2C:Net_1109_0\ : bit;
     SIGNAL \I2C:Net_1109_1\ : bit;
     SIGNAL \I2C:Net_643_3\ : bit;
-    ATTRIBUTE placement_force OF \I2C:Net_643_3\ : SIGNAL IS "U(0,1,B)0";
+    ATTRIBUTE placement_force OF \I2C:Net_643_3\ : SIGNAL IS "U(0,4,A)0";
     SIGNAL \I2C:Net_697\ : bit;
     SIGNAL \I2C:Net_970\ : bit;
     ATTRIBUTE udbclken_assigned OF \I2C:Net_970\ : SIGNAL IS "True";
     ATTRIBUTE global_signal OF \I2C:Net_970\ : SIGNAL IS true;
     SIGNAL \I2C:Net_970_local\ : bit;
     SIGNAL \I2C:bI2C_UDB:bus_busy_reg\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:bus_busy_reg\ : SIGNAL IS "U(1,0,B)0";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:bus_busy_reg\ : SIGNAL IS "U(1,5,B)0";
     SIGNAL \I2C:bI2C_UDB:clk_eq_reg\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:clk_eq_reg\ : SIGNAL IS "U(0,1,B)2";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:clk_eq_reg\ : SIGNAL IS "U(0,3,A)1";
     SIGNAL \I2C:bI2C_UDB:clkgen_cl1\ : bit;
     SIGNAL \I2C:bI2C_UDB:clkgen_tc1_reg\ : bit;
     ATTRIBUTE placement_force OF \I2C:bI2C_UDB:clkgen_tc1_reg\ : SIGNAL IS "U(0,3,B)0";
     SIGNAL \I2C:bI2C_UDB:clkgen_tc2_reg\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:clkgen_tc2_reg\ : SIGNAL IS "U(0,5,B)1";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:clkgen_tc2_reg\ : SIGNAL IS "U(1,2,B)3";
     SIGNAL \I2C:bI2C_UDB:clkgen_tc\ : bit;
     SIGNAL \I2C:bI2C_UDB:cnt_reset\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:cnt_reset\ : SIGNAL IS "U(0,1,A)3";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:cnt_reset\ : SIGNAL IS "U(0,4,B)1";
     ATTRIBUTE soft OF \I2C:bI2C_UDB:cnt_reset\ : SIGNAL IS 1;
     SIGNAL \I2C:bI2C_UDB:control_0\ : bit;
     SIGNAL \I2C:bI2C_UDB:control_1\ : bit;
@@ -232,62 +236,62 @@ ARCHITECTURE __DEFAULT__ OF ENG3091_MandM IS
     SIGNAL \I2C:bI2C_UDB:control_6\ : bit;
     SIGNAL \I2C:bI2C_UDB:control_7\ : bit;
     SIGNAL \I2C:bI2C_UDB:cs_addr_clkgen_0\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:cs_addr_clkgen_0\ : SIGNAL IS "U(0,3,A)2";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:cs_addr_clkgen_0\ : SIGNAL IS "U(0,3,B)2";
     SIGNAL \I2C:bI2C_UDB:cs_addr_clkgen_1\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:cs_addr_clkgen_1\ : SIGNAL IS "U(0,3,B)2";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:cs_addr_clkgen_1\ : SIGNAL IS "U(0,3,A)3";
     SIGNAL \I2C:bI2C_UDB:cs_addr_shifter_0\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:cs_addr_shifter_0\ : SIGNAL IS "U(0,3,A)1";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:cs_addr_shifter_0\ : SIGNAL IS "U(0,2,A)3";
     SIGNAL \I2C:bI2C_UDB:cs_addr_shifter_1\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:cs_addr_shifter_1\ : SIGNAL IS "U(1,4,B)1";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:cs_addr_shifter_1\ : SIGNAL IS "U(2,2,B)1";
     ATTRIBUTE soft OF \I2C:bI2C_UDB:cs_addr_shifter_1\ : SIGNAL IS 1;
     SIGNAL \I2C:bI2C_UDB:lost_arb_reg\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:lost_arb_reg\ : SIGNAL IS "U(1,1,A)3";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:lost_arb_reg\ : SIGNAL IS "U(2,2,B)3";
     SIGNAL \I2C:bI2C_UDB:m_reset\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:m_reset\ : SIGNAL IS "U(1,3,B)2";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:m_reset\ : SIGNAL IS "U(2,2,A)3";
     SIGNAL \I2C:bI2C_UDB:m_state_0\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:m_state_0\ : SIGNAL IS "U(0,4,B)2";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:m_state_0\ : SIGNAL IS "U(0,5,B)0";
     SIGNAL \I2C:bI2C_UDB:m_state_0_split\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:m_state_0_split\ : SIGNAL IS "U(1,4,A)1";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:m_state_0_split\ : SIGNAL IS "U(2,4,B)1";
     SIGNAL \I2C:bI2C_UDB:m_state_1\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:m_state_1\ : SIGNAL IS "U(0,0,A)0";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:m_state_1\ : SIGNAL IS "U(0,2,B)0";
     SIGNAL \I2C:bI2C_UDB:m_state_2\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:m_state_2\ : SIGNAL IS "U(1,0,B)2";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:m_state_2\ : SIGNAL IS "U(1,3,A)3";
     SIGNAL \I2C:bI2C_UDB:m_state_2_split\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:m_state_2_split\ : SIGNAL IS "U(1,1,B)0";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:m_state_2_split\ : SIGNAL IS "U(1,3,B)0";
     SIGNAL \I2C:bI2C_UDB:m_state_3\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:m_state_3\ : SIGNAL IS "U(1,4,B)0";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:m_state_3\ : SIGNAL IS "U(2,3,B)0";
     SIGNAL \I2C:bI2C_UDB:m_state_4\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:m_state_4\ : SIGNAL IS "U(1,5,A)0";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:m_state_4\ : SIGNAL IS "U(2,2,A)1";
     SIGNAL \I2C:bI2C_UDB:m_state_4_split\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:m_state_4_split\ : SIGNAL IS "U(1,5,B)0";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:m_state_4_split\ : SIGNAL IS "U(2,3,A)1";
     SIGNAL \I2C:bI2C_UDB:scl_in_last2_reg\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:scl_in_last2_reg\ : SIGNAL IS "U(1,0,B)1";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:scl_in_last2_reg\ : SIGNAL IS "U(1,5,A)0";
     SIGNAL \I2C:bI2C_UDB:scl_in_last_reg\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:scl_in_last_reg\ : SIGNAL IS "U(1,1,A)1";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:scl_in_last_reg\ : SIGNAL IS "U(1,4,A)2";
     SIGNAL \I2C:bI2C_UDB:scl_in_reg\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:scl_in_reg\ : SIGNAL IS "U(0,1,A)1";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:scl_in_reg\ : SIGNAL IS "U(0,3,B)3";
     SIGNAL \I2C:bI2C_UDB:sda_in_last2_reg\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:sda_in_last2_reg\ : SIGNAL IS "U(1,0,B)3";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:sda_in_last2_reg\ : SIGNAL IS "U(1,5,A)3";
     SIGNAL \I2C:bI2C_UDB:sda_in_last_reg\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:sda_in_last_reg\ : SIGNAL IS "U(0,4,A)1";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:sda_in_last_reg\ : SIGNAL IS "U(1,3,A)2";
     SIGNAL \I2C:bI2C_UDB:sda_in_reg\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:sda_in_reg\ : SIGNAL IS "U(0,4,A)2";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:sda_in_reg\ : SIGNAL IS "U(1,2,A)0";
     SIGNAL \I2C:bI2C_UDB:shift_data_out\ : bit;
     SIGNAL \I2C:bI2C_UDB:status_0\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:status_0\ : SIGNAL IS "U(1,0,A)2";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:status_0\ : SIGNAL IS "U(1,4,B)2";
     SIGNAL \I2C:bI2C_UDB:status_1\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:status_1\ : SIGNAL IS "U(0,4,B)3";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:status_1\ : SIGNAL IS "U(1,2,A)2";
     SIGNAL \I2C:bI2C_UDB:status_2\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:status_2\ : SIGNAL IS "U(1,3,A)0";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:status_2\ : SIGNAL IS "U(1,5,A)1";
     SIGNAL \I2C:bI2C_UDB:status_3\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:status_3\ : SIGNAL IS "U(1,3,B)1";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:status_3\ : SIGNAL IS "U(1,4,A)0";
     SIGNAL \I2C:bI2C_UDB:status_4\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:status_4\ : SIGNAL IS "U(1,5,A)1";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:status_4\ : SIGNAL IS "U(1,5,B)2";
     SIGNAL \I2C:bI2C_UDB:status_5\ : bit;
-    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:status_5\ : SIGNAL IS "U(1,0,A)1";
+    ATTRIBUTE placement_force OF \I2C:bI2C_UDB:status_5\ : SIGNAL IS "U(1,5,B)1";
     SIGNAL \I2C:bI2C_UDB:tx_reg_empty\ : bit;
     SIGNAL \I2C:sda_x_wire\ : bit;
-    ATTRIBUTE placement_force OF \I2C:sda_x_wire\ : SIGNAL IS "U(0,5,A)1";
+    ATTRIBUTE placement_force OF \I2C:sda_x_wire\ : SIGNAL IS "U(1,2,B)0";
     SIGNAL \LCD:Cntl_Port:control_6\ : bit;
     SIGNAL \LCD:Cntl_Port:control_7\ : bit;
     SIGNAL \MOTOR_L:Net_54\ : bit;
@@ -339,7 +343,7 @@ ARCHITECTURE __DEFAULT__ OF ENG3091_MandM IS
     SIGNAL \Timer:TimerUDB:status_2\ : bit;
     SIGNAL \Timer:TimerUDB:status_3\ : bit;
     SIGNAL \Timer:TimerUDB:status_tc\ : bit;
-    ATTRIBUTE placement_force OF \Timer:TimerUDB:status_tc\ : SIGNAL IS "U(3,2,A)2";
+    ATTRIBUTE placement_force OF \Timer:TimerUDB:status_tc\ : SIGNAL IS "U(3,2,A)0";
     SIGNAL \\\USB:Dm(0)\\__PA\ : bit;
     SIGNAL \\\USB:Dp(0)\\__PA\ : bit;
     SIGNAL \USB:Net_1010\ : bit;
@@ -365,7 +369,7 @@ ARCHITECTURE __DEFAULT__ OF ENG3091_MandM IS
     SIGNAL \USB:ept_int_7\ : bit;
     SIGNAL \USB:ept_int_8\ : bit;
     SIGNAL __ONE__ : bit;
-    ATTRIBUTE placement_force OF __ONE__ : SIGNAL IS "U(2,1,B)1";
+    ATTRIBUTE placement_force OF __ONE__ : SIGNAL IS "U(2,3,B)2";
     ATTRIBUTE POWER OF __ONE__ : SIGNAL IS true;
     SIGNAL __ZERO__ : bit;
     ATTRIBUTE GROUND OF __ZERO__ : SIGNAL IS true;
@@ -437,239 +441,243 @@ ARCHITECTURE __DEFAULT__ OF ENG3091_MandM IS
     SIGNAL \Timer:TimerUDB:sT24:timerdp:u1.cfbo__sig\ : bit;
     SIGNAL \Timer:TimerUDB:sT24:timerdp:u2.sor__sig\ : bit;
     SIGNAL \Timer:TimerUDB:sT24:timerdp:u2.cmsbo__sig\ : bit;
-    ATTRIBUTE lib_model OF BLUE(0) : LABEL IS "iocell1";
+    ATTRIBUTE lib_model OF ARM_PIN(0) : LABEL IS "iocell1";
+    ATTRIBUTE Location OF ARM_PIN(0) : LABEL IS "P0[4]";
+    ATTRIBUTE lib_model OF BLUE(0) : LABEL IS "iocell2";
     ATTRIBUTE Location OF BLUE(0) : LABEL IS "P5[5]";
-    ATTRIBUTE lib_model OF COMPASS_DRDY(0) : LABEL IS "iocell2";
+    ATTRIBUTE lib_model OF COMPASS_DRDY(0) : LABEL IS "iocell3";
     ATTRIBUTE Location OF COMPASS_DRDY(0) : LABEL IS "P12[6]";
     ATTRIBUTE Location OF ClockBlock : LABEL IS "F(Clock,0)";
     ATTRIBUTE Location OF Compass_DRDY_ISR : LABEL IS "[IntrHod=(0)][IntrId=(0)]";
-    ATTRIBUTE lib_model OF D4(0) : LABEL IS "iocell3";
+    ATTRIBUTE lib_model OF D4(0) : LABEL IS "iocell4";
     ATTRIBUTE Location OF D4(0) : LABEL IS "P4[0]";
-    ATTRIBUTE lib_model OF D5(0) : LABEL IS "iocell4";
+    ATTRIBUTE lib_model OF D5(0) : LABEL IS "iocell5";
     ATTRIBUTE Location OF D5(0) : LABEL IS "P4[1]";
-    ATTRIBUTE lib_model OF D6(0) : LABEL IS "iocell5";
+    ATTRIBUTE lib_model OF D6(0) : LABEL IS "iocell6";
     ATTRIBUTE Location OF D6(0) : LABEL IS "P0[6]";
-    ATTRIBUTE lib_model OF D7(0) : LABEL IS "iocell6";
+    ATTRIBUTE lib_model OF D7(0) : LABEL IS "iocell7";
     ATTRIBUTE Location OF D7(0) : LABEL IS "P0[7]";
-    ATTRIBUTE lib_model OF E(0) : LABEL IS "iocell7";
+    ATTRIBUTE lib_model OF E(0) : LABEL IS "iocell8";
     ATTRIBUTE Location OF E(0) : LABEL IS "P12[2]";
-    ATTRIBUTE lib_model OF GRIPPER_PIN(0) : LABEL IS "iocell8";
+    ATTRIBUTE lib_model OF GRIPPER_PIN(0) : LABEL IS "iocell9";
     ATTRIBUTE Location OF GRIPPER_PIN(0) : LABEL IS "P0[5]";
-    ATTRIBUTE lib_model OF HC_ECHO(0) : LABEL IS "iocell9";
+    ATTRIBUTE lib_model OF HC_ECHO(0) : LABEL IS "iocell10";
     ATTRIBUTE Location OF HC_ECHO(0) : LABEL IS "P3[2]";
     ATTRIBUTE Location OF HC_ISR : LABEL IS "[IntrHod=(0)][IntrId=(1)]";
-    ATTRIBUTE lib_model OF HC_TRIG(0) : LABEL IS "iocell10";
+    ATTRIBUTE lib_model OF HC_TRIG(0) : LABEL IS "iocell11";
     ATTRIBUTE Location OF HC_TRIG(0) : LABEL IS "P3[3]";
-    ATTRIBUTE lib_model OF I2C_SCL(0) : LABEL IS "iocell11";
+    ATTRIBUTE lib_model OF I2C_SCL(0) : LABEL IS "iocell12";
     ATTRIBUTE Location OF I2C_SCL(0) : LABEL IS "P1[7]";
-    ATTRIBUTE lib_model OF I2C_SDA(0) : LABEL IS "iocell12";
+    ATTRIBUTE lib_model OF I2C_SDA(0) : LABEL IS "iocell13";
     ATTRIBUTE Location OF I2C_SDA(0) : LABEL IS "P1[6]";
-    ATTRIBUTE lib_model OF ISR_CHECKP(0) : LABEL IS "iocell13";
-    ATTRIBUTE Location OF ISR_CHECKP(0) : LABEL IS "P0[4]";
-    ATTRIBUTE lib_model OF MLEN(0) : LABEL IS "iocell14";
+    ATTRIBUTE lib_model OF ISR_CHECKP(0) : LABEL IS "iocell14";
+    ATTRIBUTE Location OF ISR_CHECKP(0) : LABEL IS "P0[2]";
+    ATTRIBUTE lib_model OF MLEN(0) : LABEL IS "iocell15";
     ATTRIBUTE Location OF MLEN(0) : LABEL IS "P12[5]";
-    ATTRIBUTE lib_model OF MLIN1(0) : LABEL IS "iocell15";
+    ATTRIBUTE lib_model OF MLIN1(0) : LABEL IS "iocell16";
     ATTRIBUTE Location OF MLIN1(0) : LABEL IS "P6[5]";
-    ATTRIBUTE lib_model OF MLIN2(0) : LABEL IS "iocell16";
+    ATTRIBUTE lib_model OF MLIN2(0) : LABEL IS "iocell17";
     ATTRIBUTE Location OF MLIN2(0) : LABEL IS "P6[6]";
-    ATTRIBUTE lib_model OF MREN(0) : LABEL IS "iocell17";
+    ATTRIBUTE lib_model OF MREN(0) : LABEL IS "iocell18";
     ATTRIBUTE Location OF MREN(0) : LABEL IS "P5[1]";
-    ATTRIBUTE lib_model OF MRIN1(0) : LABEL IS "iocell18";
+    ATTRIBUTE lib_model OF MRIN1(0) : LABEL IS "iocell19";
     ATTRIBUTE Location OF MRIN1(0) : LABEL IS "P6[7]";
-    ATTRIBUTE lib_model OF MRIN2(0) : LABEL IS "iocell19";
+    ATTRIBUTE lib_model OF MRIN2(0) : LABEL IS "iocell20";
     ATTRIBUTE Location OF MRIN2(0) : LABEL IS "P5[0]";
     ATTRIBUTE lib_model OF Net_1697 : LABEL IS "macrocell1";
-    ATTRIBUTE Location OF Net_1697 : LABEL IS "U(3,1)";
+    ATTRIBUTE Location OF Net_1697 : LABEL IS "U(2,0)";
     ATTRIBUTE lib_model OF Net_2330 : LABEL IS "macrocell2";
-    ATTRIBUTE Location OF Net_2330 : LABEL IS "U(2,1)";
-    ATTRIBUTE lib_model OF Net_4378 : LABEL IS "macrocell3";
-    ATTRIBUTE Location OF Net_4378 : LABEL IS "U(0,0)";
-    ATTRIBUTE lib_model OF Net_54 : LABEL IS "macrocell4";
-    ATTRIBUTE Location OF Net_54 : LABEL IS "U(2,3)";
-    ATTRIBUTE lib_model OF Net_55 : LABEL IS "macrocell5";
-    ATTRIBUTE Location OF Net_55 : LABEL IS "U(2,3)";
-    ATTRIBUTE lib_model OF ORANGE(0) : LABEL IS "iocell20";
+    ATTRIBUTE Location OF Net_2330 : LABEL IS "U(2,0)";
+    ATTRIBUTE lib_model OF Net_4370 : LABEL IS "macrocell3";
+    ATTRIBUTE Location OF Net_4370 : LABEL IS "U(3,4)";
+    ATTRIBUTE lib_model OF Net_4378 : LABEL IS "macrocell4";
+    ATTRIBUTE Location OF Net_4378 : LABEL IS "U(2,0)";
+    ATTRIBUTE lib_model OF Net_54 : LABEL IS "macrocell5";
+    ATTRIBUTE Location OF Net_54 : LABEL IS "U(0,2)";
+    ATTRIBUTE lib_model OF Net_55 : LABEL IS "macrocell6";
+    ATTRIBUTE Location OF Net_55 : LABEL IS "U(0,4)";
+    ATTRIBUTE lib_model OF ORANGE(0) : LABEL IS "iocell21";
     ATTRIBUTE Location OF ORANGE(0) : LABEL IS "P5[6]";
-    ATTRIBUTE lib_model OF RED(0) : LABEL IS "iocell21";
+    ATTRIBUTE lib_model OF RED(0) : LABEL IS "iocell22";
     ATTRIBUTE Location OF RED(0) : LABEL IS "P12[7]";
-    ATTRIBUTE lib_model OF RS(0) : LABEL IS "iocell22";
+    ATTRIBUTE lib_model OF RS(0) : LABEL IS "iocell23";
     ATTRIBUTE Location OF RS(0) : LABEL IS "P15[3]";
     ATTRIBUTE Location OF SCLK_A : LABEL IS "F(PICU,0)";
-    ATTRIBUTE lib_model OF SCLK_A(0) : LABEL IS "iocell23";
+    ATTRIBUTE lib_model OF SCLK_A(0) : LABEL IS "iocell24";
     ATTRIBUTE Location OF SCLK_A(0) : LABEL IS "P0[0]";
     ATTRIBUTE Location OF SCLK_B : LABEL IS "F(PICU,7)";
-    ATTRIBUTE lib_model OF SCLK_B(0) : LABEL IS "iocell24";
+    ATTRIBUTE lib_model OF SCLK_B(0) : LABEL IS "iocell25";
     ATTRIBUTE Location OF SCLK_B(0) : LABEL IS "P12[0]";
-    ATTRIBUTE lib_model OF SDAT_A(0) : LABEL IS "iocell25";
+    ATTRIBUTE lib_model OF SDAT_A(0) : LABEL IS "iocell26";
     ATTRIBUTE Location OF SDAT_A(0) : LABEL IS "P0[1]";
-    ATTRIBUTE lib_model OF SDAT_B(0) : LABEL IS "iocell26";
+    ATTRIBUTE lib_model OF SDAT_B(0) : LABEL IS "iocell27";
     ATTRIBUTE Location OF SDAT_B(0) : LABEL IS "P12[1]";
-    ATTRIBUTE lib_model OF V0(0) : LABEL IS "iocell27";
+    ATTRIBUTE lib_model OF V0(0) : LABEL IS "iocell28";
     ATTRIBUTE Location OF V0(0) : LABEL IS "P12[3]";
-    ATTRIBUTE lib_model OF WHITE(0) : LABEL IS "iocell28";
+    ATTRIBUTE lib_model OF WHITE(0) : LABEL IS "iocell29";
     ATTRIBUTE Location OF WHITE(0) : LABEL IS "P5[4]";
     ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:genblk1:ctrlreg\ : LABEL IS "controlcell1";
-    ATTRIBUTE Location OF \Arm_PWM:PWMUDB:genblk1:ctrlreg\ : LABEL IS "U(2,2)";
+    ATTRIBUTE Location OF \Arm_PWM:PWMUDB:genblk1:ctrlreg\ : LABEL IS "U(2,4)";
     ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:genblk8:stsreg\ : LABEL IS "statusicell1";
-    ATTRIBUTE Location OF \Arm_PWM:PWMUDB:genblk8:stsreg\ : LABEL IS "U(3,0)";
-    ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:prevCompare1\ : LABEL IS "macrocell6";
-    ATTRIBUTE Location OF \Arm_PWM:PWMUDB:prevCompare1\ : LABEL IS "U(3,0)";
-    ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:runmode_enable\ : LABEL IS "macrocell7";
-    ATTRIBUTE Location OF \Arm_PWM:PWMUDB:runmode_enable\ : LABEL IS "U(2,2)";
+    ATTRIBUTE Location OF \Arm_PWM:PWMUDB:genblk8:stsreg\ : LABEL IS "U(2,4)";
+    ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:prevCompare1\ : LABEL IS "macrocell7";
+    ATTRIBUTE Location OF \Arm_PWM:PWMUDB:prevCompare1\ : LABEL IS "U(2,4)";
+    ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:runmode_enable\ : LABEL IS "macrocell8";
+    ATTRIBUTE Location OF \Arm_PWM:PWMUDB:runmode_enable\ : LABEL IS "U(2,4)";
     ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:sP16:pwmdp:u0\ : LABEL IS "datapathcell1";
-    ATTRIBUTE Location OF \Arm_PWM:PWMUDB:sP16:pwmdp:u0\ : LABEL IS "U(2,0)";
+    ATTRIBUTE Location OF \Arm_PWM:PWMUDB:sP16:pwmdp:u0\ : LABEL IS "U(3,4)";
     ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:sP16:pwmdp:u1\ : LABEL IS "datapathcell2";
-    ATTRIBUTE Location OF \Arm_PWM:PWMUDB:sP16:pwmdp:u1\ : LABEL IS "U(3,0)";
-    ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:status_0\ : LABEL IS "macrocell8";
-    ATTRIBUTE Location OF \Arm_PWM:PWMUDB:status_0\ : LABEL IS "U(3,0)";
-    ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:status_2\ : LABEL IS "macrocell9";
-    ATTRIBUTE Location OF \Arm_PWM:PWMUDB:status_2\ : LABEL IS "U(3,0)";
-    ATTRIBUTE lib_model OF \Button:Button(0)\ : LABEL IS "iocell29";
+    ATTRIBUTE Location OF \Arm_PWM:PWMUDB:sP16:pwmdp:u1\ : LABEL IS "U(2,4)";
+    ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:status_0\ : LABEL IS "macrocell9";
+    ATTRIBUTE Location OF \Arm_PWM:PWMUDB:status_0\ : LABEL IS "U(2,4)";
+    ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:status_2\ : LABEL IS "macrocell10";
+    ATTRIBUTE Location OF \Arm_PWM:PWMUDB:status_2\ : LABEL IS "U(2,4)";
+    ATTRIBUTE lib_model OF \Button:Button(0)\ : LABEL IS "iocell30";
     ATTRIBUTE Location OF \Button:Button(0)\ : LABEL IS "P5[7]";
-    ATTRIBUTE lib_model OF \Button:Button(1)\ : LABEL IS "iocell30";
+    ATTRIBUTE lib_model OF \Button:Button(1)\ : LABEL IS "iocell31";
     ATTRIBUTE Location OF \Button:Button(1)\ : LABEL IS "P6[4]";
     ATTRIBUTE Location OF \Button:PWM:PWMHW\ : LABEL IS "F(Timer,0)";
     ATTRIBUTE Location OF \Gripper_PWM:PWMHW\ : LABEL IS "F(Timer,1)";
     ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:genblk1:ctrlreg\ : LABEL IS "controlcell2";
-    ATTRIBUTE Location OF \HC_PWM:PWMUDB:genblk1:ctrlreg\ : LABEL IS "U(3,1)";
+    ATTRIBUTE Location OF \HC_PWM:PWMUDB:genblk1:ctrlreg\ : LABEL IS "U(2,0)";
     ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:genblk8:stsreg\ : LABEL IS "statusicell2";
     ATTRIBUTE Location OF \HC_PWM:PWMUDB:genblk8:stsreg\ : LABEL IS "U(2,1)";
-    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:prevCompare1\ : LABEL IS "macrocell10";
+    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:prevCompare1\ : LABEL IS "macrocell11";
     ATTRIBUTE Location OF \HC_PWM:PWMUDB:prevCompare1\ : LABEL IS "U(2,1)";
-    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:prevCompare2\ : LABEL IS "macrocell11";
-    ATTRIBUTE Location OF \HC_PWM:PWMUDB:prevCompare2\ : LABEL IS "U(2,2)";
-    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:runmode_enable\ : LABEL IS "macrocell12";
-    ATTRIBUTE Location OF \HC_PWM:PWMUDB:runmode_enable\ : LABEL IS "U(3,1)";
+    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:prevCompare2\ : LABEL IS "macrocell12";
+    ATTRIBUTE Location OF \HC_PWM:PWMUDB:prevCompare2\ : LABEL IS "U(2,1)";
+    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:runmode_enable\ : LABEL IS "macrocell13";
+    ATTRIBUTE Location OF \HC_PWM:PWMUDB:runmode_enable\ : LABEL IS "U(2,0)";
     ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:sP16:pwmdp:u0\ : LABEL IS "datapathcell3";
     ATTRIBUTE Location OF \HC_PWM:PWMUDB:sP16:pwmdp:u0\ : LABEL IS "U(3,1)";
     ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:sP16:pwmdp:u1\ : LABEL IS "datapathcell4";
     ATTRIBUTE Location OF \HC_PWM:PWMUDB:sP16:pwmdp:u1\ : LABEL IS "U(2,1)";
-    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:status_0\ : LABEL IS "macrocell13";
+    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:status_0\ : LABEL IS "macrocell14";
     ATTRIBUTE Location OF \HC_PWM:PWMUDB:status_0\ : LABEL IS "U(2,1)";
-    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:status_1\ : LABEL IS "macrocell14";
+    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:status_1\ : LABEL IS "macrocell15";
     ATTRIBUTE Location OF \HC_PWM:PWMUDB:status_1\ : LABEL IS "U(2,1)";
-    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:status_2\ : LABEL IS "macrocell15";
+    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:status_2\ : LABEL IS "macrocell16";
     ATTRIBUTE Location OF \HC_PWM:PWMUDB:status_2\ : LABEL IS "U(2,1)";
     ATTRIBUTE lib_model OF \HC_Timer:TimerUDB:rstSts:stsreg\ : LABEL IS "statusicell3";
-    ATTRIBUTE Location OF \HC_Timer:TimerUDB:rstSts:stsreg\ : LABEL IS "U(2,0)";
+    ATTRIBUTE Location OF \HC_Timer:TimerUDB:rstSts:stsreg\ : LABEL IS "U(3,1)";
     ATTRIBUTE lib_model OF \HC_Timer:TimerUDB:sT16:timerdp:u0\ : LABEL IS "datapathcell5";
-    ATTRIBUTE Location OF \HC_Timer:TimerUDB:sT16:timerdp:u0\ : LABEL IS "U(0,1)";
+    ATTRIBUTE Location OF \HC_Timer:TimerUDB:sT16:timerdp:u0\ : LABEL IS "U(2,0)";
     ATTRIBUTE lib_model OF \HC_Timer:TimerUDB:sT16:timerdp:u1\ : LABEL IS "datapathcell6";
-    ATTRIBUTE Location OF \HC_Timer:TimerUDB:sT16:timerdp:u1\ : LABEL IS "U(0,0)";
-    ATTRIBUTE lib_model OF \HC_Timer:TimerUDB:status_tc\ : LABEL IS "macrocell16";
-    ATTRIBUTE Location OF \HC_Timer:TimerUDB:status_tc\ : LABEL IS "U(2,0)";
+    ATTRIBUTE Location OF \HC_Timer:TimerUDB:sT16:timerdp:u1\ : LABEL IS "U(3,0)";
+    ATTRIBUTE lib_model OF \HC_Timer:TimerUDB:status_tc\ : LABEL IS "macrocell17";
+    ATTRIBUTE Location OF \HC_Timer:TimerUDB:status_tc\ : LABEL IS "U(3,1)";
     ATTRIBUTE Location OF \I2C:I2C_IRQ\ : LABEL IS "[IntrHod=(0)][IntrId=(2)]";
-    ATTRIBUTE lib_model OF \I2C:Net_643_3\ : LABEL IS "macrocell17";
-    ATTRIBUTE Location OF \I2C:Net_643_3\ : LABEL IS "U(0,1)";
+    ATTRIBUTE lib_model OF \I2C:Net_643_3\ : LABEL IS "macrocell18";
+    ATTRIBUTE Location OF \I2C:Net_643_3\ : LABEL IS "U(0,4)";
     ATTRIBUTE lib_model OF \I2C:bI2C_UDB:Master:ClkGen:u0\ : LABEL IS "datapathcell7";
     ATTRIBUTE Location OF \I2C:bI2C_UDB:Master:ClkGen:u0\ : LABEL IS "U(0,3)";
     ATTRIBUTE lib_model OF \I2C:bI2C_UDB:Shifter:u0\ : LABEL IS "datapathcell8";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:Shifter:u0\ : LABEL IS "U(0,4)";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:Shifter:u0\ : LABEL IS "U(1,2)";
     ATTRIBUTE lib_model OF \I2C:bI2C_UDB:StsReg\ : LABEL IS "statusicell4";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:StsReg\ : LABEL IS "U(1,3)";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:StsReg\ : LABEL IS "U(1,4)";
     ATTRIBUTE lib_model OF \I2C:bI2C_UDB:SyncCtl:CtrlReg\ : LABEL IS "controlcell3";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:SyncCtl:CtrlReg\ : LABEL IS "U(1,3)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:bus_busy_reg\ : LABEL IS "macrocell18";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:bus_busy_reg\ : LABEL IS "U(1,0)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:clk_eq_reg\ : LABEL IS "macrocell19";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:clk_eq_reg\ : LABEL IS "U(0,1)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:clkgen_tc1_reg\ : LABEL IS "macrocell20";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:SyncCtl:CtrlReg\ : LABEL IS "U(2,3)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:bus_busy_reg\ : LABEL IS "macrocell19";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:bus_busy_reg\ : LABEL IS "U(1,5)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:clk_eq_reg\ : LABEL IS "macrocell20";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:clk_eq_reg\ : LABEL IS "U(0,3)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:clkgen_tc1_reg\ : LABEL IS "macrocell21";
     ATTRIBUTE Location OF \I2C:bI2C_UDB:clkgen_tc1_reg\ : LABEL IS "U(0,3)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:clkgen_tc2_reg\ : LABEL IS "macrocell21";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:clkgen_tc2_reg\ : LABEL IS "U(0,5)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:cnt_reset\ : LABEL IS "macrocell22";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:cnt_reset\ : LABEL IS "U(0,1)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:cs_addr_clkgen_0\ : LABEL IS "macrocell23";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:clkgen_tc2_reg\ : LABEL IS "macrocell22";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:clkgen_tc2_reg\ : LABEL IS "U(1,2)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:cnt_reset\ : LABEL IS "macrocell23";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:cnt_reset\ : LABEL IS "U(0,4)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:cs_addr_clkgen_0\ : LABEL IS "macrocell24";
     ATTRIBUTE Location OF \I2C:bI2C_UDB:cs_addr_clkgen_0\ : LABEL IS "U(0,3)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:cs_addr_clkgen_1\ : LABEL IS "macrocell24";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:cs_addr_clkgen_1\ : LABEL IS "macrocell25";
     ATTRIBUTE Location OF \I2C:bI2C_UDB:cs_addr_clkgen_1\ : LABEL IS "U(0,3)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:cs_addr_shifter_0\ : LABEL IS "macrocell25";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:cs_addr_shifter_0\ : LABEL IS "U(0,3)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:cs_addr_shifter_1\ : LABEL IS "macrocell26";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:cs_addr_shifter_1\ : LABEL IS "U(1,4)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:lost_arb_reg\ : LABEL IS "macrocell27";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:lost_arb_reg\ : LABEL IS "U(1,1)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_reset\ : LABEL IS "macrocell28";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:m_reset\ : LABEL IS "U(1,3)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_0\ : LABEL IS "macrocell29";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:m_state_0\ : LABEL IS "U(0,4)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_0_split\ : LABEL IS "macrocell30";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:m_state_0_split\ : LABEL IS "U(1,4)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_1\ : LABEL IS "macrocell31";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:m_state_1\ : LABEL IS "U(0,0)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_2\ : LABEL IS "macrocell32";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:m_state_2\ : LABEL IS "U(1,0)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_2_split\ : LABEL IS "macrocell33";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:m_state_2_split\ : LABEL IS "U(1,1)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_3\ : LABEL IS "macrocell34";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:m_state_3\ : LABEL IS "U(1,4)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_4\ : LABEL IS "macrocell35";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:m_state_4\ : LABEL IS "U(1,5)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_4_split\ : LABEL IS "macrocell36";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:m_state_4_split\ : LABEL IS "U(1,5)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:scl_in_last2_reg\ : LABEL IS "macrocell37";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:scl_in_last2_reg\ : LABEL IS "U(1,0)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:scl_in_last_reg\ : LABEL IS "macrocell38";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:scl_in_last_reg\ : LABEL IS "U(1,1)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:scl_in_reg\ : LABEL IS "macrocell39";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:scl_in_reg\ : LABEL IS "U(0,1)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:sda_in_last2_reg\ : LABEL IS "macrocell40";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:sda_in_last2_reg\ : LABEL IS "U(1,0)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:sda_in_last_reg\ : LABEL IS "macrocell41";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:sda_in_last_reg\ : LABEL IS "U(0,4)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:sda_in_reg\ : LABEL IS "macrocell42";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:sda_in_reg\ : LABEL IS "U(0,4)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_0\ : LABEL IS "macrocell43";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:status_0\ : LABEL IS "U(1,0)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_1\ : LABEL IS "macrocell44";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:status_1\ : LABEL IS "U(0,4)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_2\ : LABEL IS "macrocell45";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:status_2\ : LABEL IS "U(1,3)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_3\ : LABEL IS "macrocell46";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:status_3\ : LABEL IS "U(1,3)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_4\ : LABEL IS "macrocell47";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:cs_addr_shifter_0\ : LABEL IS "macrocell26";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:cs_addr_shifter_0\ : LABEL IS "U(0,2)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:cs_addr_shifter_1\ : LABEL IS "macrocell27";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:cs_addr_shifter_1\ : LABEL IS "U(2,2)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:lost_arb_reg\ : LABEL IS "macrocell28";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:lost_arb_reg\ : LABEL IS "U(2,2)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_reset\ : LABEL IS "macrocell29";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:m_reset\ : LABEL IS "U(2,2)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_0\ : LABEL IS "macrocell30";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:m_state_0\ : LABEL IS "U(0,5)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_0_split\ : LABEL IS "macrocell31";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:m_state_0_split\ : LABEL IS "U(2,4)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_1\ : LABEL IS "macrocell32";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:m_state_1\ : LABEL IS "U(0,2)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_2\ : LABEL IS "macrocell33";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:m_state_2\ : LABEL IS "U(1,3)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_2_split\ : LABEL IS "macrocell34";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:m_state_2_split\ : LABEL IS "U(1,3)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_3\ : LABEL IS "macrocell35";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:m_state_3\ : LABEL IS "U(2,3)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_4\ : LABEL IS "macrocell36";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:m_state_4\ : LABEL IS "U(2,2)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_4_split\ : LABEL IS "macrocell37";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:m_state_4_split\ : LABEL IS "U(2,3)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:scl_in_last2_reg\ : LABEL IS "macrocell38";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:scl_in_last2_reg\ : LABEL IS "U(1,5)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:scl_in_last_reg\ : LABEL IS "macrocell39";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:scl_in_last_reg\ : LABEL IS "U(1,4)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:scl_in_reg\ : LABEL IS "macrocell40";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:scl_in_reg\ : LABEL IS "U(0,3)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:sda_in_last2_reg\ : LABEL IS "macrocell41";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:sda_in_last2_reg\ : LABEL IS "U(1,5)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:sda_in_last_reg\ : LABEL IS "macrocell42";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:sda_in_last_reg\ : LABEL IS "U(1,3)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:sda_in_reg\ : LABEL IS "macrocell43";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:sda_in_reg\ : LABEL IS "U(1,2)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_0\ : LABEL IS "macrocell44";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:status_0\ : LABEL IS "U(1,4)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_1\ : LABEL IS "macrocell45";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:status_1\ : LABEL IS "U(1,2)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_2\ : LABEL IS "macrocell46";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:status_2\ : LABEL IS "U(1,5)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_3\ : LABEL IS "macrocell47";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:status_3\ : LABEL IS "U(1,4)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_4\ : LABEL IS "macrocell48";
     ATTRIBUTE Location OF \I2C:bI2C_UDB:status_4\ : LABEL IS "U(1,5)";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_5\ : LABEL IS "macrocell48";
-    ATTRIBUTE Location OF \I2C:bI2C_UDB:status_5\ : LABEL IS "U(1,0)";
-    ATTRIBUTE lib_model OF \I2C:sda_x_wire\ : LABEL IS "macrocell49";
-    ATTRIBUTE Location OF \I2C:sda_x_wire\ : LABEL IS "U(0,5)";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_5\ : LABEL IS "macrocell49";
+    ATTRIBUTE Location OF \I2C:bI2C_UDB:status_5\ : LABEL IS "U(1,5)";
+    ATTRIBUTE lib_model OF \I2C:sda_x_wire\ : LABEL IS "macrocell50";
+    ATTRIBUTE Location OF \I2C:sda_x_wire\ : LABEL IS "U(1,2)";
     ATTRIBUTE lib_model OF \LCD:Cntl_Port:Sync:ctrl_reg\ : LABEL IS "controlcell4";
-    ATTRIBUTE Location OF \LCD:Cntl_Port:Sync:ctrl_reg\ : LABEL IS "U(3,3)";
+    ATTRIBUTE Location OF \LCD:Cntl_Port:Sync:ctrl_reg\ : LABEL IS "U(3,4)";
     ATTRIBUTE Location OF \MOTOR_L:PWMHW\ : LABEL IS "F(Timer,2)";
     ATTRIBUTE Location OF \MOTOR_R:PWMHW\ : LABEL IS "F(Timer,3)";
-    ATTRIBUTE lib_model OF \OV9650_1:D(0)\ : LABEL IS "iocell31";
+    ATTRIBUTE lib_model OF \OV9650_1:D(0)\ : LABEL IS "iocell32";
     ATTRIBUTE Location OF \OV9650_1:D(0)\ : LABEL IS "P4[7]";
-    ATTRIBUTE lib_model OF \OV9650_1:D(1)\ : LABEL IS "iocell32";
+    ATTRIBUTE lib_model OF \OV9650_1:D(1)\ : LABEL IS "iocell33";
     ATTRIBUTE Location OF \OV9650_1:D(1)\ : LABEL IS "P4[5]";
-    ATTRIBUTE lib_model OF \OV9650_1:D(2)\ : LABEL IS "iocell33";
+    ATTRIBUTE lib_model OF \OV9650_1:D(2)\ : LABEL IS "iocell34";
     ATTRIBUTE Location OF \OV9650_1:D(2)\ : LABEL IS "P4[4]";
-    ATTRIBUTE lib_model OF \OV9650_1:D(3)\ : LABEL IS "iocell34";
+    ATTRIBUTE lib_model OF \OV9650_1:D(3)\ : LABEL IS "iocell35";
     ATTRIBUTE Location OF \OV9650_1:D(3)\ : LABEL IS "P4[6]";
-    ATTRIBUTE lib_model OF \OV9650_1:D(4)\ : LABEL IS "iocell35";
+    ATTRIBUTE lib_model OF \OV9650_1:D(4)\ : LABEL IS "iocell36";
     ATTRIBUTE Location OF \OV9650_1:D(4)\ : LABEL IS "P6[0]";
-    ATTRIBUTE lib_model OF \OV9650_1:D(5)\ : LABEL IS "iocell36";
+    ATTRIBUTE lib_model OF \OV9650_1:D(5)\ : LABEL IS "iocell37";
     ATTRIBUTE Location OF \OV9650_1:D(5)\ : LABEL IS "P6[2]";
-    ATTRIBUTE lib_model OF \OV9650_1:D(6)\ : LABEL IS "iocell37";
+    ATTRIBUTE lib_model OF \OV9650_1:D(6)\ : LABEL IS "iocell38";
     ATTRIBUTE Location OF \OV9650_1:D(6)\ : LABEL IS "P6[3]";
-    ATTRIBUTE lib_model OF \OV9650_1:D(7)\ : LABEL IS "iocell38";
+    ATTRIBUTE lib_model OF \OV9650_1:D(7)\ : LABEL IS "iocell39";
     ATTRIBUTE Location OF \OV9650_1:D(7)\ : LABEL IS "P15[5]";
     ATTRIBUTE lib_model OF \OV9650_1:DMA\ : LABEL IS "drqcell1";
     ATTRIBUTE Location OF \OV9650_1:DMA\ : LABEL IS "[DrqHod=(0)][DrqId=(0)]";
     ATTRIBUTE lib_model OF \OV9650_1:FIFO:dp\ : LABEL IS "datapathcell9";
     ATTRIBUTE Location OF \OV9650_1:FIFO:dp\ : LABEL IS "U(0,5)";
-    ATTRIBUTE lib_model OF \OV9650_1:HREF(0)\ : LABEL IS "iocell39";
+    ATTRIBUTE lib_model OF \OV9650_1:HREF(0)\ : LABEL IS "iocell40";
     ATTRIBUTE Location OF \OV9650_1:HREF(0)\ : LABEL IS "P2[0]";
     ATTRIBUTE Location OF \OV9650_1:I2C:I2C_FF\ : LABEL IS "F(I2C,0)";
     ATTRIBUTE Location OF \OV9650_1:I2C:I2C_IRQ\ : LABEL IS "[IntrHod=(0)][IntrId=(15)]";
-    ATTRIBUTE lib_model OF \OV9650_1:PCLK(0)\ : LABEL IS "iocell40";
+    ATTRIBUTE lib_model OF \OV9650_1:PCLK(0)\ : LABEL IS "iocell41";
     ATTRIBUTE Location OF \OV9650_1:PCLK(0)\ : LABEL IS "P6[1]";
-    ATTRIBUTE lib_model OF \OV9650_1:SIOC(0)\ : LABEL IS "iocell41";
+    ATTRIBUTE lib_model OF \OV9650_1:SIOC(0)\ : LABEL IS "iocell42";
     ATTRIBUTE Location OF \OV9650_1:SIOC(0)\ : LABEL IS "P2[3]";
-    ATTRIBUTE lib_model OF \OV9650_1:SIOD(0)\ : LABEL IS "iocell42";
+    ATTRIBUTE lib_model OF \OV9650_1:SIOD(0)\ : LABEL IS "iocell43";
     ATTRIBUTE Location OF \OV9650_1:SIOD(0)\ : LABEL IS "P2[5]";
-    ATTRIBUTE lib_model OF \OV9650_1:VSYNC(0)\ : LABEL IS "iocell43";
+    ATTRIBUTE lib_model OF \OV9650_1:VSYNC(0)\ : LABEL IS "iocell44";
     ATTRIBUTE Location OF \OV9650_1:VSYNC(0)\ : LABEL IS "P2[2]";
-    ATTRIBUTE lib_model OF \OV9650_1:XCLK(0)\ : LABEL IS "iocell44";
+    ATTRIBUTE lib_model OF \OV9650_1:XCLK(0)\ : LABEL IS "iocell45";
     ATTRIBUTE Location OF \OV9650_1:XCLK(0)\ : LABEL IS "P15[4]";
     ATTRIBUTE lib_model OF \Timer:TimerUDB:rstSts:stsreg\ : LABEL IS "statusicell5";
     ATTRIBUTE Location OF \Timer:TimerUDB:rstSts:stsreg\ : LABEL IS "U(3,2)";
@@ -681,11 +689,11 @@ ARCHITECTURE __DEFAULT__ OF ENG3091_MandM IS
     ATTRIBUTE Location OF \Timer:TimerUDB:sT24:timerdp:u1\ : LABEL IS "U(3,3)";
     ATTRIBUTE lib_model OF \Timer:TimerUDB:sT24:timerdp:u2\ : LABEL IS "datapathcell12";
     ATTRIBUTE Location OF \Timer:TimerUDB:sT24:timerdp:u2\ : LABEL IS "U(3,2)";
-    ATTRIBUTE lib_model OF \Timer:TimerUDB:status_tc\ : LABEL IS "macrocell50";
+    ATTRIBUTE lib_model OF \Timer:TimerUDB:status_tc\ : LABEL IS "macrocell51";
     ATTRIBUTE Location OF \Timer:TimerUDB:status_tc\ : LABEL IS "U(3,2)";
-    ATTRIBUTE lib_model OF \USB:Dm(0)\ : LABEL IS "iocell45";
+    ATTRIBUTE lib_model OF \USB:Dm(0)\ : LABEL IS "iocell46";
     ATTRIBUTE Location OF \USB:Dm(0)\ : LABEL IS "P15[7]";
-    ATTRIBUTE lib_model OF \USB:Dp(0)\ : LABEL IS "iocell46";
+    ATTRIBUTE lib_model OF \USB:Dp(0)\ : LABEL IS "iocell47";
     ATTRIBUTE Location OF \USB:Dp(0)\ : LABEL IS "P15[6]";
     ATTRIBUTE Location OF \USB:Dp\ : LABEL IS "F(PICU,8)";
     ATTRIBUTE Location OF \USB:USB\ : LABEL IS "F(USB,0)";
@@ -697,8 +705,8 @@ ARCHITECTURE __DEFAULT__ OF ENG3091_MandM IS
     ATTRIBUTE Location OF \USB:ep_2\ : LABEL IS "[IntrHod=(0)][IntrId=(5)]";
     ATTRIBUTE Location OF \USB:ep_3\ : LABEL IS "[IntrHod=(0)][IntrId=(6)]";
     ATTRIBUTE Location OF \USB:sof_int\ : LABEL IS "[IntrHod=(0)][IntrId=(21)]";
-    ATTRIBUTE lib_model OF __ONE__ : LABEL IS "macrocell51";
-    ATTRIBUTE Location OF __ONE__ : LABEL IS "U(2,1)";
+    ATTRIBUTE lib_model OF __ONE__ : LABEL IS "macrocell52";
+    ATTRIBUTE Location OF __ONE__ : LABEL IS "U(2,3)";
     ATTRIBUTE Location OF but0 : LABEL IS "[IntrHod=(0)][IntrId=(7)]";
     ATTRIBUTE Location OF but1 : LABEL IS "[IntrHod=(0)][IntrId=(8)]";
     ATTRIBUTE Location OF sclk_a_isr : LABEL IS "[IntrHod=(0)][IntrId=(4)]";
@@ -1039,6 +1047,97 @@ ARCHITECTURE __DEFAULT__ OF ENG3091_MandM IS
             dma_termin : OUT std_ulogic);
     END COMPONENT;
 BEGIN
+
+    ARM_PIN:logicalport
+        GENERIC MAP(
+            drive_mode => "110",
+            ibuf_enabled => "1",
+            id => "e430887a-cd82-4881-9260-1da045e21a02",
+            init_dr_st => "0",
+            input_buffer_sel => "00",
+            input_clk_en => 0,
+            input_sync => "1",
+            input_sync_mode => "0",
+            intr_mode => "00",
+            invert_in_clock => 0,
+            invert_in_clock_en => 0,
+            invert_in_reset => 0,
+            invert_out_clock => 0,
+            invert_out_clock_en => 0,
+            invert_out_reset => 0,
+            io_voltage => "",
+            layout_mode => "CONTIGUOUS",
+            oe_conn => "0",
+            oe_reset => 0,
+            oe_sync => "0",
+            output_clk_en => 0,
+            output_clock_mode => "0",
+            output_conn => "1",
+            output_mode => "0",
+            output_reset => 0,
+            output_sync => "0",
+            ovt_hyst_trim => "0",
+            ovt_needed => "0",
+            ovt_slew_control => "00",
+            pa_in_clock => -1,
+            pa_in_clock_en => -1,
+            pa_in_reset => -1,
+            pa_out_clock => -1,
+            pa_out_clock_en => -1,
+            pa_out_reset => -1,
+            pin_aliases => "",
+            pin_mode => "O",
+            por_state => 4,
+            port_alias_group => "",
+            port_alias_required => 0,
+            sio_group_cnt => 0,
+            sio_hifreq => "",
+            sio_hyst => "1",
+            sio_ibuf => "00000000",
+            sio_info => "00",
+            sio_obuf => "00000000",
+            sio_refsel => "00000000",
+            sio_vtrip => "00000000",
+            slew_rate => "0",
+            spanning => 0,
+            sw_only => 0,
+            use_annotation => "0",
+            vtrip => "10",
+            width => 1,
+            in_clk_inv => 0,
+            in_clken_inv => 0,
+            in_clken_mode => 1,
+            in_rst_inv => 0,
+            out_clk_inv => 0,
+            out_clken_inv => 0,
+            out_clken_mode => 1,
+            out_rst_inv => 0)
+        PORT MAP(
+            in_clock_en => open,
+            in_reset => open,
+            out_clock_en => open,
+            out_reset => open);
+
+    ARM_PIN(0):iocell
+        GENERIC MAP(
+            in_sync_mode => 0,
+            out_sync_mode => 0,
+            oe_sync_mode => 0,
+            logicalport => "ARM_PIN",
+            logicalport_pin_id => 0,
+            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000101")
+        PORT MAP(
+            pa_out => ARM_PIN(0)__PA,
+            oe => open,
+            pin_input => Net_4370,
+            pad_out => ARM_PIN(0)_PAD,
+            pad_in => ARM_PIN(0)_PAD,
+            in_clock => open,
+            in_clock_en => '1',
+            in_reset => '0',
+            out_clock => open,
+            out_clock_en => '1',
+            out_reset => '0');
 
     BLUE:logicalport
         GENERIC MAP(
@@ -2827,6 +2926,17 @@ BEGIN
             clock_0 => Net_4386,
             main_0 => \HC_PWM:PWMUDB:runmode_enable\,
             main_1 => \HC_PWM:PWMUDB:cmp2_less\);
+
+    Net_4370:macrocell
+        GENERIC MAP(
+            eqn_main => "(main_0 * main_1)",
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            q => Net_4370,
+            clock_0 => Net_1260,
+            main_0 => \Arm_PWM:PWMUDB:runmode_enable\,
+            main_1 => \Arm_PWM:PWMUDB:cmp1_less\);
 
     Net_4378:macrocell
         GENERIC MAP(

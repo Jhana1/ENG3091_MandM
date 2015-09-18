@@ -29,11 +29,13 @@ int32 start_y;
 int32 end_x;
 int32 end_y;
 
+//Hold the current state of the motors
+uint8 motor_state;
+uint8 just_arrived;
 uint8 currently_rotating;
 uint8 isRotating(){
     return currently_rotating;
 }
-
 
 // From compass.c
 extern int16 compass_heading;
@@ -41,6 +43,7 @@ extern int16 compass_heading;
 extern volatile int32 loc_y_b;
 // From navigation.c
 extern volatile struct Position location;
+extern int32 delta_y_distance; 
 
 void rotate_left(int speed);
 void rotate_right(int speed);
@@ -83,21 +86,43 @@ void control_motors(){
         return;
     }
     
-    // We are at the correct heading, so go forward the required distance
-    int32 dx = (end_x - location.x);
-    int32 dy = (end_y - location.y);
-    int32 dd = sqrt(dx*dx + dy*dy);
+    int distance_error;
     
-    if (abs(dd) > 500){
-        setSpeed(MBOTH, clip(dd/2, 255));
-        setForward(MBOTH);
-        currently_rotating = 0;
-    } else {
-        setCoast(MBOTH);
-        currently_rotating = 0;
+    switch (motor_state){
+        case MOTOR_S_STOPPED:
+            break; //Do nothing
+        case MOTOR_S_FORWARD:
+            distance_error = desired_distance - delta_y_distance;
+            if (abs(distance_error) > 500){
+                setSpeed(MBOTH, clip(abs(delta_y_distance - desired_distance)/2, 255));
+                setForward(MBOTH);
+                currently_rotating = 0;
+            } else {
+                setSpeed(MBOTH, 0);
+                setCoast(MBOTH);
+                motor_state = MOTOR_S_STOPPED;
+            }
+            break;
+        case MOTOR_S_BACKWARD:           
+            distance_error = desired_distance - delta_y_distance;
+            if (abs(distance_error) > 500){
+                setSpeed(MBOTH, clip(abs(delta_y_distance - desired_distance)/2, 255));
+                setReverse(MBOTH);
+                currently_rotating = 0;
+            } else {
+                setSpeed(MBOTH, 0);
+                setCoast(MBOTH);
+                motor_state = MOTOR_S_STOPPED;
+            }
+            break;
+            break;
     }
 }
 
+
+/*
+ * Makes the robot drive from current location to the specified x, y position
+ */
 void goto_position(int32 x, int32 y){
     start_x = location.x;
     start_y = location.y;
@@ -110,24 +135,63 @@ void goto_position(int32 x, int32 y){
 }
 
 
+/* 
+ * Makes the robot drive forward *distance* centimeters
+ */
+void go_forward(int32 distance){
+    reset_delta_y_distance();
+    desired_distance = distance;
+    motor_state = MOTOR_S_FORWARD;
+}
+
+/*
+ * Makes the robot drive backward *distance* centimeters
+ */
+void go_backward(int32 distance){
+    reset_delta_y_distance();
+    desired_distance = distance;
+    motor_state = MOTOR_S_BACKWARD;
+}
+
+/*
+ * Makes the robot rotate *angle* degrees.
+ * angle > 0 rotates right, angle < 0 rotates left
+ */
+void rotate_degrees(int16 angle){
+    desired_heading = (desired_heading + angle) % 360;
+}
+
+/* 
+ * Sets the robots heading to *new_heading*
+ */
 void setHeading(int16 new_heading){
     desired_heading = new_heading;
 }
 
+
+/* 
+ * Sets the motors to rotate the robot left
+ */
 void rotate_left(int speed){
     setForward(MRIGHT);
     setReverse(MLEFT);
     setSpeed(MBOTH, speed);
 }
 
+/*
+ * Sets the motors to rotate the robot right at *speed*
+ */
 void rotate_right(int speed){
     setForward(MLEFT);
     setReverse(MRIGHT);
     setSpeed(MBOTH, speed);
 }
 
+
+/*
+ * Initializes the motor PWM modules and sets the motors to stopped
+ */
 void start_motors(){
-    /* Initialize the motor controller */
     MOTOR_L_Start();
     MLIN1_Write(0);
     MLIN2_Write(0);
@@ -139,11 +203,17 @@ void start_motors(){
     MOTOR_R_WriteCompare(0);
 }
 
+
+/*
+ * Set *motor* speed to *speed*
+ * Speed between 0 and 255. Note that the motors won't start to actually push
+ * the robot forward til around 100
+ */ 
 void setSpeed(uint8 motor, uint8 speed){
     /* Set bit 1 of motor to select motor 1 
      * Set bit 2 of motor to select motor 2
      */
-    if (motor & MLEFT){
+    if (motor & MLEFT){ //Slow down the left motor because it tends to be faster
         MOTOR_L_WriteCompare(speed - LEFT_MOTOR_SPEED_CORRECTION);
     }
     
@@ -152,6 +222,10 @@ void setSpeed(uint8 motor, uint8 speed){
     }
 }
 
+
+/*
+ * Set *motor* to coast
+ */ 
 void setCoast(uint8 motor){
         if (motor & MLEFT){
         MLIN1_Write(0);
@@ -164,6 +238,10 @@ void setCoast(uint8 motor){
     }
 }
 
+
+/*
+ * Set *motor* to forward drive
+ */ 
 void setForward(uint8 motor){
     if (motor & MLEFT){
         MLIN1_Write(1);
@@ -176,6 +254,9 @@ void setForward(uint8 motor){
     }
 }
 
+/*
+ * Set *motor* to reverse drive
+ */ 
 void setReverse(uint8 motor){
     if (motor & MLEFT){
         MLIN1_Write(0);

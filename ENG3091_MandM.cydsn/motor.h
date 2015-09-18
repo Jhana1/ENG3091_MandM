@@ -21,9 +21,10 @@
     #define MOTOR_S_STOPPED 0
     #define MOTOR_S_ROTATING 1
     #define MOTOR_S_FORWARD 2
-    #define MOTOR_S_ARRIVED 3
+    #define MOTOR_S_BACKWARD 3
+    #define MOTOR_S_ARRIVED 4
     
-    #define HEADING_ERROR_LIMIT 4
+    #define HEADING_ERROR_LIMIT 4 //degrees
     #define LEFT_MOTOR_SPEED_CORRECTION 30 //attempt to correct for unmatched motors
     
     void start_motors(void);

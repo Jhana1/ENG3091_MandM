@@ -19,6 +19,7 @@
     };
     
     void reset_navigation();
+    void reset_delta_y_distance();
     void calculate_circular_functions();
     void start_navigation();
     void update_position();

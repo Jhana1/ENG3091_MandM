@@ -105,6 +105,8 @@
 #include "HC_Timer.h"
 #include "HC_Clock.h"
 #include "Arm_PWM.h"
+#include "ARM_PIN_aliases.h"
+#include "ARM_PIN.h"
 #include "LCD_Cntl_Port.h"
 #include "USB_Dm_aliases.h"
 #include "USB_Dm.h"

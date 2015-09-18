@@ -41,9 +41,12 @@ int16 original_compass_heading; //this makes our compass relative
 // These calibration values can be found by plotting the x,y pairs
 // whilst turning the compass through 360 degrees, then moving the 
 // resulting circle to center on the origin
+//AT HOME
+//#define CALIBRATION_X -25
+//#define CALIBRATION_Y 50
+//AT THE LAB/ARENA
 #define CALIBRATION_X 25
-#define CALIBRATION_Y -50
-
+#define CALIBRATION_Y -25
 CY_ISR(DRDY_INTERRUPT){
     compass_ready = 1;
     Compass_DRDY_ISR_ClearPending();
@@ -109,8 +112,8 @@ void compass_read(){
     compass_x = ((data[0] << 8) | data[1]);
     compass_z = (data[2] << 8) | data[3];//Bizarrely, the device reads x,z,y...
     compass_y = ((data[4] << 8) | data[5]);
-    compass_heading = atan2((double) (compass_y - CALIBRATION_Y), 
-                            (double) (compass_x - CALIBRATION_X)) * 
+    compass_heading = atan2((double) (compass_y + CALIBRATION_Y), 
+                            (double) (compass_x + CALIBRATION_X)) * 
                             (180/M_PI) + 180 - original_compass_heading;
 }
 

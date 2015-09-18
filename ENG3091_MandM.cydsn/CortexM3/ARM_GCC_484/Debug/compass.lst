@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
   29:.\compass.c   **** #include <project.h>
   30:.\compass.c   **** #include <compass.h>
   31:.\compass.c   **** #include <math.h>
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 2
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 2
 
 
   32:.\compass.c   **** 
@@ -73,11 +73,14 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
   41:.\compass.c   **** // These calibration values can be found by plotting the x,y pairs
   42:.\compass.c   **** // whilst turning the compass through 360 degrees, then moving the 
   43:.\compass.c   **** // resulting circle to center on the origin
-  44:.\compass.c   **** #define CALIBRATION_X 25
-  45:.\compass.c   **** #define CALIBRATION_Y -50
-  46:.\compass.c   **** 
-  47:.\compass.c   **** CY_ISR(DRDY_INTERRUPT){
-  27              		.loc 1 47 0
+  44:.\compass.c   **** //AT HOME
+  45:.\compass.c   **** //#define CALIBRATION_X -25
+  46:.\compass.c   **** //#define CALIBRATION_Y 50
+  47:.\compass.c   **** //AT THE LAB/ARENA
+  48:.\compass.c   **** #define CALIBRATION_X 25
+  49:.\compass.c   **** #define CALIBRATION_Y -25
+  50:.\compass.c   **** CY_ISR(DRDY_INTERRUPT){
+  27              		.loc 1 50 0
   28              		.cfi_startproc
   29              		@ args = 0, pretend = 0, frame = 0
   30              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -85,13 +88,13 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
   32              		.cfi_def_cfa_offset 8
   33              		.cfi_offset 3, -8
   34              		.cfi_offset 14, -4
-  48:.\compass.c   ****     compass_ready = 1;
-  35              		.loc 1 48 0
+  51:.\compass.c   ****     compass_ready = 1;
+  35              		.loc 1 51 0
   36 0002 0122     		movs	r2, #1
   37 0004 024B     		ldr	r3, .L2
   38 0006 1A70     		strb	r2, [r3]
-  49:.\compass.c   ****     Compass_DRDY_ISR_ClearPending();
-  39              		.loc 1 49 0
+  52:.\compass.c   ****     Compass_DRDY_ISR_ClearPending();
+  39              		.loc 1 52 0
   40 0008 FFF7FEFF 		bl	Compass_DRDY_ISR_ClearPending
   41              	.LVL0:
   42 000c 08BD     		pop	{r3, pc}
@@ -113,17 +116,17 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
   58              		.type	calculate_circular_functions, %function
   59              	calculate_circular_functions:
   60              	.LFB64:
-  50:.\compass.c   **** }
-  51:.\compass.c   **** 
-  52:.\compass.c   **** //These are lookup tables storing sin and cos values in degrees
-  53:.\compass.c   **** double SinDeg[360];
-  54:.\compass.c   **** double CosDeg[360];
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 3
+  53:.\compass.c   **** }
+  54:.\compass.c   **** 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 3
 
 
-  55:.\compass.c   **** 
-  56:.\compass.c   **** void calculate_circular_functions(){
-  61              		.loc 1 56 0
+  55:.\compass.c   **** //These are lookup tables storing sin and cos values in degrees
+  56:.\compass.c   **** double SinDeg[360];
+  57:.\compass.c   **** double CosDeg[360];
+  58:.\compass.c   **** 
+  59:.\compass.c   **** void calculate_circular_functions(){
+  61              		.loc 1 59 0
   62              		.cfi_startproc
   63              		@ args = 0, pretend = 0, frame = 0
   64              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -140,22 +143,22 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
   75              		.cfi_offset 11, -8
   76              		.cfi_offset 14, -4
   77              	.LVL1:
-  57:.\compass.c   ****     int i;
-  58:.\compass.c   ****     for (i = 0; i < 360; i++){
-  78              		.loc 1 58 0
+  60:.\compass.c   ****     int i;
+  61:.\compass.c   ****     for (i = 0; i < 360; i++){
+  78              		.loc 1 61 0
   79 0004 4FF0000A 		mov	r10, #0
-  59:.\compass.c   ****         SinDeg[i] = sin((((double) i) - 180) * (M_PI / 180.0));
-  80              		.loc 1 59 0
+  62:.\compass.c   ****         SinDeg[i] = sin((((double) i) - 180) * (M_PI / 180.0));
+  80              		.loc 1 62 0
   81 0008 0026     		movs	r6, #0
   82 000a 174F     		ldr	r7, .L7+8
   83 000c 0FF25009 		adr	r9, .L7
   84 0010 D9E90089 		ldrd	r8, [r9]
-  58:.\compass.c   ****     for (i = 0; i < 360; i++){
-  85              		.loc 1 58 0
+  61:.\compass.c   ****     for (i = 0; i < 360; i++){
+  85              		.loc 1 61 0
   86 0014 1EE0     		b	.L5
   87              	.LVL2:
   88              	.L6:
-  89              		.loc 1 59 0 discriminator 2
+  89              		.loc 1 62 0 discriminator 2
   90 0016 5046     		mov	r0, r10
   91 0018 FFF7FEFF 		bl	__aeabi_i2d
   92              	.LVL3:
@@ -175,30 +178,30 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  106 0038 0C4B     		ldr	r3, .L7+12
  107 003a 5B44     		add	r3, r3, fp
  108 003c C3E90001 		strd	r0, [r3]
-  60:.\compass.c   ****         CosDeg[i] = cos((((double) i) - 180) * (M_PI / 180.0));
- 109              		.loc 1 60 0 discriminator 2
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 4
+
+
+  63:.\compass.c   ****         CosDeg[i] = cos((((double) i) - 180) * (M_PI / 180.0));
+ 109              		.loc 1 63 0 discriminator 2
  110 0040 2046     		mov	r0, r4
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 4
-
-
  111 0042 2946     		mov	r1, r5
  112 0044 FFF7FEFF 		bl	cos
  113              	.LVL7:
  114 0048 094B     		ldr	r3, .L7+16
  115 004a 9B44     		add	fp, fp, r3
  116 004c CBE90001 		strd	r0, [fp]
-  58:.\compass.c   ****     for (i = 0; i < 360; i++){
- 117              		.loc 1 58 0 discriminator 2
+  61:.\compass.c   ****     for (i = 0; i < 360; i++){
+ 117              		.loc 1 61 0 discriminator 2
  118 0050 0AF1010A 		add	r10, r10, #1
  119              	.LVL8:
  120              	.L5:
-  58:.\compass.c   ****     for (i = 0; i < 360; i++){
- 121              		.loc 1 58 0 is_stmt 0 discriminator 1
+  61:.\compass.c   ****     for (i = 0; i < 360; i++){
+ 121              		.loc 1 61 0 is_stmt 0 discriminator 1
  122 0054 BAF5B47F 		cmp	r10, #360
  123 0058 DDDB     		blt	.L6
-  61:.\compass.c   ****     }
-  62:.\compass.c   **** }
- 124              		.loc 1 62 0 is_stmt 1
+  64:.\compass.c   ****     }
+  65:.\compass.c   **** }
+ 124              		.loc 1 65 0 is_stmt 1
  125 005a BDE8F88F 		pop	{r3, r4, r5, r6, r7, r8, r9, r10, fp, pc}
  126              	.LVL9:
  127              	.L8:
@@ -220,9 +223,9 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  143              		.type	start_compass, %function
  144              	start_compass:
  145              	.LFB65:
-  63:.\compass.c   **** 
-  64:.\compass.c   **** void start_compass(){
- 146              		.loc 1 64 0
+  66:.\compass.c   **** 
+  67:.\compass.c   **** void start_compass(){
+ 146              		.loc 1 67 0
  147              		.cfi_startproc
  148              		@ args = 0, pretend = 0, frame = 0
  149              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -230,108 +233,108 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  151              		.cfi_def_cfa_offset 8
  152              		.cfi_offset 4, -8
  153              		.cfi_offset 14, -4
-  65:.\compass.c   ****     compass_ready = 0;
- 154              		.loc 1 65 0
+  68:.\compass.c   ****     compass_ready = 0;
+ 154              		.loc 1 68 0
  155 0002 0024     		movs	r4, #0
  156 0004 1A4B     		ldr	r3, .L10
  157 0006 1C70     		strb	r4, [r3]
-  66:.\compass.c   ****     compass_x = 0;
- 158              		.loc 1 66 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 5
+
+
+  69:.\compass.c   ****     compass_x = 0;
+ 158              		.loc 1 69 0
  159 0008 1A4B     		ldr	r3, .L10+4
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 5
-
-
  160 000a 1C80     		strh	r4, [r3]	@ movhi
-  67:.\compass.c   ****     compass_y = 0;
- 161              		.loc 1 67 0
+  70:.\compass.c   ****     compass_y = 0;
+ 161              		.loc 1 70 0
  162 000c 1A4B     		ldr	r3, .L10+8
  163 000e 1C80     		strh	r4, [r3]	@ movhi
-  68:.\compass.c   ****     compass_z = 0;
- 164              		.loc 1 68 0
+  71:.\compass.c   ****     compass_z = 0;
+ 164              		.loc 1 71 0
  165 0010 1A4B     		ldr	r3, .L10+12
  166 0012 1C80     		strh	r4, [r3]	@ movhi
-  69:.\compass.c   ****     compass_heading = 0;
- 167              		.loc 1 69 0
+  72:.\compass.c   ****     compass_heading = 0;
+ 167              		.loc 1 72 0
  168 0014 1A4B     		ldr	r3, .L10+16
  169 0016 1C80     		strh	r4, [r3]	@ movhi
-  70:.\compass.c   ****     original_compass_heading = 0;
- 170              		.loc 1 70 0
+  73:.\compass.c   ****     original_compass_heading = 0;
+ 170              		.loc 1 73 0
  171 0018 1A4B     		ldr	r3, .L10+20
  172 001a 1C80     		strh	r4, [r3]	@ movhi
-  71:.\compass.c   ****     
-  72:.\compass.c   ****     I2C_Start();
- 173              		.loc 1 72 0
+  74:.\compass.c   ****     
+  75:.\compass.c   ****     I2C_Start();
+ 173              		.loc 1 75 0
  174 001c FFF7FEFF 		bl	I2C_Start
  175              	.LVL10:
-  73:.\compass.c   ****     //Write configuration register A
-  74:.\compass.c   ****     I2C_MasterSendStart(COMPASS_ADDR, I2C_WRITE_XFER_MODE); 
- 176              		.loc 1 74 0
+  76:.\compass.c   ****     //Write configuration register A
+  77:.\compass.c   ****     I2C_MasterSendStart(COMPASS_ADDR, I2C_WRITE_XFER_MODE); 
+ 176              		.loc 1 77 0
  177 0020 1E20     		movs	r0, #30
  178 0022 2146     		mov	r1, r4
  179 0024 FFF7FEFF 		bl	I2C_MasterSendStart
  180              	.LVL11:
-  75:.\compass.c   ****     I2C_MasterWriteByte(COMPASS_REG_CONF_A);
- 181              		.loc 1 75 0
+  78:.\compass.c   ****     I2C_MasterWriteByte(COMPASS_REG_CONF_A);
+ 181              		.loc 1 78 0
  182 0028 2046     		mov	r0, r4
  183 002a FFF7FEFF 		bl	I2C_MasterWriteByte
  184              	.LVL12:
-  76:.\compass.c   ****     I2C_MasterWriteByte(COMPASS_DAT_CONF_A);
- 185              		.loc 1 76 0
+  79:.\compass.c   ****     I2C_MasterWriteByte(COMPASS_DAT_CONF_A);
+ 185              		.loc 1 79 0
  186 002e 7020     		movs	r0, #112
  187 0030 FFF7FEFF 		bl	I2C_MasterWriteByte
  188              	.LVL13:
-  77:.\compass.c   ****     I2C_MasterSendStop();
- 189              		.loc 1 77 0
+  80:.\compass.c   ****     I2C_MasterSendStop();
+ 189              		.loc 1 80 0
  190 0034 FFF7FEFF 		bl	I2C_MasterSendStop
  191              	.LVL14:
-  78:.\compass.c   ****     //Write configuration register A    
-  79:.\compass.c   ****     I2C_MasterSendStart(COMPASS_ADDR, I2C_WRITE_XFER_MODE); 
- 192              		.loc 1 79 0
+  81:.\compass.c   ****     //Write configuration register A    
+  82:.\compass.c   ****     I2C_MasterSendStart(COMPASS_ADDR, I2C_WRITE_XFER_MODE); 
+ 192              		.loc 1 82 0
  193 0038 1E20     		movs	r0, #30
  194 003a 2146     		mov	r1, r4
  195 003c FFF7FEFF 		bl	I2C_MasterSendStart
  196              	.LVL15:
-  80:.\compass.c   ****     I2C_MasterWriteByte(COMPASS_REG_CONF_B);
- 197              		.loc 1 80 0
+  83:.\compass.c   ****     I2C_MasterWriteByte(COMPASS_REG_CONF_B);
+ 197              		.loc 1 83 0
  198 0040 0120     		movs	r0, #1
  199 0042 FFF7FEFF 		bl	I2C_MasterWriteByte
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 6
+
+
  200              	.LVL16:
-  81:.\compass.c   ****     I2C_MasterWriteByte(COMPASS_DAT_CONF_B);
- 201              		.loc 1 81 0
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 6
-
-
+  84:.\compass.c   ****     I2C_MasterWriteByte(COMPASS_DAT_CONF_B);
+ 201              		.loc 1 84 0
  202 0046 2020     		movs	r0, #32
  203 0048 FFF7FEFF 		bl	I2C_MasterWriteByte
  204              	.LVL17:
-  82:.\compass.c   ****     I2C_MasterSendStop();
- 205              		.loc 1 82 0
+  85:.\compass.c   ****     I2C_MasterSendStop();
+ 205              		.loc 1 85 0
  206 004c FFF7FEFF 		bl	I2C_MasterSendStop
  207              	.LVL18:
-  83:.\compass.c   ****     //Write mode register
-  84:.\compass.c   ****     I2C_MasterSendStart(COMPASS_ADDR, I2C_WRITE_XFER_MODE); 
- 208              		.loc 1 84 0
+  86:.\compass.c   ****     //Write mode register
+  87:.\compass.c   ****     I2C_MasterSendStart(COMPASS_ADDR, I2C_WRITE_XFER_MODE); 
+ 208              		.loc 1 87 0
  209 0050 1E20     		movs	r0, #30
  210 0052 2146     		mov	r1, r4
  211 0054 FFF7FEFF 		bl	I2C_MasterSendStart
  212              	.LVL19:
-  85:.\compass.c   ****     I2C_MasterWriteByte(COMPASS_REG_MODE);
- 213              		.loc 1 85 0
+  88:.\compass.c   ****     I2C_MasterWriteByte(COMPASS_REG_MODE);
+ 213              		.loc 1 88 0
  214 0058 0220     		movs	r0, #2
  215 005a FFF7FEFF 		bl	I2C_MasterWriteByte
  216              	.LVL20:
-  86:.\compass.c   ****     I2C_MasterWriteByte(COMPASS_DAT_MODE);
- 217              		.loc 1 86 0
+  89:.\compass.c   ****     I2C_MasterWriteByte(COMPASS_DAT_MODE);
+ 217              		.loc 1 89 0
  218 005e 2046     		mov	r0, r4
  219 0060 FFF7FEFF 		bl	I2C_MasterWriteByte
  220              	.LVL21:
-  87:.\compass.c   ****     I2C_MasterSendStop();
- 221              		.loc 1 87 0
+  90:.\compass.c   ****     I2C_MasterSendStop();
+ 221              		.loc 1 90 0
  222 0064 FFF7FEFF 		bl	I2C_MasterSendStop
  223              	.LVL22:
-  88:.\compass.c   ****     
-  89:.\compass.c   ****     Compass_DRDY_ISR_StartEx(DRDY_INTERRUPT);
- 224              		.loc 1 89 0
+  91:.\compass.c   ****     
+  92:.\compass.c   ****     Compass_DRDY_ISR_StartEx(DRDY_INTERRUPT);
+ 224              		.loc 1 92 0
  225 0068 0748     		ldr	r0, .L10+24
  226 006a FFF7FEFF 		bl	Compass_DRDY_ISR_StartEx
  227              	.LVL23:
@@ -355,18 +358,18 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  245              		.align	2
  246              		.global	compass_read
  247              		.thumb
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 7
+
+
  248              		.thumb_func
  249              		.type	compass_read, %function
  250              	compass_read:
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 7
-
-
  251              	.LFB66:
-  90:.\compass.c   **** }
-  91:.\compass.c   **** 
-  92:.\compass.c   **** 
-  93:.\compass.c   **** void compass_read(){
- 252              		.loc 1 93 0
+  93:.\compass.c   **** }
+  94:.\compass.c   **** 
+  95:.\compass.c   **** 
+  96:.\compass.c   **** void compass_read(){
+ 252              		.loc 1 96 0
  253              		.cfi_startproc
  254              		@ args = 0, pretend = 0, frame = 0
  255              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -380,107 +383,107 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  263              		.cfi_offset 8, -12
  264              		.cfi_offset 9, -8
  265              		.cfi_offset 14, -4
-  94:.\compass.c   ****     uint8 data[6] = {0, 0, 0, 0, 0, 0};
-  95:.\compass.c   ****     //Set the compass internal address pointer to xh
-  96:.\compass.c   ****     I2C_MasterSendStart(COMPASS_ADDR, I2C_WRITE_XFER_MODE);
- 266              		.loc 1 96 0
+  97:.\compass.c   ****     uint8 data[6] = {0, 0, 0, 0, 0, 0};
+  98:.\compass.c   ****     //Set the compass internal address pointer to xh
+  99:.\compass.c   ****     I2C_MasterSendStart(COMPASS_ADDR, I2C_WRITE_XFER_MODE);
+ 266              		.loc 1 99 0
  267 0004 1E20     		movs	r0, #30
  268 0006 0021     		movs	r1, #0
  269 0008 FFF7FEFF 		bl	I2C_MasterSendStart
  270              	.LVL24:
-  97:.\compass.c   ****     I2C_MasterWriteByte(0x03);
- 271              		.loc 1 97 0
+ 100:.\compass.c   ****     I2C_MasterWriteByte(0x03);
+ 271              		.loc 1 100 0
  272 000c 0320     		movs	r0, #3
  273 000e FFF7FEFF 		bl	I2C_MasterWriteByte
  274              	.LVL25:
-  98:.\compass.c   ****     I2C_MasterSendStop();
- 275              		.loc 1 98 0
+ 101:.\compass.c   ****     I2C_MasterSendStop();
+ 275              		.loc 1 101 0
  276 0012 FFF7FEFF 		bl	I2C_MasterSendStop
  277              	.LVL26:
-  99:.\compass.c   ****     //Read six bytes
- 100:.\compass.c   ****     I2C_MasterSendStart(COMPASS_ADDR, I2C_READ_XFER_MODE);
- 278              		.loc 1 100 0
+ 102:.\compass.c   ****     //Read six bytes
+ 103:.\compass.c   ****     I2C_MasterSendStart(COMPASS_ADDR, I2C_READ_XFER_MODE);
+ 278              		.loc 1 103 0
  279 0016 1E20     		movs	r0, #30
  280 0018 0121     		movs	r1, #1
  281 001a FFF7FEFF 		bl	I2C_MasterSendStart
  282              	.LVL27:
- 101:.\compass.c   ****     data[0] = I2C_MasterReadByte(I2C_ACK_DATA);
- 283              		.loc 1 101 0
+ 104:.\compass.c   ****     data[0] = I2C_MasterReadByte(I2C_ACK_DATA);
+ 283              		.loc 1 104 0
  284 001e 0120     		movs	r0, #1
  285 0020 FFF7FEFF 		bl	I2C_MasterReadByte
  286              	.LVL28:
  287 0024 8146     		mov	r9, r0
- 102:.\compass.c   ****     data[1] = I2C_MasterReadByte(I2C_ACK_DATA);
- 288              		.loc 1 102 0
+ 105:.\compass.c   ****     data[1] = I2C_MasterReadByte(I2C_ACK_DATA);
+ 288              		.loc 1 105 0
  289 0026 0120     		movs	r0, #1
  290 0028 FFF7FEFF 		bl	I2C_MasterReadByte
  291              	.LVL29:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 8
+
+
  292 002c 8046     		mov	r8, r0
- 103:.\compass.c   ****     data[2] = I2C_MasterReadByte(I2C_ACK_DATA);
- 293              		.loc 1 103 0
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 8
-
-
+ 106:.\compass.c   ****     data[2] = I2C_MasterReadByte(I2C_ACK_DATA);
+ 293              		.loc 1 106 0
  294 002e 0120     		movs	r0, #1
  295 0030 FFF7FEFF 		bl	I2C_MasterReadByte
  296              	.LVL30:
  297 0034 0746     		mov	r7, r0
- 104:.\compass.c   ****     data[3] = I2C_MasterReadByte(I2C_ACK_DATA);
- 298              		.loc 1 104 0
+ 107:.\compass.c   ****     data[3] = I2C_MasterReadByte(I2C_ACK_DATA);
+ 298              		.loc 1 107 0
  299 0036 0120     		movs	r0, #1
  300 0038 FFF7FEFF 		bl	I2C_MasterReadByte
  301              	.LVL31:
  302 003c 0646     		mov	r6, r0
- 105:.\compass.c   ****     data[4] = I2C_MasterReadByte(I2C_ACK_DATA);
- 303              		.loc 1 105 0
+ 108:.\compass.c   ****     data[4] = I2C_MasterReadByte(I2C_ACK_DATA);
+ 303              		.loc 1 108 0
  304 003e 0120     		movs	r0, #1
  305 0040 FFF7FEFF 		bl	I2C_MasterReadByte
  306              	.LVL32:
  307 0044 0546     		mov	r5, r0
- 106:.\compass.c   ****     data[5] = I2C_MasterReadByte(I2C_NAK_DATA);
- 308              		.loc 1 106 0
+ 109:.\compass.c   ****     data[5] = I2C_MasterReadByte(I2C_NAK_DATA);
+ 308              		.loc 1 109 0
  309 0046 0020     		movs	r0, #0
  310 0048 FFF7FEFF 		bl	I2C_MasterReadByte
  311              	.LVL33:
  312 004c 0446     		mov	r4, r0
- 107:.\compass.c   ****     I2C_MasterSendStop();
- 313              		.loc 1 107 0
+ 110:.\compass.c   ****     I2C_MasterSendStop();
+ 313              		.loc 1 110 0
  314 004e FFF7FEFF 		bl	I2C_MasterSendStop
  315              	.LVL34:
- 108:.\compass.c   ****     
- 109:.\compass.c   ****     compass_x = ((data[0] << 8) | data[1]);
- 316              		.loc 1 109 0
+ 111:.\compass.c   ****     
+ 112:.\compass.c   ****     compass_x = ((data[0] << 8) | data[1]);
+ 316              		.loc 1 112 0
  317 0052 48EA0923 		orr	r3, r8, r9, lsl #8
  318 0056 9BB2     		uxth	r3, r3
  319 0058 1F4A     		ldr	r2, .L13+8
  320 005a 1380     		strh	r3, [r2]	@ movhi
- 110:.\compass.c   ****     compass_z = (data[2] << 8) | data[3];//Bizarrely, the device reads x,z,y...
- 321              		.loc 1 110 0
+ 113:.\compass.c   ****     compass_z = (data[2] << 8) | data[3];//Bizarrely, the device reads x,z,y...
+ 321              		.loc 1 113 0
  322 005c 46EA0726 		orr	r6, r6, r7, lsl #8
  323 0060 1E4A     		ldr	r2, .L13+12
  324 0062 1680     		strh	r6, [r2]	@ movhi
- 111:.\compass.c   ****     compass_y = ((data[4] << 8) | data[5]);
- 325              		.loc 1 111 0
+ 114:.\compass.c   ****     compass_y = ((data[4] << 8) | data[5]);
+ 325              		.loc 1 114 0
  326 0064 44EA0520 		orr	r0, r4, r5, lsl #8
  327 0068 80B2     		uxth	r0, r0
  328 006a 1D4A     		ldr	r2, .L13+16
  329 006c 1080     		strh	r0, [r2]	@ movhi
- 112:.\compass.c   ****     compass_heading = atan2((double) (compass_y - CALIBRATION_Y), 
- 330              		.loc 1 112 0
+ 115:.\compass.c   ****     compass_heading = atan2((double) (compass_y + CALIBRATION_Y), 
+ 330              		.loc 1 115 0
  331 006e 00B2     		sxth	r0, r0
- 113:.\compass.c   ****                             (double) (compass_x - CALIBRATION_X)) * 
- 332              		.loc 1 113 0
+ 116:.\compass.c   ****                             (double) (compass_x + CALIBRATION_X)) * 
+ 332              		.loc 1 116 0
  333 0070 1BB2     		sxth	r3, r3
- 334 0072 A3F11906 		sub	r6, r3, #25
- 112:.\compass.c   ****     compass_heading = atan2((double) (compass_y - CALIBRATION_Y), 
- 335              		.loc 1 112 0
- 336 0076 3230     		adds	r0, r0, #50
+ 334 0072 03F11906 		add	r6, r3, #25
+ 115:.\compass.c   ****     compass_heading = atan2((double) (compass_y + CALIBRATION_Y), 
+ 335              		.loc 1 115 0
+ 336 0076 1938     		subs	r0, r0, #25
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 9
+
+
  337 0078 FFF7FEFF 		bl	__aeabi_i2d
  338              	.LVL35:
  339 007c 0446     		mov	r4, r0
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 9
-
-
  340 007e 0D46     		mov	r5, r1
  341 0080 3046     		mov	r0, r6
  342 0082 FFF7FEFF 		bl	__aeabi_i2d
@@ -491,13 +494,13 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  347 008c 2946     		mov	r1, r5
  348 008e FFF7FEFF 		bl	atan2
  349              	.LVL37:
- 350              		.loc 1 113 0
+ 350              		.loc 1 116 0
  351 0092 0FA3     		adr	r3, .L13
  352 0094 D3E90023 		ldrd	r2, [r3]
  353 0098 FFF7FEFF 		bl	__aeabi_dmul
  354              	.LVL38:
- 114:.\compass.c   ****                             (180/M_PI) + 180 - original_compass_heading;
- 355              		.loc 1 114 0
+ 117:.\compass.c   ****                             (180/M_PI) + 180 - original_compass_heading;
+ 355              		.loc 1 117 0
  356 009c 0022     		movs	r2, #0
  357 009e 114B     		ldr	r3, .L13+20
  358 00a0 FFF7FEFF 		bl	__aeabi_dadd
@@ -514,8 +517,8 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  369 00b8 2946     		mov	r1, r5
  370 00ba FFF7FEFF 		bl	__aeabi_dsub
  371              	.LVL41:
- 112:.\compass.c   ****     compass_heading = atan2((double) (compass_y - CALIBRATION_Y), 
- 372              		.loc 1 112 0
+ 115:.\compass.c   ****     compass_heading = atan2((double) (compass_y + CALIBRATION_Y), 
+ 372              		.loc 1 115 0
  373 00be FFF7FEFF 		bl	__aeabi_d2iz
  374              	.LVL42:
  375 00c2 0A4B     		ldr	r3, .L13+28
@@ -535,12 +538,12 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  388 00ec 00000000 		.word	compass_heading
  389              		.cfi_endproc
  390              	.LFE66:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 10
+
+
  391              		.size	compass_read, .-compass_read
  392              		.comm	CosDeg,2880,8
  393              		.comm	SinDeg,2880,8
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 10
-
-
  394              		.comm	original_compass_heading,2,2
  395              		.comm	compass_ready,1,1
  396              		.comm	compass_heading,2,2
@@ -595,12 +598,12 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  445 0048 4C000000 		.4byte	0x4c
  446 004c 02       		.uleb128 0x2
  447 004d 04       		.byte	0x4
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 11
+
+
  448 004e 05       		.byte	0x5
  449 004f BF020000 		.4byte	.LASF4
  450 0053 02       		.uleb128 0x2
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 11
-
-
  451 0054 04       		.byte	0x4
  452 0055 07       		.byte	0x7
  453 0056 E5000000 		.4byte	.LASF5
@@ -655,12 +658,12 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  502 00b7 6F01     		.2byte	0x16f
  503 00b9 BD000000 		.4byte	0xbd
  504 00bd 07       		.uleb128 0x7
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 12
+
+
  505 00be 04       		.byte	0x4
  506 00bf C3000000 		.4byte	0xc3
  507 00c3 08       		.uleb128 0x8
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 12
-
-
  508 00c4 02       		.uleb128 0x2
  509 00c5 04       		.byte	0x4
  510 00c6 07       		.byte	0x7
@@ -672,7 +675,7 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  516 00d2 09       		.uleb128 0x9
  517 00d3 07000000 		.4byte	.LASF19
  518 00d7 01       		.byte	0x1
- 519 00d8 2F       		.byte	0x2f
+ 519 00d8 32       		.byte	0x32
  520 00d9 00000000 		.4byte	.LFB63
  521 00dd 14000000 		.4byte	.LFE63-.LFB63
  522 00e1 01       		.uleb128 0x1
@@ -685,7 +688,7 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  529 00f1 0B       		.uleb128 0xb
  530 00f2 29000000 		.4byte	.LASF42
  531 00f6 01       		.byte	0x1
- 532 00f7 38       		.byte	0x38
+ 532 00f7 3B       		.byte	0x3b
  533 00f8 00000000 		.4byte	.LFB64
  534 00fc 74000000 		.4byte	.LFE64-.LFB64
  535 0100 01       		.uleb128 0x1
@@ -694,7 +697,7 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  538 0106 0C       		.uleb128 0xc
  539 0107 6900     		.ascii	"i\000"
  540 0109 01       		.byte	0x1
- 541 010a 39       		.byte	0x39
+ 541 010a 3C       		.byte	0x3c
  542 010b 68000000 		.4byte	0x68
  543 010f 00000000 		.4byte	.LLST0
  544 0113 0A       		.uleb128 0xa
@@ -707,7 +710,7 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  551 0126 09       		.uleb128 0x9
  552 0127 59010000 		.4byte	.LASF20
  553 012b 01       		.byte	0x1
- 554 012c 40       		.byte	0x40
+ 554 012c 43       		.byte	0x43
  555 012d 00000000 		.4byte	.LFB65
  556 0131 8C000000 		.4byte	.LFE65-.LFB65
  557 0135 01       		.uleb128 0x1
@@ -715,12 +718,12 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  559 0137 34020000 		.4byte	0x234
  560 013b 0A       		.uleb128 0xa
  561 013c 20000000 		.4byte	.LVL10
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 13
+
+
  562 0140 3D040000 		.4byte	0x43d
  563 0144 0D       		.uleb128 0xd
  564 0145 28000000 		.4byte	.LVL11
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 13
-
-
  565 0149 44040000 		.4byte	0x444
  566 014d 5D010000 		.4byte	0x15d
  567 0151 0E       		.uleb128 0xe
@@ -775,12 +778,12 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  616 01a3 50       		.byte	0x50
  617 01a4 01       		.uleb128 0x1
  618 01a5 4E       		.byte	0x4e
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 14
+
+
  619 01a6 00       		.byte	0
  620 01a7 0D       		.uleb128 0xd
  621 01a8 46000000 		.4byte	.LVL16
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 14
-
-
  622 01ac 5E040000 		.4byte	0x45e
  623 01b0 BA010000 		.4byte	0x1ba
  624 01b4 0E       		.uleb128 0xe
@@ -835,12 +838,12 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  673 020c 17020000 		.4byte	0x217
  674 0210 0E       		.uleb128 0xe
  675 0211 01       		.uleb128 0x1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 15
+
+
  676 0212 50       		.byte	0x50
  677 0213 02       		.uleb128 0x2
  678 0214 74       		.byte	0x74
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 15
-
-
  679 0215 00       		.sleb128 0
  680 0216 00       		.byte	0
  681 0217 0A       		.uleb128 0xa
@@ -860,7 +863,7 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  695 0234 10       		.uleb128 0x10
  696 0235 B2020000 		.4byte	.LASF21
  697 0239 01       		.byte	0x1
- 698 023a 5D       		.byte	0x5d
+ 698 023a 60       		.byte	0x60
  699 023b 00000000 		.4byte	.LFB66
  700 023f F0000000 		.4byte	.LFE66-.LFB66
  701 0243 01       		.uleb128 0x1
@@ -869,7 +872,7 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  704 0249 11       		.uleb128 0x11
  705 024a CC000000 		.4byte	.LASF43
  706 024e 01       		.byte	0x1
- 707 024f 5E       		.byte	0x5e
+ 707 024f 61       		.byte	0x61
  708 0250 25030000 		.4byte	0x325
  709 0254 0D       		.uleb128 0xd
  710 0255 0C000000 		.4byte	.LVL24
@@ -895,12 +898,12 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  730 027b 50       		.byte	0x50
  731 027c 01       		.uleb128 0x1
  732 027d 33       		.byte	0x33
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 16
+
+
  733 027e 00       		.byte	0
  734 027f 0A       		.uleb128 0xa
  735 0280 16000000 		.4byte	.LVL26
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 16
-
-
  736 0284 73040000 		.4byte	0x473
  737 0288 0D       		.uleb128 0xd
  738 0289 1E000000 		.4byte	.LVL27
@@ -955,12 +958,12 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  787 02e7 01       		.uleb128 0x1
  788 02e8 50       		.byte	0x50
  789 02e9 01       		.uleb128 0x1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 17
+
+
  790 02ea 31       		.byte	0x31
  791 02eb 00       		.byte	0
  792 02ec 0D       		.uleb128 0xd
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 17
-
-
  793 02ed 44000000 		.4byte	.LVL32
  794 02f1 8F040000 		.4byte	0x48f
  795 02f5 FF020000 		.4byte	0x2ff
@@ -1015,12 +1018,12 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  844 0360 03       		.byte	0x3
  845 0361 00       		.byte	0
  846 0362 15       		.uleb128 0x15
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 18
+
+
  847 0363 46000000 		.4byte	.LASF23
  848 0367 06       		.byte	0x6
  849 0368 08       		.byte	0x8
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 18
-
-
  850 0369 46030000 		.4byte	0x346
  851 036d 05       		.uleb128 0x5
  852 036e 03       		.byte	0x3
@@ -1075,18 +1078,18 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  901 03d5 00000000 		.4byte	original_compass_heading
  902 03d9 12       		.uleb128 0x12
  903 03da 9E000000 		.4byte	0x9e
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 19
+
+
  904 03de EA030000 		.4byte	0x3ea
  905 03e2 16       		.uleb128 0x16
  906 03e3 C4000000 		.4byte	0xc4
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 19
-
-
  907 03e7 6701     		.2byte	0x167
  908 03e9 00       		.byte	0
  909 03ea 15       		.uleb128 0x15
  910 03eb 00000000 		.4byte	.LASF30
  911 03ef 01       		.byte	0x1
- 912 03f0 35       		.byte	0x35
+ 912 03f0 38       		.byte	0x38
  913 03f1 D9030000 		.4byte	0x3d9
  914 03f5 05       		.uleb128 0x5
  915 03f6 03       		.byte	0x3
@@ -1094,7 +1097,7 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  917 03fb 15       		.uleb128 0x15
  918 03fc 52010000 		.4byte	.LASF31
  919 0400 01       		.byte	0x1
- 920 0401 36       		.byte	0x36
+ 920 0401 39       		.byte	0x39
  921 0402 D9030000 		.4byte	0x3d9
  922 0406 05       		.uleb128 0x5
  923 0407 03       		.byte	0x3
@@ -1135,12 +1138,12 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  958 0454 81000000 		.4byte	0x81
  959 0458 19       		.uleb128 0x19
  960 0459 81000000 		.4byte	0x81
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 20
+
+
  961 045d 00       		.byte	0
  962 045e 1A       		.uleb128 0x1a
  963 045f 79000000 		.4byte	.LASF35
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 20
-
-
  964 0463 09       		.byte	0x9
  965 0464 B6       		.byte	0xb6
  966 0465 81000000 		.4byte	0x81
@@ -1195,12 +1198,12 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  1015 0009 1B       		.uleb128 0x1b
  1016 000a 0E       		.uleb128 0xe
  1017 000b 55       		.uleb128 0x55
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 21
+
+
  1018 000c 17       		.uleb128 0x17
  1019 000d 11       		.uleb128 0x11
  1020 000e 01       		.uleb128 0x1
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 21
-
-
  1021 000f 10       		.uleb128 0x10
  1022 0010 17       		.uleb128 0x17
  1023 0011 00       		.byte	0
@@ -1255,12 +1258,12 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  1072 0042 3A       		.uleb128 0x3a
  1073 0043 0B       		.uleb128 0xb
  1074 0044 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 22
+
+
  1075 0045 05       		.uleb128 0x5
  1076 0046 49       		.uleb128 0x49
  1077 0047 13       		.uleb128 0x13
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 22
-
-
  1078 0048 00       		.byte	0
  1079 0049 00       		.byte	0
  1080 004a 07       		.uleb128 0x7
@@ -1315,12 +1318,12 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  1129 007e 00       		.byte	0
  1130 007f 0B       		.uleb128 0xb
  1131 0080 2E       		.uleb128 0x2e
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 23
+
+
  1132 0081 01       		.byte	0x1
  1133 0082 3F       		.uleb128 0x3f
  1134 0083 19       		.uleb128 0x19
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 23
-
-
  1135 0084 03       		.uleb128 0x3
  1136 0085 0E       		.uleb128 0xe
  1137 0086 3A       		.uleb128 0x3a
@@ -1375,12 +1378,12 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  1186 00bd 00       		.byte	0
  1187 00be 00       		.byte	0
  1188 00bf 0F       		.uleb128 0xf
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 24
+
+
  1189 00c0 898201   		.uleb128 0x4109
  1190 00c3 01       		.byte	0x1
  1191 00c4 11       		.uleb128 0x11
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 24
-
-
  1192 00c5 01       		.uleb128 0x1
  1193 00c6 31       		.uleb128 0x31
  1194 00c7 13       		.uleb128 0x13
@@ -1435,12 +1438,12 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  1243 00f9 00       		.byte	0
  1244 00fa 13       		.uleb128 0x13
  1245 00fb 21       		.uleb128 0x21
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 25
+
+
  1246 00fc 00       		.byte	0
  1247 00fd 49       		.uleb128 0x49
  1248 00fe 13       		.uleb128 0x13
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 25
-
-
  1249 00ff 2F       		.uleb128 0x2f
  1250 0100 0B       		.uleb128 0xb
  1251 0101 00       		.byte	0
@@ -1495,12 +1498,12 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  1300 0132 19       		.uleb128 0x19
  1301 0133 03       		.uleb128 0x3
  1302 0134 0E       		.uleb128 0xe
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 26
+
+
  1303 0135 3A       		.uleb128 0x3a
  1304 0136 0B       		.uleb128 0xb
  1305 0137 3B       		.uleb128 0x3b
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 26
-
-
  1306 0138 0B       		.uleb128 0xb
  1307 0139 27       		.uleb128 0x27
  1308 013a 19       		.uleb128 0x19
@@ -1555,12 +1558,12 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  1357 016b 19       		.uleb128 0x19
  1358 016c 01       		.uleb128 0x1
  1359 016d 13       		.uleb128 0x13
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 27
+
+
  1360 016e 00       		.byte	0
  1361 016f 00       		.byte	0
  1362 0170 1B       		.uleb128 0x1b
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 27
-
-
  1363 0171 2E       		.uleb128 0x2e
  1364 0172 00       		.byte	0
  1365 0173 3F       		.uleb128 0x3f
@@ -1615,12 +1618,12 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  1414 01a4 13       		.uleb128 0x13
  1415 01a5 3C       		.uleb128 0x3c
  1416 01a6 19       		.uleb128 0x19
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 28
+
+
  1417 01a7 00       		.byte	0
  1418 01a8 00       		.byte	0
  1419 01a9 00       		.byte	0
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 28
-
-
  1420              		.section	.debug_loc,"",%progbits
  1421              	.Ldebug_loc0:
  1422              	.LLST0:
@@ -1667,7 +1670,7 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  1463 0024 00000000 		.4byte	0
  1464              		.section	.debug_line,"",%progbits
  1465              	.Ldebug_line0:
- 1466 0000 0B020000 		.section	.debug_str,"MS",%progbits,1
+ 1466 0000 0C020000 		.section	.debug_str,"MS",%progbits,1
  1466      02008301 
  1466      00000201 
  1466      FB0E0D00 
@@ -1675,12 +1678,12 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  1467              	.LASF30:
  1468 0000 53696E44 		.ascii	"SinDeg\000"
  1468      656700
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 29
+
+
  1469              	.LASF19:
  1470 0007 44524459 		.ascii	"DRDY_INTERRUPT\000"
  1470      5F494E54 
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 29
-
-
  1470      45525255 
  1470      505400
  1471              	.LASF44:
@@ -1735,12 +1738,12 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  1491              	.LASF33:
  1492 00bc 4932435F 		.ascii	"I2C_Start\000"
  1492      53746172 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 30
+
+
  1492      7400
  1493              	.LASF13:
  1494 00c6 666C6F61 		.ascii	"float\000"
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 30
-
-
  1494      7400
  1495              	.LASF43:
  1496 00cc 64617461 		.ascii	"data\000"
@@ -1795,12 +1798,12 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  1516      745F636F 
  1516      6D706173 
  1516      7300
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 31
+
+
  1517              	.LASF8:
  1518 0167 756E7369 		.ascii	"unsigned int\000"
  1518      676E6564 
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 31
-
-
  1518      20696E74 
  1518      00
  1519              	.LASF41:
@@ -1855,12 +1858,12 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 1
  1535      3200
  1536              	.LASF15:
  1537 0282 63686172 		.ascii	"char\000"
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccCHI1kU.s 			page 32
+
+
  1537      00
  1538              	.LASF10:
  1539 0287 696E7433 		.ascii	"int32_t\000"
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccvimvd2.s 			page 32
-
-
  1539      325F7400 
  1540              	.LASF36:
  1541 028f 4932435F 		.ascii	"I2C_MasterReadByte\000"
