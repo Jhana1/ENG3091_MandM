@@ -58,12 +58,12 @@ double signum(double x){
 
 void update_position(){
     if (!isRotating()){//We rotate on the spot so y should not change
-        location.x += (int32) (CosDeg[compass_heading]*((double) loc_y_b)); 
-        location.y += (int32) (SinDeg[compass_heading]*((double) loc_y_b));
+        location.x += (int32) (CosDeg[compass_heading]*((double) loc_y_a)); 
+        location.y += (int32) (SinDeg[compass_heading]*((double) loc_y_a));
     }
     location.angle = compass_heading;
-    delta_y_distance += loc_y_b;
-    loc_y_b = 0;
+    delta_y_distance += loc_y_a;
+    loc_y_a = 0;
 }
 
 void reset_delta_y_distance(){

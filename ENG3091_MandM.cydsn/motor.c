@@ -37,6 +37,7 @@ uint8 isRotating(){
     return currently_rotating;
 }
 
+
 // From compass.c
 extern int16 compass_heading;
 // From mouse_b.c
@@ -47,10 +48,14 @@ extern int32 delta_y_distance;
 
 void rotate_left(int speed);
 void rotate_right(int speed);
+int16 abs2(int16 val);
 
-uint8 clip(int var, int limit){
-    if (var > limit){
-        return limit;
+
+uint8 clip(int lower, int var, int upper){
+    if (var > upper){
+        return upper;
+    } else if (var < lower) {
+        return lower;
     } else {
         return var;
     }
@@ -75,16 +80,18 @@ void control_motors(){
         
         // the actual heading is greater than the desired heading
         if (heading_error < 0){ 
-            rotate_left(clip(abs(heading_error)*15 + 50, 255));
+            rotate_left(clip(STALL_SPEED, abs(heading_error)*2, MAX_SPEED));
             WHITE_Write(1);
             ORANGE_Write(0);
         } else {
-            rotate_right(clip(abs(heading_error)*15 + 50, 255));
+            rotate_right(clip(STALL_SPEED, abs(heading_error)*2, MAX_SPEED));
             WHITE_Write(0);
             ORANGE_Write(1);
         }
         return;
     }
+    
+    setCoast(MBOTH);
     
     int distance_error;
     
@@ -93,8 +100,10 @@ void control_motors(){
             break; //Do nothing
         case MOTOR_S_FORWARD:
             distance_error = desired_distance - delta_y_distance;
-            if (abs(distance_error) > 500){
-                setSpeed(MBOTH, clip(abs(delta_y_distance - desired_distance)/2, 255));
+            if (abs2(distance_error) > MOTOR_FORWARD_ERROR_LIMIT && distance_error > 0){
+                // WHAT HAPPENS IF WE OVERSHOOT? WILL IT GET FASTER AND FASTER GOING AWAY FROM THE CORRECT POSITION?
+          //if (abs2(distance_error) > MOTOR_FORWARD_ERROR_LIMIT && distance_error > 1)     
+                setSpeed(MBOTH, clip(STALL_SPEED, abs(delta_y_distance - desired_distance)/2, 255));
                 setForward(MBOTH);
                 currently_rotating = 0;
             } else {
@@ -105,8 +114,9 @@ void control_motors(){
             break;
         case MOTOR_S_BACKWARD:           
             distance_error = desired_distance - delta_y_distance;
-            if (abs(distance_error) > 500){
-                setSpeed(MBOTH, clip(abs(delta_y_distance - desired_distance)/2, 255));
+            if (abs2(distance_error) > MOTOR_FORWARD_ERROR_LIMIT && distance_error < 0){
+                // WHAT HAPPENS IF OVERSHOOT?
+                setSpeed(MBOTH, clip(STALL_SPEED, abs(delta_y_distance - desired_distance)/2, 255));
                 setReverse(MBOTH);
                 currently_rotating = 0;
             } else {
@@ -158,7 +168,12 @@ void go_backward(int32 distance){
  * angle > 0 rotates right, angle < 0 rotates left
  */
 void rotate_degrees(int16 angle){
-    desired_heading = (desired_heading + angle) % 360;
+    desired_heading += angle;
+    if (desired_heading > 360){
+        desired_heading -= 360;
+    } else if (desired_heading < 0){
+        desired_heading += 360;
+    }
 }
 
 /* 
@@ -267,6 +282,11 @@ void setReverse(uint8 motor){
         MRIN1_Write(0);
         MRIN2_Write(1);
     }
+}
+
+int16 abs2(int16 val)
+{
+    return (val > 0) ? val : -val;
 }
 
 /* [] END OF FILE */

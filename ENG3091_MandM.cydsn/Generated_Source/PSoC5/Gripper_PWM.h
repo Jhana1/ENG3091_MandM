@@ -227,7 +227,7 @@ void Gripper_PWM_RestoreConfig(void) ;
 *         Initialization Values
 **************************************/
 #define Gripper_PWM_INIT_PERIOD_VALUE          (799u)
-#define Gripper_PWM_INIT_COMPARE_VALUE1        (39u)
+#define Gripper_PWM_INIT_COMPARE_VALUE1        (18u)
 #define Gripper_PWM_INIT_COMPARE_VALUE2        (15u)
 #define Gripper_PWM_INIT_INTERRUPTS_MODE       (uint8)(((uint8)(0u <<   \
                                                     Gripper_PWM_STATUS_TC_INT_EN_MASK_SHIFT)) | \

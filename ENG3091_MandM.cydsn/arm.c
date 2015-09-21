@@ -38,16 +38,18 @@ uint8 arm_levels[6] = {22, 30, 35, 40, 45, 50};
 int PWM_VAL = 25;
 char outString[40];
 
-void start_arm(){
-    int i;
-    /* Initialize the motor controller */
-    Arm_PWM_Start();
-    Arm_PWM_WriteCompare(arm_levels[0]);
-}
 
 void arm_set_level(int level){
     Arm_PWM_WriteCompare(arm_levels[level]);
 }
+
+void start_arm(){
+    int i;
+    /* Initialize the motor controller */
+    Arm_PWM_Start();
+    arm_set_level(0);
+}
+
 
 
 /* [] END OF FILE */

@@ -226,8 +226,8 @@ void Arm_PWM_RestoreConfig(void) ;
 /***************************************
 *         Initialization Values
 **************************************/
-#define Arm_PWM_INIT_PERIOD_VALUE          (255u)
-#define Arm_PWM_INIT_COMPARE_VALUE1        (127u)
+#define Arm_PWM_INIT_PERIOD_VALUE          (799u)
+#define Arm_PWM_INIT_COMPARE_VALUE1        (50u)
 #define Arm_PWM_INIT_COMPARE_VALUE2        (63u)
 #define Arm_PWM_INIT_INTERRUPTS_MODE       (uint8)(((uint8)(0u <<   \
                                                     Arm_PWM_STATUS_TC_INT_EN_MASK_SHIFT)) | \

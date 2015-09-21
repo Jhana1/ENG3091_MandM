@@ -1,0 +1,4054 @@
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"my_camera_functions.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.init_camera,"ax",%progbits
+  19              		.align	2
+  20              		.global	init_camera
+  21              		.thumb
+  22              		.thumb_func
+  23              		.type	init_camera, %function
+  24              	init_camera:
+  25              	.LFB63:
+  26              		.file 1 ".\\my_camera_functions.c"
+   1:.\my_camera_functions.c **** /* ========================================
+   2:.\my_camera_functions.c ****  *
+   3:.\my_camera_functions.c ****  * Copyright YOUR COMPANY, THE YEAR
+   4:.\my_camera_functions.c ****  * All Rights Reserved
+   5:.\my_camera_functions.c ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:.\my_camera_functions.c ****  *
+   7:.\my_camera_functions.c ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:.\my_camera_functions.c ****  * WHICH IS THE PROPERTY OF your company.
+   9:.\my_camera_functions.c ****  *
+  10:.\my_camera_functions.c ****  * ========================================
+  11:.\my_camera_functions.c **** */
+  12:.\my_camera_functions.c **** #include <project.h>
+  13:.\my_camera_functions.c **** #include <my_camera_functions.h>
+  14:.\my_camera_functions.c **** #include <blob_stats.h>
+  15:.\my_camera_functions.c **** 
+  16:.\my_camera_functions.c **** 
+  17:.\my_camera_functions.c **** uint8 RED_U= 122;//116;
+  18:.\my_camera_functions.c **** uint8 RED_V= 150;//140;//162;
+  19:.\my_camera_functions.c **** uint8 GREEN_U= 130;//128;
+  20:.\my_camera_functions.c **** uint8 GREEN_V= 120;//102;
+  21:.\my_camera_functions.c **** uint8 BLUE_U= 140;//138;//162;
+  22:.\my_camera_functions.c **** uint8 BLUE_V= 116;//124;//116;
+  23:.\my_camera_functions.c **** 
+  24:.\my_camera_functions.c **** extern blob *blobs;
+  25:.\my_camera_functions.c **** 
+  26:.\my_camera_functions.c **** void init_camera()
+  27:.\my_camera_functions.c **** {
+  27              		.loc 1 27 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 2
+
+
+  31 0000 08B5     		push	{r3, lr}
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 3, -8
+  34              		.cfi_offset 14, -4
+  28:.\my_camera_functions.c **** 	Camera_Start();
+  35              		.loc 1 28 0
+  36 0002 FFF7FEFF 		bl	Camera_Start
+  37              	.LVL0:
+  29:.\my_camera_functions.c ****     LCD_ClearDisplay();
+  38              		.loc 1 29 0
+  39 0006 0120     		movs	r0, #1
+  40 0008 FFF7FEFF 		bl	LCD_WriteControl
+  41              	.LVL1:
+  30:.\my_camera_functions.c ****     LCD_PosPrintString(0,0,"Camera Actualy");
+  42              		.loc 1 30 0
+  43 000c 0020     		movs	r0, #0
+  44 000e 0146     		mov	r1, r0
+  45 0010 FFF7FEFF 		bl	LCD_Position
+  46              	.LVL2:
+  47 0014 1748     		ldr	r0, .L2
+  48 0016 FFF7FEFF 		bl	LCD_PrintString
+  49              	.LVL3:
+  31:.\my_camera_functions.c ****     Camera_WriteReg(0x1E,0b00000000); //Flip Image
+  50              		.loc 1 31 0
+  51 001a 1E20     		movs	r0, #30
+  52 001c 0021     		movs	r1, #0
+  53 001e FFF7FEFF 		bl	Camera_WriteReg
+  54              	.LVL4:
+  32:.\my_camera_functions.c ****     Camera_WriteReg(0x13,0b11100111); //Enable Auto Gain, WB, Exposure
+  55              		.loc 1 32 0
+  56 0022 1320     		movs	r0, #19
+  57 0024 E721     		movs	r1, #231
+  58 0026 FFF7FEFF 		bl	Camera_WriteReg
+  59              	.LVL5:
+  33:.\my_camera_functions.c ****     Camera_SyncFrame();
+  60              		.loc 1 33 0
+  61 002a FFF7FEFF 		bl	Camera_SyncFrame
+  62              	.LVL6:
+  34:.\my_camera_functions.c ****     LCD_PosPrintString(0,0,"Frame Sync Done");
+  63              		.loc 1 34 0
+  64 002e 0020     		movs	r0, #0
+  65 0030 0146     		mov	r1, r0
+  66 0032 FFF7FEFF 		bl	LCD_Position
+  67              	.LVL7:
+  68 0036 1048     		ldr	r0, .L2+4
+  69 0038 FFF7FEFF 		bl	LCD_PrintString
+  70              	.LVL8:
+  35:.\my_camera_functions.c **** 	Camera_GetFrame(); //start frame capture
+  71              		.loc 1 35 0
+  72 003c FFF7FEFF 		bl	Camera_GetFrame
+  73              	.LVL9:
+  36:.\my_camera_functions.c ****     LCD_PosPrintString(0,0,"Getting Frame!!");
+  74              		.loc 1 36 0
+  75 0040 0020     		movs	r0, #0
+  76 0042 0146     		mov	r1, r0
+  77 0044 FFF7FEFF 		bl	LCD_Position
+  78              	.LVL10:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 3
+
+
+  79 0048 0C48     		ldr	r0, .L2+8
+  80 004a FFF7FEFF 		bl	LCD_PrintString
+  81              	.LVL11:
+  37:.\my_camera_functions.c **** 	Camera_SyncFrame(); //wait until frame is fully captured before sending out over USB
+  82              		.loc 1 37 0
+  83 004e FFF7FEFF 		bl	Camera_SyncFrame
+  84              	.LVL12:
+  38:.\my_camera_functions.c ****     Camera_WriteReg(0x13,0b11100000);
+  85              		.loc 1 38 0
+  86 0052 1320     		movs	r0, #19
+  87 0054 E021     		movs	r1, #224
+  88 0056 FFF7FEFF 		bl	Camera_WriteReg
+  89              	.LVL13:
+  39:.\my_camera_functions.c **** 	Camera_WriteReg(0x3F,0b00101111); // Edge Enhancement Factor and Threshold
+  90              		.loc 1 39 0
+  91 005a 3F20     		movs	r0, #63
+  92 005c 2F21     		movs	r1, #47
+  93 005e FFF7FEFF 		bl	Camera_WriteReg
+  94              	.LVL14:
+  40:.\my_camera_functions.c ****     Camera_WriteReg(0x3E,0b00000011); // Edge Enhancement Control
+  95              		.loc 1 40 0
+  96 0062 3E20     		movs	r0, #62
+  97 0064 0321     		movs	r1, #3
+  98 0066 FFF7FEFF 		bl	Camera_WriteReg
+  99              	.LVL15:
+  41:.\my_camera_functions.c ****     Camera_WriteReg(0x8C,0b10100000); // Denoise
+ 100              		.loc 1 41 0
+ 101 006a 8C20     		movs	r0, #140
+ 102 006c A021     		movs	r1, #160
+ 103 006e FFF7FEFF 		bl	Camera_WriteReg
+ 104              	.LVL16:
+ 105 0072 08BD     		pop	{r3, pc}
+ 106              	.L3:
+ 107              		.align	2
+ 108              	.L2:
+ 109 0074 00000000 		.word	.LC0
+ 110 0078 10000000 		.word	.LC1
+ 111 007c 20000000 		.word	.LC2
+ 112              		.cfi_endproc
+ 113              	.LFE63:
+ 114              		.size	init_camera, .-init_camera
+ 115              		.section	.text.capture_image,"ax",%progbits
+ 116              		.align	2
+ 117              		.global	capture_image
+ 118              		.thumb
+ 119              		.thumb_func
+ 120              		.type	capture_image, %function
+ 121              	capture_image:
+ 122              	.LFB64:
+  42:.\my_camera_functions.c **** }
+  43:.\my_camera_functions.c **** 
+  44:.\my_camera_functions.c **** void capture_image()
+  45:.\my_camera_functions.c **** {
+ 123              		.loc 1 45 0
+ 124              		.cfi_startproc
+ 125              		@ args = 0, pretend = 0, frame = 0
+ 126              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 4
+
+
+ 127 0000 08B5     		push	{r3, lr}
+ 128              		.cfi_def_cfa_offset 8
+ 129              		.cfi_offset 3, -8
+ 130              		.cfi_offset 14, -4
+  46:.\my_camera_functions.c **** 	Camera_SyncFrame();
+ 131              		.loc 1 46 0
+ 132 0002 FFF7FEFF 		bl	Camera_SyncFrame
+ 133              	.LVL17:
+  47:.\my_camera_functions.c **** 	Camera_GetFrame();
+ 134              		.loc 1 47 0
+ 135 0006 FFF7FEFF 		bl	Camera_GetFrame
+ 136              	.LVL18:
+  48:.\my_camera_functions.c **** 	Camera_SyncFrame();
+ 137              		.loc 1 48 0
+ 138 000a FFF7FEFF 		bl	Camera_SyncFrame
+ 139              	.LVL19:
+ 140 000e 08BD     		pop	{r3, pc}
+ 141              		.cfi_endproc
+ 142              	.LFE64:
+ 143              		.size	capture_image, .-capture_image
+ 144              		.section	.text.set_gain_exposure,"ax",%progbits
+ 145              		.align	2
+ 146              		.global	set_gain_exposure
+ 147              		.thumb
+ 148              		.thumb_func
+ 149              		.type	set_gain_exposure, %function
+ 150              	set_gain_exposure:
+ 151              	.LFB66:
+  49:.\my_camera_functions.c **** }
+  50:.\my_camera_functions.c **** 
+  51:.\my_camera_functions.c **** void capture_thresh_image()
+  52:.\my_camera_functions.c **** {
+  53:.\my_camera_functions.c **** 	Camera_SyncFrame();
+  54:.\my_camera_functions.c **** 	Camera_GetFrame();
+  55:.\my_camera_functions.c **** 	Camera_SyncFrame();
+  56:.\my_camera_functions.c **** 	threshold_image();
+  57:.\my_camera_functions.c **** 	blob_detect();
+  58:.\my_camera_functions.c **** }
+  59:.\my_camera_functions.c **** 
+  60:.\my_camera_functions.c **** void set_gain_exposure(int setting)
+  61:.\my_camera_functions.c **** {
+ 152              		.loc 1 61 0
+ 153              		.cfi_startproc
+ 154              		@ args = 0, pretend = 0, frame = 0
+ 155              		@ frame_needed = 0, uses_anonymous_args = 0
+ 156              	.LVL20:
+ 157 0000 08B5     		push	{r3, lr}
+ 158              		.cfi_def_cfa_offset 8
+ 159              		.cfi_offset 3, -8
+ 160              		.cfi_offset 14, -4
+  62:.\my_camera_functions.c **** 	switch(setting)
+ 161              		.loc 1 62 0
+ 162 0002 0228     		cmp	r0, #2
+ 163 0004 0CD0     		beq	.L7
+ 164 0006 0328     		cmp	r0, #3
+ 165 0008 13D0     		beq	.L8
+ 166 000a 0128     		cmp	r0, #1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 5
+
+
+ 167 000c 1AD1     		bne	.L11
+  63:.\my_camera_functions.c **** 	{
+  64:.\my_camera_functions.c **** 		case 1:
+  65:.\my_camera_functions.c **** 			// Settings for Instructions
+  66:.\my_camera_functions.c **** 			Camera_WriteReg(0x10,65);
+ 168              		.loc 1 66 0
+ 169 000e 1020     		movs	r0, #16
+ 170              	.LVL21:
+ 171 0010 4121     		movs	r1, #65
+ 172 0012 FFF7FEFF 		bl	Camera_WriteReg
+ 173              	.LVL22:
+  67:.\my_camera_functions.c **** 			Camera_WriteReg(0x00,60);
+ 174              		.loc 1 67 0
+ 175 0016 0020     		movs	r0, #0
+ 176 0018 3C21     		movs	r1, #60
+ 177 001a FFF7FEFF 		bl	Camera_WriteReg
+ 178              	.LVL23:
+  68:.\my_camera_functions.c **** 			break;
+ 179              		.loc 1 68 0
+ 180 001e 08BD     		pop	{r3, pc}
+ 181              	.LVL24:
+ 182              	.L7:
+  69:.\my_camera_functions.c **** 		case 2:
+  70:.\my_camera_functions.c **** 			// Settings for arena 1
+  71:.\my_camera_functions.c **** 			Camera_WriteReg(0x10,30);
+ 183              		.loc 1 71 0
+ 184 0020 1020     		movs	r0, #16
+ 185              	.LVL25:
+ 186 0022 1E21     		movs	r1, #30
+ 187 0024 FFF7FEFF 		bl	Camera_WriteReg
+ 188              	.LVL26:
+  72:.\my_camera_functions.c **** 			Camera_WriteReg(0x00,25);
+ 189              		.loc 1 72 0
+ 190 0028 0020     		movs	r0, #0
+ 191 002a 1921     		movs	r1, #25
+ 192 002c FFF7FEFF 		bl	Camera_WriteReg
+ 193              	.LVL27:
+  73:.\my_camera_functions.c **** 			break;
+ 194              		.loc 1 73 0
+ 195 0030 08BD     		pop	{r3, pc}
+ 196              	.LVL28:
+ 197              	.L8:
+  74:.\my_camera_functions.c **** 		case 3:
+  75:.\my_camera_functions.c **** 			// Settings for arena 2
+  76:.\my_camera_functions.c **** 			Camera_WriteReg(0x10,48);
+ 198              		.loc 1 76 0
+ 199 0032 1020     		movs	r0, #16
+ 200              	.LVL29:
+ 201 0034 3021     		movs	r1, #48
+ 202 0036 FFF7FEFF 		bl	Camera_WriteReg
+ 203              	.LVL30:
+  77:.\my_camera_functions.c **** 			Camera_WriteReg(0x00,25);
+ 204              		.loc 1 77 0
+ 205 003a 0020     		movs	r0, #0
+ 206 003c 1921     		movs	r1, #25
+ 207 003e FFF7FEFF 		bl	Camera_WriteReg
+ 208              	.LVL31:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 6
+
+
+  78:.\my_camera_functions.c **** 			break;
+ 209              		.loc 1 78 0
+ 210 0042 08BD     		pop	{r3, pc}
+ 211              	.LVL32:
+ 212              	.L11:
+  79:.\my_camera_functions.c **** 		default:
+  80:.\my_camera_functions.c **** 			Camera_WriteReg(0x10,0);
+ 213              		.loc 1 80 0
+ 214 0044 1020     		movs	r0, #16
+ 215              	.LVL33:
+ 216 0046 0021     		movs	r1, #0
+ 217 0048 FFF7FEFF 		bl	Camera_WriteReg
+ 218              	.LVL34:
+  81:.\my_camera_functions.c **** 			Camera_WriteReg(0x10,0);
+ 219              		.loc 1 81 0
+ 220 004c 1020     		movs	r0, #16
+ 221 004e 0021     		movs	r1, #0
+ 222 0050 FFF7FEFF 		bl	Camera_WriteReg
+ 223              	.LVL35:
+ 224 0054 08BD     		pop	{r3, pc}
+ 225              		.cfi_endproc
+ 226              	.LFE66:
+ 227              		.size	set_gain_exposure, .-set_gain_exposure
+ 228 0056 00BF     		.section	.text.PixelColour,"ax",%progbits
+ 229              		.align	2
+ 230              		.global	PixelColour
+ 231              		.thumb
+ 232              		.thumb_func
+ 233              		.type	PixelColour, %function
+ 234              	PixelColour:
+ 235              	.LFB67:
+  82:.\my_camera_functions.c **** 			break;
+  83:.\my_camera_functions.c **** 	}
+  84:.\my_camera_functions.c **** }
+  85:.\my_camera_functions.c **** 
+  86:.\my_camera_functions.c ****     
+  87:.\my_camera_functions.c ****     
+  88:.\my_camera_functions.c **** uint8 PixelColour(uint8 x,uint8 y) //colour of pixel at (x,y)
+  89:.\my_camera_functions.c **** {
+ 236              		.loc 1 89 0
+ 237              		.cfi_startproc
+ 238              		@ args = 0, pretend = 0, frame = 0
+ 239              		@ frame_needed = 0, uses_anonymous_args = 0
+ 240              		@ link register save eliminated.
+ 241              	.LVL36:
+ 242 0000 10B4     		push	{r4}
+ 243              		.cfi_def_cfa_offset 4
+ 244              		.cfi_offset 4, -4
+  90:.\my_camera_functions.c ****     if(Camera_framebuffer[y][x][0]<RED_U   && Camera_framebuffer[y][x][2]>=RED_V)  return RED;
+ 245              		.loc 1 90 0
+ 246 0002 5822     		movs	r2, #88
+ 247 0004 02FB0102 		mla	r2, r2, r1, r0
+ 248 0008 1D4B     		ldr	r3, .L20
+ 249 000a 13F82230 		ldrb	r3, [r3, r2, lsl #2]	@ zero_extendqisi2
+ 250 000e 1D4A     		ldr	r2, .L20+4
+ 251 0010 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 252 0012 9342     		cmp	r3, r2
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 7
+
+
+ 253 0014 0AD2     		bcs	.L13
+ 254              		.loc 1 90 0 is_stmt 0 discriminator 1
+ 255 0016 5822     		movs	r2, #88
+ 256 0018 02FB0102 		mla	r2, r2, r1, r0
+ 257 001c 184C     		ldr	r4, .L20
+ 258 001e 04EB8202 		add	r2, r4, r2, lsl #2
+ 259 0022 9478     		ldrb	r4, [r2, #2]	@ zero_extendqisi2
+ 260 0024 174A     		ldr	r2, .L20+4
+ 261 0026 5278     		ldrb	r2, [r2, #1]	@ zero_extendqisi2
+ 262 0028 9442     		cmp	r4, r2
+ 263 002a 1FD2     		bcs	.L16
+ 264              	.L13:
+  91:.\my_camera_functions.c ****     if(Camera_framebuffer[y][x][0]<GREEN_U && Camera_framebuffer[y][x][2]<GREEN_V) return GREEN;
+ 265              		.loc 1 91 0 is_stmt 1
+ 266 002c 154A     		ldr	r2, .L20+4
+ 267 002e 9278     		ldrb	r2, [r2, #2]	@ zero_extendqisi2
+ 268 0030 9342     		cmp	r3, r2
+ 269 0032 0AD2     		bcs	.L15
+ 270              		.loc 1 91 0 is_stmt 0 discriminator 1
+ 271 0034 5822     		movs	r2, #88
+ 272 0036 02FB0102 		mla	r2, r2, r1, r0
+ 273 003a 114C     		ldr	r4, .L20
+ 274 003c 04EB8202 		add	r2, r4, r2, lsl #2
+ 275 0040 9478     		ldrb	r4, [r2, #2]	@ zero_extendqisi2
+ 276 0042 104A     		ldr	r2, .L20+4
+ 277 0044 D278     		ldrb	r2, [r2, #3]	@ zero_extendqisi2
+ 278 0046 9442     		cmp	r4, r2
+ 279 0048 12D3     		bcc	.L17
+ 280              	.L15:
+  92:.\my_camera_functions.c ****     if(Camera_framebuffer[y][x][0]>=BLUE_U && Camera_framebuffer[y][x][2]<BLUE_V)  return BLUE;
+ 281              		.loc 1 92 0 is_stmt 1
+ 282 004a 0E4A     		ldr	r2, .L20+4
+ 283 004c 1279     		ldrb	r2, [r2, #4]	@ zero_extendqisi2
+ 284 004e 9342     		cmp	r3, r2
+ 285 0050 10D3     		bcc	.L18
+ 286              		.loc 1 92 0 is_stmt 0 discriminator 1
+ 287 0052 5823     		movs	r3, #88
+ 288 0054 03FB0101 		mla	r1, r3, r1, r0
+ 289              	.LVL37:
+ 290 0058 094B     		ldr	r3, .L20
+ 291 005a 03EB8101 		add	r1, r3, r1, lsl #2
+ 292 005e 8A78     		ldrb	r2, [r1, #2]	@ zero_extendqisi2
+ 293 0060 084B     		ldr	r3, .L20+4
+ 294 0062 5B79     		ldrb	r3, [r3, #5]	@ zero_extendqisi2
+ 295 0064 9A42     		cmp	r2, r3
+ 296 0066 07D3     		bcc	.L19
+  93:.\my_camera_functions.c ****     return NONE;
+ 297              		.loc 1 93 0 is_stmt 1
+ 298 0068 0020     		movs	r0, #0
+ 299              	.LVL38:
+ 300 006a 06E0     		b	.L14
+ 301              	.LVL39:
+ 302              	.L16:
+  90:.\my_camera_functions.c ****     if(Camera_framebuffer[y][x][0]<RED_U   && Camera_framebuffer[y][x][2]>=RED_V)  return RED;
+ 303              		.loc 1 90 0
+ 304 006c 0120     		movs	r0, #1
+ 305              	.LVL40:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 8
+
+
+ 306 006e 04E0     		b	.L14
+ 307              	.LVL41:
+ 308              	.L17:
+  91:.\my_camera_functions.c ****     if(Camera_framebuffer[y][x][0]<GREEN_U && Camera_framebuffer[y][x][2]<GREEN_V) return GREEN;
+ 309              		.loc 1 91 0
+ 310 0070 0220     		movs	r0, #2
+ 311              	.LVL42:
+ 312 0072 02E0     		b	.L14
+ 313              	.LVL43:
+ 314              	.L18:
+ 315              		.loc 1 93 0
+ 316 0074 0020     		movs	r0, #0
+ 317              	.LVL44:
+ 318 0076 00E0     		b	.L14
+ 319              	.LVL45:
+ 320              	.L19:
+  92:.\my_camera_functions.c ****     if(Camera_framebuffer[y][x][0]>=BLUE_U && Camera_framebuffer[y][x][2]<BLUE_V)  return BLUE;
+ 321              		.loc 1 92 0
+ 322 0078 0320     		movs	r0, #3
+ 323              	.LVL46:
+ 324              	.L14:
+  94:.\my_camera_functions.c **** }
+ 325              		.loc 1 94 0
+ 326 007a 5DF8044B 		ldr	r4, [sp], #4
+ 327 007e 7047     		bx	lr
+ 328              	.L21:
+ 329              		.align	2
+ 330              	.L20:
+ 331 0080 00000000 		.word	Camera_framebuffer
+ 332 0084 00000000 		.word	.LANCHOR0
+ 333              		.cfi_endproc
+ 334              	.LFE67:
+ 335              		.size	PixelColour, .-PixelColour
+ 336              		.section	.text.threshold_image,"ax",%progbits
+ 337              		.align	2
+ 338              		.global	threshold_image
+ 339              		.thumb
+ 340              		.thumb_func
+ 341              		.type	threshold_image, %function
+ 342              	threshold_image:
+ 343              	.LFB68:
+  95:.\my_camera_functions.c **** 
+  96:.\my_camera_functions.c **** 
+  97:.\my_camera_functions.c **** 
+  98:.\my_camera_functions.c **** //Camera_framebuffer[0][0] 
+  99:.\my_camera_functions.c **** void threshold_image()
+ 100:.\my_camera_functions.c **** {
+ 344              		.loc 1 100 0
+ 345              		.cfi_startproc
+ 346              		@ args = 0, pretend = 0, frame = 32
+ 347              		@ frame_needed = 0, uses_anonymous_args = 0
+ 348 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 349              		.cfi_def_cfa_offset 36
+ 350              		.cfi_offset 4, -36
+ 351              		.cfi_offset 5, -32
+ 352              		.cfi_offset 6, -28
+ 353              		.cfi_offset 7, -24
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 9
+
+
+ 354              		.cfi_offset 8, -20
+ 355              		.cfi_offset 9, -16
+ 356              		.cfi_offset 10, -12
+ 357              		.cfi_offset 11, -8
+ 358              		.cfi_offset 14, -4
+ 359 0004 89B0     		sub	sp, sp, #36
+ 360              		.cfi_def_cfa_offset 72
+ 361              	.LVL47:
+ 101:.\my_camera_functions.c **** 	uint8 locals[8];
+ 102:.\my_camera_functions.c **** 	uint8 colours[4];
+ 103:.\my_camera_functions.c **** 	uint8 pixel;
+ 104:.\my_camera_functions.c ****     int y, x, i;
+ 105:.\my_camera_functions.c ****     
+ 106:.\my_camera_functions.c ****     
+ 107:.\my_camera_functions.c ****     
+ 108:.\my_camera_functions.c **** 	for(y = 0; y < 144; ++y)
+ 362              		.loc 1 108 0
+ 363 0006 0022     		movs	r2, #0
+ 364 0008 0192     		str	r2, [sp, #4]
+ 365 000a 1446     		mov	r4, r2
+ 109:.\my_camera_functions.c **** 	{
+ 110:.\my_camera_functions.c **** 		for(x = 0; x < 88; ++x)
+ 111:.\my_camera_functions.c **** 		{
+ 112:.\my_camera_functions.c ****             if(y == 0 || y == 143 || x == 0 || x == 87)
+ 113:.\my_camera_functions.c ****             {
+ 114:.\my_camera_functions.c ****                 Camera_framebuffer[y][x][0] = 127;       
+ 366              		.loc 1 114 0
+ 367 000c DFF898A1 		ldr	r10, .L38
+ 368 0010 4FF07F0B 		mov	fp, #127
+ 108:.\my_camera_functions.c **** 	for(y = 0; y < 144; ++y)
+ 369              		.loc 1 108 0
+ 370 0014 C1E0     		b	.L23
+ 371              	.LVL48:
+ 372              	.L35:
+ 112:.\my_camera_functions.c ****             if(y == 0 || y == 143 || x == 0 || x == 87)
+ 373              		.loc 1 112 0
+ 374 0016 019B     		ldr	r3, [sp, #4]
+ 375 0018 23B1     		cbz	r3, .L24
+ 112:.\my_camera_functions.c ****             if(y == 0 || y == 143 || x == 0 || x == 87)
+ 376              		.loc 1 112 0 is_stmt 0 discriminator 1
+ 377 001a 8F2B     		cmp	r3, #143
+ 378 001c 02D0     		beq	.L24
+ 379 001e 0DB1     		cbz	r5, .L24
+ 380 0020 572D     		cmp	r5, #87
+ 381 0022 0AD1     		bne	.L25
+ 382              	.L24:
+ 383              		.loc 1 114 0 is_stmt 1
+ 384 0024 039B     		ldr	r3, [sp, #12]
+ 385 0026 2B44     		add	r3, r3, r5
+ 386 0028 0AF823B0 		strb	fp, [r10, r3, lsl #2]
+ 115:.\my_camera_functions.c ****                 Camera_framebuffer[y][x][2] = 127;
+ 387              		.loc 1 115 0
+ 388 002c 0AEB8303 		add	r3, r10, r3, lsl #2
+ 389 0030 83F802B0 		strb	fp, [r3, #2]
+ 116:.\my_camera_functions.c ****                 Camera_framebuffer[y][x][1] = 0;
+ 390              		.loc 1 116 0
+ 391 0034 5C70     		strb	r4, [r3, #1]
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 10
+
+
+ 117:.\my_camera_functions.c ****                 Camera_framebuffer[y][x][3] = 0;
+ 392              		.loc 1 117 0
+ 393 0036 DC70     		strb	r4, [r3, #3]
+ 394 0038 96E0     		b	.L26
+ 395              	.L25:
+ 118:.\my_camera_functions.c ****             }
+ 119:.\my_camera_functions.c ****             else
+ 120:.\my_camera_functions.c ****             {
+ 121:.\my_camera_functions.c **** 			    locals[0] = PixelColour(x-1,y-1);
+ 396              		.loc 1 121 0
+ 397 003a EEB2     		uxtb	r6, r5
+ 398 003c 771E     		subs	r7, r6, #1
+ 399 003e FFB2     		uxtb	r7, r7
+ 400 0040 3846     		mov	r0, r7
+ 401 0042 4946     		mov	r1, r9
+ 402 0044 FFF7FEFF 		bl	PixelColour
+ 403              	.LVL49:
+ 404 0048 8DF81800 		strb	r0, [sp, #24]
+ 122:.\my_camera_functions.c **** 			    locals[1] = PixelColour(x-1,y);
+ 405              		.loc 1 122 0
+ 406 004c 3846     		mov	r0, r7
+ 407 004e 0299     		ldr	r1, [sp, #8]
+ 408 0050 FFF7FEFF 		bl	PixelColour
+ 409              	.LVL50:
+ 410 0054 8DF81900 		strb	r0, [sp, #25]
+ 123:.\my_camera_functions.c **** 			    locals[2] = PixelColour(x-1,y+1);
+ 411              		.loc 1 123 0
+ 412 0058 3846     		mov	r0, r7
+ 413 005a 4146     		mov	r1, r8
+ 414 005c FFF7FEFF 		bl	PixelColour
+ 415              	.LVL51:
+ 416 0060 8DF81A00 		strb	r0, [sp, #26]
+ 124:.\my_camera_functions.c **** 			    locals[3] = PixelColour(x,y-1);
+ 417              		.loc 1 124 0
+ 418 0064 3046     		mov	r0, r6
+ 419 0066 4946     		mov	r1, r9
+ 420 0068 FFF7FEFF 		bl	PixelColour
+ 421              	.LVL52:
+ 422 006c 8DF81B00 		strb	r0, [sp, #27]
+ 125:.\my_camera_functions.c **** 			    locals[4] = PixelColour(x,y+1);
+ 423              		.loc 1 125 0
+ 424 0070 3046     		mov	r0, r6
+ 425 0072 4146     		mov	r1, r8
+ 426 0074 FFF7FEFF 		bl	PixelColour
+ 427              	.LVL53:
+ 428 0078 8DF81C00 		strb	r0, [sp, #28]
+ 126:.\my_camera_functions.c **** 			    locals[5] = PixelColour(x+1,y-1);
+ 429              		.loc 1 126 0
+ 430 007c 0136     		adds	r6, r6, #1
+ 431 007e F6B2     		uxtb	r6, r6
+ 432 0080 3046     		mov	r0, r6
+ 433 0082 4946     		mov	r1, r9
+ 434 0084 FFF7FEFF 		bl	PixelColour
+ 435              	.LVL54:
+ 436 0088 8DF81D00 		strb	r0, [sp, #29]
+ 127:.\my_camera_functions.c **** 			    locals[6] = PixelColour(x+1,y);
+ 437              		.loc 1 127 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 11
+
+
+ 438 008c 3046     		mov	r0, r6
+ 439 008e 0299     		ldr	r1, [sp, #8]
+ 440 0090 FFF7FEFF 		bl	PixelColour
+ 441              	.LVL55:
+ 442 0094 8DF81E00 		strb	r0, [sp, #30]
+ 128:.\my_camera_functions.c **** 			    locals[7] = PixelColour(x+1,y+1);
+ 443              		.loc 1 128 0
+ 444 0098 3046     		mov	r0, r6
+ 445 009a 4146     		mov	r1, r8
+ 446 009c FFF7FEFF 		bl	PixelColour
+ 447              	.LVL56:
+ 448 00a0 8DF81F00 		strb	r0, [sp, #31]
+ 449              	.LVL57:
+ 129:.\my_camera_functions.c **** 			    for(i = 0; i < 8; ++i)
+ 450              		.loc 1 129 0
+ 451 00a4 2346     		mov	r3, r4
+ 452 00a6 1AE0     		b	.L27
+ 453              	.LVL58:
+ 454              	.L28:
+ 130:.\my_camera_functions.c ****     			{
+ 131:.\my_camera_functions.c **** 	    			colours[0] += locals[i] == NONE;
+ 455              		.loc 1 131 0 discriminator 2
+ 456 00a8 08AA     		add	r2, sp, #32
+ 457 00aa 1A44     		add	r2, r2, r3
+ 458 00ac 12F8082C 		ldrb	r2, [r2, #-8]	@ zero_extendqisi2
+ 132:.\my_camera_functions.c **** 		    		colours[1] += locals[i] == RED;
+ 459              		.loc 1 132 0 discriminator 2
+ 460 00b0 9DF81510 		ldrb	r1, [sp, #21]	@ zero_extendqisi2
+ 461 00b4 012A     		cmp	r2, #1
+ 462 00b6 08BF     		it	eq
+ 463 00b8 0131     		addeq	r1, r1, #1
+ 464 00ba 8DF81510 		strb	r1, [sp, #21]
+ 133:.\my_camera_functions.c **** 			    	colours[2] += locals[i] == GREEN;
+ 465              		.loc 1 133 0 discriminator 2
+ 466 00be 9DF81610 		ldrb	r1, [sp, #22]	@ zero_extendqisi2
+ 467 00c2 022A     		cmp	r2, #2
+ 468 00c4 08BF     		it	eq
+ 469 00c6 0131     		addeq	r1, r1, #1
+ 470 00c8 8DF81610 		strb	r1, [sp, #22]
+ 134:.\my_camera_functions.c **** 				    colours[3] += locals[i] == BLUE;
+ 471              		.loc 1 134 0 discriminator 2
+ 472 00cc 9DF81710 		ldrb	r1, [sp, #23]	@ zero_extendqisi2
+ 473 00d0 032A     		cmp	r2, #3
+ 474 00d2 14BF     		ite	ne
+ 475 00d4 0A46     		movne	r2, r1
+ 476 00d6 4A1C     		addeq	r2, r1, #1
+ 477 00d8 8DF81720 		strb	r2, [sp, #23]
+ 129:.\my_camera_functions.c **** 			    for(i = 0; i < 8; ++i)
+ 478              		.loc 1 129 0 discriminator 2
+ 479 00dc 0133     		adds	r3, r3, #1
+ 480              	.LVL59:
+ 481              	.L27:
+ 129:.\my_camera_functions.c **** 			    for(i = 0; i < 8; ++i)
+ 482              		.loc 1 129 0 is_stmt 0 discriminator 1
+ 483 00de 072B     		cmp	r3, #7
+ 484 00e0 E2DD     		ble	.L28
+ 135:.\my_camera_functions.c ****     			}
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 12
+
+
+ 136:.\my_camera_functions.c ****                 Camera_framebuffer[y][x][1] = 127;
+ 485              		.loc 1 136 0 is_stmt 1
+ 486 00e2 039B     		ldr	r3, [sp, #12]
+ 487              	.LVL60:
+ 488 00e4 2B44     		add	r3, r3, r5
+ 489 00e6 0AEB8303 		add	r3, r10, r3, lsl #2
+ 490 00ea 83F801B0 		strb	fp, [r3, #1]
+ 137:.\my_camera_functions.c ****                 Camera_framebuffer[y][x][3] = 127;
+ 491              		.loc 1 137 0
+ 492 00ee 83F803B0 		strb	fp, [r3, #3]
+ 138:.\my_camera_functions.c **** 			    if(colours[1] >= 4)
+ 493              		.loc 1 138 0
+ 494 00f2 9DF81530 		ldrb	r3, [sp, #21]	@ zero_extendqisi2
+ 495 00f6 032B     		cmp	r3, #3
+ 496 00f8 09D9     		bls	.L29
+ 497              	.LVL61:
+ 139:.\my_camera_functions.c **** 			    {
+ 140:.\my_camera_functions.c **** 				    pixel = RED;
+ 141:.\my_camera_functions.c **** 				    Camera_framebuffer[y][x][0] = 0;
+ 498              		.loc 1 141 0
+ 499 00fa 039B     		ldr	r3, [sp, #12]
+ 500 00fc 2B44     		add	r3, r3, r5
+ 501 00fe 0AF82340 		strb	r4, [r10, r3, lsl #2]
+ 142:.\my_camera_functions.c ****     				Camera_framebuffer[y][x][2] = 255;
+ 502              		.loc 1 142 0
+ 503 0102 0AEB8303 		add	r3, r10, r3, lsl #2
+ 504 0106 4FF0FF32 		mov	r2, #-1
+ 505 010a 9A70     		strb	r2, [r3, #2]
+ 506 010c 18E0     		b	.L30
+ 507              	.LVL62:
+ 508              	.L29:
+ 143:.\my_camera_functions.c ****                 }
+ 144:.\my_camera_functions.c **** 		    	else if(colours[2] >= 4)
+ 509              		.loc 1 144 0
+ 510 010e 9DF81630 		ldrb	r3, [sp, #22]	@ zero_extendqisi2
+ 511 0112 032B     		cmp	r3, #3
+ 512 0114 07D9     		bls	.L31
+ 513              	.LVL63:
+ 145:.\my_camera_functions.c ****     			{
+ 146:.\my_camera_functions.c **** 	    			pixel = GREEN;
+ 147:.\my_camera_functions.c **** 		    		Camera_framebuffer[y][x][0] = 0;
+ 514              		.loc 1 147 0
+ 515 0116 039B     		ldr	r3, [sp, #12]
+ 516 0118 2B44     		add	r3, r3, r5
+ 517 011a 0AF82340 		strb	r4, [r10, r3, lsl #2]
+ 148:.\my_camera_functions.c **** 			    	Camera_framebuffer[y][x][2] = 0;
+ 518              		.loc 1 148 0
+ 519 011e 0AEB8303 		add	r3, r10, r3, lsl #2
+ 520 0122 9C70     		strb	r4, [r3, #2]
+ 521 0124 0CE0     		b	.L30
+ 522              	.LVL64:
+ 523              	.L31:
+ 149:.\my_camera_functions.c **** 	    		}
+ 150:.\my_camera_functions.c **** 			    else if(colours[3] >= 4)
+ 524              		.loc 1 150 0
+ 525 0126 9DF81730 		ldrb	r3, [sp, #23]	@ zero_extendqisi2
+ 526 012a 032B     		cmp	r3, #3
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 13
+
+
+ 527 012c 0AD9     		bls	.L32
+ 528              	.LVL65:
+ 151:.\my_camera_functions.c **** 			    {
+ 152:.\my_camera_functions.c ****     				pixel = BLUE;
+ 153:.\my_camera_functions.c **** 	    			Camera_framebuffer[y][x][0] = 255;
+ 529              		.loc 1 153 0
+ 530 012e 039B     		ldr	r3, [sp, #12]
+ 531 0130 2B44     		add	r3, r3, r5
+ 532 0132 4FF0FF32 		mov	r2, #-1
+ 533 0136 0AF82320 		strb	r2, [r10, r3, lsl #2]
+ 154:.\my_camera_functions.c **** 		    		Camera_framebuffer[y][x][2] = 0;
+ 534              		.loc 1 154 0
+ 535 013a 0AEB8303 		add	r3, r10, r3, lsl #2
+ 536 013e 9C70     		strb	r4, [r3, #2]
+ 537              	.LVL66:
+ 538              	.L30:
+ 129:.\my_camera_functions.c **** 			    for(i = 0; i < 8; ++i)
+ 539              		.loc 1 129 0 discriminator 1
+ 540 0140 2346     		mov	r3, r4
+ 541 0142 0FE0     		b	.L33
+ 542              	.L32:
+ 543              	.LVL67:
+ 155:.\my_camera_functions.c **** 			    }
+ 156:.\my_camera_functions.c ****     			else //if(colours[0] >= colours[1] && colours[0] >= colours[2] && colours[0] >= colours[3])
+ 157:.\my_camera_functions.c **** 	    		{
+ 158:.\my_camera_functions.c **** 		    		pixel = NONE;
+ 159:.\my_camera_functions.c **** 			    	Camera_framebuffer[y][x][0] = 127;
+ 544              		.loc 1 159 0
+ 545 0144 039B     		ldr	r3, [sp, #12]
+ 546 0146 2B44     		add	r3, r3, r5
+ 547 0148 0AF823B0 		strb	fp, [r10, r3, lsl #2]
+ 160:.\my_camera_functions.c **** 				    Camera_framebuffer[y][x][2] = 127;
+ 548              		.loc 1 160 0
+ 549 014c 0AEB8303 		add	r3, r10, r3, lsl #2
+ 550 0150 83F802B0 		strb	fp, [r3, #2]
+ 161:.\my_camera_functions.c ****                     Camera_framebuffer[y][x][1] = 0;
+ 551              		.loc 1 161 0
+ 552 0154 5C70     		strb	r4, [r3, #1]
+ 162:.\my_camera_functions.c ****                     Camera_framebuffer[y][x][3] = 0;
+ 553              		.loc 1 162 0
+ 554 0156 DC70     		strb	r4, [r3, #3]
+ 555 0158 F2E7     		b	.L30
+ 556              	.LVL68:
+ 557              	.L34:
+ 163:.\my_camera_functions.c **** 		    	}
+ 164:.\my_camera_functions.c **** 			    for(i = 0; i < 8; ++i)
+ 165:.\my_camera_functions.c **** 			    {
+ 166:.\my_camera_functions.c ****     				colours[i] = 0;
+ 558              		.loc 1 166 0 discriminator 2
+ 559 015a 08AA     		add	r2, sp, #32
+ 560 015c 1A44     		add	r2, r2, r3
+ 561 015e 02F80C4C 		strb	r4, [r2, #-12]
+ 164:.\my_camera_functions.c **** 			    for(i = 0; i < 8; ++i)
+ 562              		.loc 1 164 0 discriminator 2
+ 563 0162 0133     		adds	r3, r3, #1
+ 564              	.LVL69:
+ 565              	.L33:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 14
+
+
+ 164:.\my_camera_functions.c **** 			    for(i = 0; i < 8; ++i)
+ 566              		.loc 1 164 0 is_stmt 0 discriminator 1
+ 567 0164 072B     		cmp	r3, #7
+ 568 0166 F8DD     		ble	.L34
+ 569              	.LVL70:
+ 570              	.L26:
+ 110:.\my_camera_functions.c **** 		for(x = 0; x < 88; ++x)
+ 571              		.loc 1 110 0 is_stmt 1
+ 572 0168 0135     		adds	r5, r5, #1
+ 573              	.LVL71:
+ 574 016a 10E0     		b	.L36
+ 575              	.LVL72:
+ 576              	.L37:
+ 577 016c 2546     		mov	r5, r4
+ 114:.\my_camera_functions.c ****                 Camera_framebuffer[y][x][0] = 127;       
+ 578              		.loc 1 114 0
+ 579 016e 5822     		movs	r2, #88
+ 580 0170 019B     		ldr	r3, [sp, #4]
+ 581              	.LVL73:
+ 582 0172 02FB03F3 		mul	r3, r2, r3
+ 583 0176 0393     		str	r3, [sp, #12]
+ 121:.\my_camera_functions.c **** 			    locals[0] = PixelColour(x-1,y-1);
+ 584              		.loc 1 121 0
+ 585 0178 019B     		ldr	r3, [sp, #4]
+ 586 017a DBB2     		uxtb	r3, r3
+ 587 017c 0293     		str	r3, [sp, #8]
+ 588 017e 03F1FF39 		add	r9, r3, #-1
+ 589 0182 5FFA89F9 		uxtb	r9, r9
+ 123:.\my_camera_functions.c **** 			    locals[2] = PixelColour(x-1,y+1);
+ 590              		.loc 1 123 0
+ 591 0186 03F10108 		add	r8, r3, #1
+ 592 018a 5FFA88F8 		uxtb	r8, r8
+ 593              	.L36:
+ 594              	.LVL74:
+ 110:.\my_camera_functions.c **** 		for(x = 0; x < 88; ++x)
+ 595              		.loc 1 110 0 discriminator 1
+ 596 018e 572D     		cmp	r5, #87
+ 597 0190 7FF741AF 		ble	.L35
+ 108:.\my_camera_functions.c **** 	for(y = 0; y < 144; ++y)
+ 598              		.loc 1 108 0
+ 599 0194 019A     		ldr	r2, [sp, #4]
+ 600 0196 0132     		adds	r2, r2, #1
+ 601 0198 0192     		str	r2, [sp, #4]
+ 602              	.LVL75:
+ 603              	.L23:
+ 108:.\my_camera_functions.c **** 	for(y = 0; y < 144; ++y)
+ 604              		.loc 1 108 0 is_stmt 0 discriminator 1
+ 605 019a 019B     		ldr	r3, [sp, #4]
+ 606 019c 8F2B     		cmp	r3, #143
+ 607 019e E5DD     		ble	.L37
+ 167:.\my_camera_functions.c **** 			    } 
+ 168:.\my_camera_functions.c ****             }
+ 169:.\my_camera_functions.c **** 		}
+ 170:.\my_camera_functions.c **** 	}
+ 171:.\my_camera_functions.c **** }
+ 608              		.loc 1 171 0 is_stmt 1
+ 609 01a0 09B0     		add	sp, sp, #36
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 15
+
+
+ 610              		@ sp needed
+ 611 01a2 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 612              	.LVL76:
+ 613              	.L39:
+ 614 01a6 00BF     		.align	2
+ 615              	.L38:
+ 616 01a8 00000000 		.word	Camera_framebuffer
+ 617              		.cfi_endproc
+ 618              	.LFE68:
+ 619              		.size	threshold_image, .-threshold_image
+ 620              		.section	.text.capture_thresh_image,"ax",%progbits
+ 621              		.align	2
+ 622              		.global	capture_thresh_image
+ 623              		.thumb
+ 624              		.thumb_func
+ 625              		.type	capture_thresh_image, %function
+ 626              	capture_thresh_image:
+ 627              	.LFB65:
+  52:.\my_camera_functions.c **** {
+ 628              		.loc 1 52 0
+ 629              		.cfi_startproc
+ 630              		@ args = 0, pretend = 0, frame = 0
+ 631              		@ frame_needed = 0, uses_anonymous_args = 0
+ 632 0000 08B5     		push	{r3, lr}
+ 633              		.cfi_def_cfa_offset 8
+ 634              		.cfi_offset 3, -8
+ 635              		.cfi_offset 14, -4
+  53:.\my_camera_functions.c **** 	Camera_SyncFrame();
+ 636              		.loc 1 53 0
+ 637 0002 FFF7FEFF 		bl	Camera_SyncFrame
+ 638              	.LVL77:
+  54:.\my_camera_functions.c **** 	Camera_GetFrame();
+ 639              		.loc 1 54 0
+ 640 0006 FFF7FEFF 		bl	Camera_GetFrame
+ 641              	.LVL78:
+  55:.\my_camera_functions.c **** 	Camera_SyncFrame();
+ 642              		.loc 1 55 0
+ 643 000a FFF7FEFF 		bl	Camera_SyncFrame
+ 644              	.LVL79:
+  56:.\my_camera_functions.c **** 	threshold_image();
+ 645              		.loc 1 56 0
+ 646 000e FFF7FEFF 		bl	threshold_image
+ 647              	.LVL80:
+  57:.\my_camera_functions.c **** 	blob_detect();
+ 648              		.loc 1 57 0
+ 649 0012 FFF7FEFF 		bl	blob_detect
+ 650              	.LVL81:
+ 651 0016 08BD     		pop	{r3, pc}
+ 652              		.cfi_endproc
+ 653              	.LFE65:
+ 654              		.size	capture_thresh_image, .-capture_thresh_image
+ 655              		.global	__aeabi_i2f
+ 656              		.global	__aeabi_fmul
+ 657              		.global	__aeabi_fcmpge
+ 658              		.section	.text.clean_frame,"ax",%progbits
+ 659              		.align	2
+ 660              		.global	clean_frame
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 16
+
+
+ 661              		.thumb
+ 662              		.thumb_func
+ 663              		.type	clean_frame, %function
+ 664              	clean_frame:
+ 665              	.LFB69:
+ 172:.\my_camera_functions.c **** 
+ 173:.\my_camera_functions.c **** 
+ 174:.\my_camera_functions.c **** void clean_frame(int colour, float proportion, int row_limit)
+ 175:.\my_camera_functions.c **** {
+ 666              		.loc 1 175 0
+ 667              		.cfi_startproc
+ 668              		@ args = 0, pretend = 0, frame = 8
+ 669              		@ frame_needed = 0, uses_anonymous_args = 0
+ 670              	.LVL82:
+ 671 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 672              		.cfi_def_cfa_offset 36
+ 673              		.cfi_offset 4, -36
+ 674              		.cfi_offset 5, -32
+ 675              		.cfi_offset 6, -28
+ 676              		.cfi_offset 7, -24
+ 677              		.cfi_offset 8, -20
+ 678              		.cfi_offset 9, -16
+ 679              		.cfi_offset 10, -12
+ 680              		.cfi_offset 11, -8
+ 681              		.cfi_offset 14, -4
+ 682 0004 83B0     		sub	sp, sp, #12
+ 683              		.cfi_def_cfa_offset 48
+ 684 0006 0546     		mov	r5, r0
+ 685 0008 8B46     		mov	fp, r1
+ 686 000a 9246     		mov	r10, r2
+ 687              	.LVL83:
+ 176:.\my_camera_functions.c ****     int y,x,count,index = 0;
+ 688              		.loc 1 176 0
+ 689 000c 0023     		movs	r3, #0
+ 690 000e 0093     		str	r3, [sp]
+ 177:.\my_camera_functions.c ****     for(y = 0; y <= row_limit; y++)
+ 691              		.loc 1 177 0
+ 692 0010 9846     		mov	r8, r3
+ 693 0012 9946     		mov	r9, r3
+ 694 0014 0193     		str	r3, [sp, #4]
+ 695 0016 1FE0     		b	.L42
+ 696              	.LVL84:
+ 697              	.L44:
+ 178:.\my_camera_functions.c ****     {
+ 179:.\my_camera_functions.c ****         count = 0;
+ 180:.\my_camera_functions.c ****         for(x = 0; x < 88; x++)
+ 181:.\my_camera_functions.c ****         {
+ 182:.\my_camera_functions.c ****             if(PixelColour(x,y) == colour)
+ 698              		.loc 1 182 0
+ 699 0018 E0B2     		uxtb	r0, r4
+ 700 001a 3146     		mov	r1, r6
+ 701 001c FFF7FEFF 		bl	PixelColour
+ 702              	.LVL85:
+ 703 0020 A842     		cmp	r0, r5
+ 704 0022 00D1     		bne	.L43
+ 183:.\my_camera_functions.c ****             {
+ 184:.\my_camera_functions.c ****                 count++;
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 17
+
+
+ 705              		.loc 1 184 0
+ 706 0024 0137     		adds	r7, r7, #1
+ 707              	.LVL86:
+ 708              	.L43:
+ 180:.\my_camera_functions.c ****         for(x = 0; x < 88; x++)
+ 709              		.loc 1 180 0
+ 710 0026 0134     		adds	r4, r4, #1
+ 711              	.LVL87:
+ 712 0028 03E0     		b	.L46
+ 713              	.LVL88:
+ 714              	.L52:
+ 715 002a 4F46     		mov	r7, r9
+ 716 002c 019C     		ldr	r4, [sp, #4]
+ 182:.\my_camera_functions.c ****             if(PixelColour(x,y) == colour)
+ 717              		.loc 1 182 0
+ 718 002e 5FFA88F6 		uxtb	r6, r8
+ 719              	.L46:
+ 720              	.LVL89:
+ 180:.\my_camera_functions.c ****         for(x = 0; x < 88; x++)
+ 721              		.loc 1 180 0 discriminator 1
+ 722 0032 572C     		cmp	r4, #87
+ 723 0034 F0DD     		ble	.L44
+ 185:.\my_camera_functions.c ****             }
+ 186:.\my_camera_functions.c ****         }
+ 187:.\my_camera_functions.c ****         if(count >= proportion*88)
+ 724              		.loc 1 187 0
+ 725 0036 3846     		mov	r0, r7
+ 726 0038 FFF7FEFF 		bl	__aeabi_i2f
+ 727              	.LVL90:
+ 728 003c 0446     		mov	r4, r0
+ 729              	.LVL91:
+ 730 003e 5846     		mov	r0, fp
+ 731 0040 1B49     		ldr	r1, .L54
+ 732 0042 FFF7FEFF 		bl	__aeabi_fmul
+ 733              	.LVL92:
+ 734 0046 0146     		mov	r1, r0
+ 735 0048 2046     		mov	r0, r4
+ 736 004a FFF7FEFF 		bl	__aeabi_fcmpge
+ 737              	.LVL93:
+ 738 004e 08B1     		cbz	r0, .L45
+ 188:.\my_camera_functions.c ****         {
+ 189:.\my_camera_functions.c ****             index = y;
+ 739              		.loc 1 189 0
+ 740 0050 CDF80080 		str	r8, [sp]
+ 741              	.L45:
+ 177:.\my_camera_functions.c ****     for(y = 0; y <= row_limit; y++)
+ 742              		.loc 1 177 0
+ 743 0054 08F10108 		add	r8, r8, #1
+ 744              	.LVL94:
+ 745              	.L42:
+ 177:.\my_camera_functions.c ****     for(y = 0; y <= row_limit; y++)
+ 746              		.loc 1 177 0 is_stmt 0 discriminator 1
+ 747 0058 D045     		cmp	r8, r10
+ 748 005a E6DD     		ble	.L52
+ 749 005c 4FF0000B 		mov	fp, #0
+ 750              	.LVL95:
+ 751 0060 5F46     		mov	r7, fp
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 18
+
+
+ 190:.\my_camera_functions.c ****         }
+ 191:.\my_camera_functions.c ****     }
+ 192:.\my_camera_functions.c ****     for(y = 0; y <= index; y++)
+ 193:.\my_camera_functions.c ****     {
+ 194:.\my_camera_functions.c ****         for(x = 0; x < 88; x++)
+ 195:.\my_camera_functions.c ****             {
+ 196:.\my_camera_functions.c ****                 if(PixelColour(x,y) == colour)
+ 197:.\my_camera_functions.c ****                 {
+ 198:.\my_camera_functions.c ****                     Camera_framebuffer[y][x][0] = 127;
+ 752              		.loc 1 198 0 is_stmt 1
+ 753 0062 DFF85090 		ldr	r9, .L54+4
+ 754 0066 4FF07F08 		mov	r8, #127
+ 755              	.LVL96:
+ 756 006a 1BE0     		b	.L47
+ 757              	.LVL97:
+ 758              	.L49:
+ 196:.\my_camera_functions.c ****                 if(PixelColour(x,y) == colour)
+ 759              		.loc 1 196 0
+ 760 006c E0B2     		uxtb	r0, r4
+ 761 006e 3146     		mov	r1, r6
+ 762 0070 FFF7FEFF 		bl	PixelColour
+ 763              	.LVL98:
+ 764 0074 A842     		cmp	r0, r5
+ 765 0076 09D1     		bne	.L48
+ 766              		.loc 1 198 0
+ 767 0078 0AEB0403 		add	r3, r10, r4
+ 768 007c 09F82380 		strb	r8, [r9, r3, lsl #2]
+ 199:.\my_camera_functions.c **** 			        Camera_framebuffer[y][x][2] = 127;
+ 769              		.loc 1 199 0
+ 770 0080 09EB8303 		add	r3, r9, r3, lsl #2
+ 771 0084 83F80280 		strb	r8, [r3, #2]
+ 200:.\my_camera_functions.c ****                     Camera_framebuffer[y][x][1] = 0;
+ 772              		.loc 1 200 0
+ 773 0088 5F70     		strb	r7, [r3, #1]
+ 201:.\my_camera_functions.c ****                     Camera_framebuffer[y][x][3] = 0;
+ 774              		.loc 1 201 0
+ 775 008a DF70     		strb	r7, [r3, #3]
+ 776              	.L48:
+ 194:.\my_camera_functions.c ****         for(x = 0; x < 88; x++)
+ 777              		.loc 1 194 0
+ 778 008c 0134     		adds	r4, r4, #1
+ 779              	.LVL99:
+ 780 008e 05E0     		b	.L50
+ 781              	.LVL100:
+ 782              	.L53:
+ 783 0090 3C46     		mov	r4, r7
+ 196:.\my_camera_functions.c ****                 if(PixelColour(x,y) == colour)
+ 784              		.loc 1 196 0
+ 785 0092 5FFA8BF6 		uxtb	r6, fp
+ 198:.\my_camera_functions.c ****                     Camera_framebuffer[y][x][0] = 127;
+ 786              		.loc 1 198 0
+ 787 0096 5823     		movs	r3, #88
+ 788 0098 03FB0BFA 		mul	r10, r3, fp
+ 789              	.L50:
+ 790              	.LVL101:
+ 194:.\my_camera_functions.c ****         for(x = 0; x < 88; x++)
+ 791              		.loc 1 194 0 discriminator 1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 19
+
+
+ 792 009c 572C     		cmp	r4, #87
+ 793 009e E5DD     		ble	.L49
+ 192:.\my_camera_functions.c ****     for(y = 0; y <= index; y++)
+ 794              		.loc 1 192 0
+ 795 00a0 0BF1010B 		add	fp, fp, #1
+ 796              	.LVL102:
+ 797              	.L47:
+ 192:.\my_camera_functions.c ****     for(y = 0; y <= index; y++)
+ 798              		.loc 1 192 0 is_stmt 0 discriminator 1
+ 799 00a4 009B     		ldr	r3, [sp]
+ 800 00a6 9B45     		cmp	fp, r3
+ 801 00a8 F2DD     		ble	.L53
+ 202:.\my_camera_functions.c ****                 }
+ 203:.\my_camera_functions.c ****             }
+ 204:.\my_camera_functions.c ****     }
+ 205:.\my_camera_functions.c **** }
+ 802              		.loc 1 205 0 is_stmt 1
+ 803 00aa 03B0     		add	sp, sp, #12
+ 804              		@ sp needed
+ 805 00ac BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 806              	.LVL103:
+ 807              	.L55:
+ 808              		.align	2
+ 809              	.L54:
+ 810 00b0 0000B042 		.word	1118830592
+ 811 00b4 00000000 		.word	Camera_framebuffer
+ 812              		.cfi_endproc
+ 813              	.LFE69:
+ 814              		.size	clean_frame, .-clean_frame
+ 815              		.section	.text.identify_colour_instructions,"ax",%progbits
+ 816              		.align	2
+ 817              		.global	identify_colour_instructions
+ 818              		.thumb
+ 819              		.thumb_func
+ 820              		.type	identify_colour_instructions, %function
+ 821              	identify_colour_instructions:
+ 822              	.LFB70:
+ 206:.\my_camera_functions.c **** 
+ 207:.\my_camera_functions.c **** 
+ 208:.\my_camera_functions.c **** int identify_colour_instructions(int size)
+ 209:.\my_camera_functions.c **** {
+ 823              		.loc 1 209 0
+ 824              		.cfi_startproc
+ 825              		@ args = 0, pretend = 0, frame = 0
+ 826              		@ frame_needed = 0, uses_anonymous_args = 0
+ 827              		@ link register save eliminated.
+ 828              	.LVL104:
+ 829              	.LVL105:
+ 210:.\my_camera_functions.c ****     int x;
+ 211:.\my_camera_functions.c ****     x = (blobs[0].size >= size) ? blobs[0].colour : -1;
+ 212:.\my_camera_functions.c ****     //PixelColour(88/2,144/2);
+ 213:.\my_camera_functions.c **** }
+ 830              		.loc 1 213 0
+ 831 0000 7047     		bx	lr
+ 832              		.cfi_endproc
+ 833              	.LFE70:
+ 834              		.size	identify_colour_instructions, .-identify_colour_instructions
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 20
+
+
+ 835 0002 00BF     		.section	.text.identify_colour_gripper,"ax",%progbits
+ 836              		.align	2
+ 837              		.global	identify_colour_gripper
+ 838              		.thumb
+ 839              		.thumb_func
+ 840              		.type	identify_colour_gripper, %function
+ 841              	identify_colour_gripper:
+ 842              	.LFB71:
+ 214:.\my_camera_functions.c **** 
+ 215:.\my_camera_functions.c **** int identify_colour_gripper()
+ 216:.\my_camera_functions.c **** {
+ 843              		.loc 1 216 0
+ 844              		.cfi_startproc
+ 845              		@ args = 0, pretend = 0, frame = 0
+ 846              		@ frame_needed = 0, uses_anonymous_args = 0
+ 847 0000 08B5     		push	{r3, lr}
+ 848              		.cfi_def_cfa_offset 8
+ 849              		.cfi_offset 3, -8
+ 850              		.cfi_offset 14, -4
+ 217:.\my_camera_functions.c ****      return PixelColour(88/2,144);  
+ 851              		.loc 1 217 0
+ 852 0002 2C20     		movs	r0, #44
+ 853 0004 9021     		movs	r1, #144
+ 854 0006 FFF7FEFF 		bl	PixelColour
+ 855              	.LVL106:
+ 218:.\my_camera_functions.c **** }
+ 856              		.loc 1 218 0
+ 857 000a 08BD     		pop	{r3, pc}
+ 858              		.cfi_endproc
+ 859              	.LFE71:
+ 860              		.size	identify_colour_gripper, .-identify_colour_gripper
+ 861              		.section	.text.PixelLuminence,"ax",%progbits
+ 862              		.align	2
+ 863              		.global	PixelLuminence
+ 864              		.thumb
+ 865              		.thumb_func
+ 866              		.type	PixelLuminence, %function
+ 867              	PixelLuminence:
+ 868              	.LFB72:
+ 219:.\my_camera_functions.c **** 
+ 220:.\my_camera_functions.c **** 
+ 221:.\my_camera_functions.c **** int PixelLuminence(int x, int y)
+ 222:.\my_camera_functions.c **** {
+ 869              		.loc 1 222 0
+ 870              		.cfi_startproc
+ 871              		@ args = 0, pretend = 0, frame = 0
+ 872              		@ frame_needed = 0, uses_anonymous_args = 0
+ 873              		@ link register save eliminated.
+ 874              	.LVL107:
+ 223:.\my_camera_functions.c **** 	return (Camera_framebuffer[y][x][1] > 127) && (Camera_framebuffer[y][x][3] > 127);
+ 875              		.loc 1 223 0
+ 876 0000 5823     		movs	r3, #88
+ 877 0002 03FB0103 		mla	r3, r3, r1, r0
+ 878 0006 0B4A     		ldr	r2, .L62
+ 879 0008 02EB8303 		add	r3, r2, r3, lsl #2
+ 880 000c 93F90130 		ldrsb	r3, [r3, #1]
+ 881 0010 002B     		cmp	r3, #0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 21
+
+
+ 882 0012 0ADA     		bge	.L60
+ 883              		.loc 1 223 0 is_stmt 0 discriminator 1
+ 884 0014 5823     		movs	r3, #88
+ 885 0016 03FB0101 		mla	r1, r3, r1, r0
+ 886              	.LVL108:
+ 887 001a 02EB8101 		add	r1, r2, r1, lsl #2
+ 888 001e 91F90330 		ldrsb	r3, [r1, #3]
+ 889 0022 002B     		cmp	r3, #0
+ 890 0024 03DB     		blt	.L61
+ 891              		.loc 1 223 0
+ 892 0026 0020     		movs	r0, #0
+ 893              	.LVL109:
+ 894 0028 7047     		bx	lr
+ 895              	.LVL110:
+ 896              	.L60:
+ 897 002a 0020     		movs	r0, #0
+ 898              	.LVL111:
+ 899 002c 7047     		bx	lr
+ 900              	.LVL112:
+ 901              	.L61:
+ 902 002e 0120     		movs	r0, #1
+ 903              	.LVL113:
+ 224:.\my_camera_functions.c **** } 
+ 904              		.loc 1 224 0 is_stmt 1
+ 905 0030 7047     		bx	lr
+ 906              	.L63:
+ 907 0032 00BF     		.align	2
+ 908              	.L62:
+ 909 0034 00000000 		.word	Camera_framebuffer
+ 910              		.cfi_endproc
+ 911              	.LFE72:
+ 912              		.size	PixelLuminence, .-PixelLuminence
+ 913              		.section	.text.threshold_black,"ax",%progbits
+ 914              		.align	2
+ 915              		.global	threshold_black
+ 916              		.thumb
+ 917              		.thumb_func
+ 918              		.type	threshold_black, %function
+ 919              	threshold_black:
+ 920              	.LFB73:
+ 225:.\my_camera_functions.c **** 
+ 226:.\my_camera_functions.c **** 
+ 227:.\my_camera_functions.c **** void threshold_black()
+ 228:.\my_camera_functions.c **** {
+ 921              		.loc 1 228 0
+ 922              		.cfi_startproc
+ 923              		@ args = 0, pretend = 0, frame = 0
+ 924              		@ frame_needed = 0, uses_anonymous_args = 0
+ 925              		@ link register save eliminated.
+ 926 0000 2DE9F001 		push	{r4, r5, r6, r7, r8}
+ 927              		.cfi_def_cfa_offset 20
+ 928              		.cfi_offset 4, -20
+ 929              		.cfi_offset 5, -16
+ 930              		.cfi_offset 6, -12
+ 931              		.cfi_offset 7, -8
+ 932              		.cfi_offset 8, -4
+ 933              	.LVL114:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 22
+
+
+ 229:.\my_camera_functions.c **** 	int y,x,k,i;
+ 230:.\my_camera_functions.c **** 	for(y = 0; y < 144; y++)
+ 934              		.loc 1 230 0
+ 935 0004 0026     		movs	r6, #0
+ 231:.\my_camera_functions.c **** 	{
+ 232:.\my_camera_functions.c **** 		for(x = 0; x < 88; x++)
+ 233:.\my_camera_functions.c **** 		{
+ 234:.\my_camera_functions.c **** 			k = 0;
+ 235:.\my_camera_functions.c **** 			if(y == 0 || y == 143 || x == 0 || x == 143)
+ 236:.\my_camera_functions.c **** 			{
+ 237:.\my_camera_functions.c **** 				for(i = 0; i < 2; i++)
+ 238:.\my_camera_functions.c **** 				{
+ 239:.\my_camera_functions.c **** 					Camera_framebuffer[y][x][i] = 127;
+ 936              		.loc 1 239 0
+ 937 0006 1D48     		ldr	r0, .L79
+ 938 0008 7F27     		movs	r7, #127
+ 240:.\my_camera_functions.c ****                     Camera_framebuffer[y][x][i+1] = 255;
+ 939              		.loc 1 240 0
+ 940 000a 4FF0FF08 		mov	r8, #255
+ 230:.\my_camera_functions.c **** 	for(y = 0; y < 144; y++)
+ 941              		.loc 1 230 0
+ 942 000e 30E0     		b	.L65
+ 943              	.LVL115:
+ 944              	.L71:
+ 235:.\my_camera_functions.c **** 			if(y == 0 || y == 143 || x == 0 || x == 143)
+ 945              		.loc 1 235 0
+ 946 0010 8EB1     		cbz	r6, .L73
+ 235:.\my_camera_functions.c **** 			if(y == 0 || y == 143 || x == 0 || x == 143)
+ 947              		.loc 1 235 0 is_stmt 0 discriminator 1
+ 948 0012 8F2E     		cmp	r6, #143
+ 949 0014 11D0     		beq	.L74
+ 950 0016 92B1     		cbz	r2, .L75
+ 951 0018 8F2A     		cmp	r2, #143
+ 952 001a 12D0     		beq	.L76
+ 953              	.L69:
+ 954 001c 0023     		movs	r3, #0
+ 241:.\my_camera_functions.c **** 				}
+ 242:.\my_camera_functions.c ****             }
+ 243:.\my_camera_functions.c **** 			else
+ 244:.\my_camera_functions.c ****             {
+ 245:.\my_camera_functions.c **** 		    	k += PixelLuminence(x-1,y-1);
+ 246:.\my_camera_functions.c **** 		    	k += PixelLuminence(x-1,y);
+ 247:.\my_camera_functions.c **** 		    	k += PixelLuminence(x-1,y+1);
+ 248:.\my_camera_functions.c **** 		    	k += PixelLuminence(x,y-1);
+ 249:.\my_camera_functions.c **** 			   	k += PixelLuminence(x,y+1);
+ 250:.\my_camera_functions.c **** 			   	k += PixelLuminence(x+1,y-1);
+ 251:.\my_camera_functions.c **** 			   	k += PixelLuminence(x+1,y);
+ 252:.\my_camera_functions.c **** 			   	k += PixelLuminence(x+1,y+1);
+ 253:.\my_camera_functions.c **** 			}
+ 254:.\my_camera_functions.c **** 			for(i = 0; i < 2; i++)
+ 255:.\my_camera_functions.c **** 			{
+ 256:.\my_camera_functions.c ****                 Camera_framebuffer[y][x][i] = 127;
+ 955              		.loc 1 256 0 is_stmt 1 discriminator 1
+ 956 001e 0CEB0201 		add	r1, ip, r2
+ 957 0022 8900     		lsls	r1, r1, #2
+ 257:.\my_camera_functions.c **** 				Camera_framebuffer[y][x][i+1] = 0;
+ 958              		.loc 1 257 0 discriminator 1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 23
+
+
+ 959 0024 1D46     		mov	r5, r3
+ 960 0026 18E0     		b	.L67
+ 961              	.LVL116:
+ 962              	.L68:
+ 239:.\my_camera_functions.c **** 					Camera_framebuffer[y][x][i] = 127;
+ 963              		.loc 1 239 0 discriminator 2
+ 964 0028 CC18     		adds	r4, r1, r3
+ 965 002a 0755     		strb	r7, [r0, r4]
+ 240:.\my_camera_functions.c ****                     Camera_framebuffer[y][x][i+1] = 255;
+ 966              		.loc 1 240 0 discriminator 2
+ 967 002c 0133     		adds	r3, r3, #1
+ 968              	.LVL117:
+ 969 002e CC18     		adds	r4, r1, r3
+ 970 0030 00F80480 		strb	r8, [r0, r4]
+ 971              	.LVL118:
+ 972 0034 09E0     		b	.L78
+ 973              	.LVL119:
+ 974              	.L73:
+ 975 0036 0023     		movs	r3, #0
+ 976 0038 04E0     		b	.L66
+ 977              	.L74:
+ 978 003a 0023     		movs	r3, #0
+ 979 003c 02E0     		b	.L66
+ 980              	.L75:
+ 981 003e 0023     		movs	r3, #0
+ 982 0040 00E0     		b	.L66
+ 983              	.L76:
+ 984 0042 0023     		movs	r3, #0
+ 985              	.L66:
+ 239:.\my_camera_functions.c **** 					Camera_framebuffer[y][x][i] = 127;
+ 986              		.loc 1 239 0 discriminator 1
+ 987 0044 0CEB0201 		add	r1, ip, r2
+ 988 0048 8900     		lsls	r1, r1, #2
+ 989              	.L78:
+ 990              	.LVL120:
+ 237:.\my_camera_functions.c **** 				for(i = 0; i < 2; i++)
+ 991              		.loc 1 237 0 discriminator 1
+ 992 004a 012B     		cmp	r3, #1
+ 993 004c ECDD     		ble	.L68
+ 994 004e E5E7     		b	.L69
+ 995              	.L70:
+ 256:.\my_camera_functions.c ****                 Camera_framebuffer[y][x][i] = 127;
+ 996              		.loc 1 256 0 discriminator 2
+ 997 0050 CC18     		adds	r4, r1, r3
+ 998 0052 0755     		strb	r7, [r0, r4]
+ 999              		.loc 1 257 0 discriminator 2
+ 1000 0054 0133     		adds	r3, r3, #1
+ 1001              	.LVL121:
+ 1002 0056 CC18     		adds	r4, r1, r3
+ 1003 0058 0555     		strb	r5, [r0, r4]
+ 1004              	.LVL122:
+ 1005              	.L67:
+ 254:.\my_camera_functions.c **** 			for(i = 0; i < 2; i++)
+ 1006              		.loc 1 254 0 discriminator 1
+ 1007 005a 012B     		cmp	r3, #1
+ 1008 005c F8DD     		ble	.L70
+ 232:.\my_camera_functions.c **** 		for(x = 0; x < 88; x++)
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 24
+
+
+ 1009              		.loc 1 232 0
+ 1010 005e 0132     		adds	r2, r2, #1
+ 1011              	.LVL123:
+ 1012 0060 04E0     		b	.L72
+ 1013              	.LVL124:
+ 1014              	.L77:
+ 1015 0062 0022     		movs	r2, #0
+ 239:.\my_camera_functions.c **** 					Camera_framebuffer[y][x][i] = 127;
+ 1016              		.loc 1 239 0
+ 1017 0064 4FF0580C 		mov	ip, #88
+ 1018 0068 06FB0CFC 		mul	ip, r6, ip
+ 1019              	.L72:
+ 1020              	.LVL125:
+ 232:.\my_camera_functions.c **** 		for(x = 0; x < 88; x++)
+ 1021              		.loc 1 232 0 discriminator 1
+ 1022 006c 572A     		cmp	r2, #87
+ 1023 006e CFDD     		ble	.L71
+ 230:.\my_camera_functions.c **** 	for(y = 0; y < 144; y++)
+ 1024              		.loc 1 230 0
+ 1025 0070 0136     		adds	r6, r6, #1
+ 1026              	.LVL126:
+ 1027              	.L65:
+ 230:.\my_camera_functions.c **** 	for(y = 0; y < 144; y++)
+ 1028              		.loc 1 230 0 is_stmt 0 discriminator 1
+ 1029 0072 8F2E     		cmp	r6, #143
+ 1030 0074 F5DD     		ble	.L77
+ 258:.\my_camera_functions.c **** 			}
+ 259:.\my_camera_functions.c **** 		}
+ 260:.\my_camera_functions.c **** 	}
+ 261:.\my_camera_functions.c **** }
+ 1031              		.loc 1 261 0 is_stmt 1
+ 1032 0076 BDE8F001 		pop	{r4, r5, r6, r7, r8}
+ 1033              	.LVL127:
+ 1034 007a 7047     		bx	lr
+ 1035              	.L80:
+ 1036              		.align	2
+ 1037              	.L79:
+ 1038 007c 00000000 		.word	Camera_framebuffer
+ 1039              		.cfi_endproc
+ 1040              	.LFE73:
+ 1041              		.size	threshold_black, .-threshold_black
+ 1042              		.global	BLUE_V
+ 1043              		.global	BLUE_U
+ 1044              		.global	GREEN_V
+ 1045              		.global	GREEN_U
+ 1046              		.global	RED_V
+ 1047              		.global	RED_U
+ 1048              		.comm	Camera_framebuffer,50688,4
+ 1049              		.data
+ 1050              		.set	.LANCHOR0,. + 0
+ 1051              		.type	RED_U, %object
+ 1052              		.size	RED_U, 1
+ 1053              	RED_U:
+ 1054 0000 7A       		.byte	122
+ 1055              		.type	RED_V, %object
+ 1056              		.size	RED_V, 1
+ 1057              	RED_V:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 25
+
+
+ 1058 0001 96       		.byte	-106
+ 1059              		.type	GREEN_U, %object
+ 1060              		.size	GREEN_U, 1
+ 1061              	GREEN_U:
+ 1062 0002 82       		.byte	-126
+ 1063              		.type	GREEN_V, %object
+ 1064              		.size	GREEN_V, 1
+ 1065              	GREEN_V:
+ 1066 0003 78       		.byte	120
+ 1067              		.type	BLUE_U, %object
+ 1068              		.size	BLUE_U, 1
+ 1069              	BLUE_U:
+ 1070 0004 8C       		.byte	-116
+ 1071              		.type	BLUE_V, %object
+ 1072              		.size	BLUE_V, 1
+ 1073              	BLUE_V:
+ 1074 0005 74       		.byte	116
+ 1075              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 1076              		.align	2
+ 1077              	.LC0:
+ 1078 0000 43616D65 		.ascii	"Camera Actualy\000"
+ 1078      72612041 
+ 1078      63747561 
+ 1078      6C7900
+ 1079 000f 00       		.space	1
+ 1080              	.LC1:
+ 1081 0010 4672616D 		.ascii	"Frame Sync Done\000"
+ 1081      65205379 
+ 1081      6E632044 
+ 1081      6F6E6500 
+ 1082              	.LC2:
+ 1083 0020 47657474 		.ascii	"Getting Frame!!\000"
+ 1083      696E6720 
+ 1083      4672616D 
+ 1083      65212100 
+ 1084              		.text
+ 1085              	.Letext0:
+ 1086              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 1087              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 1088              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 1089              		.file 5 "./blob_stats.h"
+ 1090              		.file 6 "Generated_Source\\PSoC5/core_cm3.h"
+ 1091              		.file 7 "Generated_Source\\PSoC5/Camera.h"
+ 1092              		.file 8 "Generated_Source\\PSoC5/LCD.h"
+ 1093              		.file 9 "./my_camera_functions.h"
+ 1094              		.section	.debug_info,"",%progbits
+ 1095              	.Ldebug_info0:
+ 1096 0000 3F080000 		.4byte	0x83f
+ 1097 0004 0400     		.2byte	0x4
+ 1098 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 1099 000a 04       		.byte	0x4
+ 1100 000b 01       		.uleb128 0x1
+ 1101 000c D7000000 		.4byte	.LASF61
+ 1102 0010 01       		.byte	0x1
+ 1103 0011 00000000 		.4byte	.LASF62
+ 1104 0015 7B010000 		.4byte	.LASF63
+ 1105 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 26
+
+
+ 1106 001d 00000000 		.4byte	0
+ 1107 0021 00000000 		.4byte	.Ldebug_line0
+ 1108 0025 02       		.uleb128 0x2
+ 1109 0026 04       		.byte	0x4
+ 1110 0027 04       		.byte	0x4
+ 1111 0028 C3000000 		.4byte	.LASF0
+ 1112 002c 02       		.uleb128 0x2
+ 1113 002d 01       		.byte	0x1
+ 1114 002e 06       		.byte	0x6
+ 1115 002f 01020000 		.4byte	.LASF1
+ 1116 0033 02       		.uleb128 0x2
+ 1117 0034 01       		.byte	0x1
+ 1118 0035 08       		.byte	0x8
+ 1119 0036 E7010000 		.4byte	.LASF2
+ 1120 003a 02       		.uleb128 0x2
+ 1121 003b 02       		.byte	0x2
+ 1122 003c 05       		.byte	0x5
+ 1123 003d 55000000 		.4byte	.LASF3
+ 1124 0041 02       		.uleb128 0x2
+ 1125 0042 02       		.byte	0x2
+ 1126 0043 07       		.byte	0x7
+ 1127 0044 52020000 		.4byte	.LASF4
+ 1128 0048 03       		.uleb128 0x3
+ 1129 0049 DF020000 		.4byte	.LASF10
+ 1130 004d 02       		.byte	0x2
+ 1131 004e 37       		.byte	0x37
+ 1132 004f 53000000 		.4byte	0x53
+ 1133 0053 02       		.uleb128 0x2
+ 1134 0054 04       		.byte	0x4
+ 1135 0055 05       		.byte	0x5
+ 1136 0056 53010000 		.4byte	.LASF5
+ 1137 005a 02       		.uleb128 0x2
+ 1138 005b 04       		.byte	0x4
+ 1139 005c 07       		.byte	0x7
+ 1140 005d BB020000 		.4byte	.LASF6
+ 1141 0061 02       		.uleb128 0x2
+ 1142 0062 08       		.byte	0x8
+ 1143 0063 05       		.byte	0x5
+ 1144 0064 C9000000 		.4byte	.LASF7
+ 1145 0068 02       		.uleb128 0x2
+ 1146 0069 08       		.byte	0x8
+ 1147 006a 07       		.byte	0x7
+ 1148 006b 0D020000 		.4byte	.LASF8
+ 1149 006f 04       		.uleb128 0x4
+ 1150 0070 04       		.byte	0x4
+ 1151 0071 05       		.byte	0x5
+ 1152 0072 696E7400 		.ascii	"int\000"
+ 1153 0076 02       		.uleb128 0x2
+ 1154 0077 04       		.byte	0x4
+ 1155 0078 07       		.byte	0x7
+ 1156 0079 24020000 		.4byte	.LASF9
+ 1157 007d 03       		.uleb128 0x3
+ 1158 007e 70020000 		.4byte	.LASF11
+ 1159 0082 03       		.byte	0x3
+ 1160 0083 41       		.byte	0x41
+ 1161 0084 48000000 		.4byte	0x48
+ 1162 0088 03       		.uleb128 0x3
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 27
+
+
+ 1163 0089 8B000000 		.4byte	.LASF12
+ 1164 008d 04       		.byte	0x4
+ 1165 008e B3       		.byte	0xb3
+ 1166 008f 33000000 		.4byte	0x33
+ 1167 0093 03       		.uleb128 0x3
+ 1168 0094 B4020000 		.4byte	.LASF13
+ 1169 0098 04       		.byte	0x4
+ 1170 0099 B5       		.byte	0xb5
+ 1171 009a 5A000000 		.4byte	0x5a
+ 1172 009e 02       		.uleb128 0x2
+ 1173 009f 08       		.byte	0x8
+ 1174 00a0 04       		.byte	0x4
+ 1175 00a1 CD020000 		.4byte	.LASF14
+ 1176 00a5 03       		.uleb128 0x3
+ 1177 00a6 75000000 		.4byte	.LASF15
+ 1178 00aa 04       		.byte	0x4
+ 1179 00ab C4       		.byte	0xc4
+ 1180 00ac B0000000 		.4byte	0xb0
+ 1181 00b0 02       		.uleb128 0x2
+ 1182 00b1 01       		.byte	0x1
+ 1183 00b2 08       		.byte	0x8
+ 1184 00b3 6B020000 		.4byte	.LASF16
+ 1185 00b7 02       		.uleb128 0x2
+ 1186 00b8 04       		.byte	0x4
+ 1187 00b9 07       		.byte	0x7
+ 1188 00ba 5F000000 		.4byte	.LASF17
+ 1189 00be 05       		.uleb128 0x5
+ 1190 00bf 88000000 		.4byte	0x88
+ 1191 00c3 CE000000 		.4byte	0xce
+ 1192 00c7 06       		.uleb128 0x6
+ 1193 00c8 B7000000 		.4byte	0xb7
+ 1194 00cc 03       		.byte	0x3
+ 1195 00cd 00       		.byte	0
+ 1196 00ce 07       		.uleb128 0x7
+ 1197 00cf 01       		.byte	0x1
+ 1198 00d0 09       		.byte	0x9
+ 1199 00d1 1F       		.byte	0x1f
+ 1200 00d2 EF000000 		.4byte	0xef
+ 1201 00d6 08       		.uleb128 0x8
+ 1202 00d7 E9020000 		.4byte	.LASF18
+ 1203 00db 00       		.sleb128 0
+ 1204 00dc 09       		.uleb128 0x9
+ 1205 00dd 52454400 		.ascii	"RED\000"
+ 1206 00e1 01       		.sleb128 1
+ 1207 00e2 08       		.uleb128 0x8
+ 1208 00e3 70030000 		.4byte	.LASF19
+ 1209 00e7 02       		.sleb128 2
+ 1210 00e8 08       		.uleb128 0x8
+ 1211 00e9 86030000 		.4byte	.LASF20
+ 1212 00ed 03       		.sleb128 3
+ 1213 00ee 00       		.byte	0
+ 1214 00ef 0A       		.uleb128 0xa
+ 1215 00f0 10       		.byte	0x10
+ 1216 00f1 05       		.byte	0x5
+ 1217 00f2 15       		.byte	0x15
+ 1218 00f3 28010000 		.4byte	0x128
+ 1219 00f7 0B       		.uleb128 0xb
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 28
+
+
+ 1220 00f8 3B030000 		.4byte	.LASF21
+ 1221 00fc 05       		.byte	0x5
+ 1222 00fd 17       		.byte	0x17
+ 1223 00fe 6F000000 		.4byte	0x6f
+ 1224 0102 00       		.byte	0
+ 1225 0103 0B       		.uleb128 0xb
+ 1226 0104 D4020000 		.4byte	.LASF22
+ 1227 0108 05       		.byte	0x5
+ 1228 0109 18       		.byte	0x18
+ 1229 010a 93000000 		.4byte	0x93
+ 1230 010e 04       		.byte	0x4
+ 1231 010f 0B       		.uleb128 0xb
+ 1232 0110 65020000 		.4byte	.LASF23
+ 1233 0114 05       		.byte	0x5
+ 1234 0115 19       		.byte	0x19
+ 1235 0116 93000000 		.4byte	0x93
+ 1236 011a 08       		.byte	0x8
+ 1237 011b 0B       		.uleb128 0xb
+ 1238 011c 93030000 		.4byte	.LASF24
+ 1239 0120 05       		.byte	0x5
+ 1240 0121 19       		.byte	0x19
+ 1241 0122 93000000 		.4byte	0x93
+ 1242 0126 0C       		.byte	0xc
+ 1243 0127 00       		.byte	0
+ 1244 0128 03       		.uleb128 0x3
+ 1245 0129 4D020000 		.4byte	.LASF25
+ 1246 012d 05       		.byte	0x5
+ 1247 012e 1A       		.byte	0x1a
+ 1248 012f EF000000 		.4byte	0xef
+ 1249 0133 0C       		.uleb128 0xc
+ 1250 0134 41020000 		.4byte	.LASF26
+ 1251 0138 01       		.byte	0x1
+ 1252 0139 1A       		.byte	0x1a
+ 1253 013a 00000000 		.4byte	.LFB63
+ 1254 013e 80000000 		.4byte	.LFE63-.LFB63
+ 1255 0142 01       		.uleb128 0x1
+ 1256 0143 9C       		.byte	0x9c
+ 1257 0144 A0020000 		.4byte	0x2a0
+ 1258 0148 0D       		.uleb128 0xd
+ 1259 0149 06000000 		.4byte	.LVL0
+ 1260 014d B4070000 		.4byte	0x7b4
+ 1261 0151 0E       		.uleb128 0xe
+ 1262 0152 0C000000 		.4byte	.LVL1
+ 1263 0156 C1070000 		.4byte	0x7c1
+ 1264 015a 64010000 		.4byte	0x164
+ 1265 015e 0F       		.uleb128 0xf
+ 1266 015f 01       		.uleb128 0x1
+ 1267 0160 50       		.byte	0x50
+ 1268 0161 01       		.uleb128 0x1
+ 1269 0162 31       		.byte	0x31
+ 1270 0163 00       		.byte	0
+ 1271 0164 0E       		.uleb128 0xe
+ 1272 0165 14000000 		.4byte	.LVL2
+ 1273 0169 D2070000 		.4byte	0x7d2
+ 1274 016d 7C010000 		.4byte	0x17c
+ 1275 0171 0F       		.uleb128 0xf
+ 1276 0172 01       		.uleb128 0x1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 29
+
+
+ 1277 0173 51       		.byte	0x51
+ 1278 0174 01       		.uleb128 0x1
+ 1279 0175 30       		.byte	0x30
+ 1280 0176 0F       		.uleb128 0xf
+ 1281 0177 01       		.uleb128 0x1
+ 1282 0178 50       		.byte	0x50
+ 1283 0179 01       		.uleb128 0x1
+ 1284 017a 30       		.byte	0x30
+ 1285 017b 00       		.byte	0
+ 1286 017c 0E       		.uleb128 0xe
+ 1287 017d 1A000000 		.4byte	.LVL3
+ 1288 0181 E8070000 		.4byte	0x7e8
+ 1289 0185 93010000 		.4byte	0x193
+ 1290 0189 0F       		.uleb128 0xf
+ 1291 018a 01       		.uleb128 0x1
+ 1292 018b 50       		.byte	0x50
+ 1293 018c 05       		.uleb128 0x5
+ 1294 018d 03       		.byte	0x3
+ 1295 018e 00000000 		.4byte	.LC0
+ 1296 0192 00       		.byte	0
+ 1297 0193 0E       		.uleb128 0xe
+ 1298 0194 22000000 		.4byte	.LVL4
+ 1299 0198 04080000 		.4byte	0x804
+ 1300 019c AB010000 		.4byte	0x1ab
+ 1301 01a0 0F       		.uleb128 0xf
+ 1302 01a1 01       		.uleb128 0x1
+ 1303 01a2 51       		.byte	0x51
+ 1304 01a3 01       		.uleb128 0x1
+ 1305 01a4 30       		.byte	0x30
+ 1306 01a5 0F       		.uleb128 0xf
+ 1307 01a6 01       		.uleb128 0x1
+ 1308 01a7 50       		.byte	0x50
+ 1309 01a8 01       		.uleb128 0x1
+ 1310 01a9 4E       		.byte	0x4e
+ 1311 01aa 00       		.byte	0
+ 1312 01ab 0E       		.uleb128 0xe
+ 1313 01ac 2A000000 		.4byte	.LVL5
+ 1314 01b0 04080000 		.4byte	0x804
+ 1315 01b4 C4010000 		.4byte	0x1c4
+ 1316 01b8 0F       		.uleb128 0xf
+ 1317 01b9 01       		.uleb128 0x1
+ 1318 01ba 51       		.byte	0x51
+ 1319 01bb 02       		.uleb128 0x2
+ 1320 01bc 09       		.byte	0x9
+ 1321 01bd E7       		.byte	0xe7
+ 1322 01be 0F       		.uleb128 0xf
+ 1323 01bf 01       		.uleb128 0x1
+ 1324 01c0 50       		.byte	0x50
+ 1325 01c1 01       		.uleb128 0x1
+ 1326 01c2 43       		.byte	0x43
+ 1327 01c3 00       		.byte	0
+ 1328 01c4 0D       		.uleb128 0xd
+ 1329 01c5 2E000000 		.4byte	.LVL6
+ 1330 01c9 1F080000 		.4byte	0x81f
+ 1331 01cd 0E       		.uleb128 0xe
+ 1332 01ce 36000000 		.4byte	.LVL7
+ 1333 01d2 D2070000 		.4byte	0x7d2
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 30
+
+
+ 1334 01d6 E5010000 		.4byte	0x1e5
+ 1335 01da 0F       		.uleb128 0xf
+ 1336 01db 01       		.uleb128 0x1
+ 1337 01dc 51       		.byte	0x51
+ 1338 01dd 01       		.uleb128 0x1
+ 1339 01de 30       		.byte	0x30
+ 1340 01df 0F       		.uleb128 0xf
+ 1341 01e0 01       		.uleb128 0x1
+ 1342 01e1 50       		.byte	0x50
+ 1343 01e2 01       		.uleb128 0x1
+ 1344 01e3 30       		.byte	0x30
+ 1345 01e4 00       		.byte	0
+ 1346 01e5 0E       		.uleb128 0xe
+ 1347 01e6 3C000000 		.4byte	.LVL8
+ 1348 01ea E8070000 		.4byte	0x7e8
+ 1349 01ee FC010000 		.4byte	0x1fc
+ 1350 01f2 0F       		.uleb128 0xf
+ 1351 01f3 01       		.uleb128 0x1
+ 1352 01f4 50       		.byte	0x50
+ 1353 01f5 05       		.uleb128 0x5
+ 1354 01f6 03       		.byte	0x3
+ 1355 01f7 10000000 		.4byte	.LC1
+ 1356 01fb 00       		.byte	0
+ 1357 01fc 0D       		.uleb128 0xd
+ 1358 01fd 40000000 		.4byte	.LVL9
+ 1359 0201 2C080000 		.4byte	0x82c
+ 1360 0205 0E       		.uleb128 0xe
+ 1361 0206 48000000 		.4byte	.LVL10
+ 1362 020a D2070000 		.4byte	0x7d2
+ 1363 020e 1D020000 		.4byte	0x21d
+ 1364 0212 0F       		.uleb128 0xf
+ 1365 0213 01       		.uleb128 0x1
+ 1366 0214 51       		.byte	0x51
+ 1367 0215 01       		.uleb128 0x1
+ 1368 0216 30       		.byte	0x30
+ 1369 0217 0F       		.uleb128 0xf
+ 1370 0218 01       		.uleb128 0x1
+ 1371 0219 50       		.byte	0x50
+ 1372 021a 01       		.uleb128 0x1
+ 1373 021b 30       		.byte	0x30
+ 1374 021c 00       		.byte	0
+ 1375 021d 0E       		.uleb128 0xe
+ 1376 021e 4E000000 		.4byte	.LVL11
+ 1377 0222 E8070000 		.4byte	0x7e8
+ 1378 0226 34020000 		.4byte	0x234
+ 1379 022a 0F       		.uleb128 0xf
+ 1380 022b 01       		.uleb128 0x1
+ 1381 022c 50       		.byte	0x50
+ 1382 022d 05       		.uleb128 0x5
+ 1383 022e 03       		.byte	0x3
+ 1384 022f 20000000 		.4byte	.LC2
+ 1385 0233 00       		.byte	0
+ 1386 0234 0D       		.uleb128 0xd
+ 1387 0235 52000000 		.4byte	.LVL12
+ 1388 0239 1F080000 		.4byte	0x81f
+ 1389 023d 0E       		.uleb128 0xe
+ 1390 023e 5A000000 		.4byte	.LVL13
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 31
+
+
+ 1391 0242 04080000 		.4byte	0x804
+ 1392 0246 56020000 		.4byte	0x256
+ 1393 024a 0F       		.uleb128 0xf
+ 1394 024b 01       		.uleb128 0x1
+ 1395 024c 51       		.byte	0x51
+ 1396 024d 02       		.uleb128 0x2
+ 1397 024e 09       		.byte	0x9
+ 1398 024f E0       		.byte	0xe0
+ 1399 0250 0F       		.uleb128 0xf
+ 1400 0251 01       		.uleb128 0x1
+ 1401 0252 50       		.byte	0x50
+ 1402 0253 01       		.uleb128 0x1
+ 1403 0254 43       		.byte	0x43
+ 1404 0255 00       		.byte	0
+ 1405 0256 0E       		.uleb128 0xe
+ 1406 0257 62000000 		.4byte	.LVL14
+ 1407 025b 04080000 		.4byte	0x804
+ 1408 025f 70020000 		.4byte	0x270
+ 1409 0263 0F       		.uleb128 0xf
+ 1410 0264 01       		.uleb128 0x1
+ 1411 0265 51       		.byte	0x51
+ 1412 0266 02       		.uleb128 0x2
+ 1413 0267 08       		.byte	0x8
+ 1414 0268 2F       		.byte	0x2f
+ 1415 0269 0F       		.uleb128 0xf
+ 1416 026a 01       		.uleb128 0x1
+ 1417 026b 50       		.byte	0x50
+ 1418 026c 02       		.uleb128 0x2
+ 1419 026d 08       		.byte	0x8
+ 1420 026e 3F       		.byte	0x3f
+ 1421 026f 00       		.byte	0
+ 1422 0270 0E       		.uleb128 0xe
+ 1423 0271 6A000000 		.4byte	.LVL15
+ 1424 0275 04080000 		.4byte	0x804
+ 1425 0279 89020000 		.4byte	0x289
+ 1426 027d 0F       		.uleb128 0xf
+ 1427 027e 01       		.uleb128 0x1
+ 1428 027f 51       		.byte	0x51
+ 1429 0280 01       		.uleb128 0x1
+ 1430 0281 33       		.byte	0x33
+ 1431 0282 0F       		.uleb128 0xf
+ 1432 0283 01       		.uleb128 0x1
+ 1433 0284 50       		.byte	0x50
+ 1434 0285 02       		.uleb128 0x2
+ 1435 0286 08       		.byte	0x8
+ 1436 0287 3E       		.byte	0x3e
+ 1437 0288 00       		.byte	0
+ 1438 0289 10       		.uleb128 0x10
+ 1439 028a 72000000 		.4byte	.LVL16
+ 1440 028e 04080000 		.4byte	0x804
+ 1441 0292 0F       		.uleb128 0xf
+ 1442 0293 01       		.uleb128 0x1
+ 1443 0294 51       		.byte	0x51
+ 1444 0295 02       		.uleb128 0x2
+ 1445 0296 09       		.byte	0x9
+ 1446 0297 A0       		.byte	0xa0
+ 1447 0298 0F       		.uleb128 0xf
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 32
+
+
+ 1448 0299 01       		.uleb128 0x1
+ 1449 029a 50       		.byte	0x50
+ 1450 029b 02       		.uleb128 0x2
+ 1451 029c 09       		.byte	0x9
+ 1452 029d 8C       		.byte	0x8c
+ 1453 029e 00       		.byte	0
+ 1454 029f 00       		.byte	0
+ 1455 02a0 0C       		.uleb128 0xc
+ 1456 02a1 55030000 		.4byte	.LASF27
+ 1457 02a5 01       		.byte	0x1
+ 1458 02a6 2C       		.byte	0x2c
+ 1459 02a7 00000000 		.4byte	.LFB64
+ 1460 02ab 10000000 		.4byte	.LFE64-.LFB64
+ 1461 02af 01       		.uleb128 0x1
+ 1462 02b0 9C       		.byte	0x9c
+ 1463 02b1 D1020000 		.4byte	0x2d1
+ 1464 02b5 0D       		.uleb128 0xd
+ 1465 02b6 06000000 		.4byte	.LVL17
+ 1466 02ba 1F080000 		.4byte	0x81f
+ 1467 02be 0D       		.uleb128 0xd
+ 1468 02bf 0A000000 		.4byte	.LVL18
+ 1469 02c3 2C080000 		.4byte	0x82c
+ 1470 02c7 0D       		.uleb128 0xd
+ 1471 02c8 0E000000 		.4byte	.LVL19
+ 1472 02cc 1F080000 		.4byte	0x81f
+ 1473 02d0 00       		.byte	0
+ 1474 02d1 11       		.uleb128 0x11
+ 1475 02d2 FF020000 		.4byte	.LASF34
+ 1476 02d6 01       		.byte	0x1
+ 1477 02d7 3C       		.byte	0x3c
+ 1478 02d8 00000000 		.4byte	.LFB66
+ 1479 02dc 56000000 		.4byte	.LFE66-.LFB66
+ 1480 02e0 01       		.uleb128 0x1
+ 1481 02e1 9C       		.byte	0x9c
+ 1482 02e2 B5030000 		.4byte	0x3b5
+ 1483 02e6 12       		.uleb128 0x12
+ 1484 02e7 47000000 		.4byte	.LASF28
+ 1485 02eb 01       		.byte	0x1
+ 1486 02ec 3C       		.byte	0x3c
+ 1487 02ed 6F000000 		.4byte	0x6f
+ 1488 02f1 00000000 		.4byte	.LLST0
+ 1489 02f5 0E       		.uleb128 0xe
+ 1490 02f6 16000000 		.4byte	.LVL22
+ 1491 02fa 04080000 		.4byte	0x804
+ 1492 02fe 0E030000 		.4byte	0x30e
+ 1493 0302 0F       		.uleb128 0xf
+ 1494 0303 01       		.uleb128 0x1
+ 1495 0304 51       		.byte	0x51
+ 1496 0305 02       		.uleb128 0x2
+ 1497 0306 08       		.byte	0x8
+ 1498 0307 41       		.byte	0x41
+ 1499 0308 0F       		.uleb128 0xf
+ 1500 0309 01       		.uleb128 0x1
+ 1501 030a 50       		.byte	0x50
+ 1502 030b 01       		.uleb128 0x1
+ 1503 030c 40       		.byte	0x40
+ 1504 030d 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 33
+
+
+ 1505 030e 0E       		.uleb128 0xe
+ 1506 030f 1E000000 		.4byte	.LVL23
+ 1507 0313 04080000 		.4byte	0x804
+ 1508 0317 27030000 		.4byte	0x327
+ 1509 031b 0F       		.uleb128 0xf
+ 1510 031c 01       		.uleb128 0x1
+ 1511 031d 51       		.byte	0x51
+ 1512 031e 02       		.uleb128 0x2
+ 1513 031f 08       		.byte	0x8
+ 1514 0320 3C       		.byte	0x3c
+ 1515 0321 0F       		.uleb128 0xf
+ 1516 0322 01       		.uleb128 0x1
+ 1517 0323 50       		.byte	0x50
+ 1518 0324 01       		.uleb128 0x1
+ 1519 0325 30       		.byte	0x30
+ 1520 0326 00       		.byte	0
+ 1521 0327 0E       		.uleb128 0xe
+ 1522 0328 28000000 		.4byte	.LVL26
+ 1523 032c 04080000 		.4byte	0x804
+ 1524 0330 3F030000 		.4byte	0x33f
+ 1525 0334 0F       		.uleb128 0xf
+ 1526 0335 01       		.uleb128 0x1
+ 1527 0336 51       		.byte	0x51
+ 1528 0337 01       		.uleb128 0x1
+ 1529 0338 4E       		.byte	0x4e
+ 1530 0339 0F       		.uleb128 0xf
+ 1531 033a 01       		.uleb128 0x1
+ 1532 033b 50       		.byte	0x50
+ 1533 033c 01       		.uleb128 0x1
+ 1534 033d 40       		.byte	0x40
+ 1535 033e 00       		.byte	0
+ 1536 033f 0E       		.uleb128 0xe
+ 1537 0340 30000000 		.4byte	.LVL27
+ 1538 0344 04080000 		.4byte	0x804
+ 1539 0348 57030000 		.4byte	0x357
+ 1540 034c 0F       		.uleb128 0xf
+ 1541 034d 01       		.uleb128 0x1
+ 1542 034e 51       		.byte	0x51
+ 1543 034f 01       		.uleb128 0x1
+ 1544 0350 49       		.byte	0x49
+ 1545 0351 0F       		.uleb128 0xf
+ 1546 0352 01       		.uleb128 0x1
+ 1547 0353 50       		.byte	0x50
+ 1548 0354 01       		.uleb128 0x1
+ 1549 0355 30       		.byte	0x30
+ 1550 0356 00       		.byte	0
+ 1551 0357 0E       		.uleb128 0xe
+ 1552 0358 3A000000 		.4byte	.LVL30
+ 1553 035c 04080000 		.4byte	0x804
+ 1554 0360 70030000 		.4byte	0x370
+ 1555 0364 0F       		.uleb128 0xf
+ 1556 0365 01       		.uleb128 0x1
+ 1557 0366 51       		.byte	0x51
+ 1558 0367 02       		.uleb128 0x2
+ 1559 0368 08       		.byte	0x8
+ 1560 0369 30       		.byte	0x30
+ 1561 036a 0F       		.uleb128 0xf
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 34
+
+
+ 1562 036b 01       		.uleb128 0x1
+ 1563 036c 50       		.byte	0x50
+ 1564 036d 01       		.uleb128 0x1
+ 1565 036e 40       		.byte	0x40
+ 1566 036f 00       		.byte	0
+ 1567 0370 0E       		.uleb128 0xe
+ 1568 0371 42000000 		.4byte	.LVL31
+ 1569 0375 04080000 		.4byte	0x804
+ 1570 0379 88030000 		.4byte	0x388
+ 1571 037d 0F       		.uleb128 0xf
+ 1572 037e 01       		.uleb128 0x1
+ 1573 037f 51       		.byte	0x51
+ 1574 0380 01       		.uleb128 0x1
+ 1575 0381 49       		.byte	0x49
+ 1576 0382 0F       		.uleb128 0xf
+ 1577 0383 01       		.uleb128 0x1
+ 1578 0384 50       		.byte	0x50
+ 1579 0385 01       		.uleb128 0x1
+ 1580 0386 30       		.byte	0x30
+ 1581 0387 00       		.byte	0
+ 1582 0388 0E       		.uleb128 0xe
+ 1583 0389 4C000000 		.4byte	.LVL34
+ 1584 038d 04080000 		.4byte	0x804
+ 1585 0391 A0030000 		.4byte	0x3a0
+ 1586 0395 0F       		.uleb128 0xf
+ 1587 0396 01       		.uleb128 0x1
+ 1588 0397 51       		.byte	0x51
+ 1589 0398 01       		.uleb128 0x1
+ 1590 0399 30       		.byte	0x30
+ 1591 039a 0F       		.uleb128 0xf
+ 1592 039b 01       		.uleb128 0x1
+ 1593 039c 50       		.byte	0x50
+ 1594 039d 01       		.uleb128 0x1
+ 1595 039e 40       		.byte	0x40
+ 1596 039f 00       		.byte	0
+ 1597 03a0 10       		.uleb128 0x10
+ 1598 03a1 54000000 		.4byte	.LVL35
+ 1599 03a5 04080000 		.4byte	0x804
+ 1600 03a9 0F       		.uleb128 0xf
+ 1601 03aa 01       		.uleb128 0x1
+ 1602 03ab 51       		.byte	0x51
+ 1603 03ac 01       		.uleb128 0x1
+ 1604 03ad 30       		.byte	0x30
+ 1605 03ae 0F       		.uleb128 0xf
+ 1606 03af 01       		.uleb128 0x1
+ 1607 03b0 50       		.byte	0x50
+ 1608 03b1 01       		.uleb128 0x1
+ 1609 03b2 40       		.byte	0x40
+ 1610 03b3 00       		.byte	0
+ 1611 03b4 00       		.byte	0
+ 1612 03b5 13       		.uleb128 0x13
+ 1613 03b6 18000000 		.4byte	.LASF40
+ 1614 03ba 01       		.byte	0x1
+ 1615 03bb 58       		.byte	0x58
+ 1616 03bc 88000000 		.4byte	0x88
+ 1617 03c0 00000000 		.4byte	.LFB67
+ 1618 03c4 88000000 		.4byte	.LFE67-.LFB67
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 35
+
+
+ 1619 03c8 01       		.uleb128 0x1
+ 1620 03c9 9C       		.byte	0x9c
+ 1621 03ca E9030000 		.4byte	0x3e9
+ 1622 03ce 14       		.uleb128 0x14
+ 1623 03cf 7800     		.ascii	"x\000"
+ 1624 03d1 01       		.byte	0x1
+ 1625 03d2 58       		.byte	0x58
+ 1626 03d3 88000000 		.4byte	0x88
+ 1627 03d7 6C000000 		.4byte	.LLST1
+ 1628 03db 14       		.uleb128 0x14
+ 1629 03dc 7900     		.ascii	"y\000"
+ 1630 03de 01       		.byte	0x1
+ 1631 03df 58       		.byte	0x58
+ 1632 03e0 88000000 		.4byte	0x88
+ 1633 03e4 F1000000 		.4byte	.LLST2
+ 1634 03e8 00       		.byte	0
+ 1635 03e9 0C       		.uleb128 0xc
+ 1636 03ea 8D020000 		.4byte	.LASF29
+ 1637 03ee 01       		.byte	0x1
+ 1638 03ef 63       		.byte	0x63
+ 1639 03f0 00000000 		.4byte	.LFB68
+ 1640 03f4 AC010000 		.4byte	.LFE68-.LFB68
+ 1641 03f8 01       		.uleb128 0x1
+ 1642 03f9 9C       		.byte	0x9c
+ 1643 03fa 21050000 		.4byte	0x521
+ 1644 03fe 15       		.uleb128 0x15
+ 1645 03ff 9D020000 		.4byte	.LASF30
+ 1646 0403 01       		.byte	0x1
+ 1647 0404 65       		.byte	0x65
+ 1648 0405 21050000 		.4byte	0x521
+ 1649 0409 02       		.uleb128 0x2
+ 1650 040a 91       		.byte	0x91
+ 1651 040b 50       		.sleb128 -48
+ 1652 040c 15       		.uleb128 0x15
+ 1653 040d 8B030000 		.4byte	.LASF31
+ 1654 0411 01       		.byte	0x1
+ 1655 0412 66       		.byte	0x66
+ 1656 0413 BE000000 		.4byte	0xbe
+ 1657 0417 02       		.uleb128 0x2
+ 1658 0418 91       		.byte	0x91
+ 1659 0419 4C       		.sleb128 -52
+ 1660 041a 16       		.uleb128 0x16
+ 1661 041b 24000000 		.4byte	.LASF32
+ 1662 041f 01       		.byte	0x1
+ 1663 0420 67       		.byte	0x67
+ 1664 0421 88000000 		.4byte	0x88
+ 1665 0425 2B010000 		.4byte	.LLST3
+ 1666 0429 17       		.uleb128 0x17
+ 1667 042a 7900     		.ascii	"y\000"
+ 1668 042c 01       		.byte	0x1
+ 1669 042d 68       		.byte	0x68
+ 1670 042e 6F000000 		.4byte	0x6f
+ 1671 0432 63010000 		.4byte	.LLST4
+ 1672 0436 17       		.uleb128 0x17
+ 1673 0437 7800     		.ascii	"x\000"
+ 1674 0439 01       		.byte	0x1
+ 1675 043a 68       		.byte	0x68
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 36
+
+
+ 1676 043b 6F000000 		.4byte	0x6f
+ 1677 043f A7010000 		.4byte	.LLST5
+ 1678 0443 17       		.uleb128 0x17
+ 1679 0444 6900     		.ascii	"i\000"
+ 1680 0446 01       		.byte	0x1
+ 1681 0447 68       		.byte	0x68
+ 1682 0448 6F000000 		.4byte	0x6f
+ 1683 044c C5010000 		.4byte	.LLST6
+ 1684 0450 0E       		.uleb128 0xe
+ 1685 0451 48000000 		.4byte	.LVL49
+ 1686 0455 B5030000 		.4byte	0x3b5
+ 1687 0459 6A040000 		.4byte	0x46a
+ 1688 045d 0F       		.uleb128 0xf
+ 1689 045e 01       		.uleb128 0x1
+ 1690 045f 51       		.byte	0x51
+ 1691 0460 02       		.uleb128 0x2
+ 1692 0461 79       		.byte	0x79
+ 1693 0462 00       		.sleb128 0
+ 1694 0463 0F       		.uleb128 0xf
+ 1695 0464 01       		.uleb128 0x1
+ 1696 0465 50       		.byte	0x50
+ 1697 0466 02       		.uleb128 0x2
+ 1698 0467 77       		.byte	0x77
+ 1699 0468 00       		.sleb128 0
+ 1700 0469 00       		.byte	0
+ 1701 046a 0E       		.uleb128 0xe
+ 1702 046b 54000000 		.4byte	.LVL50
+ 1703 046f B5030000 		.4byte	0x3b5
+ 1704 0473 86040000 		.4byte	0x486
+ 1705 0477 0F       		.uleb128 0xf
+ 1706 0478 01       		.uleb128 0x1
+ 1707 0479 51       		.byte	0x51
+ 1708 047a 04       		.uleb128 0x4
+ 1709 047b 91       		.byte	0x91
+ 1710 047c 40       		.sleb128 -64
+ 1711 047d 94       		.byte	0x94
+ 1712 047e 01       		.byte	0x1
+ 1713 047f 0F       		.uleb128 0xf
+ 1714 0480 01       		.uleb128 0x1
+ 1715 0481 50       		.byte	0x50
+ 1716 0482 02       		.uleb128 0x2
+ 1717 0483 77       		.byte	0x77
+ 1718 0484 00       		.sleb128 0
+ 1719 0485 00       		.byte	0
+ 1720 0486 0E       		.uleb128 0xe
+ 1721 0487 60000000 		.4byte	.LVL51
+ 1722 048b B5030000 		.4byte	0x3b5
+ 1723 048f A0040000 		.4byte	0x4a0
+ 1724 0493 0F       		.uleb128 0xf
+ 1725 0494 01       		.uleb128 0x1
+ 1726 0495 51       		.byte	0x51
+ 1727 0496 02       		.uleb128 0x2
+ 1728 0497 78       		.byte	0x78
+ 1729 0498 00       		.sleb128 0
+ 1730 0499 0F       		.uleb128 0xf
+ 1731 049a 01       		.uleb128 0x1
+ 1732 049b 50       		.byte	0x50
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 37
+
+
+ 1733 049c 02       		.uleb128 0x2
+ 1734 049d 77       		.byte	0x77
+ 1735 049e 00       		.sleb128 0
+ 1736 049f 00       		.byte	0
+ 1737 04a0 0E       		.uleb128 0xe
+ 1738 04a1 6C000000 		.4byte	.LVL52
+ 1739 04a5 B5030000 		.4byte	0x3b5
+ 1740 04a9 BA040000 		.4byte	0x4ba
+ 1741 04ad 0F       		.uleb128 0xf
+ 1742 04ae 01       		.uleb128 0x1
+ 1743 04af 51       		.byte	0x51
+ 1744 04b0 02       		.uleb128 0x2
+ 1745 04b1 79       		.byte	0x79
+ 1746 04b2 00       		.sleb128 0
+ 1747 04b3 0F       		.uleb128 0xf
+ 1748 04b4 01       		.uleb128 0x1
+ 1749 04b5 50       		.byte	0x50
+ 1750 04b6 02       		.uleb128 0x2
+ 1751 04b7 76       		.byte	0x76
+ 1752 04b8 00       		.sleb128 0
+ 1753 04b9 00       		.byte	0
+ 1754 04ba 0E       		.uleb128 0xe
+ 1755 04bb 78000000 		.4byte	.LVL53
+ 1756 04bf B5030000 		.4byte	0x3b5
+ 1757 04c3 D4040000 		.4byte	0x4d4
+ 1758 04c7 0F       		.uleb128 0xf
+ 1759 04c8 01       		.uleb128 0x1
+ 1760 04c9 51       		.byte	0x51
+ 1761 04ca 02       		.uleb128 0x2
+ 1762 04cb 78       		.byte	0x78
+ 1763 04cc 00       		.sleb128 0
+ 1764 04cd 0F       		.uleb128 0xf
+ 1765 04ce 01       		.uleb128 0x1
+ 1766 04cf 50       		.byte	0x50
+ 1767 04d0 02       		.uleb128 0x2
+ 1768 04d1 76       		.byte	0x76
+ 1769 04d2 00       		.sleb128 0
+ 1770 04d3 00       		.byte	0
+ 1771 04d4 0E       		.uleb128 0xe
+ 1772 04d5 88000000 		.4byte	.LVL54
+ 1773 04d9 B5030000 		.4byte	0x3b5
+ 1774 04dd EE040000 		.4byte	0x4ee
+ 1775 04e1 0F       		.uleb128 0xf
+ 1776 04e2 01       		.uleb128 0x1
+ 1777 04e3 51       		.byte	0x51
+ 1778 04e4 02       		.uleb128 0x2
+ 1779 04e5 79       		.byte	0x79
+ 1780 04e6 00       		.sleb128 0
+ 1781 04e7 0F       		.uleb128 0xf
+ 1782 04e8 01       		.uleb128 0x1
+ 1783 04e9 50       		.byte	0x50
+ 1784 04ea 02       		.uleb128 0x2
+ 1785 04eb 76       		.byte	0x76
+ 1786 04ec 00       		.sleb128 0
+ 1787 04ed 00       		.byte	0
+ 1788 04ee 0E       		.uleb128 0xe
+ 1789 04ef 94000000 		.4byte	.LVL55
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 38
+
+
+ 1790 04f3 B5030000 		.4byte	0x3b5
+ 1791 04f7 0A050000 		.4byte	0x50a
+ 1792 04fb 0F       		.uleb128 0xf
+ 1793 04fc 01       		.uleb128 0x1
+ 1794 04fd 51       		.byte	0x51
+ 1795 04fe 04       		.uleb128 0x4
+ 1796 04ff 91       		.byte	0x91
+ 1797 0500 40       		.sleb128 -64
+ 1798 0501 94       		.byte	0x94
+ 1799 0502 01       		.byte	0x1
+ 1800 0503 0F       		.uleb128 0xf
+ 1801 0504 01       		.uleb128 0x1
+ 1802 0505 50       		.byte	0x50
+ 1803 0506 02       		.uleb128 0x2
+ 1804 0507 76       		.byte	0x76
+ 1805 0508 00       		.sleb128 0
+ 1806 0509 00       		.byte	0
+ 1807 050a 10       		.uleb128 0x10
+ 1808 050b A0000000 		.4byte	.LVL56
+ 1809 050f B5030000 		.4byte	0x3b5
+ 1810 0513 0F       		.uleb128 0xf
+ 1811 0514 01       		.uleb128 0x1
+ 1812 0515 51       		.byte	0x51
+ 1813 0516 02       		.uleb128 0x2
+ 1814 0517 78       		.byte	0x78
+ 1815 0518 00       		.sleb128 0
+ 1816 0519 0F       		.uleb128 0xf
+ 1817 051a 01       		.uleb128 0x1
+ 1818 051b 50       		.byte	0x50
+ 1819 051c 02       		.uleb128 0x2
+ 1820 051d 76       		.byte	0x76
+ 1821 051e 00       		.sleb128 0
+ 1822 051f 00       		.byte	0
+ 1823 0520 00       		.byte	0
+ 1824 0521 05       		.uleb128 0x5
+ 1825 0522 88000000 		.4byte	0x88
+ 1826 0526 31050000 		.4byte	0x531
+ 1827 052a 06       		.uleb128 0x6
+ 1828 052b B7000000 		.4byte	0xb7
+ 1829 052f 07       		.byte	0x7
+ 1830 0530 00       		.byte	0
+ 1831 0531 0C       		.uleb128 0xc
+ 1832 0532 78020000 		.4byte	.LASF33
+ 1833 0536 01       		.byte	0x1
+ 1834 0537 33       		.byte	0x33
+ 1835 0538 00000000 		.4byte	.LFB65
+ 1836 053c 18000000 		.4byte	.LFE65-.LFB65
+ 1837 0540 01       		.uleb128 0x1
+ 1838 0541 9C       		.byte	0x9c
+ 1839 0542 74050000 		.4byte	0x574
+ 1840 0546 0D       		.uleb128 0xd
+ 1841 0547 06000000 		.4byte	.LVL77
+ 1842 054b 1F080000 		.4byte	0x81f
+ 1843 054f 0D       		.uleb128 0xd
+ 1844 0550 0A000000 		.4byte	.LVL78
+ 1845 0554 2C080000 		.4byte	0x82c
+ 1846 0558 0D       		.uleb128 0xd
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 39
+
+
+ 1847 0559 0E000000 		.4byte	.LVL79
+ 1848 055d 1F080000 		.4byte	0x81f
+ 1849 0561 0D       		.uleb128 0xd
+ 1850 0562 12000000 		.4byte	.LVL80
+ 1851 0566 E9030000 		.4byte	0x3e9
+ 1852 056a 0D       		.uleb128 0xd
+ 1853 056b 16000000 		.4byte	.LVL81
+ 1854 056f 39080000 		.4byte	0x839
+ 1855 0573 00       		.byte	0
+ 1856 0574 18       		.uleb128 0x18
+ 1857 0575 2A000000 		.4byte	.LASF35
+ 1858 0579 01       		.byte	0x1
+ 1859 057a AE       		.byte	0xae
+ 1860 057b 00000000 		.4byte	.LFB69
+ 1861 057f B8000000 		.4byte	.LFE69-.LFB69
+ 1862 0583 01       		.uleb128 0x1
+ 1863 0584 9C       		.byte	0x9c
+ 1864 0585 1F060000 		.4byte	0x61f
+ 1865 0589 12       		.uleb128 0x12
+ 1866 058a 3B030000 		.4byte	.LASF21
+ 1867 058e 01       		.byte	0x1
+ 1868 058f AE       		.byte	0xae
+ 1869 0590 6F000000 		.4byte	0x6f
+ 1870 0594 EF010000 		.4byte	.LLST7
+ 1871 0598 12       		.uleb128 0x12
+ 1872 0599 DC010000 		.4byte	.LASF36
+ 1873 059d 01       		.byte	0x1
+ 1874 059e AE       		.byte	0xae
+ 1875 059f 25000000 		.4byte	0x25
+ 1876 05a3 1B020000 		.4byte	.LLST8
+ 1877 05a7 12       		.uleb128 0x12
+ 1878 05a8 81000000 		.4byte	.LASF37
+ 1879 05ac 01       		.byte	0x1
+ 1880 05ad AE       		.byte	0xae
+ 1881 05ae 6F000000 		.4byte	0x6f
+ 1882 05b2 49020000 		.4byte	.LLST9
+ 1883 05b6 17       		.uleb128 0x17
+ 1884 05b7 7900     		.ascii	"y\000"
+ 1885 05b9 01       		.byte	0x1
+ 1886 05ba B0       		.byte	0xb0
+ 1887 05bb 6F000000 		.4byte	0x6f
+ 1888 05bf 75020000 		.4byte	.LLST10
+ 1889 05c3 17       		.uleb128 0x17
+ 1890 05c4 7800     		.ascii	"x\000"
+ 1891 05c6 01       		.byte	0x1
+ 1892 05c7 B0       		.byte	0xb0
+ 1893 05c8 6F000000 		.4byte	0x6f
+ 1894 05cc 9F020000 		.4byte	.LLST11
+ 1895 05d0 16       		.uleb128 0x16
+ 1896 05d1 D9020000 		.4byte	.LASF38
+ 1897 05d5 01       		.byte	0x1
+ 1898 05d6 B0       		.byte	0xb0
+ 1899 05d7 6F000000 		.4byte	0x6f
+ 1900 05db D3020000 		.4byte	.LLST12
+ 1901 05df 16       		.uleb128 0x16
+ 1902 05e0 4F000000 		.4byte	.LASF39
+ 1903 05e4 01       		.byte	0x1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 40
+
+
+ 1904 05e5 B0       		.byte	0xb0
+ 1905 05e6 6F000000 		.4byte	0x6f
+ 1906 05ea F1020000 		.4byte	.LLST13
+ 1907 05ee 0E       		.uleb128 0xe
+ 1908 05ef 20000000 		.4byte	.LVL85
+ 1909 05f3 B5030000 		.4byte	0x3b5
+ 1910 05f7 08060000 		.4byte	0x608
+ 1911 05fb 0F       		.uleb128 0xf
+ 1912 05fc 01       		.uleb128 0x1
+ 1913 05fd 51       		.byte	0x51
+ 1914 05fe 02       		.uleb128 0x2
+ 1915 05ff 76       		.byte	0x76
+ 1916 0600 00       		.sleb128 0
+ 1917 0601 0F       		.uleb128 0xf
+ 1918 0602 01       		.uleb128 0x1
+ 1919 0603 50       		.byte	0x50
+ 1920 0604 02       		.uleb128 0x2
+ 1921 0605 74       		.byte	0x74
+ 1922 0606 00       		.sleb128 0
+ 1923 0607 00       		.byte	0
+ 1924 0608 10       		.uleb128 0x10
+ 1925 0609 74000000 		.4byte	.LVL98
+ 1926 060d B5030000 		.4byte	0x3b5
+ 1927 0611 0F       		.uleb128 0xf
+ 1928 0612 01       		.uleb128 0x1
+ 1929 0613 51       		.byte	0x51
+ 1930 0614 02       		.uleb128 0x2
+ 1931 0615 76       		.byte	0x76
+ 1932 0616 00       		.sleb128 0
+ 1933 0617 0F       		.uleb128 0xf
+ 1934 0618 01       		.uleb128 0x1
+ 1935 0619 50       		.byte	0x50
+ 1936 061a 02       		.uleb128 0x2
+ 1937 061b 74       		.byte	0x74
+ 1938 061c 00       		.sleb128 0
+ 1939 061d 00       		.byte	0
+ 1940 061e 00       		.byte	0
+ 1941 061f 13       		.uleb128 0x13
+ 1942 0620 1E030000 		.4byte	.LASF41
+ 1943 0624 01       		.byte	0x1
+ 1944 0625 D0       		.byte	0xd0
+ 1945 0626 6F000000 		.4byte	0x6f
+ 1946 062a 00000000 		.4byte	.LFB70
+ 1947 062e 02000000 		.4byte	.LFE70-.LFB70
+ 1948 0632 01       		.uleb128 0x1
+ 1949 0633 9C       		.byte	0x9c
+ 1950 0634 51060000 		.4byte	0x651
+ 1951 0638 12       		.uleb128 0x12
+ 1952 0639 D4020000 		.4byte	.LASF22
+ 1953 063d 01       		.byte	0x1
+ 1954 063e D0       		.byte	0xd0
+ 1955 063f 6F000000 		.4byte	0x6f
+ 1956 0643 05030000 		.4byte	.LLST14
+ 1957 0647 19       		.uleb128 0x19
+ 1958 0648 7800     		.ascii	"x\000"
+ 1959 064a 01       		.byte	0x1
+ 1960 064b D2       		.byte	0xd2
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 41
+
+
+ 1961 064c 6F000000 		.4byte	0x6f
+ 1962 0650 00       		.byte	0
+ 1963 0651 1A       		.uleb128 0x1a
+ 1964 0652 AB000000 		.4byte	.LASF42
+ 1965 0656 01       		.byte	0x1
+ 1966 0657 D7       		.byte	0xd7
+ 1967 0658 6F000000 		.4byte	0x6f
+ 1968 065c 00000000 		.4byte	.LFB71
+ 1969 0660 0C000000 		.4byte	.LFE71-.LFB71
+ 1970 0664 01       		.uleb128 0x1
+ 1971 0665 9C       		.byte	0x9c
+ 1972 0666 81060000 		.4byte	0x681
+ 1973 066a 10       		.uleb128 0x10
+ 1974 066b 0A000000 		.4byte	.LVL106
+ 1975 066f B5030000 		.4byte	0x3b5
+ 1976 0673 0F       		.uleb128 0xf
+ 1977 0674 01       		.uleb128 0x1
+ 1978 0675 51       		.byte	0x51
+ 1979 0676 02       		.uleb128 0x2
+ 1980 0677 09       		.byte	0x9
+ 1981 0678 90       		.byte	0x90
+ 1982 0679 0F       		.uleb128 0xf
+ 1983 067a 01       		.uleb128 0x1
+ 1984 067b 50       		.byte	0x50
+ 1985 067c 02       		.uleb128 0x2
+ 1986 067d 08       		.byte	0x8
+ 1987 067e 2C       		.byte	0x2c
+ 1988 067f 00       		.byte	0
+ 1989 0680 00       		.byte	0
+ 1990 0681 13       		.uleb128 0x13
+ 1991 0682 5C010000 		.4byte	.LASF43
+ 1992 0686 01       		.byte	0x1
+ 1993 0687 DD       		.byte	0xdd
+ 1994 0688 6F000000 		.4byte	0x6f
+ 1995 068c 00000000 		.4byte	.LFB72
+ 1996 0690 38000000 		.4byte	.LFE72-.LFB72
+ 1997 0694 01       		.uleb128 0x1
+ 1998 0695 9C       		.byte	0x9c
+ 1999 0696 B5060000 		.4byte	0x6b5
+ 2000 069a 14       		.uleb128 0x14
+ 2001 069b 7800     		.ascii	"x\000"
+ 2002 069d 01       		.byte	0x1
+ 2003 069e DD       		.byte	0xdd
+ 2004 069f 6F000000 		.4byte	0x6f
+ 2005 06a3 26030000 		.4byte	.LLST15
+ 2006 06a7 14       		.uleb128 0x14
+ 2007 06a8 7900     		.ascii	"y\000"
+ 2008 06aa 01       		.byte	0x1
+ 2009 06ab DD       		.byte	0xdd
+ 2010 06ac 6F000000 		.4byte	0x6f
+ 2011 06b0 79030000 		.4byte	.LLST16
+ 2012 06b4 00       		.byte	0
+ 2013 06b5 0C       		.uleb128 0xc
+ 2014 06b6 76030000 		.4byte	.LASF44
+ 2015 06ba 01       		.byte	0x1
+ 2016 06bb E3       		.byte	0xe3
+ 2017 06bc 00000000 		.4byte	.LFB73
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 42
+
+
+ 2018 06c0 80000000 		.4byte	.LFE73-.LFB73
+ 2019 06c4 01       		.uleb128 0x1
+ 2020 06c5 9C       		.byte	0x9c
+ 2021 06c6 FF060000 		.4byte	0x6ff
+ 2022 06ca 17       		.uleb128 0x17
+ 2023 06cb 7900     		.ascii	"y\000"
+ 2024 06cd 01       		.byte	0x1
+ 2025 06ce E5       		.byte	0xe5
+ 2026 06cf 6F000000 		.4byte	0x6f
+ 2027 06d3 B3030000 		.4byte	.LLST17
+ 2028 06d7 17       		.uleb128 0x17
+ 2029 06d8 7800     		.ascii	"x\000"
+ 2030 06da 01       		.byte	0x1
+ 2031 06db E5       		.byte	0xe5
+ 2032 06dc 6F000000 		.4byte	0x6f
+ 2033 06e0 D2030000 		.4byte	.LLST18
+ 2034 06e4 17       		.uleb128 0x17
+ 2035 06e5 6B00     		.ascii	"k\000"
+ 2036 06e7 01       		.byte	0x1
+ 2037 06e8 E5       		.byte	0xe5
+ 2038 06e9 6F000000 		.4byte	0x6f
+ 2039 06ed F0030000 		.4byte	.LLST19
+ 2040 06f1 17       		.uleb128 0x17
+ 2041 06f2 6900     		.ascii	"i\000"
+ 2042 06f4 01       		.byte	0x1
+ 2043 06f5 E5       		.byte	0xe5
+ 2044 06f6 6F000000 		.4byte	0x6f
+ 2045 06fa 04040000 		.4byte	.LLST20
+ 2046 06fe 00       		.byte	0
+ 2047 06ff 1B       		.uleb128 0x1b
+ 2048 0700 63030000 		.4byte	.LASF45
+ 2049 0704 06       		.byte	0x6
+ 2050 0705 2A06     		.2byte	0x62a
+ 2051 0707 0B070000 		.4byte	0x70b
+ 2052 070b 1C       		.uleb128 0x1c
+ 2053 070c 7D000000 		.4byte	0x7d
+ 2054 0710 05       		.uleb128 0x5
+ 2055 0711 88000000 		.4byte	0x88
+ 2056 0715 2C070000 		.4byte	0x72c
+ 2057 0719 06       		.uleb128 0x6
+ 2058 071a B7000000 		.4byte	0xb7
+ 2059 071e 8F       		.byte	0x8f
+ 2060 071f 06       		.uleb128 0x6
+ 2061 0720 B7000000 		.4byte	0xb7
+ 2062 0724 57       		.byte	0x57
+ 2063 0725 06       		.uleb128 0x6
+ 2064 0726 B7000000 		.4byte	0xb7
+ 2065 072a 03       		.byte	0x3
+ 2066 072b 00       		.byte	0
+ 2067 072c 1D       		.uleb128 0x1d
+ 2068 072d 42030000 		.4byte	.LASF46
+ 2069 0731 07       		.byte	0x7
+ 2070 0732 08       		.byte	0x8
+ 2071 0733 10070000 		.4byte	0x710
+ 2072 0737 05       		.uleb128 0x5
+ 2073 0738 03       		.byte	0x3
+ 2074 0739 00000000 		.4byte	Camera_framebuffer
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 43
+
+
+ 2075 073d 1D       		.uleb128 0x1d
+ 2076 073e F5010000 		.4byte	.LASF47
+ 2077 0742 01       		.byte	0x1
+ 2078 0743 11       		.byte	0x11
+ 2079 0744 88000000 		.4byte	0x88
+ 2080 0748 05       		.uleb128 0x5
+ 2081 0749 03       		.byte	0x3
+ 2082 074a 00000000 		.4byte	RED_U
+ 2083 074e 1D       		.uleb128 0x1d
+ 2084 074f FB010000 		.4byte	.LASF48
+ 2085 0753 01       		.byte	0x1
+ 2086 0754 12       		.byte	0x12
+ 2087 0755 88000000 		.4byte	0x88
+ 2088 0759 05       		.uleb128 0x5
+ 2089 075a 03       		.byte	0x3
+ 2090 075b 00000000 		.4byte	RED_V
+ 2091 075f 1D       		.uleb128 0x1d
+ 2092 0760 A4020000 		.4byte	.LASF49
+ 2093 0764 01       		.byte	0x1
+ 2094 0765 13       		.byte	0x13
+ 2095 0766 88000000 		.4byte	0x88
+ 2096 076a 05       		.uleb128 0x5
+ 2097 076b 03       		.byte	0x3
+ 2098 076c 00000000 		.4byte	GREEN_U
+ 2099 0770 1D       		.uleb128 0x1d
+ 2100 0771 AC020000 		.4byte	.LASF50
+ 2101 0775 01       		.byte	0x1
+ 2102 0776 14       		.byte	0x14
+ 2103 0777 88000000 		.4byte	0x88
+ 2104 077b 05       		.uleb128 0x5
+ 2105 077c 03       		.byte	0x3
+ 2106 077d 00000000 		.4byte	GREEN_V
+ 2107 0781 1D       		.uleb128 0x1d
+ 2108 0782 9D000000 		.4byte	.LASF51
+ 2109 0786 01       		.byte	0x1
+ 2110 0787 15       		.byte	0x15
+ 2111 0788 88000000 		.4byte	0x88
+ 2112 078c 05       		.uleb128 0x5
+ 2113 078d 03       		.byte	0x3
+ 2114 078e 00000000 		.4byte	BLUE_U
+ 2115 0792 1D       		.uleb128 0x1d
+ 2116 0793 A4000000 		.4byte	.LASF52
+ 2117 0797 01       		.byte	0x1
+ 2118 0798 16       		.byte	0x16
+ 2119 0799 88000000 		.4byte	0x88
+ 2120 079d 05       		.uleb128 0x5
+ 2121 079e 03       		.byte	0x3
+ 2122 079f 00000000 		.4byte	BLUE_V
+ 2123 07a3 1E       		.uleb128 0x1e
+ 2124 07a4 7B000000 		.4byte	.LASF53
+ 2125 07a8 01       		.byte	0x1
+ 2126 07a9 18       		.byte	0x18
+ 2127 07aa AE070000 		.4byte	0x7ae
+ 2128 07ae 1F       		.uleb128 0x1f
+ 2129 07af 04       		.byte	0x4
+ 2130 07b0 28010000 		.4byte	0x128
+ 2131 07b4 20       		.uleb128 0x20
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 44
+
+
+ 2132 07b5 68000000 		.4byte	.LASF58
+ 2133 07b9 07       		.byte	0x7
+ 2134 07ba 16       		.byte	0x16
+ 2135 07bb C1070000 		.4byte	0x7c1
+ 2136 07bf 21       		.uleb128 0x21
+ 2137 07c0 00       		.byte	0
+ 2138 07c1 22       		.uleb128 0x22
+ 2139 07c2 EE020000 		.4byte	.LASF54
+ 2140 07c6 08       		.byte	0x8
+ 2141 07c7 3A       		.byte	0x3a
+ 2142 07c8 D2070000 		.4byte	0x7d2
+ 2143 07cc 23       		.uleb128 0x23
+ 2144 07cd 88000000 		.4byte	0x88
+ 2145 07d1 00       		.byte	0
+ 2146 07d2 22       		.uleb128 0x22
+ 2147 07d3 11030000 		.4byte	.LASF55
+ 2148 07d7 08       		.byte	0x8
+ 2149 07d8 3D       		.byte	0x3d
+ 2150 07d9 E8070000 		.4byte	0x7e8
+ 2151 07dd 23       		.uleb128 0x23
+ 2152 07de 88000000 		.4byte	0x88
+ 2153 07e2 23       		.uleb128 0x23
+ 2154 07e3 88000000 		.4byte	0x88
+ 2155 07e7 00       		.byte	0
+ 2156 07e8 22       		.uleb128 0x22
+ 2157 07e9 31020000 		.4byte	.LASF56
+ 2158 07ed 08       		.byte	0x8
+ 2159 07ee 3C       		.byte	0x3c
+ 2160 07ef F9070000 		.4byte	0x7f9
+ 2161 07f3 23       		.uleb128 0x23
+ 2162 07f4 F9070000 		.4byte	0x7f9
+ 2163 07f8 00       		.byte	0
+ 2164 07f9 1F       		.uleb128 0x1f
+ 2165 07fa 04       		.byte	0x4
+ 2166 07fb FF070000 		.4byte	0x7ff
+ 2167 07ff 24       		.uleb128 0x24
+ 2168 0800 A5000000 		.4byte	0xa5
+ 2169 0804 22       		.uleb128 0x22
+ 2170 0805 6B010000 		.4byte	.LASF57
+ 2171 0809 07       		.byte	0x7
+ 2172 080a 10       		.byte	0x10
+ 2173 080b 1A080000 		.4byte	0x81a
+ 2174 080f 23       		.uleb128 0x23
+ 2175 0810 1A080000 		.4byte	0x81a
+ 2176 0814 23       		.uleb128 0x23
+ 2177 0815 1A080000 		.4byte	0x81a
+ 2178 0819 00       		.byte	0
+ 2179 081a 24       		.uleb128 0x24
+ 2180 081b 88000000 		.4byte	0x88
+ 2181 081f 20       		.uleb128 0x20
+ 2182 0820 36000000 		.4byte	.LASF59
+ 2183 0824 07       		.byte	0x7
+ 2184 0825 0D       		.byte	0xd
+ 2185 0826 2C080000 		.4byte	0x82c
+ 2186 082a 21       		.uleb128 0x21
+ 2187 082b 00       		.byte	0
+ 2188 082c 20       		.uleb128 0x20
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 45
+
+
+ 2189 082d CC010000 		.4byte	.LASF60
+ 2190 0831 07       		.byte	0x7
+ 2191 0832 1B       		.byte	0x1b
+ 2192 0833 39080000 		.4byte	0x839
+ 2193 0837 21       		.uleb128 0x21
+ 2194 0838 00       		.byte	0
+ 2195 0839 25       		.uleb128 0x25
+ 2196 083a 91000000 		.4byte	.LASF64
+ 2197 083e 05       		.byte	0x5
+ 2198 083f 0F       		.byte	0xf
+ 2199 0840 21       		.uleb128 0x21
+ 2200 0841 00       		.byte	0
+ 2201 0842 00       		.byte	0
+ 2202              		.section	.debug_abbrev,"",%progbits
+ 2203              	.Ldebug_abbrev0:
+ 2204 0000 01       		.uleb128 0x1
+ 2205 0001 11       		.uleb128 0x11
+ 2206 0002 01       		.byte	0x1
+ 2207 0003 25       		.uleb128 0x25
+ 2208 0004 0E       		.uleb128 0xe
+ 2209 0005 13       		.uleb128 0x13
+ 2210 0006 0B       		.uleb128 0xb
+ 2211 0007 03       		.uleb128 0x3
+ 2212 0008 0E       		.uleb128 0xe
+ 2213 0009 1B       		.uleb128 0x1b
+ 2214 000a 0E       		.uleb128 0xe
+ 2215 000b 55       		.uleb128 0x55
+ 2216 000c 17       		.uleb128 0x17
+ 2217 000d 11       		.uleb128 0x11
+ 2218 000e 01       		.uleb128 0x1
+ 2219 000f 10       		.uleb128 0x10
+ 2220 0010 17       		.uleb128 0x17
+ 2221 0011 00       		.byte	0
+ 2222 0012 00       		.byte	0
+ 2223 0013 02       		.uleb128 0x2
+ 2224 0014 24       		.uleb128 0x24
+ 2225 0015 00       		.byte	0
+ 2226 0016 0B       		.uleb128 0xb
+ 2227 0017 0B       		.uleb128 0xb
+ 2228 0018 3E       		.uleb128 0x3e
+ 2229 0019 0B       		.uleb128 0xb
+ 2230 001a 03       		.uleb128 0x3
+ 2231 001b 0E       		.uleb128 0xe
+ 2232 001c 00       		.byte	0
+ 2233 001d 00       		.byte	0
+ 2234 001e 03       		.uleb128 0x3
+ 2235 001f 16       		.uleb128 0x16
+ 2236 0020 00       		.byte	0
+ 2237 0021 03       		.uleb128 0x3
+ 2238 0022 0E       		.uleb128 0xe
+ 2239 0023 3A       		.uleb128 0x3a
+ 2240 0024 0B       		.uleb128 0xb
+ 2241 0025 3B       		.uleb128 0x3b
+ 2242 0026 0B       		.uleb128 0xb
+ 2243 0027 49       		.uleb128 0x49
+ 2244 0028 13       		.uleb128 0x13
+ 2245 0029 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 46
+
+
+ 2246 002a 00       		.byte	0
+ 2247 002b 04       		.uleb128 0x4
+ 2248 002c 24       		.uleb128 0x24
+ 2249 002d 00       		.byte	0
+ 2250 002e 0B       		.uleb128 0xb
+ 2251 002f 0B       		.uleb128 0xb
+ 2252 0030 3E       		.uleb128 0x3e
+ 2253 0031 0B       		.uleb128 0xb
+ 2254 0032 03       		.uleb128 0x3
+ 2255 0033 08       		.uleb128 0x8
+ 2256 0034 00       		.byte	0
+ 2257 0035 00       		.byte	0
+ 2258 0036 05       		.uleb128 0x5
+ 2259 0037 01       		.uleb128 0x1
+ 2260 0038 01       		.byte	0x1
+ 2261 0039 49       		.uleb128 0x49
+ 2262 003a 13       		.uleb128 0x13
+ 2263 003b 01       		.uleb128 0x1
+ 2264 003c 13       		.uleb128 0x13
+ 2265 003d 00       		.byte	0
+ 2266 003e 00       		.byte	0
+ 2267 003f 06       		.uleb128 0x6
+ 2268 0040 21       		.uleb128 0x21
+ 2269 0041 00       		.byte	0
+ 2270 0042 49       		.uleb128 0x49
+ 2271 0043 13       		.uleb128 0x13
+ 2272 0044 2F       		.uleb128 0x2f
+ 2273 0045 0B       		.uleb128 0xb
+ 2274 0046 00       		.byte	0
+ 2275 0047 00       		.byte	0
+ 2276 0048 07       		.uleb128 0x7
+ 2277 0049 04       		.uleb128 0x4
+ 2278 004a 01       		.byte	0x1
+ 2279 004b 0B       		.uleb128 0xb
+ 2280 004c 0B       		.uleb128 0xb
+ 2281 004d 3A       		.uleb128 0x3a
+ 2282 004e 0B       		.uleb128 0xb
+ 2283 004f 3B       		.uleb128 0x3b
+ 2284 0050 0B       		.uleb128 0xb
+ 2285 0051 01       		.uleb128 0x1
+ 2286 0052 13       		.uleb128 0x13
+ 2287 0053 00       		.byte	0
+ 2288 0054 00       		.byte	0
+ 2289 0055 08       		.uleb128 0x8
+ 2290 0056 28       		.uleb128 0x28
+ 2291 0057 00       		.byte	0
+ 2292 0058 03       		.uleb128 0x3
+ 2293 0059 0E       		.uleb128 0xe
+ 2294 005a 1C       		.uleb128 0x1c
+ 2295 005b 0D       		.uleb128 0xd
+ 2296 005c 00       		.byte	0
+ 2297 005d 00       		.byte	0
+ 2298 005e 09       		.uleb128 0x9
+ 2299 005f 28       		.uleb128 0x28
+ 2300 0060 00       		.byte	0
+ 2301 0061 03       		.uleb128 0x3
+ 2302 0062 08       		.uleb128 0x8
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 47
+
+
+ 2303 0063 1C       		.uleb128 0x1c
+ 2304 0064 0D       		.uleb128 0xd
+ 2305 0065 00       		.byte	0
+ 2306 0066 00       		.byte	0
+ 2307 0067 0A       		.uleb128 0xa
+ 2308 0068 13       		.uleb128 0x13
+ 2309 0069 01       		.byte	0x1
+ 2310 006a 0B       		.uleb128 0xb
+ 2311 006b 0B       		.uleb128 0xb
+ 2312 006c 3A       		.uleb128 0x3a
+ 2313 006d 0B       		.uleb128 0xb
+ 2314 006e 3B       		.uleb128 0x3b
+ 2315 006f 0B       		.uleb128 0xb
+ 2316 0070 01       		.uleb128 0x1
+ 2317 0071 13       		.uleb128 0x13
+ 2318 0072 00       		.byte	0
+ 2319 0073 00       		.byte	0
+ 2320 0074 0B       		.uleb128 0xb
+ 2321 0075 0D       		.uleb128 0xd
+ 2322 0076 00       		.byte	0
+ 2323 0077 03       		.uleb128 0x3
+ 2324 0078 0E       		.uleb128 0xe
+ 2325 0079 3A       		.uleb128 0x3a
+ 2326 007a 0B       		.uleb128 0xb
+ 2327 007b 3B       		.uleb128 0x3b
+ 2328 007c 0B       		.uleb128 0xb
+ 2329 007d 49       		.uleb128 0x49
+ 2330 007e 13       		.uleb128 0x13
+ 2331 007f 38       		.uleb128 0x38
+ 2332 0080 0B       		.uleb128 0xb
+ 2333 0081 00       		.byte	0
+ 2334 0082 00       		.byte	0
+ 2335 0083 0C       		.uleb128 0xc
+ 2336 0084 2E       		.uleb128 0x2e
+ 2337 0085 01       		.byte	0x1
+ 2338 0086 3F       		.uleb128 0x3f
+ 2339 0087 19       		.uleb128 0x19
+ 2340 0088 03       		.uleb128 0x3
+ 2341 0089 0E       		.uleb128 0xe
+ 2342 008a 3A       		.uleb128 0x3a
+ 2343 008b 0B       		.uleb128 0xb
+ 2344 008c 3B       		.uleb128 0x3b
+ 2345 008d 0B       		.uleb128 0xb
+ 2346 008e 11       		.uleb128 0x11
+ 2347 008f 01       		.uleb128 0x1
+ 2348 0090 12       		.uleb128 0x12
+ 2349 0091 06       		.uleb128 0x6
+ 2350 0092 40       		.uleb128 0x40
+ 2351 0093 18       		.uleb128 0x18
+ 2352 0094 9742     		.uleb128 0x2117
+ 2353 0096 19       		.uleb128 0x19
+ 2354 0097 01       		.uleb128 0x1
+ 2355 0098 13       		.uleb128 0x13
+ 2356 0099 00       		.byte	0
+ 2357 009a 00       		.byte	0
+ 2358 009b 0D       		.uleb128 0xd
+ 2359 009c 898201   		.uleb128 0x4109
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 48
+
+
+ 2360 009f 00       		.byte	0
+ 2361 00a0 11       		.uleb128 0x11
+ 2362 00a1 01       		.uleb128 0x1
+ 2363 00a2 31       		.uleb128 0x31
+ 2364 00a3 13       		.uleb128 0x13
+ 2365 00a4 00       		.byte	0
+ 2366 00a5 00       		.byte	0
+ 2367 00a6 0E       		.uleb128 0xe
+ 2368 00a7 898201   		.uleb128 0x4109
+ 2369 00aa 01       		.byte	0x1
+ 2370 00ab 11       		.uleb128 0x11
+ 2371 00ac 01       		.uleb128 0x1
+ 2372 00ad 31       		.uleb128 0x31
+ 2373 00ae 13       		.uleb128 0x13
+ 2374 00af 01       		.uleb128 0x1
+ 2375 00b0 13       		.uleb128 0x13
+ 2376 00b1 00       		.byte	0
+ 2377 00b2 00       		.byte	0
+ 2378 00b3 0F       		.uleb128 0xf
+ 2379 00b4 8A8201   		.uleb128 0x410a
+ 2380 00b7 00       		.byte	0
+ 2381 00b8 02       		.uleb128 0x2
+ 2382 00b9 18       		.uleb128 0x18
+ 2383 00ba 9142     		.uleb128 0x2111
+ 2384 00bc 18       		.uleb128 0x18
+ 2385 00bd 00       		.byte	0
+ 2386 00be 00       		.byte	0
+ 2387 00bf 10       		.uleb128 0x10
+ 2388 00c0 898201   		.uleb128 0x4109
+ 2389 00c3 01       		.byte	0x1
+ 2390 00c4 11       		.uleb128 0x11
+ 2391 00c5 01       		.uleb128 0x1
+ 2392 00c6 31       		.uleb128 0x31
+ 2393 00c7 13       		.uleb128 0x13
+ 2394 00c8 00       		.byte	0
+ 2395 00c9 00       		.byte	0
+ 2396 00ca 11       		.uleb128 0x11
+ 2397 00cb 2E       		.uleb128 0x2e
+ 2398 00cc 01       		.byte	0x1
+ 2399 00cd 3F       		.uleb128 0x3f
+ 2400 00ce 19       		.uleb128 0x19
+ 2401 00cf 03       		.uleb128 0x3
+ 2402 00d0 0E       		.uleb128 0xe
+ 2403 00d1 3A       		.uleb128 0x3a
+ 2404 00d2 0B       		.uleb128 0xb
+ 2405 00d3 3B       		.uleb128 0x3b
+ 2406 00d4 0B       		.uleb128 0xb
+ 2407 00d5 27       		.uleb128 0x27
+ 2408 00d6 19       		.uleb128 0x19
+ 2409 00d7 11       		.uleb128 0x11
+ 2410 00d8 01       		.uleb128 0x1
+ 2411 00d9 12       		.uleb128 0x12
+ 2412 00da 06       		.uleb128 0x6
+ 2413 00db 40       		.uleb128 0x40
+ 2414 00dc 18       		.uleb128 0x18
+ 2415 00dd 9742     		.uleb128 0x2117
+ 2416 00df 19       		.uleb128 0x19
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 49
+
+
+ 2417 00e0 01       		.uleb128 0x1
+ 2418 00e1 13       		.uleb128 0x13
+ 2419 00e2 00       		.byte	0
+ 2420 00e3 00       		.byte	0
+ 2421 00e4 12       		.uleb128 0x12
+ 2422 00e5 05       		.uleb128 0x5
+ 2423 00e6 00       		.byte	0
+ 2424 00e7 03       		.uleb128 0x3
+ 2425 00e8 0E       		.uleb128 0xe
+ 2426 00e9 3A       		.uleb128 0x3a
+ 2427 00ea 0B       		.uleb128 0xb
+ 2428 00eb 3B       		.uleb128 0x3b
+ 2429 00ec 0B       		.uleb128 0xb
+ 2430 00ed 49       		.uleb128 0x49
+ 2431 00ee 13       		.uleb128 0x13
+ 2432 00ef 02       		.uleb128 0x2
+ 2433 00f0 17       		.uleb128 0x17
+ 2434 00f1 00       		.byte	0
+ 2435 00f2 00       		.byte	0
+ 2436 00f3 13       		.uleb128 0x13
+ 2437 00f4 2E       		.uleb128 0x2e
+ 2438 00f5 01       		.byte	0x1
+ 2439 00f6 3F       		.uleb128 0x3f
+ 2440 00f7 19       		.uleb128 0x19
+ 2441 00f8 03       		.uleb128 0x3
+ 2442 00f9 0E       		.uleb128 0xe
+ 2443 00fa 3A       		.uleb128 0x3a
+ 2444 00fb 0B       		.uleb128 0xb
+ 2445 00fc 3B       		.uleb128 0x3b
+ 2446 00fd 0B       		.uleb128 0xb
+ 2447 00fe 27       		.uleb128 0x27
+ 2448 00ff 19       		.uleb128 0x19
+ 2449 0100 49       		.uleb128 0x49
+ 2450 0101 13       		.uleb128 0x13
+ 2451 0102 11       		.uleb128 0x11
+ 2452 0103 01       		.uleb128 0x1
+ 2453 0104 12       		.uleb128 0x12
+ 2454 0105 06       		.uleb128 0x6
+ 2455 0106 40       		.uleb128 0x40
+ 2456 0107 18       		.uleb128 0x18
+ 2457 0108 9742     		.uleb128 0x2117
+ 2458 010a 19       		.uleb128 0x19
+ 2459 010b 01       		.uleb128 0x1
+ 2460 010c 13       		.uleb128 0x13
+ 2461 010d 00       		.byte	0
+ 2462 010e 00       		.byte	0
+ 2463 010f 14       		.uleb128 0x14
+ 2464 0110 05       		.uleb128 0x5
+ 2465 0111 00       		.byte	0
+ 2466 0112 03       		.uleb128 0x3
+ 2467 0113 08       		.uleb128 0x8
+ 2468 0114 3A       		.uleb128 0x3a
+ 2469 0115 0B       		.uleb128 0xb
+ 2470 0116 3B       		.uleb128 0x3b
+ 2471 0117 0B       		.uleb128 0xb
+ 2472 0118 49       		.uleb128 0x49
+ 2473 0119 13       		.uleb128 0x13
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 50
+
+
+ 2474 011a 02       		.uleb128 0x2
+ 2475 011b 17       		.uleb128 0x17
+ 2476 011c 00       		.byte	0
+ 2477 011d 00       		.byte	0
+ 2478 011e 15       		.uleb128 0x15
+ 2479 011f 34       		.uleb128 0x34
+ 2480 0120 00       		.byte	0
+ 2481 0121 03       		.uleb128 0x3
+ 2482 0122 0E       		.uleb128 0xe
+ 2483 0123 3A       		.uleb128 0x3a
+ 2484 0124 0B       		.uleb128 0xb
+ 2485 0125 3B       		.uleb128 0x3b
+ 2486 0126 0B       		.uleb128 0xb
+ 2487 0127 49       		.uleb128 0x49
+ 2488 0128 13       		.uleb128 0x13
+ 2489 0129 02       		.uleb128 0x2
+ 2490 012a 18       		.uleb128 0x18
+ 2491 012b 00       		.byte	0
+ 2492 012c 00       		.byte	0
+ 2493 012d 16       		.uleb128 0x16
+ 2494 012e 34       		.uleb128 0x34
+ 2495 012f 00       		.byte	0
+ 2496 0130 03       		.uleb128 0x3
+ 2497 0131 0E       		.uleb128 0xe
+ 2498 0132 3A       		.uleb128 0x3a
+ 2499 0133 0B       		.uleb128 0xb
+ 2500 0134 3B       		.uleb128 0x3b
+ 2501 0135 0B       		.uleb128 0xb
+ 2502 0136 49       		.uleb128 0x49
+ 2503 0137 13       		.uleb128 0x13
+ 2504 0138 02       		.uleb128 0x2
+ 2505 0139 17       		.uleb128 0x17
+ 2506 013a 00       		.byte	0
+ 2507 013b 00       		.byte	0
+ 2508 013c 17       		.uleb128 0x17
+ 2509 013d 34       		.uleb128 0x34
+ 2510 013e 00       		.byte	0
+ 2511 013f 03       		.uleb128 0x3
+ 2512 0140 08       		.uleb128 0x8
+ 2513 0141 3A       		.uleb128 0x3a
+ 2514 0142 0B       		.uleb128 0xb
+ 2515 0143 3B       		.uleb128 0x3b
+ 2516 0144 0B       		.uleb128 0xb
+ 2517 0145 49       		.uleb128 0x49
+ 2518 0146 13       		.uleb128 0x13
+ 2519 0147 02       		.uleb128 0x2
+ 2520 0148 17       		.uleb128 0x17
+ 2521 0149 00       		.byte	0
+ 2522 014a 00       		.byte	0
+ 2523 014b 18       		.uleb128 0x18
+ 2524 014c 2E       		.uleb128 0x2e
+ 2525 014d 01       		.byte	0x1
+ 2526 014e 3F       		.uleb128 0x3f
+ 2527 014f 19       		.uleb128 0x19
+ 2528 0150 03       		.uleb128 0x3
+ 2529 0151 0E       		.uleb128 0xe
+ 2530 0152 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 51
+
+
+ 2531 0153 0B       		.uleb128 0xb
+ 2532 0154 3B       		.uleb128 0x3b
+ 2533 0155 0B       		.uleb128 0xb
+ 2534 0156 27       		.uleb128 0x27
+ 2535 0157 19       		.uleb128 0x19
+ 2536 0158 11       		.uleb128 0x11
+ 2537 0159 01       		.uleb128 0x1
+ 2538 015a 12       		.uleb128 0x12
+ 2539 015b 06       		.uleb128 0x6
+ 2540 015c 40       		.uleb128 0x40
+ 2541 015d 18       		.uleb128 0x18
+ 2542 015e 9642     		.uleb128 0x2116
+ 2543 0160 19       		.uleb128 0x19
+ 2544 0161 01       		.uleb128 0x1
+ 2545 0162 13       		.uleb128 0x13
+ 2546 0163 00       		.byte	0
+ 2547 0164 00       		.byte	0
+ 2548 0165 19       		.uleb128 0x19
+ 2549 0166 34       		.uleb128 0x34
+ 2550 0167 00       		.byte	0
+ 2551 0168 03       		.uleb128 0x3
+ 2552 0169 08       		.uleb128 0x8
+ 2553 016a 3A       		.uleb128 0x3a
+ 2554 016b 0B       		.uleb128 0xb
+ 2555 016c 3B       		.uleb128 0x3b
+ 2556 016d 0B       		.uleb128 0xb
+ 2557 016e 49       		.uleb128 0x49
+ 2558 016f 13       		.uleb128 0x13
+ 2559 0170 00       		.byte	0
+ 2560 0171 00       		.byte	0
+ 2561 0172 1A       		.uleb128 0x1a
+ 2562 0173 2E       		.uleb128 0x2e
+ 2563 0174 01       		.byte	0x1
+ 2564 0175 3F       		.uleb128 0x3f
+ 2565 0176 19       		.uleb128 0x19
+ 2566 0177 03       		.uleb128 0x3
+ 2567 0178 0E       		.uleb128 0xe
+ 2568 0179 3A       		.uleb128 0x3a
+ 2569 017a 0B       		.uleb128 0xb
+ 2570 017b 3B       		.uleb128 0x3b
+ 2571 017c 0B       		.uleb128 0xb
+ 2572 017d 49       		.uleb128 0x49
+ 2573 017e 13       		.uleb128 0x13
+ 2574 017f 11       		.uleb128 0x11
+ 2575 0180 01       		.uleb128 0x1
+ 2576 0181 12       		.uleb128 0x12
+ 2577 0182 06       		.uleb128 0x6
+ 2578 0183 40       		.uleb128 0x40
+ 2579 0184 18       		.uleb128 0x18
+ 2580 0185 9742     		.uleb128 0x2117
+ 2581 0187 19       		.uleb128 0x19
+ 2582 0188 01       		.uleb128 0x1
+ 2583 0189 13       		.uleb128 0x13
+ 2584 018a 00       		.byte	0
+ 2585 018b 00       		.byte	0
+ 2586 018c 1B       		.uleb128 0x1b
+ 2587 018d 34       		.uleb128 0x34
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 52
+
+
+ 2588 018e 00       		.byte	0
+ 2589 018f 03       		.uleb128 0x3
+ 2590 0190 0E       		.uleb128 0xe
+ 2591 0191 3A       		.uleb128 0x3a
+ 2592 0192 0B       		.uleb128 0xb
+ 2593 0193 3B       		.uleb128 0x3b
+ 2594 0194 05       		.uleb128 0x5
+ 2595 0195 49       		.uleb128 0x49
+ 2596 0196 13       		.uleb128 0x13
+ 2597 0197 3F       		.uleb128 0x3f
+ 2598 0198 19       		.uleb128 0x19
+ 2599 0199 3C       		.uleb128 0x3c
+ 2600 019a 19       		.uleb128 0x19
+ 2601 019b 00       		.byte	0
+ 2602 019c 00       		.byte	0
+ 2603 019d 1C       		.uleb128 0x1c
+ 2604 019e 35       		.uleb128 0x35
+ 2605 019f 00       		.byte	0
+ 2606 01a0 49       		.uleb128 0x49
+ 2607 01a1 13       		.uleb128 0x13
+ 2608 01a2 00       		.byte	0
+ 2609 01a3 00       		.byte	0
+ 2610 01a4 1D       		.uleb128 0x1d
+ 2611 01a5 34       		.uleb128 0x34
+ 2612 01a6 00       		.byte	0
+ 2613 01a7 03       		.uleb128 0x3
+ 2614 01a8 0E       		.uleb128 0xe
+ 2615 01a9 3A       		.uleb128 0x3a
+ 2616 01aa 0B       		.uleb128 0xb
+ 2617 01ab 3B       		.uleb128 0x3b
+ 2618 01ac 0B       		.uleb128 0xb
+ 2619 01ad 49       		.uleb128 0x49
+ 2620 01ae 13       		.uleb128 0x13
+ 2621 01af 3F       		.uleb128 0x3f
+ 2622 01b0 19       		.uleb128 0x19
+ 2623 01b1 02       		.uleb128 0x2
+ 2624 01b2 18       		.uleb128 0x18
+ 2625 01b3 00       		.byte	0
+ 2626 01b4 00       		.byte	0
+ 2627 01b5 1E       		.uleb128 0x1e
+ 2628 01b6 34       		.uleb128 0x34
+ 2629 01b7 00       		.byte	0
+ 2630 01b8 03       		.uleb128 0x3
+ 2631 01b9 0E       		.uleb128 0xe
+ 2632 01ba 3A       		.uleb128 0x3a
+ 2633 01bb 0B       		.uleb128 0xb
+ 2634 01bc 3B       		.uleb128 0x3b
+ 2635 01bd 0B       		.uleb128 0xb
+ 2636 01be 49       		.uleb128 0x49
+ 2637 01bf 13       		.uleb128 0x13
+ 2638 01c0 3F       		.uleb128 0x3f
+ 2639 01c1 19       		.uleb128 0x19
+ 2640 01c2 3C       		.uleb128 0x3c
+ 2641 01c3 19       		.uleb128 0x19
+ 2642 01c4 00       		.byte	0
+ 2643 01c5 00       		.byte	0
+ 2644 01c6 1F       		.uleb128 0x1f
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 53
+
+
+ 2645 01c7 0F       		.uleb128 0xf
+ 2646 01c8 00       		.byte	0
+ 2647 01c9 0B       		.uleb128 0xb
+ 2648 01ca 0B       		.uleb128 0xb
+ 2649 01cb 49       		.uleb128 0x49
+ 2650 01cc 13       		.uleb128 0x13
+ 2651 01cd 00       		.byte	0
+ 2652 01ce 00       		.byte	0
+ 2653 01cf 20       		.uleb128 0x20
+ 2654 01d0 2E       		.uleb128 0x2e
+ 2655 01d1 01       		.byte	0x1
+ 2656 01d2 3F       		.uleb128 0x3f
+ 2657 01d3 19       		.uleb128 0x19
+ 2658 01d4 03       		.uleb128 0x3
+ 2659 01d5 0E       		.uleb128 0xe
+ 2660 01d6 3A       		.uleb128 0x3a
+ 2661 01d7 0B       		.uleb128 0xb
+ 2662 01d8 3B       		.uleb128 0x3b
+ 2663 01d9 0B       		.uleb128 0xb
+ 2664 01da 3C       		.uleb128 0x3c
+ 2665 01db 19       		.uleb128 0x19
+ 2666 01dc 01       		.uleb128 0x1
+ 2667 01dd 13       		.uleb128 0x13
+ 2668 01de 00       		.byte	0
+ 2669 01df 00       		.byte	0
+ 2670 01e0 21       		.uleb128 0x21
+ 2671 01e1 18       		.uleb128 0x18
+ 2672 01e2 00       		.byte	0
+ 2673 01e3 00       		.byte	0
+ 2674 01e4 00       		.byte	0
+ 2675 01e5 22       		.uleb128 0x22
+ 2676 01e6 2E       		.uleb128 0x2e
+ 2677 01e7 01       		.byte	0x1
+ 2678 01e8 3F       		.uleb128 0x3f
+ 2679 01e9 19       		.uleb128 0x19
+ 2680 01ea 03       		.uleb128 0x3
+ 2681 01eb 0E       		.uleb128 0xe
+ 2682 01ec 3A       		.uleb128 0x3a
+ 2683 01ed 0B       		.uleb128 0xb
+ 2684 01ee 3B       		.uleb128 0x3b
+ 2685 01ef 0B       		.uleb128 0xb
+ 2686 01f0 27       		.uleb128 0x27
+ 2687 01f1 19       		.uleb128 0x19
+ 2688 01f2 3C       		.uleb128 0x3c
+ 2689 01f3 19       		.uleb128 0x19
+ 2690 01f4 01       		.uleb128 0x1
+ 2691 01f5 13       		.uleb128 0x13
+ 2692 01f6 00       		.byte	0
+ 2693 01f7 00       		.byte	0
+ 2694 01f8 23       		.uleb128 0x23
+ 2695 01f9 05       		.uleb128 0x5
+ 2696 01fa 00       		.byte	0
+ 2697 01fb 49       		.uleb128 0x49
+ 2698 01fc 13       		.uleb128 0x13
+ 2699 01fd 00       		.byte	0
+ 2700 01fe 00       		.byte	0
+ 2701 01ff 24       		.uleb128 0x24
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 54
+
+
+ 2702 0200 26       		.uleb128 0x26
+ 2703 0201 00       		.byte	0
+ 2704 0202 49       		.uleb128 0x49
+ 2705 0203 13       		.uleb128 0x13
+ 2706 0204 00       		.byte	0
+ 2707 0205 00       		.byte	0
+ 2708 0206 25       		.uleb128 0x25
+ 2709 0207 2E       		.uleb128 0x2e
+ 2710 0208 01       		.byte	0x1
+ 2711 0209 3F       		.uleb128 0x3f
+ 2712 020a 19       		.uleb128 0x19
+ 2713 020b 03       		.uleb128 0x3
+ 2714 020c 0E       		.uleb128 0xe
+ 2715 020d 3A       		.uleb128 0x3a
+ 2716 020e 0B       		.uleb128 0xb
+ 2717 020f 3B       		.uleb128 0x3b
+ 2718 0210 0B       		.uleb128 0xb
+ 2719 0211 3C       		.uleb128 0x3c
+ 2720 0212 19       		.uleb128 0x19
+ 2721 0213 00       		.byte	0
+ 2722 0214 00       		.byte	0
+ 2723 0215 00       		.byte	0
+ 2724              		.section	.debug_loc,"",%progbits
+ 2725              	.Ldebug_loc0:
+ 2726              	.LLST0:
+ 2727 0000 00000000 		.4byte	.LVL20
+ 2728 0004 10000000 		.4byte	.LVL21
+ 2729 0008 0100     		.2byte	0x1
+ 2730 000a 50       		.byte	0x50
+ 2731 000b 10000000 		.4byte	.LVL21
+ 2732 000f 20000000 		.4byte	.LVL24
+ 2733 0013 0400     		.2byte	0x4
+ 2734 0015 F3       		.byte	0xf3
+ 2735 0016 01       		.uleb128 0x1
+ 2736 0017 50       		.byte	0x50
+ 2737 0018 9F       		.byte	0x9f
+ 2738 0019 20000000 		.4byte	.LVL24
+ 2739 001d 22000000 		.4byte	.LVL25
+ 2740 0021 0100     		.2byte	0x1
+ 2741 0023 50       		.byte	0x50
+ 2742 0024 22000000 		.4byte	.LVL25
+ 2743 0028 32000000 		.4byte	.LVL28
+ 2744 002c 0400     		.2byte	0x4
+ 2745 002e F3       		.byte	0xf3
+ 2746 002f 01       		.uleb128 0x1
+ 2747 0030 50       		.byte	0x50
+ 2748 0031 9F       		.byte	0x9f
+ 2749 0032 32000000 		.4byte	.LVL28
+ 2750 0036 34000000 		.4byte	.LVL29
+ 2751 003a 0100     		.2byte	0x1
+ 2752 003c 50       		.byte	0x50
+ 2753 003d 34000000 		.4byte	.LVL29
+ 2754 0041 44000000 		.4byte	.LVL32
+ 2755 0045 0400     		.2byte	0x4
+ 2756 0047 F3       		.byte	0xf3
+ 2757 0048 01       		.uleb128 0x1
+ 2758 0049 50       		.byte	0x50
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 55
+
+
+ 2759 004a 9F       		.byte	0x9f
+ 2760 004b 44000000 		.4byte	.LVL32
+ 2761 004f 46000000 		.4byte	.LVL33
+ 2762 0053 0100     		.2byte	0x1
+ 2763 0055 50       		.byte	0x50
+ 2764 0056 46000000 		.4byte	.LVL33
+ 2765 005a 56000000 		.4byte	.LFE66
+ 2766 005e 0400     		.2byte	0x4
+ 2767 0060 F3       		.byte	0xf3
+ 2768 0061 01       		.uleb128 0x1
+ 2769 0062 50       		.byte	0x50
+ 2770 0063 9F       		.byte	0x9f
+ 2771 0064 00000000 		.4byte	0
+ 2772 0068 00000000 		.4byte	0
+ 2773              	.LLST1:
+ 2774 006c 00000000 		.4byte	.LVL36
+ 2775 0070 6A000000 		.4byte	.LVL38
+ 2776 0074 0100     		.2byte	0x1
+ 2777 0076 50       		.byte	0x50
+ 2778 0077 6A000000 		.4byte	.LVL38
+ 2779 007b 6C000000 		.4byte	.LVL39
+ 2780 007f 0400     		.2byte	0x4
+ 2781 0081 F3       		.byte	0xf3
+ 2782 0082 01       		.uleb128 0x1
+ 2783 0083 50       		.byte	0x50
+ 2784 0084 9F       		.byte	0x9f
+ 2785 0085 6C000000 		.4byte	.LVL39
+ 2786 0089 6E000000 		.4byte	.LVL40
+ 2787 008d 0100     		.2byte	0x1
+ 2788 008f 50       		.byte	0x50
+ 2789 0090 6E000000 		.4byte	.LVL40
+ 2790 0094 70000000 		.4byte	.LVL41
+ 2791 0098 0400     		.2byte	0x4
+ 2792 009a F3       		.byte	0xf3
+ 2793 009b 01       		.uleb128 0x1
+ 2794 009c 50       		.byte	0x50
+ 2795 009d 9F       		.byte	0x9f
+ 2796 009e 70000000 		.4byte	.LVL41
+ 2797 00a2 72000000 		.4byte	.LVL42
+ 2798 00a6 0100     		.2byte	0x1
+ 2799 00a8 50       		.byte	0x50
+ 2800 00a9 72000000 		.4byte	.LVL42
+ 2801 00ad 74000000 		.4byte	.LVL43
+ 2802 00b1 0400     		.2byte	0x4
+ 2803 00b3 F3       		.byte	0xf3
+ 2804 00b4 01       		.uleb128 0x1
+ 2805 00b5 50       		.byte	0x50
+ 2806 00b6 9F       		.byte	0x9f
+ 2807 00b7 74000000 		.4byte	.LVL43
+ 2808 00bb 76000000 		.4byte	.LVL44
+ 2809 00bf 0100     		.2byte	0x1
+ 2810 00c1 50       		.byte	0x50
+ 2811 00c2 76000000 		.4byte	.LVL44
+ 2812 00c6 78000000 		.4byte	.LVL45
+ 2813 00ca 0400     		.2byte	0x4
+ 2814 00cc F3       		.byte	0xf3
+ 2815 00cd 01       		.uleb128 0x1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 56
+
+
+ 2816 00ce 50       		.byte	0x50
+ 2817 00cf 9F       		.byte	0x9f
+ 2818 00d0 78000000 		.4byte	.LVL45
+ 2819 00d4 7A000000 		.4byte	.LVL46
+ 2820 00d8 0100     		.2byte	0x1
+ 2821 00da 50       		.byte	0x50
+ 2822 00db 7A000000 		.4byte	.LVL46
+ 2823 00df 88000000 		.4byte	.LFE67
+ 2824 00e3 0400     		.2byte	0x4
+ 2825 00e5 F3       		.byte	0xf3
+ 2826 00e6 01       		.uleb128 0x1
+ 2827 00e7 50       		.byte	0x50
+ 2828 00e8 9F       		.byte	0x9f
+ 2829 00e9 00000000 		.4byte	0
+ 2830 00ed 00000000 		.4byte	0
+ 2831              	.LLST2:
+ 2832 00f1 00000000 		.4byte	.LVL36
+ 2833 00f5 58000000 		.4byte	.LVL37
+ 2834 00f9 0100     		.2byte	0x1
+ 2835 00fb 51       		.byte	0x51
+ 2836 00fc 58000000 		.4byte	.LVL37
+ 2837 0100 6C000000 		.4byte	.LVL39
+ 2838 0104 0400     		.2byte	0x4
+ 2839 0106 F3       		.byte	0xf3
+ 2840 0107 01       		.uleb128 0x1
+ 2841 0108 51       		.byte	0x51
+ 2842 0109 9F       		.byte	0x9f
+ 2843 010a 6C000000 		.4byte	.LVL39
+ 2844 010e 78000000 		.4byte	.LVL45
+ 2845 0112 0100     		.2byte	0x1
+ 2846 0114 51       		.byte	0x51
+ 2847 0115 78000000 		.4byte	.LVL45
+ 2848 0119 88000000 		.4byte	.LFE67
+ 2849 011d 0400     		.2byte	0x4
+ 2850 011f F3       		.byte	0xf3
+ 2851 0120 01       		.uleb128 0x1
+ 2852 0121 51       		.byte	0x51
+ 2853 0122 9F       		.byte	0x9f
+ 2854 0123 00000000 		.4byte	0
+ 2855 0127 00000000 		.4byte	0
+ 2856              	.LLST3:
+ 2857 012b FA000000 		.4byte	.LVL61
+ 2858 012f 0E010000 		.4byte	.LVL62
+ 2859 0133 0200     		.2byte	0x2
+ 2860 0135 31       		.byte	0x31
+ 2861 0136 9F       		.byte	0x9f
+ 2862 0137 16010000 		.4byte	.LVL63
+ 2863 013b 26010000 		.4byte	.LVL64
+ 2864 013f 0200     		.2byte	0x2
+ 2865 0141 32       		.byte	0x32
+ 2866 0142 9F       		.byte	0x9f
+ 2867 0143 2E010000 		.4byte	.LVL65
+ 2868 0147 40010000 		.4byte	.LVL66
+ 2869 014b 0200     		.2byte	0x2
+ 2870 014d 33       		.byte	0x33
+ 2871 014e 9F       		.byte	0x9f
+ 2872 014f 44010000 		.4byte	.LVL67
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 57
+
+
+ 2873 0153 5A010000 		.4byte	.LVL68
+ 2874 0157 0200     		.2byte	0x2
+ 2875 0159 30       		.byte	0x30
+ 2876 015a 9F       		.byte	0x9f
+ 2877 015b 00000000 		.4byte	0
+ 2878 015f 00000000 		.4byte	0
+ 2879              	.LLST4:
+ 2880 0163 06000000 		.4byte	.LVL47
+ 2881 0167 16000000 		.4byte	.LVL48
+ 2882 016b 0200     		.2byte	0x2
+ 2883 016d 30       		.byte	0x30
+ 2884 016e 9F       		.byte	0x9f
+ 2885 016f 16000000 		.4byte	.LVL48
+ 2886 0173 6C010000 		.4byte	.LVL72
+ 2887 0177 0300     		.2byte	0x3
+ 2888 0179 91       		.byte	0x91
+ 2889 017a BC7F     		.sleb128 -68
+ 2890 017c 6C010000 		.4byte	.LVL72
+ 2891 0180 72010000 		.4byte	.LVL73
+ 2892 0184 0100     		.2byte	0x1
+ 2893 0186 53       		.byte	0x53
+ 2894 0187 72010000 		.4byte	.LVL73
+ 2895 018b A6010000 		.4byte	.LVL76
+ 2896 018f 0300     		.2byte	0x3
+ 2897 0191 91       		.byte	0x91
+ 2898 0192 BC7F     		.sleb128 -68
+ 2899 0194 A6010000 		.4byte	.LVL76
+ 2900 0198 AC010000 		.4byte	.LFE68
+ 2901 019c 0100     		.2byte	0x1
+ 2902 019e 53       		.byte	0x53
+ 2903 019f 00000000 		.4byte	0
+ 2904 01a3 00000000 		.4byte	0
+ 2905              	.LLST5:
+ 2906 01a7 16000000 		.4byte	.LVL48
+ 2907 01ab 6C010000 		.4byte	.LVL72
+ 2908 01af 0100     		.2byte	0x1
+ 2909 01b1 55       		.byte	0x55
+ 2910 01b2 8E010000 		.4byte	.LVL74
+ 2911 01b6 9A010000 		.4byte	.LVL75
+ 2912 01ba 0100     		.2byte	0x1
+ 2913 01bc 55       		.byte	0x55
+ 2914 01bd 00000000 		.4byte	0
+ 2915 01c1 00000000 		.4byte	0
+ 2916              	.LLST6:
+ 2917 01c5 A4000000 		.4byte	.LVL57
+ 2918 01c9 A8000000 		.4byte	.LVL58
+ 2919 01cd 0200     		.2byte	0x2
+ 2920 01cf 30       		.byte	0x30
+ 2921 01d0 9F       		.byte	0x9f
+ 2922 01d1 A8000000 		.4byte	.LVL58
+ 2923 01d5 E4000000 		.4byte	.LVL60
+ 2924 01d9 0100     		.2byte	0x1
+ 2925 01db 53       		.byte	0x53
+ 2926 01dc 5A010000 		.4byte	.LVL68
+ 2927 01e0 68010000 		.4byte	.LVL70
+ 2928 01e4 0100     		.2byte	0x1
+ 2929 01e6 53       		.byte	0x53
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 58
+
+
+ 2930 01e7 00000000 		.4byte	0
+ 2931 01eb 00000000 		.4byte	0
+ 2932              	.LLST7:
+ 2933 01ef 00000000 		.4byte	.LVL82
+ 2934 01f3 18000000 		.4byte	.LVL84
+ 2935 01f7 0100     		.2byte	0x1
+ 2936 01f9 50       		.byte	0x50
+ 2937 01fa 18000000 		.4byte	.LVL84
+ 2938 01fe B0000000 		.4byte	.LVL103
+ 2939 0202 0100     		.2byte	0x1
+ 2940 0204 55       		.byte	0x55
+ 2941 0205 B0000000 		.4byte	.LVL103
+ 2942 0209 B8000000 		.4byte	.LFE69
+ 2943 020d 0400     		.2byte	0x4
+ 2944 020f F3       		.byte	0xf3
+ 2945 0210 01       		.uleb128 0x1
+ 2946 0211 50       		.byte	0x50
+ 2947 0212 9F       		.byte	0x9f
+ 2948 0213 00000000 		.4byte	0
+ 2949 0217 00000000 		.4byte	0
+ 2950              	.LLST8:
+ 2951 021b 00000000 		.4byte	.LVL82
+ 2952 021f 18000000 		.4byte	.LVL84
+ 2953 0223 0100     		.2byte	0x1
+ 2954 0225 51       		.byte	0x51
+ 2955 0226 18000000 		.4byte	.LVL84
+ 2956 022a 60000000 		.4byte	.LVL95
+ 2957 022e 0100     		.2byte	0x1
+ 2958 0230 5B       		.byte	0x5b
+ 2959 0231 60000000 		.4byte	.LVL95
+ 2960 0235 B8000000 		.4byte	.LFE69
+ 2961 0239 0600     		.2byte	0x6
+ 2962 023b F3       		.byte	0xf3
+ 2963 023c 03       		.uleb128 0x3
+ 2964 023d F5       		.byte	0xf5
+ 2965 023e 01       		.uleb128 0x1
+ 2966 023f 25       		.uleb128 0x25
+ 2967 0240 9F       		.byte	0x9f
+ 2968 0241 00000000 		.4byte	0
+ 2969 0245 00000000 		.4byte	0
+ 2970              	.LLST9:
+ 2971 0249 00000000 		.4byte	.LVL82
+ 2972 024d 18000000 		.4byte	.LVL84
+ 2973 0251 0100     		.2byte	0x1
+ 2974 0253 52       		.byte	0x52
+ 2975 0254 18000000 		.4byte	.LVL84
+ 2976 0258 6C000000 		.4byte	.LVL97
+ 2977 025c 0100     		.2byte	0x1
+ 2978 025e 5A       		.byte	0x5a
+ 2979 025f 6C000000 		.4byte	.LVL97
+ 2980 0263 B8000000 		.4byte	.LFE69
+ 2981 0267 0400     		.2byte	0x4
+ 2982 0269 F3       		.byte	0xf3
+ 2983 026a 01       		.uleb128 0x1
+ 2984 026b 52       		.byte	0x52
+ 2985 026c 9F       		.byte	0x9f
+ 2986 026d 00000000 		.4byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 59
+
+
+ 2987 0271 00000000 		.4byte	0
+ 2988              	.LLST10:
+ 2989 0275 0C000000 		.4byte	.LVL83
+ 2990 0279 18000000 		.4byte	.LVL84
+ 2991 027d 0200     		.2byte	0x2
+ 2992 027f 30       		.byte	0x30
+ 2993 0280 9F       		.byte	0x9f
+ 2994 0281 18000000 		.4byte	.LVL84
+ 2995 0285 6A000000 		.4byte	.LVL96
+ 2996 0289 0100     		.2byte	0x1
+ 2997 028b 58       		.byte	0x58
+ 2998 028c 6C000000 		.4byte	.LVL97
+ 2999 0290 B0000000 		.4byte	.LVL103
+ 3000 0294 0100     		.2byte	0x1
+ 3001 0296 5B       		.byte	0x5b
+ 3002 0297 00000000 		.4byte	0
+ 3003 029b 00000000 		.4byte	0
+ 3004              	.LLST11:
+ 3005 029f 18000000 		.4byte	.LVL84
+ 3006 02a3 2A000000 		.4byte	.LVL88
+ 3007 02a7 0100     		.2byte	0x1
+ 3008 02a9 54       		.byte	0x54
+ 3009 02aa 32000000 		.4byte	.LVL89
+ 3010 02ae 3E000000 		.4byte	.LVL91
+ 3011 02b2 0100     		.2byte	0x1
+ 3012 02b4 54       		.byte	0x54
+ 3013 02b5 6C000000 		.4byte	.LVL97
+ 3014 02b9 90000000 		.4byte	.LVL100
+ 3015 02bd 0100     		.2byte	0x1
+ 3016 02bf 54       		.byte	0x54
+ 3017 02c0 9C000000 		.4byte	.LVL101
+ 3018 02c4 A4000000 		.4byte	.LVL102
+ 3019 02c8 0100     		.2byte	0x1
+ 3020 02ca 54       		.byte	0x54
+ 3021 02cb 00000000 		.4byte	0
+ 3022 02cf 00000000 		.4byte	0
+ 3023              	.LLST12:
+ 3024 02d3 18000000 		.4byte	.LVL84
+ 3025 02d7 2A000000 		.4byte	.LVL88
+ 3026 02db 0100     		.2byte	0x1
+ 3027 02dd 57       		.byte	0x57
+ 3028 02de 32000000 		.4byte	.LVL89
+ 3029 02e2 58000000 		.4byte	.LVL94
+ 3030 02e6 0100     		.2byte	0x1
+ 3031 02e8 57       		.byte	0x57
+ 3032 02e9 00000000 		.4byte	0
+ 3033 02ed 00000000 		.4byte	0
+ 3034              	.LLST13:
+ 3035 02f1 0C000000 		.4byte	.LVL83
+ 3036 02f5 18000000 		.4byte	.LVL84
+ 3037 02f9 0200     		.2byte	0x2
+ 3038 02fb 30       		.byte	0x30
+ 3039 02fc 9F       		.byte	0x9f
+ 3040 02fd 00000000 		.4byte	0
+ 3041 0301 00000000 		.4byte	0
+ 3042              	.LLST14:
+ 3043 0305 00000000 		.4byte	.LVL104
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 60
+
+
+ 3044 0309 00000000 		.4byte	.LVL105
+ 3045 030d 0100     		.2byte	0x1
+ 3046 030f 50       		.byte	0x50
+ 3047 0310 00000000 		.4byte	.LVL105
+ 3048 0314 02000000 		.4byte	.LFE70
+ 3049 0318 0400     		.2byte	0x4
+ 3050 031a F3       		.byte	0xf3
+ 3051 031b 01       		.uleb128 0x1
+ 3052 031c 50       		.byte	0x50
+ 3053 031d 9F       		.byte	0x9f
+ 3054 031e 00000000 		.4byte	0
+ 3055 0322 00000000 		.4byte	0
+ 3056              	.LLST15:
+ 3057 0326 00000000 		.4byte	.LVL107
+ 3058 032a 28000000 		.4byte	.LVL109
+ 3059 032e 0100     		.2byte	0x1
+ 3060 0330 50       		.byte	0x50
+ 3061 0331 28000000 		.4byte	.LVL109
+ 3062 0335 2A000000 		.4byte	.LVL110
+ 3063 0339 0400     		.2byte	0x4
+ 3064 033b F3       		.byte	0xf3
+ 3065 033c 01       		.uleb128 0x1
+ 3066 033d 50       		.byte	0x50
+ 3067 033e 9F       		.byte	0x9f
+ 3068 033f 2A000000 		.4byte	.LVL110
+ 3069 0343 2C000000 		.4byte	.LVL111
+ 3070 0347 0100     		.2byte	0x1
+ 3071 0349 50       		.byte	0x50
+ 3072 034a 2C000000 		.4byte	.LVL111
+ 3073 034e 2E000000 		.4byte	.LVL112
+ 3074 0352 0400     		.2byte	0x4
+ 3075 0354 F3       		.byte	0xf3
+ 3076 0355 01       		.uleb128 0x1
+ 3077 0356 50       		.byte	0x50
+ 3078 0357 9F       		.byte	0x9f
+ 3079 0358 2E000000 		.4byte	.LVL112
+ 3080 035c 30000000 		.4byte	.LVL113
+ 3081 0360 0100     		.2byte	0x1
+ 3082 0362 50       		.byte	0x50
+ 3083 0363 30000000 		.4byte	.LVL113
+ 3084 0367 38000000 		.4byte	.LFE72
+ 3085 036b 0400     		.2byte	0x4
+ 3086 036d F3       		.byte	0xf3
+ 3087 036e 01       		.uleb128 0x1
+ 3088 036f 50       		.byte	0x50
+ 3089 0370 9F       		.byte	0x9f
+ 3090 0371 00000000 		.4byte	0
+ 3091 0375 00000000 		.4byte	0
+ 3092              	.LLST16:
+ 3093 0379 00000000 		.4byte	.LVL107
+ 3094 037d 1A000000 		.4byte	.LVL108
+ 3095 0381 0100     		.2byte	0x1
+ 3096 0383 51       		.byte	0x51
+ 3097 0384 1A000000 		.4byte	.LVL108
+ 3098 0388 2A000000 		.4byte	.LVL110
+ 3099 038c 0400     		.2byte	0x4
+ 3100 038e F3       		.byte	0xf3
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 61
+
+
+ 3101 038f 01       		.uleb128 0x1
+ 3102 0390 51       		.byte	0x51
+ 3103 0391 9F       		.byte	0x9f
+ 3104 0392 2A000000 		.4byte	.LVL110
+ 3105 0396 2E000000 		.4byte	.LVL112
+ 3106 039a 0100     		.2byte	0x1
+ 3107 039c 51       		.byte	0x51
+ 3108 039d 2E000000 		.4byte	.LVL112
+ 3109 03a1 38000000 		.4byte	.LFE72
+ 3110 03a5 0400     		.2byte	0x4
+ 3111 03a7 F3       		.byte	0xf3
+ 3112 03a8 01       		.uleb128 0x1
+ 3113 03a9 51       		.byte	0x51
+ 3114 03aa 9F       		.byte	0x9f
+ 3115 03ab 00000000 		.4byte	0
+ 3116 03af 00000000 		.4byte	0
+ 3117              	.LLST17:
+ 3118 03b3 04000000 		.4byte	.LVL114
+ 3119 03b7 10000000 		.4byte	.LVL115
+ 3120 03bb 0200     		.2byte	0x2
+ 3121 03bd 30       		.byte	0x30
+ 3122 03be 9F       		.byte	0x9f
+ 3123 03bf 10000000 		.4byte	.LVL115
+ 3124 03c3 7A000000 		.4byte	.LVL127
+ 3125 03c7 0100     		.2byte	0x1
+ 3126 03c9 56       		.byte	0x56
+ 3127 03ca 00000000 		.4byte	0
+ 3128 03ce 00000000 		.4byte	0
+ 3129              	.LLST18:
+ 3130 03d2 10000000 		.4byte	.LVL115
+ 3131 03d6 62000000 		.4byte	.LVL124
+ 3132 03da 0100     		.2byte	0x1
+ 3133 03dc 52       		.byte	0x52
+ 3134 03dd 6C000000 		.4byte	.LVL125
+ 3135 03e1 72000000 		.4byte	.LVL126
+ 3136 03e5 0100     		.2byte	0x1
+ 3137 03e7 52       		.byte	0x52
+ 3138 03e8 00000000 		.4byte	0
+ 3139 03ec 00000000 		.4byte	0
+ 3140              	.LLST19:
+ 3141 03f0 10000000 		.4byte	.LVL115
+ 3142 03f4 62000000 		.4byte	.LVL124
+ 3143 03f8 0200     		.2byte	0x2
+ 3144 03fa 30       		.byte	0x30
+ 3145 03fb 9F       		.byte	0x9f
+ 3146 03fc 00000000 		.4byte	0
+ 3147 0400 00000000 		.4byte	0
+ 3148              	.LLST20:
+ 3149 0404 28000000 		.4byte	.LVL116
+ 3150 0408 2E000000 		.4byte	.LVL117
+ 3151 040c 0100     		.2byte	0x1
+ 3152 040e 53       		.byte	0x53
+ 3153 040f 2E000000 		.4byte	.LVL117
+ 3154 0413 34000000 		.4byte	.LVL118
+ 3155 0417 0300     		.2byte	0x3
+ 3156 0419 73       		.byte	0x73
+ 3157 041a 7F       		.sleb128 -1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 62
+
+
+ 3158 041b 9F       		.byte	0x9f
+ 3159 041c 34000000 		.4byte	.LVL118
+ 3160 0420 36000000 		.4byte	.LVL119
+ 3161 0424 0100     		.2byte	0x1
+ 3162 0426 53       		.byte	0x53
+ 3163 0427 4A000000 		.4byte	.LVL120
+ 3164 042b 56000000 		.4byte	.LVL121
+ 3165 042f 0100     		.2byte	0x1
+ 3166 0431 53       		.byte	0x53
+ 3167 0432 56000000 		.4byte	.LVL121
+ 3168 0436 5A000000 		.4byte	.LVL122
+ 3169 043a 0300     		.2byte	0x3
+ 3170 043c 73       		.byte	0x73
+ 3171 043d 7F       		.sleb128 -1
+ 3172 043e 9F       		.byte	0x9f
+ 3173 043f 5A000000 		.4byte	.LVL122
+ 3174 0443 62000000 		.4byte	.LVL124
+ 3175 0447 0100     		.2byte	0x1
+ 3176 0449 53       		.byte	0x53
+ 3177 044a 00000000 		.4byte	0
+ 3178 044e 00000000 		.4byte	0
+ 3179              		.section	.debug_aranges,"",%progbits
+ 3180 0000 6C000000 		.4byte	0x6c
+ 3181 0004 0200     		.2byte	0x2
+ 3182 0006 00000000 		.4byte	.Ldebug_info0
+ 3183 000a 04       		.byte	0x4
+ 3184 000b 00       		.byte	0
+ 3185 000c 0000     		.2byte	0
+ 3186 000e 0000     		.2byte	0
+ 3187 0010 00000000 		.4byte	.LFB63
+ 3188 0014 80000000 		.4byte	.LFE63-.LFB63
+ 3189 0018 00000000 		.4byte	.LFB64
+ 3190 001c 10000000 		.4byte	.LFE64-.LFB64
+ 3191 0020 00000000 		.4byte	.LFB66
+ 3192 0024 56000000 		.4byte	.LFE66-.LFB66
+ 3193 0028 00000000 		.4byte	.LFB67
+ 3194 002c 88000000 		.4byte	.LFE67-.LFB67
+ 3195 0030 00000000 		.4byte	.LFB68
+ 3196 0034 AC010000 		.4byte	.LFE68-.LFB68
+ 3197 0038 00000000 		.4byte	.LFB65
+ 3198 003c 18000000 		.4byte	.LFE65-.LFB65
+ 3199 0040 00000000 		.4byte	.LFB69
+ 3200 0044 B8000000 		.4byte	.LFE69-.LFB69
+ 3201 0048 00000000 		.4byte	.LFB70
+ 3202 004c 02000000 		.4byte	.LFE70-.LFB70
+ 3203 0050 00000000 		.4byte	.LFB71
+ 3204 0054 0C000000 		.4byte	.LFE71-.LFB71
+ 3205 0058 00000000 		.4byte	.LFB72
+ 3206 005c 38000000 		.4byte	.LFE72-.LFB72
+ 3207 0060 00000000 		.4byte	.LFB73
+ 3208 0064 80000000 		.4byte	.LFE73-.LFB73
+ 3209 0068 00000000 		.4byte	0
+ 3210 006c 00000000 		.4byte	0
+ 3211              		.section	.debug_ranges,"",%progbits
+ 3212              	.Ldebug_ranges0:
+ 3213 0000 00000000 		.4byte	.LFB63
+ 3214 0004 80000000 		.4byte	.LFE63
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 63
+
+
+ 3215 0008 00000000 		.4byte	.LFB64
+ 3216 000c 10000000 		.4byte	.LFE64
+ 3217 0010 00000000 		.4byte	.LFB66
+ 3218 0014 56000000 		.4byte	.LFE66
+ 3219 0018 00000000 		.4byte	.LFB67
+ 3220 001c 88000000 		.4byte	.LFE67
+ 3221 0020 00000000 		.4byte	.LFB68
+ 3222 0024 AC010000 		.4byte	.LFE68
+ 3223 0028 00000000 		.4byte	.LFB65
+ 3224 002c 18000000 		.4byte	.LFE65
+ 3225 0030 00000000 		.4byte	.LFB69
+ 3226 0034 B8000000 		.4byte	.LFE69
+ 3227 0038 00000000 		.4byte	.LFB70
+ 3228 003c 02000000 		.4byte	.LFE70
+ 3229 0040 00000000 		.4byte	.LFB71
+ 3230 0044 0C000000 		.4byte	.LFE71
+ 3231 0048 00000000 		.4byte	.LFB72
+ 3232 004c 38000000 		.4byte	.LFE72
+ 3233 0050 00000000 		.4byte	.LFB73
+ 3234 0054 80000000 		.4byte	.LFE73
+ 3235 0058 00000000 		.4byte	0
+ 3236 005c 00000000 		.4byte	0
+ 3237              		.section	.debug_line,"",%progbits
+ 3238              	.Ldebug_line0:
+ 3239 0000 A1030000 		.section	.debug_str,"MS",%progbits,1
+ 3239      02009A01 
+ 3239      00000201 
+ 3239      FB0E0D00 
+ 3239      01010101 
+ 3240              	.LASF62:
+ 3241 0000 2E5C6D79 		.ascii	".\\my_camera_functions.c\000"
+ 3241      5F63616D 
+ 3241      6572615F 
+ 3241      66756E63 
+ 3241      74696F6E 
+ 3242              	.LASF40:
+ 3243 0018 50697865 		.ascii	"PixelColour\000"
+ 3243      6C436F6C 
+ 3243      6F757200 
+ 3244              	.LASF32:
+ 3245 0024 70697865 		.ascii	"pixel\000"
+ 3245      6C00
+ 3246              	.LASF35:
+ 3247 002a 636C6561 		.ascii	"clean_frame\000"
+ 3247      6E5F6672 
+ 3247      616D6500 
+ 3248              	.LASF59:
+ 3249 0036 43616D65 		.ascii	"Camera_SyncFrame\000"
+ 3249      72615F53 
+ 3249      796E6346 
+ 3249      72616D65 
+ 3249      00
+ 3250              	.LASF28:
+ 3251 0047 73657474 		.ascii	"setting\000"
+ 3251      696E6700 
+ 3252              	.LASF39:
+ 3253 004f 696E6465 		.ascii	"index\000"
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 64
+
+
+ 3253      7800
+ 3254              	.LASF3:
+ 3255 0055 73686F72 		.ascii	"short int\000"
+ 3255      7420696E 
+ 3255      7400
+ 3256              	.LASF17:
+ 3257 005f 73697A65 		.ascii	"sizetype\000"
+ 3257      74797065 
+ 3257      00
+ 3258              	.LASF58:
+ 3259 0068 43616D65 		.ascii	"Camera_Start\000"
+ 3259      72615F53 
+ 3259      74617274 
+ 3259      00
+ 3260              	.LASF15:
+ 3261 0075 63686172 		.ascii	"char8\000"
+ 3261      3800
+ 3262              	.LASF53:
+ 3263 007b 626C6F62 		.ascii	"blobs\000"
+ 3263      7300
+ 3264              	.LASF37:
+ 3265 0081 726F775F 		.ascii	"row_limit\000"
+ 3265      6C696D69 
+ 3265      7400
+ 3266              	.LASF12:
+ 3267 008b 75696E74 		.ascii	"uint8\000"
+ 3267      3800
+ 3268              	.LASF64:
+ 3269 0091 626C6F62 		.ascii	"blob_detect\000"
+ 3269      5F646574 
+ 3269      65637400 
+ 3270              	.LASF51:
+ 3271 009d 424C5545 		.ascii	"BLUE_U\000"
+ 3271      5F5500
+ 3272              	.LASF52:
+ 3273 00a4 424C5545 		.ascii	"BLUE_V\000"
+ 3273      5F5600
+ 3274              	.LASF42:
+ 3275 00ab 6964656E 		.ascii	"identify_colour_gripper\000"
+ 3275      74696679 
+ 3275      5F636F6C 
+ 3275      6F75725F 
+ 3275      67726970 
+ 3276              	.LASF0:
+ 3277 00c3 666C6F61 		.ascii	"float\000"
+ 3277      7400
+ 3278              	.LASF7:
+ 3279 00c9 6C6F6E67 		.ascii	"long long int\000"
+ 3279      206C6F6E 
+ 3279      6720696E 
+ 3279      7400
+ 3280              	.LASF61:
+ 3281 00d7 474E5520 		.ascii	"GNU C 4.8.4 20140526 (release) [ARM/embedded-4_8-br"
+ 3281      4320342E 
+ 3281      382E3420 
+ 3281      32303134 
+ 3281      30353236 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 65
+
+
+ 3282 010a 616E6368 		.ascii	"anch revision 211358] -mcpu=cortex-m3 -mthumb -g -O"
+ 3282      20726576 
+ 3282      6973696F 
+ 3282      6E203231 
+ 3282      31333538 
+ 3283 013d 67202D66 		.ascii	"g -ffunction-sections\000"
+ 3283      66756E63 
+ 3283      74696F6E 
+ 3283      2D736563 
+ 3283      74696F6E 
+ 3284              	.LASF5:
+ 3285 0153 6C6F6E67 		.ascii	"long int\000"
+ 3285      20696E74 
+ 3285      00
+ 3286              	.LASF43:
+ 3287 015c 50697865 		.ascii	"PixelLuminence\000"
+ 3287      6C4C756D 
+ 3287      696E656E 
+ 3287      636500
+ 3288              	.LASF57:
+ 3289 016b 43616D65 		.ascii	"Camera_WriteReg\000"
+ 3289      72615F57 
+ 3289      72697465 
+ 3289      52656700 
+ 3290              	.LASF63:
+ 3291 017b 433A5C55 		.ascii	"C:\\Users\\xavieran\\Desktop\\ECE3091\\PSOCProjects"
+ 3291      73657273 
+ 3291      5C786176 
+ 3291      69657261 
+ 3291      6E5C4465 
+ 3292 01a9 5C454E47 		.ascii	"\\ENG3091_MandM\\ENG3091_MandM.cydsn\000"
+ 3292      33303931 
+ 3292      5F4D616E 
+ 3292      644D5C45 
+ 3292      4E473330 
+ 3293              	.LASF60:
+ 3294 01cc 43616D65 		.ascii	"Camera_GetFrame\000"
+ 3294      72615F47 
+ 3294      65744672 
+ 3294      616D6500 
+ 3295              	.LASF36:
+ 3296 01dc 70726F70 		.ascii	"proportion\000"
+ 3296      6F727469 
+ 3296      6F6E00
+ 3297              	.LASF2:
+ 3298 01e7 756E7369 		.ascii	"unsigned char\000"
+ 3298      676E6564 
+ 3298      20636861 
+ 3298      7200
+ 3299              	.LASF47:
+ 3300 01f5 5245445F 		.ascii	"RED_U\000"
+ 3300      5500
+ 3301              	.LASF48:
+ 3302 01fb 5245445F 		.ascii	"RED_V\000"
+ 3302      5600
+ 3303              	.LASF1:
+ 3304 0201 7369676E 		.ascii	"signed char\000"
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 66
+
+
+ 3304      65642063 
+ 3304      68617200 
+ 3305              	.LASF8:
+ 3306 020d 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 3306      206C6F6E 
+ 3306      6720756E 
+ 3306      7369676E 
+ 3306      65642069 
+ 3307              	.LASF9:
+ 3308 0224 756E7369 		.ascii	"unsigned int\000"
+ 3308      676E6564 
+ 3308      20696E74 
+ 3308      00
+ 3309              	.LASF56:
+ 3310 0231 4C43445F 		.ascii	"LCD_PrintString\000"
+ 3310      5072696E 
+ 3310      74537472 
+ 3310      696E6700 
+ 3311              	.LASF26:
+ 3312 0241 696E6974 		.ascii	"init_camera\000"
+ 3312      5F63616D 
+ 3312      65726100 
+ 3313              	.LASF25:
+ 3314 024d 626C6F62 		.ascii	"blob\000"
+ 3314      00
+ 3315              	.LASF4:
+ 3316 0252 73686F72 		.ascii	"short unsigned int\000"
+ 3316      7420756E 
+ 3316      7369676E 
+ 3316      65642069 
+ 3316      6E7400
+ 3317              	.LASF23:
+ 3318 0265 785F7375 		.ascii	"x_sum\000"
+ 3318      6D00
+ 3319              	.LASF16:
+ 3320 026b 63686172 		.ascii	"char\000"
+ 3320      00
+ 3321              	.LASF11:
+ 3322 0270 696E7433 		.ascii	"int32_t\000"
+ 3322      325F7400 
+ 3323              	.LASF33:
+ 3324 0278 63617074 		.ascii	"capture_thresh_image\000"
+ 3324      7572655F 
+ 3324      74687265 
+ 3324      73685F69 
+ 3324      6D616765 
+ 3325              	.LASF29:
+ 3326 028d 74687265 		.ascii	"threshold_image\000"
+ 3326      73686F6C 
+ 3326      645F696D 
+ 3326      61676500 
+ 3327              	.LASF30:
+ 3328 029d 6C6F6361 		.ascii	"locals\000"
+ 3328      6C7300
+ 3329              	.LASF49:
+ 3330 02a4 47524545 		.ascii	"GREEN_U\000"
+ 3330      4E5F5500 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 67
+
+
+ 3331              	.LASF50:
+ 3332 02ac 47524545 		.ascii	"GREEN_V\000"
+ 3332      4E5F5600 
+ 3333              	.LASF13:
+ 3334 02b4 75696E74 		.ascii	"uint32\000"
+ 3334      333200
+ 3335              	.LASF6:
+ 3336 02bb 6C6F6E67 		.ascii	"long unsigned int\000"
+ 3336      20756E73 
+ 3336      69676E65 
+ 3336      6420696E 
+ 3336      7400
+ 3337              	.LASF14:
+ 3338 02cd 646F7562 		.ascii	"double\000"
+ 3338      6C6500
+ 3339              	.LASF22:
+ 3340 02d4 73697A65 		.ascii	"size\000"
+ 3340      00
+ 3341              	.LASF38:
+ 3342 02d9 636F756E 		.ascii	"count\000"
+ 3342      7400
+ 3343              	.LASF10:
+ 3344 02df 5F5F696E 		.ascii	"__int32_t\000"
+ 3344      7433325F 
+ 3344      7400
+ 3345              	.LASF18:
+ 3346 02e9 4E4F4E45 		.ascii	"NONE\000"
+ 3346      00
+ 3347              	.LASF54:
+ 3348 02ee 4C43445F 		.ascii	"LCD_WriteControl\000"
+ 3348      57726974 
+ 3348      65436F6E 
+ 3348      74726F6C 
+ 3348      00
+ 3349              	.LASF34:
+ 3350 02ff 7365745F 		.ascii	"set_gain_exposure\000"
+ 3350      6761696E 
+ 3350      5F657870 
+ 3350      6F737572 
+ 3350      6500
+ 3351              	.LASF55:
+ 3352 0311 4C43445F 		.ascii	"LCD_Position\000"
+ 3352      506F7369 
+ 3352      74696F6E 
+ 3352      00
+ 3353              	.LASF41:
+ 3354 031e 6964656E 		.ascii	"identify_colour_instructions\000"
+ 3354      74696679 
+ 3354      5F636F6C 
+ 3354      6F75725F 
+ 3354      696E7374 
+ 3355              	.LASF21:
+ 3356 033b 636F6C6F 		.ascii	"colour\000"
+ 3356      757200
+ 3357              	.LASF46:
+ 3358 0342 43616D65 		.ascii	"Camera_framebuffer\000"
+ 3358      72615F66 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccEUgzek.s 			page 68
+
+
+ 3358      72616D65 
+ 3358      62756666 
+ 3358      657200
+ 3359              	.LASF27:
+ 3360 0355 63617074 		.ascii	"capture_image\000"
+ 3360      7572655F 
+ 3360      696D6167 
+ 3360      6500
+ 3361              	.LASF45:
+ 3362 0363 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 3362      52784275 
+ 3362      66666572 
+ 3362      00
+ 3363              	.LASF19:
+ 3364 0370 47524545 		.ascii	"GREEN\000"
+ 3364      4E00
+ 3365              	.LASF44:
+ 3366 0376 74687265 		.ascii	"threshold_black\000"
+ 3366      73686F6C 
+ 3366      645F626C 
+ 3366      61636B00 
+ 3367              	.LASF20:
+ 3368 0386 424C5545 		.ascii	"BLUE\000"
+ 3368      00
+ 3369              	.LASF31:
+ 3370 038b 636F6C6F 		.ascii	"colours\000"
+ 3370      75727300 
+ 3371              	.LASF24:
+ 3372 0393 795F7375 		.ascii	"y_sum\000"
+ 3372      6D00
+ 3373              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.8.4 20140526 (release) [ARM/embedded-4_8-br

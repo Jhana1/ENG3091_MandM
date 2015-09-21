@@ -17,8 +17,9 @@
 void start_mice(){
     sclk_a_isr_Stop();
     sclk_b_isr_Stop();
-    
+    LCD_PosPrintString(0,0,"INIT MOUSE A");
     mouse_a_init();
+    LCD_PosPrintString(0,0,"INIT MOUSE B");
     mouse_b_init();
     
     reset_sclk_a_isr();
