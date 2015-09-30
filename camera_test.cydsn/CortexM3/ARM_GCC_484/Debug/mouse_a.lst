@@ -1,0 +1,1767 @@
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"mouse_a.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.comm	Camera_framebuffer,50688,4
+  19              		.comm	state_a,1,1
+  20              		.comm	bit_count_a,1,1
+  21              		.comm	bit_a,1,1
+  22              		.comm	status_a,1,1
+  23              		.comm	mov_x_a,1,1
+  24              		.comm	mov_y_a,1,1
+  25              		.comm	loc_x_a,4,4
+  26              		.comm	loc_y_a,4,4
+  27              		.comm	data_ready_a,1,1
+  28              		.comm	time_prev_a,4,4
+  29              		.section	.text.mouse_a_write,"ax",%progbits
+  30              		.align	2
+  31              		.global	mouse_a_write
+  32              		.thumb
+  33              		.thumb_func
+  34              		.type	mouse_a_write, %function
+  35              	mouse_a_write:
+  36              	.LFB63:
+  37              		.file 1 ".\\mouse_a.c"
+   1:.\mouse_a.c   **** /* ========================================
+   2:.\mouse_a.c   ****  *
+   3:.\mouse_a.c   ****  * Copyright YOUR COMPANY, THE YEAR
+   4:.\mouse_a.c   ****  * All Rights Reserved
+   5:.\mouse_a.c   ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:.\mouse_a.c   ****  *
+   7:.\mouse_a.c   ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:.\mouse_a.c   ****  * WHICH IS THE PROPERTY OF your company.
+   9:.\mouse_a.c   ****  *
+  10:.\mouse_a.c   ****  * ========================================
+  11:.\mouse_a.c   **** */
+  12:.\mouse_a.c   **** 
+  13:.\mouse_a.c   **** #include <project.h>
+  14:.\mouse_a.c   **** #include <mice.h>
+  15:.\mouse_a.c   **** 
+  16:.\mouse_a.c   **** #define S_STAT_START 0
+  17:.\mouse_a.c   **** #define S_MOVX_START 1
+  18:.\mouse_a.c   **** #define S_MOVY_START 2
+  19:.\mouse_a.c   **** 
+  20:.\mouse_a.c   **** volatile uint8 state_a;
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 2
+
+
+  21:.\mouse_a.c   **** volatile uint8 bit_count_a;
+  22:.\mouse_a.c   **** 
+  23:.\mouse_a.c   **** volatile uint8 bit_a;
+  24:.\mouse_a.c   **** 
+  25:.\mouse_a.c   **** volatile uint8 status_a;
+  26:.\mouse_a.c   **** volatile uint8 mov_x_a;
+  27:.\mouse_a.c   **** volatile uint8 mov_y_a;
+  28:.\mouse_a.c   **** 
+  29:.\mouse_a.c   **** volatile int32 loc_x_a;
+  30:.\mouse_a.c   **** volatile int32 loc_y_a;
+  31:.\mouse_a.c   **** 
+  32:.\mouse_a.c   **** volatile uint8 data_ready_a;
+  33:.\mouse_a.c   **** 
+  34:.\mouse_a.c   **** volatile uint32 time_prev_a;
+  35:.\mouse_a.c   **** 
+  36:.\mouse_a.c   **** void mouse_a_write(uint8 data){
+  38              		.loc 1 36 0
+  39              		.cfi_startproc
+  40              		@ args = 0, pretend = 0, frame = 16
+  41              		@ frame_needed = 1, uses_anonymous_args = 0
+  42 0000 80B5     		push	{r7, lr}
+  43              		.cfi_def_cfa_offset 8
+  44              		.cfi_offset 7, -8
+  45              		.cfi_offset 14, -4
+  46 0002 84B0     		sub	sp, sp, #16
+  47              		.cfi_def_cfa_offset 24
+  48 0004 00AF     		add	r7, sp, #0
+  49              		.cfi_def_cfa_register 7
+  50 0006 0346     		mov	r3, r0
+  51 0008 FB71     		strb	r3, [r7, #7]
+  37:.\mouse_a.c   **** 	uint8 i;
+  38:.\mouse_a.c   **** 	uint8 parity = 0;
+  52              		.loc 1 38 0
+  53 000a 0023     		movs	r3, #0
+  54 000c BB73     		strb	r3, [r7, #14]
+  39:.\mouse_a.c   **** 	
+  40:.\mouse_a.c   ****     //Ensure that clock and data are floating
+  41:.\mouse_a.c   **** 	SDAT_A_Write(1);
+  55              		.loc 1 41 0
+  56 000e 0120     		movs	r0, #1
+  57 0010 FFF7FEFF 		bl	SDAT_A_Write
+  42:.\mouse_a.c   **** 	SCLK_A_Write(1);
+  58              		.loc 1 42 0
+  59 0014 0120     		movs	r0, #1
+  60 0016 FFF7FEFF 		bl	SCLK_A_Write
+  43:.\mouse_a.c   **** 	CyDelayUs(200);
+  61              		.loc 1 43 0
+  62 001a C820     		movs	r0, #200
+  63 001c FFF7FEFF 		bl	CyDelayUs
+  44:.\mouse_a.c   ****     
+  45:.\mouse_a.c   ****     //If the host wants to send data, it must first inhibit communication from the device by pullin
+  46:.\mouse_a.c   **** 	SCLK_A_Write(0);
+  64              		.loc 1 46 0
+  65 0020 0020     		movs	r0, #0
+  66 0022 FFF7FEFF 		bl	SCLK_A_Write
+  47:.\mouse_a.c   **** 	CyDelayUs(200);
+  67              		.loc 1 47 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 3
+
+
+  68 0026 C820     		movs	r0, #200
+  69 0028 FFF7FEFF 		bl	CyDelayUs
+  48:.\mouse_a.c   ****     
+  49:.\mouse_a.c   ****     //The host then pulls Data low 
+  50:.\mouse_a.c   **** 	SDAT_A_Write(0);
+  70              		.loc 1 50 0
+  71 002c 0020     		movs	r0, #0
+  72 002e FFF7FEFF 		bl	SDAT_A_Write
+  51:.\mouse_a.c   **** 	CyDelayUs(10);
+  73              		.loc 1 51 0
+  74 0032 0A20     		movs	r0, #10
+  75 0034 FFF7FEFF 		bl	CyDelayUs
+  52:.\mouse_a.c   ****     
+  53:.\mouse_a.c   ****     //and releases Clock.  
+  54:.\mouse_a.c   ****     //This is the "Request-to-Send" state and signals the device to start generating clock pulses.
+  55:.\mouse_a.c   ****     SCLK_A_Write(1);
+  76              		.loc 1 55 0
+  77 0038 0120     		movs	r0, #1
+  78 003a FFF7FEFF 		bl	SCLK_A_Write
+  56:.\mouse_a.c   ****     SDAT_A_Write(0);
+  79              		.loc 1 56 0
+  80 003e 0020     		movs	r0, #0
+  81 0040 FFF7FEFF 		bl	SDAT_A_Write
+  57:.\mouse_a.c   ****     CyDelayUs(10); //The mouse needs this extra time for some reason...
+  82              		.loc 1 57 0
+  83 0044 0A20     		movs	r0, #10
+  84 0046 FFF7FEFF 		bl	CyDelayUs
+  58:.\mouse_a.c   ****     
+  59:.\mouse_a.c   **** 	while (SCLK_A_Read() == 1){SDAT_A_Write(0);} /* wait for device to take control of clock */
+  85              		.loc 1 59 0
+  86 004a 02E0     		b	.L2
+  87              	.L3:
+  88              		.loc 1 59 0 is_stmt 0 discriminator 2
+  89 004c 0020     		movs	r0, #0
+  90 004e FFF7FEFF 		bl	SDAT_A_Write
+  91              	.L2:
+  92              		.loc 1 59 0 discriminator 1
+  93 0052 FFF7FEFF 		bl	SCLK_A_Read
+  94 0056 0346     		mov	r3, r0
+  95 0058 012B     		cmp	r3, #1
+  96 005a F7D0     		beq	.L3
+  60:.\mouse_a.c   ****     
+  61:.\mouse_a.c   ****     for (i = 0; i < 8; i++){
+  97              		.loc 1 61 0 is_stmt 1
+  98 005c 0023     		movs	r3, #0
+  99 005e FB73     		strb	r3, [r7, #15]
+ 100 0060 2BE0     		b	.L4
+ 101              	.L7:
+  62:.\mouse_a.c   ****         //Write successive bits to the data line
+  63:.\mouse_a.c   ****         SDAT_A_Write((data & (1 << i)) != 0);
+ 102              		.loc 1 63 0
+ 103 0062 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 104 0064 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 105 0066 42FA03F3 		asr	r3, r2, r3
+ 106 006a 03F00103 		and	r3, r3, #1
+ 107 006e 002B     		cmp	r3, #0
+ 108 0070 0CBF     		ite	eq
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 4
+
+
+ 109 0072 0023     		moveq	r3, #0
+ 110 0074 0123     		movne	r3, #1
+ 111 0076 DBB2     		uxtb	r3, r3
+ 112 0078 1846     		mov	r0, r3
+ 113 007a FFF7FEFF 		bl	SDAT_A_Write
+  64:.\mouse_a.c   ****         parity += ((data & (1 << i)) != 0);
+ 114              		.loc 1 64 0
+ 115 007e FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 116 0080 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 117 0082 42FA03F3 		asr	r3, r2, r3
+ 118 0086 03F00103 		and	r3, r3, #1
+ 119 008a 002B     		cmp	r3, #0
+ 120 008c 0CBF     		ite	eq
+ 121 008e 0023     		moveq	r3, #0
+ 122 0090 0123     		movne	r3, #1
+ 123 0092 DBB2     		uxtb	r3, r3
+ 124 0094 1A46     		mov	r2, r3
+ 125 0096 BB7B     		ldrb	r3, [r7, #14]
+ 126 0098 1344     		add	r3, r3, r2
+ 127 009a BB73     		strb	r3, [r7, #14]
+  65:.\mouse_a.c   ****         //Wait a clock cycle
+  66:.\mouse_a.c   ****         while (SCLK_A_Read() == 0){;}
+ 128              		.loc 1 66 0
+ 129 009c 00BF     		nop
+ 130              	.L5:
+ 131              		.loc 1 66 0 is_stmt 0 discriminator 1
+ 132 009e FFF7FEFF 		bl	SCLK_A_Read
+ 133 00a2 0346     		mov	r3, r0
+ 134 00a4 002B     		cmp	r3, #0
+ 135 00a6 FAD0     		beq	.L5
+  67:.\mouse_a.c   ****         while (SCLK_A_Read() == 1){;}
+ 136              		.loc 1 67 0 is_stmt 1
+ 137 00a8 00BF     		nop
+ 138              	.L6:
+ 139              		.loc 1 67 0 is_stmt 0 discriminator 1
+ 140 00aa FFF7FEFF 		bl	SCLK_A_Read
+ 141 00ae 0346     		mov	r3, r0
+ 142 00b0 012B     		cmp	r3, #1
+ 143 00b2 FAD0     		beq	.L6
+  61:.\mouse_a.c   ****     for (i = 0; i < 8; i++){
+ 144              		.loc 1 61 0 is_stmt 1
+ 145 00b4 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 146 00b6 0133     		adds	r3, r3, #1
+ 147 00b8 FB73     		strb	r3, [r7, #15]
+ 148              	.L4:
+  61:.\mouse_a.c   ****     for (i = 0; i < 8; i++){
+ 149              		.loc 1 61 0 is_stmt 0 discriminator 1
+ 150 00ba FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 151 00bc 072B     		cmp	r3, #7
+ 152 00be D0D9     		bls	.L7
+  68:.\mouse_a.c   ****     }
+  69:.\mouse_a.c   ****     
+  70:.\mouse_a.c   ****     //Odd parity 
+  71:.\mouse_a.c   ****     SDAT_A_Write((parity % 2) == 0);
+ 153              		.loc 1 71 0 is_stmt 1
+ 154 00c0 BB7B     		ldrb	r3, [r7, #14]
+ 155 00c2 03F00103 		and	r3, r3, #1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 5
+
+
+ 156 00c6 DBB2     		uxtb	r3, r3
+ 157 00c8 002B     		cmp	r3, #0
+ 158 00ca 14BF     		ite	ne
+ 159 00cc 0023     		movne	r3, #0
+ 160 00ce 0123     		moveq	r3, #1
+ 161 00d0 DBB2     		uxtb	r3, r3
+ 162 00d2 1846     		mov	r0, r3
+ 163 00d4 FFF7FEFF 		bl	SDAT_A_Write
+  72:.\mouse_a.c   ****     //SDAT_A_Write(1);
+  73:.\mouse_a.c   ****     
+  74:.\mouse_a.c   ****     //Wait a clock cycle
+  75:.\mouse_a.c   ****     while (SCLK_A_Read() == 0){;}
+ 164              		.loc 1 75 0
+ 165 00d8 00BF     		nop
+ 166              	.L8:
+ 167              		.loc 1 75 0 is_stmt 0 discriminator 1
+ 168 00da FFF7FEFF 		bl	SCLK_A_Read
+ 169 00de 0346     		mov	r3, r0
+ 170 00e0 002B     		cmp	r3, #0
+ 171 00e2 FAD0     		beq	.L8
+  76:.\mouse_a.c   ****     while (SCLK_A_Read() == 1){;}
+ 172              		.loc 1 76 0 is_stmt 1
+ 173 00e4 00BF     		nop
+ 174              	.L9:
+ 175              		.loc 1 76 0 is_stmt 0 discriminator 1
+ 176 00e6 FFF7FEFF 		bl	SCLK_A_Read
+ 177 00ea 0346     		mov	r3, r0
+ 178 00ec 012B     		cmp	r3, #1
+ 179 00ee FAD0     		beq	.L9
+  77:.\mouse_a.c   ****     
+  78:.\mouse_a.c   ****     //Release the data and clock lines
+  79:.\mouse_a.c   ****     SDAT_A_Write(1);
+ 180              		.loc 1 79 0 is_stmt 1
+ 181 00f0 0120     		movs	r0, #1
+ 182 00f2 FFF7FEFF 		bl	SDAT_A_Write
+  80:.\mouse_a.c   ****     SCLK_A_Write(1);
+ 183              		.loc 1 80 0
+ 184 00f6 0120     		movs	r0, #1
+ 185 00f8 FFF7FEFF 		bl	SCLK_A_Write
+  81:.\mouse_a.c   **** }
+ 186              		.loc 1 81 0
+ 187 00fc 1037     		adds	r7, r7, #16
+ 188 00fe BD46     		mov	sp, r7
+ 189              		@ sp needed
+ 190 0100 80BD     		pop	{r7, pc}
+ 191              		.cfi_endproc
+ 192              	.LFE63:
+ 193              		.size	mouse_a_write, .-mouse_a_write
+ 194 0102 00BF     		.section	.text.mouse_a_init,"ax",%progbits
+ 195              		.align	2
+ 196              		.global	mouse_a_init
+ 197              		.thumb
+ 198              		.thumb_func
+ 199              		.type	mouse_a_init, %function
+ 200              	mouse_a_init:
+ 201              	.LFB64:
+  82:.\mouse_a.c   **** 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 6
+
+
+  83:.\mouse_a.c   **** 
+  84:.\mouse_a.c   **** void mouse_a_init(){
+ 202              		.loc 1 84 0
+ 203              		.cfi_startproc
+ 204              		@ args = 0, pretend = 0, frame = 0
+ 205              		@ frame_needed = 1, uses_anonymous_args = 0
+ 206 0000 80B5     		push	{r7, lr}
+ 207              		.cfi_def_cfa_offset 8
+ 208              		.cfi_offset 7, -8
+ 209              		.cfi_offset 14, -4
+ 210 0002 00AF     		add	r7, sp, #0
+ 211              		.cfi_def_cfa_register 7
+  85:.\mouse_a.c   ****     CyGlobalIntDisable;
+ 212              		.loc 1 85 0
+ 213              	@ 85 ".\mouse_a.c" 1
+ 214 0004 72B6     		CPSID   i
+ 215              	@ 0 "" 2
+  86:.\mouse_a.c   ****     //CHECK_A_Write(1);
+  87:.\mouse_a.c   ****     mouse_a_write(0xff);  // reset
+ 216              		.loc 1 87 0
+ 217              		.thumb
+ 218 0006 FF20     		movs	r0, #255
+ 219 0008 FFF7FEFF 		bl	mouse_a_write
+  88:.\mouse_a.c   ****     //CHECK_A_Write(0);
+  89:.\mouse_a.c   ****     
+  90:.\mouse_a.c   ****     CyDelay(8);
+ 220              		.loc 1 90 0
+ 221 000c 0820     		movs	r0, #8
+ 222 000e FFF7FEFF 		bl	CyDelay
+  91:.\mouse_a.c   ****     
+  92:.\mouse_a.c   ****     //Set sample rate
+  93:.\mouse_a.c   ****     //CHECK_A_Write(1);
+  94:.\mouse_a.c   ****     mouse_a_write(0xf3);
+ 223              		.loc 1 94 0
+ 224 0012 F320     		movs	r0, #243
+ 225 0014 FFF7FEFF 		bl	mouse_a_write
+  95:.\mouse_a.c   ****     //CHECK_A_Write(0);
+  96:.\mouse_a.c   ****     
+  97:.\mouse_a.c   ****     CyDelay(2);//Wait for ACK
+ 226              		.loc 1 97 0
+ 227 0018 0220     		movs	r0, #2
+ 228 001a FFF7FEFF 		bl	CyDelay
+  98:.\mouse_a.c   ****     //Set to 40
+  99:.\mouse_a.c   ****     //CHECK_A_Write(1);
+ 100:.\mouse_a.c   ****     mouse_a_write(M_SAMPLE);
+ 229              		.loc 1 100 0
+ 230 001e 5020     		movs	r0, #80
+ 231 0020 FFF7FEFF 		bl	mouse_a_write
+ 101:.\mouse_a.c   ****     //CHECK_A_Write(0);
+ 102:.\mouse_a.c   ****     
+ 103:.\mouse_a.c   ****     CyDelay(2);
+ 232              		.loc 1 103 0
+ 233 0024 0220     		movs	r0, #2
+ 234 0026 FFF7FEFF 		bl	CyDelay
+ 104:.\mouse_a.c   ****     
+ 105:.\mouse_a.c   ****     //CHECK_A_Write(1);
+ 106:.\mouse_a.c   ****     mouse_a_write(0xea); //Set resolution
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 7
+
+
+ 235              		.loc 1 106 0
+ 236 002a EA20     		movs	r0, #234
+ 237 002c FFF7FEFF 		bl	mouse_a_write
+ 107:.\mouse_a.c   ****     //CHECK_A_Write(0);
+ 108:.\mouse_a.c   ****     
+ 109:.\mouse_a.c   ****     CyDelay(2);
+ 238              		.loc 1 109 0
+ 239 0030 0220     		movs	r0, #2
+ 240 0032 FFF7FEFF 		bl	CyDelay
+ 110:.\mouse_a.c   ****     
+ 111:.\mouse_a.c   ****     //CHECK_A_Write(1);
+ 112:.\mouse_a.c   ****     mouse_a_write(M_RES); //Set resolution to 4c/mm
+ 241              		.loc 1 112 0
+ 242 0036 0220     		movs	r0, #2
+ 243 0038 FFF7FEFF 		bl	mouse_a_write
+ 113:.\mouse_a.c   ****     //CHECK_A_Write(0);
+ 114:.\mouse_a.c   ****     
+ 115:.\mouse_a.c   ****     
+ 116:.\mouse_a.c   ****     //CHECK_A_Write(1);
+ 117:.\mouse_a.c   ****     mouse_a_write(0xf4); //Begin streaming data
+ 244              		.loc 1 117 0
+ 245 003c F420     		movs	r0, #244
+ 246 003e FFF7FEFF 		bl	mouse_a_write
+ 118:.\mouse_a.c   ****     //CHECK_A_Write(0);
+ 119:.\mouse_a.c   ****     
+ 120:.\mouse_a.c   ****     CyDelay(2);
+ 247              		.loc 1 120 0
+ 248 0042 0220     		movs	r0, #2
+ 249 0044 FFF7FEFF 		bl	CyDelay
+ 121:.\mouse_a.c   ****     CYGlobalIntEnable;
+ 250              		.loc 1 121 0
+ 251              	@ 121 ".\mouse_a.c" 1
+ 252 0048 62B6     		CPSIE   i
+ 253              	@ 0 "" 2
+ 122:.\mouse_a.c   **** }
+ 254              		.loc 1 122 0
+ 255              		.thumb
+ 256 004a 80BD     		pop	{r7, pc}
+ 257              		.cfi_endproc
+ 258              	.LFE64:
+ 259              		.size	mouse_a_init, .-mouse_a_init
+ 260              		.section	.text.reset_sclk_a_isr,"ax",%progbits
+ 261              		.align	2
+ 262              		.global	reset_sclk_a_isr
+ 263              		.thumb
+ 264              		.thumb_func
+ 265              		.type	reset_sclk_a_isr, %function
+ 266              	reset_sclk_a_isr:
+ 267              	.LFB65:
+ 123:.\mouse_a.c   **** 
+ 124:.\mouse_a.c   **** 
+ 125:.\mouse_a.c   **** void reset_sclk_a_isr(){
+ 268              		.loc 1 125 0
+ 269              		.cfi_startproc
+ 270              		@ args = 0, pretend = 0, frame = 0
+ 271              		@ frame_needed = 1, uses_anonymous_args = 0
+ 272 0000 80B5     		push	{r7, lr}
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 8
+
+
+ 273              		.cfi_def_cfa_offset 8
+ 274              		.cfi_offset 7, -8
+ 275              		.cfi_offset 14, -4
+ 276 0002 00AF     		add	r7, sp, #0
+ 277              		.cfi_def_cfa_register 7
+ 126:.\mouse_a.c   ****     state_a = S_STAT_START;
+ 278              		.loc 1 126 0
+ 279 0004 0A4B     		ldr	r3, .L12
+ 280 0006 0022     		movs	r2, #0
+ 281 0008 1A70     		strb	r2, [r3]
+ 127:.\mouse_a.c   ****     bit_count_a = 0;
+ 282              		.loc 1 127 0
+ 283 000a 0A4B     		ldr	r3, .L12+4
+ 284 000c 0022     		movs	r2, #0
+ 285 000e 1A70     		strb	r2, [r3]
+ 128:.\mouse_a.c   ****     mov_x_a = 0;
+ 286              		.loc 1 128 0
+ 287 0010 094B     		ldr	r3, .L12+8
+ 288 0012 0022     		movs	r2, #0
+ 289 0014 1A70     		strb	r2, [r3]
+ 129:.\mouse_a.c   ****     mov_y_a = 0;
+ 290              		.loc 1 129 0
+ 291 0016 094B     		ldr	r3, .L12+12
+ 292 0018 0022     		movs	r2, #0
+ 293 001a 1A70     		strb	r2, [r3]
+ 130:.\mouse_a.c   ****     status_a = 0;
+ 294              		.loc 1 130 0
+ 295 001c 084B     		ldr	r3, .L12+16
+ 296 001e 0022     		movs	r2, #0
+ 297 0020 1A70     		strb	r2, [r3]
+ 131:.\mouse_a.c   ****     time_prev_a = Timer_ReadCounter();
+ 298              		.loc 1 131 0
+ 299 0022 FFF7FEFF 		bl	Timer_ReadCounter
+ 300 0026 0246     		mov	r2, r0
+ 301 0028 064B     		ldr	r3, .L12+20
+ 302 002a 1A60     		str	r2, [r3]
+ 132:.\mouse_a.c   **** }
+ 303              		.loc 1 132 0
+ 304 002c 80BD     		pop	{r7, pc}
+ 305              	.L13:
+ 306 002e 00BF     		.align	2
+ 307              	.L12:
+ 308 0030 00000000 		.word	state_a
+ 309 0034 00000000 		.word	bit_count_a
+ 310 0038 00000000 		.word	mov_x_a
+ 311 003c 00000000 		.word	mov_y_a
+ 312 0040 00000000 		.word	status_a
+ 313 0044 00000000 		.word	time_prev_a
+ 314              		.cfi_endproc
+ 315              	.LFE65:
+ 316              		.size	reset_sclk_a_isr, .-reset_sclk_a_isr
+ 317              		.section	.text.MY_SCLK_A_ISR,"ax",%progbits
+ 318              		.align	2
+ 319              		.global	MY_SCLK_A_ISR
+ 320              		.thumb
+ 321              		.thumb_func
+ 322              		.type	MY_SCLK_A_ISR, %function
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 9
+
+
+ 323              	MY_SCLK_A_ISR:
+ 324              	.LFB66:
+ 133:.\mouse_a.c   **** 
+ 134:.\mouse_a.c   **** CY_ISR(MY_SCLK_A_ISR){        
+ 325              		.loc 1 134 0
+ 326              		.cfi_startproc
+ 327              		@ args = 0, pretend = 0, frame = 0
+ 328              		@ frame_needed = 1, uses_anonymous_args = 0
+ 329 0000 98B5     		push	{r3, r4, r7, lr}
+ 330              		.cfi_def_cfa_offset 16
+ 331              		.cfi_offset 3, -16
+ 332              		.cfi_offset 4, -12
+ 333              		.cfi_offset 7, -8
+ 334              		.cfi_offset 14, -4
+ 335 0002 00AF     		add	r7, sp, #0
+ 336              		.cfi_def_cfa_register 7
+ 135:.\mouse_a.c   ****     
+ 136:.\mouse_a.c   ****     
+ 137:.\mouse_a.c   ****     //If the clock is high when the *falling* edge interrupt triggers,
+ 138:.\mouse_a.c   ****     //obviously the interrupt was triggered falsely
+ 139:.\mouse_a.c   ****     if (SCLK_A_Read() == 1){
+ 337              		.loc 1 139 0
+ 338 0004 FFF7FEFF 		bl	SCLK_A_Read
+ 339 0008 0346     		mov	r3, r0
+ 340 000a 012B     		cmp	r3, #1
+ 341 000c 04D1     		bne	.L15
+ 140:.\mouse_a.c   ****         reset_sclk_a_isr();
+ 342              		.loc 1 140 0
+ 343 000e FFF7FEFF 		bl	reset_sclk_a_isr
+ 141:.\mouse_a.c   ****         SCLK_A_ClearInterrupt();
+ 344              		.loc 1 141 0
+ 345 0012 FFF7FEFF 		bl	SCLK_A_ClearInterrupt
+ 142:.\mouse_a.c   ****         return;
+ 346              		.loc 1 142 0
+ 347 0016 3CE1     		b	.L14
+ 348              	.L15:
+ 143:.\mouse_a.c   ****     }
+ 144:.\mouse_a.c   ****     
+ 145:.\mouse_a.c   ****     //Reset if longer than 2*10*100uS has passed... 2ms
+ 146:.\mouse_a.c   ****     if ((time_prev_a - Timer_ReadCounter()) > 10){
+ 349              		.loc 1 146 0
+ 350 0018 9E4B     		ldr	r3, .L39
+ 351 001a 1C68     		ldr	r4, [r3]
+ 352 001c FFF7FEFF 		bl	Timer_ReadCounter
+ 353 0020 0346     		mov	r3, r0
+ 354 0022 E31A     		subs	r3, r4, r3
+ 355 0024 0A2B     		cmp	r3, #10
+ 356 0026 0BD9     		bls	.L17
+ 147:.\mouse_a.c   ****         reset_sclk_a_isr();
+ 357              		.loc 1 147 0
+ 358 0028 FFF7FEFF 		bl	reset_sclk_a_isr
+ 148:.\mouse_a.c   ****         bit_count_a++;
+ 359              		.loc 1 148 0
+ 360 002c 9A4B     		ldr	r3, .L39+4
+ 361 002e 1B78     		ldrb	r3, [r3]
+ 362 0030 DBB2     		uxtb	r3, r3
+ 363 0032 0133     		adds	r3, r3, #1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 10
+
+
+ 364 0034 DAB2     		uxtb	r2, r3
+ 365 0036 984B     		ldr	r3, .L39+4
+ 366 0038 1A70     		strb	r2, [r3]
+ 149:.\mouse_a.c   ****         SCLK_A_ClearInterrupt();
+ 367              		.loc 1 149 0
+ 368 003a FFF7FEFF 		bl	SCLK_A_ClearInterrupt
+ 150:.\mouse_a.c   ****         return;
+ 369              		.loc 1 150 0
+ 370 003e 28E1     		b	.L14
+ 371              	.L17:
+ 151:.\mouse_a.c   ****     }
+ 152:.\mouse_a.c   ****     
+ 153:.\mouse_a.c   ****     //CHECK_A_Write(1); //Indicate start of interrupt - for time measurement purposes
+ 154:.\mouse_a.c   ****     
+ 155:.\mouse_a.c   ****     bit_a = SDAT_A_Read();
+ 372              		.loc 1 155 0
+ 373 0040 FFF7FEFF 		bl	SDAT_A_Read
+ 374 0044 0346     		mov	r3, r0
+ 375 0046 1A46     		mov	r2, r3
+ 376 0048 944B     		ldr	r3, .L39+8
+ 377 004a 1A70     		strb	r2, [r3]
+ 156:.\mouse_a.c   ****     
+ 157:.\mouse_a.c   ****     switch (state_a){
+ 378              		.loc 1 157 0
+ 379 004c 944B     		ldr	r3, .L39+12
+ 380 004e 1B78     		ldrb	r3, [r3]
+ 381 0050 DBB2     		uxtb	r3, r3
+ 382 0052 012B     		cmp	r3, #1
+ 383 0054 4DD0     		beq	.L19
+ 384 0056 022B     		cmp	r3, #2
+ 385 0058 00F09380 		beq	.L20
+ 386 005c 002B     		cmp	r3, #0
+ 387 005e 40F01181 		bne	.L18
+ 158:.\mouse_a.c   ****         case S_STAT_START:
+ 159:.\mouse_a.c   ****             //First bit should be a 0
+ 160:.\mouse_a.c   ****             if (bit_count_a == 0){
+ 388              		.loc 1 160 0
+ 389 0062 8D4B     		ldr	r3, .L39+4
+ 390 0064 1B78     		ldrb	r3, [r3]
+ 391 0066 DBB2     		uxtb	r3, r3
+ 392 0068 002B     		cmp	r3, #0
+ 393 006a 07D1     		bne	.L22
+ 161:.\mouse_a.c   ****                 bit_count_a++;
+ 394              		.loc 1 161 0
+ 395 006c 8A4B     		ldr	r3, .L39+4
+ 396 006e 1B78     		ldrb	r3, [r3]
+ 397 0070 DBB2     		uxtb	r3, r3
+ 398 0072 0133     		adds	r3, r3, #1
+ 399 0074 DAB2     		uxtb	r2, r3
+ 400 0076 884B     		ldr	r3, .L39+4
+ 401 0078 1A70     		strb	r2, [r3]
+ 402 007a 39E0     		b	.L23
+ 403              	.L22:
+ 162:.\mouse_a.c   ****             } else if (bit_count_a < 9){ //Bits 1 to 8 are the data bits
+ 404              		.loc 1 162 0
+ 405 007c 864B     		ldr	r3, .L39+4
+ 406 007e 1B78     		ldrb	r3, [r3]
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 11
+
+
+ 407 0080 DBB2     		uxtb	r3, r3
+ 408 0082 082B     		cmp	r3, #8
+ 409 0084 1BD8     		bhi	.L24
+ 163:.\mouse_a.c   ****                 status_a |= (bit_a << (bit_count_a - 1));
+ 410              		.loc 1 163 0
+ 411 0086 854B     		ldr	r3, .L39+8
+ 412 0088 1B78     		ldrb	r3, [r3]
+ 413 008a DBB2     		uxtb	r3, r3
+ 414 008c 1A46     		mov	r2, r3
+ 415 008e 824B     		ldr	r3, .L39+4
+ 416 0090 1B78     		ldrb	r3, [r3]
+ 417 0092 DBB2     		uxtb	r3, r3
+ 418 0094 013B     		subs	r3, r3, #1
+ 419 0096 02FA03F3 		lsl	r3, r2, r3
+ 420 009a DAB2     		uxtb	r2, r3
+ 421 009c 814B     		ldr	r3, .L39+16
+ 422 009e 1B78     		ldrb	r3, [r3]
+ 423 00a0 DBB2     		uxtb	r3, r3
+ 424 00a2 DBB2     		uxtb	r3, r3
+ 425 00a4 1343     		orrs	r3, r3, r2
+ 426 00a6 DBB2     		uxtb	r3, r3
+ 427 00a8 DAB2     		uxtb	r2, r3
+ 428 00aa 7E4B     		ldr	r3, .L39+16
+ 429 00ac 1A70     		strb	r2, [r3]
+ 164:.\mouse_a.c   ****                 bit_count_a++;
+ 430              		.loc 1 164 0
+ 431 00ae 7A4B     		ldr	r3, .L39+4
+ 432 00b0 1B78     		ldrb	r3, [r3]
+ 433 00b2 DBB2     		uxtb	r3, r3
+ 434 00b4 0133     		adds	r3, r3, #1
+ 435 00b6 DAB2     		uxtb	r2, r3
+ 436 00b8 774B     		ldr	r3, .L39+4
+ 437 00ba 1A70     		strb	r2, [r3]
+ 438 00bc 18E0     		b	.L23
+ 439              	.L24:
+ 165:.\mouse_a.c   ****             } else if (bit_count_a == 9){ //parity bit
+ 440              		.loc 1 165 0
+ 441 00be 764B     		ldr	r3, .L39+4
+ 442 00c0 1B78     		ldrb	r3, [r3]
+ 443 00c2 DBB2     		uxtb	r3, r3
+ 444 00c4 092B     		cmp	r3, #9
+ 445 00c6 07D1     		bne	.L25
+ 166:.\mouse_a.c   ****                 bit_count_a++;
+ 446              		.loc 1 166 0
+ 447 00c8 734B     		ldr	r3, .L39+4
+ 448 00ca 1B78     		ldrb	r3, [r3]
+ 449 00cc DBB2     		uxtb	r3, r3
+ 450 00ce 0133     		adds	r3, r3, #1
+ 451 00d0 DAB2     		uxtb	r2, r3
+ 452 00d2 714B     		ldr	r3, .L39+4
+ 453 00d4 1A70     		strb	r2, [r3]
+ 454 00d6 0BE0     		b	.L23
+ 455              	.L25:
+ 167:.\mouse_a.c   ****             } else if (bit_count_a == 10){ //stop bit
+ 456              		.loc 1 167 0
+ 457 00d8 6F4B     		ldr	r3, .L39+4
+ 458 00da 1B78     		ldrb	r3, [r3]
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 12
+
+
+ 459 00dc DBB2     		uxtb	r3, r3
+ 460 00de 0A2B     		cmp	r3, #10
+ 461 00e0 06D1     		bne	.L23
+ 168:.\mouse_a.c   ****                 bit_count_a = 0;
+ 462              		.loc 1 168 0
+ 463 00e2 6D4B     		ldr	r3, .L39+4
+ 464 00e4 0022     		movs	r2, #0
+ 465 00e6 1A70     		strb	r2, [r3]
+ 169:.\mouse_a.c   ****                 state_a = S_MOVX_START;
+ 466              		.loc 1 169 0
+ 467 00e8 6D4B     		ldr	r3, .L39+12
+ 468 00ea 0122     		movs	r2, #1
+ 469 00ec 1A70     		strb	r2, [r3]
+ 170:.\mouse_a.c   ****             }
+ 171:.\mouse_a.c   ****             break;
+ 470              		.loc 1 171 0
+ 471 00ee C9E0     		b	.L18
+ 472              	.L23:
+ 473 00f0 C8E0     		b	.L18
+ 474              	.L19:
+ 172:.\mouse_a.c   ****             
+ 173:.\mouse_a.c   ****         case S_MOVX_START: //We are looking at the movement data
+ 174:.\mouse_a.c   ****             if (bit_count_a == 0){
+ 475              		.loc 1 174 0
+ 476 00f2 694B     		ldr	r3, .L39+4
+ 477 00f4 1B78     		ldrb	r3, [r3]
+ 478 00f6 DBB2     		uxtb	r3, r3
+ 479 00f8 002B     		cmp	r3, #0
+ 480 00fa 07D1     		bne	.L26
+ 175:.\mouse_a.c   ****                 bit_count_a++;
+ 481              		.loc 1 175 0
+ 482 00fc 664B     		ldr	r3, .L39+4
+ 483 00fe 1B78     		ldrb	r3, [r3]
+ 484 0100 DBB2     		uxtb	r3, r3
+ 485 0102 0133     		adds	r3, r3, #1
+ 486 0104 DAB2     		uxtb	r2, r3
+ 487 0106 644B     		ldr	r3, .L39+4
+ 488 0108 1A70     		strb	r2, [r3]
+ 489 010a 39E0     		b	.L27
+ 490              	.L26:
+ 176:.\mouse_a.c   ****             } else if (bit_count_a < 9){
+ 491              		.loc 1 176 0
+ 492 010c 624B     		ldr	r3, .L39+4
+ 493 010e 1B78     		ldrb	r3, [r3]
+ 494 0110 DBB2     		uxtb	r3, r3
+ 495 0112 082B     		cmp	r3, #8
+ 496 0114 1BD8     		bhi	.L28
+ 177:.\mouse_a.c   ****                 mov_x_a |= (bit_a << (bit_count_a - 1));
+ 497              		.loc 1 177 0
+ 498 0116 614B     		ldr	r3, .L39+8
+ 499 0118 1B78     		ldrb	r3, [r3]
+ 500 011a DBB2     		uxtb	r3, r3
+ 501 011c 1A46     		mov	r2, r3
+ 502 011e 5E4B     		ldr	r3, .L39+4
+ 503 0120 1B78     		ldrb	r3, [r3]
+ 504 0122 DBB2     		uxtb	r3, r3
+ 505 0124 013B     		subs	r3, r3, #1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 13
+
+
+ 506 0126 02FA03F3 		lsl	r3, r2, r3
+ 507 012a DAB2     		uxtb	r2, r3
+ 508 012c 5E4B     		ldr	r3, .L39+20
+ 509 012e 1B78     		ldrb	r3, [r3]
+ 510 0130 DBB2     		uxtb	r3, r3
+ 511 0132 DBB2     		uxtb	r3, r3
+ 512 0134 1343     		orrs	r3, r3, r2
+ 513 0136 DBB2     		uxtb	r3, r3
+ 514 0138 DAB2     		uxtb	r2, r3
+ 515 013a 5B4B     		ldr	r3, .L39+20
+ 516 013c 1A70     		strb	r2, [r3]
+ 178:.\mouse_a.c   ****                 bit_count_a++;
+ 517              		.loc 1 178 0
+ 518 013e 564B     		ldr	r3, .L39+4
+ 519 0140 1B78     		ldrb	r3, [r3]
+ 520 0142 DBB2     		uxtb	r3, r3
+ 521 0144 0133     		adds	r3, r3, #1
+ 522 0146 DAB2     		uxtb	r2, r3
+ 523 0148 534B     		ldr	r3, .L39+4
+ 524 014a 1A70     		strb	r2, [r3]
+ 525 014c 18E0     		b	.L27
+ 526              	.L28:
+ 179:.\mouse_a.c   ****             } else if (bit_count_a == 9){
+ 527              		.loc 1 179 0
+ 528 014e 524B     		ldr	r3, .L39+4
+ 529 0150 1B78     		ldrb	r3, [r3]
+ 530 0152 DBB2     		uxtb	r3, r3
+ 531 0154 092B     		cmp	r3, #9
+ 532 0156 07D1     		bne	.L29
+ 180:.\mouse_a.c   ****                 bit_count_a++;
+ 533              		.loc 1 180 0
+ 534 0158 4F4B     		ldr	r3, .L39+4
+ 535 015a 1B78     		ldrb	r3, [r3]
+ 536 015c DBB2     		uxtb	r3, r3
+ 537 015e 0133     		adds	r3, r3, #1
+ 538 0160 DAB2     		uxtb	r2, r3
+ 539 0162 4D4B     		ldr	r3, .L39+4
+ 540 0164 1A70     		strb	r2, [r3]
+ 541 0166 0BE0     		b	.L27
+ 542              	.L29:
+ 181:.\mouse_a.c   ****             } else if (bit_count_a == 10){
+ 543              		.loc 1 181 0
+ 544 0168 4B4B     		ldr	r3, .L39+4
+ 545 016a 1B78     		ldrb	r3, [r3]
+ 546 016c DBB2     		uxtb	r3, r3
+ 547 016e 0A2B     		cmp	r3, #10
+ 548 0170 06D1     		bne	.L27
+ 182:.\mouse_a.c   ****                 bit_count_a = 0;
+ 549              		.loc 1 182 0
+ 550 0172 494B     		ldr	r3, .L39+4
+ 551 0174 0022     		movs	r2, #0
+ 552 0176 1A70     		strb	r2, [r3]
+ 183:.\mouse_a.c   ****                 state_a = S_MOVY_START;
+ 553              		.loc 1 183 0
+ 554 0178 494B     		ldr	r3, .L39+12
+ 555 017a 0222     		movs	r2, #2
+ 556 017c 1A70     		strb	r2, [r3]
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 14
+
+
+ 184:.\mouse_a.c   ****             }
+ 185:.\mouse_a.c   ****             break;
+ 557              		.loc 1 185 0
+ 558 017e 81E0     		b	.L18
+ 559              	.L27:
+ 560 0180 80E0     		b	.L18
+ 561              	.L20:
+ 186:.\mouse_a.c   ****             
+ 187:.\mouse_a.c   ****         case S_MOVY_START:
+ 188:.\mouse_a.c   ****              if (bit_count_a == 0){
+ 562              		.loc 1 188 0
+ 563 0182 454B     		ldr	r3, .L39+4
+ 564 0184 1B78     		ldrb	r3, [r3]
+ 565 0186 DBB2     		uxtb	r3, r3
+ 566 0188 002B     		cmp	r3, #0
+ 567 018a 07D1     		bne	.L30
+ 189:.\mouse_a.c   ****                 bit_count_a++;
+ 568              		.loc 1 189 0
+ 569 018c 424B     		ldr	r3, .L39+4
+ 570 018e 1B78     		ldrb	r3, [r3]
+ 571 0190 DBB2     		uxtb	r3, r3
+ 572 0192 0133     		adds	r3, r3, #1
+ 573 0194 DAB2     		uxtb	r2, r3
+ 574 0196 404B     		ldr	r3, .L39+4
+ 575 0198 1A70     		strb	r2, [r3]
+ 576 019a 72E0     		b	.L31
+ 577              	.L30:
+ 190:.\mouse_a.c   ****             } else if (bit_count_a < 9){
+ 578              		.loc 1 190 0
+ 579 019c 3E4B     		ldr	r3, .L39+4
+ 580 019e 1B78     		ldrb	r3, [r3]
+ 581 01a0 DBB2     		uxtb	r3, r3
+ 582 01a2 082B     		cmp	r3, #8
+ 583 01a4 1BD8     		bhi	.L32
+ 191:.\mouse_a.c   ****                 mov_y_a |= (bit_a << (bit_count_a - 1));
+ 584              		.loc 1 191 0
+ 585 01a6 3D4B     		ldr	r3, .L39+8
+ 586 01a8 1B78     		ldrb	r3, [r3]
+ 587 01aa DBB2     		uxtb	r3, r3
+ 588 01ac 1A46     		mov	r2, r3
+ 589 01ae 3A4B     		ldr	r3, .L39+4
+ 590 01b0 1B78     		ldrb	r3, [r3]
+ 591 01b2 DBB2     		uxtb	r3, r3
+ 592 01b4 013B     		subs	r3, r3, #1
+ 593 01b6 02FA03F3 		lsl	r3, r2, r3
+ 594 01ba DAB2     		uxtb	r2, r3
+ 595 01bc 3B4B     		ldr	r3, .L39+24
+ 596 01be 1B78     		ldrb	r3, [r3]
+ 597 01c0 DBB2     		uxtb	r3, r3
+ 598 01c2 DBB2     		uxtb	r3, r3
+ 599 01c4 1343     		orrs	r3, r3, r2
+ 600 01c6 DBB2     		uxtb	r3, r3
+ 601 01c8 DAB2     		uxtb	r2, r3
+ 602 01ca 384B     		ldr	r3, .L39+24
+ 603 01cc 1A70     		strb	r2, [r3]
+ 192:.\mouse_a.c   ****                 bit_count_a++;
+ 604              		.loc 1 192 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 15
+
+
+ 605 01ce 324B     		ldr	r3, .L39+4
+ 606 01d0 1B78     		ldrb	r3, [r3]
+ 607 01d2 DBB2     		uxtb	r3, r3
+ 608 01d4 0133     		adds	r3, r3, #1
+ 609 01d6 DAB2     		uxtb	r2, r3
+ 610 01d8 2F4B     		ldr	r3, .L39+4
+ 611 01da 1A70     		strb	r2, [r3]
+ 612 01dc 51E0     		b	.L31
+ 613              	.L32:
+ 193:.\mouse_a.c   ****             } else if (bit_count_a == 9){
+ 614              		.loc 1 193 0
+ 615 01de 2E4B     		ldr	r3, .L39+4
+ 616 01e0 1B78     		ldrb	r3, [r3]
+ 617 01e2 DBB2     		uxtb	r3, r3
+ 618 01e4 092B     		cmp	r3, #9
+ 619 01e6 07D1     		bne	.L33
+ 194:.\mouse_a.c   ****                 bit_count_a++;
+ 620              		.loc 1 194 0
+ 621 01e8 2B4B     		ldr	r3, .L39+4
+ 622 01ea 1B78     		ldrb	r3, [r3]
+ 623 01ec DBB2     		uxtb	r3, r3
+ 624 01ee 0133     		adds	r3, r3, #1
+ 625 01f0 DAB2     		uxtb	r2, r3
+ 626 01f2 294B     		ldr	r3, .L39+4
+ 627 01f4 1A70     		strb	r2, [r3]
+ 628 01f6 44E0     		b	.L31
+ 629              	.L33:
+ 195:.\mouse_a.c   ****             } else if (bit_count_a == 10){
+ 630              		.loc 1 195 0
+ 631 01f8 274B     		ldr	r3, .L39+4
+ 632 01fa 1B78     		ldrb	r3, [r3]
+ 633 01fc DBB2     		uxtb	r3, r3
+ 634 01fe 0A2B     		cmp	r3, #10
+ 635 0200 3FD1     		bne	.L31
+ 196:.\mouse_a.c   ****                 if (status_a & 0x10){ //X sign bit is set -- moving left
+ 636              		.loc 1 196 0
+ 637 0202 284B     		ldr	r3, .L39+16
+ 638 0204 1B78     		ldrb	r3, [r3]
+ 639 0206 DBB2     		uxtb	r3, r3
+ 640 0208 03F01003 		and	r3, r3, #16
+ 641 020c 002B     		cmp	r3, #0
+ 642 020e 0AD0     		beq	.L34
+ 197:.\mouse_a.c   ****                     loc_x_a -= (255 - mov_x_a);
+ 643              		.loc 1 197 0
+ 644 0210 254B     		ldr	r3, .L39+20
+ 645 0212 1B78     		ldrb	r3, [r3]
+ 646 0214 DBB2     		uxtb	r3, r3
+ 647 0216 A3F1FF02 		sub	r2, r3, #255
+ 648 021a 254B     		ldr	r3, .L39+28
+ 649 021c 1B68     		ldr	r3, [r3]
+ 650 021e 1A44     		add	r2, r2, r3
+ 651 0220 234B     		ldr	r3, .L39+28
+ 652 0222 1A60     		str	r2, [r3]
+ 653 0224 08E0     		b	.L35
+ 654              	.L34:
+ 198:.\mouse_a.c   ****                 } else {
+ 199:.\mouse_a.c   ****                     loc_x_a += mov_x_a;
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 16
+
+
+ 655              		.loc 1 199 0
+ 656 0226 204B     		ldr	r3, .L39+20
+ 657 0228 1B78     		ldrb	r3, [r3]
+ 658 022a DBB2     		uxtb	r3, r3
+ 659 022c 1A46     		mov	r2, r3
+ 660 022e 204B     		ldr	r3, .L39+28
+ 661 0230 1B68     		ldr	r3, [r3]
+ 662 0232 1A44     		add	r2, r2, r3
+ 663 0234 1E4B     		ldr	r3, .L39+28
+ 664 0236 1A60     		str	r2, [r3]
+ 665              	.L35:
+ 200:.\mouse_a.c   ****                 }
+ 201:.\mouse_a.c   ****                 
+ 202:.\mouse_a.c   ****                 if (status_a & 0x20){ //Y sign bit is set -- moving down
+ 666              		.loc 1 202 0
+ 667 0238 1A4B     		ldr	r3, .L39+16
+ 668 023a 1B78     		ldrb	r3, [r3]
+ 669 023c DBB2     		uxtb	r3, r3
+ 670 023e 03F02003 		and	r3, r3, #32
+ 671 0242 002B     		cmp	r3, #0
+ 672 0244 0AD0     		beq	.L36
+ 203:.\mouse_a.c   ****                     loc_y_a -= (255 - mov_y_a);
+ 673              		.loc 1 203 0
+ 674 0246 194B     		ldr	r3, .L39+24
+ 675 0248 1B78     		ldrb	r3, [r3]
+ 676 024a DBB2     		uxtb	r3, r3
+ 677 024c A3F1FF02 		sub	r2, r3, #255
+ 678 0250 184B     		ldr	r3, .L39+32
+ 679 0252 1B68     		ldr	r3, [r3]
+ 680 0254 1A44     		add	r2, r2, r3
+ 681 0256 174B     		ldr	r3, .L39+32
+ 682 0258 1A60     		str	r2, [r3]
+ 683 025a 08E0     		b	.L37
+ 684              	.L36:
+ 204:.\mouse_a.c   ****                 } else {
+ 205:.\mouse_a.c   ****                     loc_y_a += mov_y_a;
+ 685              		.loc 1 205 0
+ 686 025c 134B     		ldr	r3, .L39+24
+ 687 025e 1B78     		ldrb	r3, [r3]
+ 688 0260 DBB2     		uxtb	r3, r3
+ 689 0262 1A46     		mov	r2, r3
+ 690 0264 134B     		ldr	r3, .L39+32
+ 691 0266 1B68     		ldr	r3, [r3]
+ 692 0268 1A44     		add	r2, r2, r3
+ 693 026a 124B     		ldr	r3, .L39+32
+ 694 026c 1A60     		str	r2, [r3]
+ 695              	.L37:
+ 206:.\mouse_a.c   ****                 }
+ 207:.\mouse_a.c   ****                 data_ready_a++;
+ 696              		.loc 1 207 0
+ 697 026e 124B     		ldr	r3, .L39+36
+ 698 0270 1B78     		ldrb	r3, [r3]
+ 699 0272 DBB2     		uxtb	r3, r3
+ 700 0274 0133     		adds	r3, r3, #1
+ 701 0276 DAB2     		uxtb	r2, r3
+ 702 0278 0F4B     		ldr	r3, .L39+36
+ 703 027a 1A70     		strb	r2, [r3]
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 17
+
+
+ 208:.\mouse_a.c   ****                 reset_sclk_a_isr();
+ 704              		.loc 1 208 0
+ 705 027c FFF7FEFF 		bl	reset_sclk_a_isr
+ 209:.\mouse_a.c   ****             }
+ 210:.\mouse_a.c   ****             break;
+ 706              		.loc 1 210 0
+ 707 0280 FFE7     		b	.L38
+ 708              	.L31:
+ 709              	.L38:
+ 710 0282 00BF     		nop
+ 711              	.L18:
+ 211:.\mouse_a.c   ****     }
+ 212:.\mouse_a.c   ****    
+ 213:.\mouse_a.c   ****     time_prev_a = Timer_ReadCounter(); 
+ 712              		.loc 1 213 0
+ 713 0284 FFF7FEFF 		bl	Timer_ReadCounter
+ 714 0288 0246     		mov	r2, r0
+ 715 028a 024B     		ldr	r3, .L39
+ 716 028c 1A60     		str	r2, [r3]
+ 214:.\mouse_a.c   ****     SCLK_A_ClearInterrupt();
+ 717              		.loc 1 214 0
+ 718 028e FFF7FEFF 		bl	SCLK_A_ClearInterrupt
+ 719              	.L14:
+ 215:.\mouse_a.c   ****     
+ 216:.\mouse_a.c   ****     //CHECK_A_Write(0);
+ 217:.\mouse_a.c   **** }
+ 720              		.loc 1 217 0
+ 721 0292 98BD     		pop	{r3, r4, r7, pc}
+ 722              	.L40:
+ 723              		.align	2
+ 724              	.L39:
+ 725 0294 00000000 		.word	time_prev_a
+ 726 0298 00000000 		.word	bit_count_a
+ 727 029c 00000000 		.word	bit_a
+ 728 02a0 00000000 		.word	state_a
+ 729 02a4 00000000 		.word	status_a
+ 730 02a8 00000000 		.word	mov_x_a
+ 731 02ac 00000000 		.word	mov_y_a
+ 732 02b0 00000000 		.word	loc_x_a
+ 733 02b4 00000000 		.word	loc_y_a
+ 734 02b8 00000000 		.word	data_ready_a
+ 735              		.cfi_endproc
+ 736              	.LFE66:
+ 737              		.size	MY_SCLK_A_ISR, .-MY_SCLK_A_ISR
+ 738              		.text
+ 739              	.Letext0:
+ 740              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 741              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 742              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 743              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 744              		.file 6 "Generated_Source\\PSoC5/Camera.h"
+ 745              		.section	.debug_info,"",%progbits
+ 746              	.Ldebug_info0:
+ 747 0000 23020000 		.4byte	0x223
+ 748 0004 0400     		.2byte	0x4
+ 749 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 750 000a 04       		.byte	0x4
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 18
+
+
+ 751 000b 01       		.uleb128 0x1
+ 752 000c 6B010000 		.4byte	.LASF33
+ 753 0010 01       		.byte	0x1
+ 754 0011 57010000 		.4byte	.LASF34
+ 755 0015 80000000 		.4byte	.LASF35
+ 756 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 757 001d 00000000 		.4byte	0
+ 758 0021 00000000 		.4byte	.Ldebug_line0
+ 759 0025 02       		.uleb128 0x2
+ 760 0026 01       		.byte	0x1
+ 761 0027 06       		.byte	0x6
+ 762 0028 42020000 		.4byte	.LASF0
+ 763 002c 02       		.uleb128 0x2
+ 764 002d 01       		.byte	0x1
+ 765 002e 08       		.byte	0x8
+ 766 002f 72000000 		.4byte	.LASF1
+ 767 0033 02       		.uleb128 0x2
+ 768 0034 02       		.byte	0x2
+ 769 0035 05       		.byte	0x5
+ 770 0036 1C020000 		.4byte	.LASF2
+ 771 003a 02       		.uleb128 0x2
+ 772 003b 02       		.byte	0x2
+ 773 003c 07       		.byte	0x7
+ 774 003d 18000000 		.4byte	.LASF3
+ 775 0041 03       		.uleb128 0x3
+ 776 0042 0E000000 		.4byte	.LASF9
+ 777 0046 02       		.byte	0x2
+ 778 0047 37       		.byte	0x37
+ 779 0048 4C000000 		.4byte	0x4c
+ 780 004c 02       		.uleb128 0x2
+ 781 004d 04       		.byte	0x4
+ 782 004e 05       		.byte	0x5
+ 783 004f 39020000 		.4byte	.LASF4
+ 784 0053 02       		.uleb128 0x2
+ 785 0054 04       		.byte	0x4
+ 786 0055 07       		.byte	0x7
+ 787 0056 DB000000 		.4byte	.LASF5
+ 788 005a 02       		.uleb128 0x2
+ 789 005b 08       		.byte	0x8
+ 790 005c 05       		.byte	0x5
+ 791 005d 09020000 		.4byte	.LASF6
+ 792 0061 02       		.uleb128 0x2
+ 793 0062 08       		.byte	0x8
+ 794 0063 07       		.byte	0x7
+ 795 0064 40010000 		.4byte	.LASF7
+ 796 0068 04       		.uleb128 0x4
+ 797 0069 04       		.byte	0x4
+ 798 006a 05       		.byte	0x5
+ 799 006b 696E7400 		.ascii	"int\000"
+ 800 006f 02       		.uleb128 0x2
+ 801 0070 04       		.byte	0x4
+ 802 0071 07       		.byte	0x7
+ 803 0072 2B010000 		.4byte	.LASF8
+ 804 0076 03       		.uleb128 0x3
+ 805 0077 E7010000 		.4byte	.LASF10
+ 806 007b 03       		.byte	0x3
+ 807 007c 41       		.byte	0x41
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 19
+
+
+ 808 007d 41000000 		.4byte	0x41
+ 809 0081 03       		.uleb128 0x3
+ 810 0082 33020000 		.4byte	.LASF11
+ 811 0086 04       		.byte	0x4
+ 812 0087 B3       		.byte	0xb3
+ 813 0088 2C000000 		.4byte	0x2c
+ 814 008c 03       		.uleb128 0x3
+ 815 008d 1B010000 		.4byte	.LASF12
+ 816 0091 04       		.byte	0x4
+ 817 0092 B5       		.byte	0xb5
+ 818 0093 53000000 		.4byte	0x53
+ 819 0097 03       		.uleb128 0x3
+ 820 0098 ED000000 		.4byte	.LASF13
+ 821 009c 04       		.byte	0x4
+ 822 009d B8       		.byte	0xb8
+ 823 009e 4C000000 		.4byte	0x4c
+ 824 00a2 02       		.uleb128 0x2
+ 825 00a3 04       		.byte	0x4
+ 826 00a4 04       		.byte	0x4
+ 827 00a5 67000000 		.4byte	.LASF14
+ 828 00a9 02       		.uleb128 0x2
+ 829 00aa 08       		.byte	0x8
+ 830 00ab 04       		.byte	0x4
+ 831 00ac 31000000 		.4byte	.LASF15
+ 832 00b0 02       		.uleb128 0x2
+ 833 00b1 01       		.byte	0x1
+ 834 00b2 08       		.byte	0x8
+ 835 00b3 17020000 		.4byte	.LASF16
+ 836 00b7 05       		.uleb128 0x5
+ 837 00b8 81000000 		.4byte	0x81
+ 838 00bc 05       		.uleb128 0x5
+ 839 00bd 8C000000 		.4byte	0x8c
+ 840 00c1 02       		.uleb128 0x2
+ 841 00c2 04       		.byte	0x4
+ 842 00c3 07       		.byte	0x7
+ 843 00c4 EF010000 		.4byte	.LASF17
+ 844 00c8 06       		.uleb128 0x6
+ 845 00c9 00000000 		.4byte	.LASF36
+ 846 00cd 01       		.byte	0x1
+ 847 00ce 24       		.byte	0x24
+ 848 00cf 00000000 		.4byte	.LFB63
+ 849 00d3 02010000 		.4byte	.LFE63-.LFB63
+ 850 00d7 01       		.uleb128 0x1
+ 851 00d8 9C       		.byte	0x9c
+ 852 00d9 06010000 		.4byte	0x106
+ 853 00dd 07       		.uleb128 0x7
+ 854 00de 6D000000 		.4byte	.LASF37
+ 855 00e2 01       		.byte	0x1
+ 856 00e3 24       		.byte	0x24
+ 857 00e4 81000000 		.4byte	0x81
+ 858 00e8 02       		.uleb128 0x2
+ 859 00e9 91       		.byte	0x91
+ 860 00ea 6F       		.sleb128 -17
+ 861 00eb 08       		.uleb128 0x8
+ 862 00ec 6900     		.ascii	"i\000"
+ 863 00ee 01       		.byte	0x1
+ 864 00ef 25       		.byte	0x25
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 20
+
+
+ 865 00f0 81000000 		.4byte	0x81
+ 866 00f4 02       		.uleb128 0x2
+ 867 00f5 91       		.byte	0x91
+ 868 00f6 77       		.sleb128 -9
+ 869 00f7 09       		.uleb128 0x9
+ 870 00f8 5A020000 		.4byte	.LASF18
+ 871 00fc 01       		.byte	0x1
+ 872 00fd 26       		.byte	0x26
+ 873 00fe 81000000 		.4byte	0x81
+ 874 0102 02       		.uleb128 0x2
+ 875 0103 91       		.byte	0x91
+ 876 0104 76       		.sleb128 -10
+ 877 0105 00       		.byte	0
+ 878 0106 0A       		.uleb128 0xa
+ 879 0107 00010000 		.4byte	.LASF19
+ 880 010b 01       		.byte	0x1
+ 881 010c 54       		.byte	0x54
+ 882 010d 00000000 		.4byte	.LFB64
+ 883 0111 4C000000 		.4byte	.LFE64-.LFB64
+ 884 0115 01       		.uleb128 0x1
+ 885 0116 9C       		.byte	0x9c
+ 886 0117 0A       		.uleb128 0xa
+ 887 0118 F8010000 		.4byte	.LASF20
+ 888 011c 01       		.byte	0x1
+ 889 011d 7D       		.byte	0x7d
+ 890 011e 00000000 		.4byte	.LFB65
+ 891 0122 48000000 		.4byte	.LFE65-.LFB65
+ 892 0126 01       		.uleb128 0x1
+ 893 0127 9C       		.byte	0x9c
+ 894 0128 0B       		.uleb128 0xb
+ 895 0129 0D010000 		.4byte	.LASF38
+ 896 012d 01       		.byte	0x1
+ 897 012e 86       		.byte	0x86
+ 898 012f 00000000 		.4byte	.LFB66
+ 899 0133 BC020000 		.4byte	.LFE66-.LFB66
+ 900 0137 01       		.uleb128 0x1
+ 901 0138 9C       		.byte	0x9c
+ 902 0139 0C       		.uleb128 0xc
+ 903 013a F3000000 		.4byte	.LASF21
+ 904 013e 05       		.byte	0x5
+ 905 013f 2A06     		.2byte	0x62a
+ 906 0141 45010000 		.4byte	0x145
+ 907 0145 05       		.uleb128 0x5
+ 908 0146 76000000 		.4byte	0x76
+ 909 014a 0D       		.uleb128 0xd
+ 910 014b 81000000 		.4byte	0x81
+ 911 014f 66010000 		.4byte	0x166
+ 912 0153 0E       		.uleb128 0xe
+ 913 0154 C1000000 		.4byte	0xc1
+ 914 0158 8F       		.byte	0x8f
+ 915 0159 0E       		.uleb128 0xe
+ 916 015a C1000000 		.4byte	0xc1
+ 917 015e 57       		.byte	0x57
+ 918 015f 0E       		.uleb128 0xe
+ 919 0160 C1000000 		.4byte	0xc1
+ 920 0164 03       		.byte	0x3
+ 921 0165 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 21
+
+
+ 922 0166 0F       		.uleb128 0xf
+ 923 0167 4C000000 		.4byte	.LASF22
+ 924 016b 06       		.byte	0x6
+ 925 016c 08       		.byte	0x8
+ 926 016d 4A010000 		.4byte	0x14a
+ 927 0171 05       		.uleb128 0x5
+ 928 0172 03       		.byte	0x3
+ 929 0173 00000000 		.4byte	Camera_framebuffer
+ 930 0177 0F       		.uleb128 0xf
+ 931 0178 38000000 		.4byte	.LASF23
+ 932 017c 01       		.byte	0x1
+ 933 017d 14       		.byte	0x14
+ 934 017e B7000000 		.4byte	0xb7
+ 935 0182 05       		.uleb128 0x5
+ 936 0183 03       		.byte	0x3
+ 937 0184 00000000 		.4byte	state_a
+ 938 0188 0F       		.uleb128 0xf
+ 939 0189 40000000 		.4byte	.LASF24
+ 940 018d 01       		.byte	0x1
+ 941 018e 15       		.byte	0x15
+ 942 018f B7000000 		.4byte	0xb7
+ 943 0193 05       		.uleb128 0x5
+ 944 0194 03       		.byte	0x3
+ 945 0195 00000000 		.4byte	bit_count_a
+ 946 0199 0F       		.uleb128 0xf
+ 947 019a 2B000000 		.4byte	.LASF25
+ 948 019e 01       		.byte	0x1
+ 949 019f 17       		.byte	0x17
+ 950 01a0 B7000000 		.4byte	0xb7
+ 951 01a4 05       		.uleb128 0x5
+ 952 01a5 03       		.byte	0x3
+ 953 01a6 00000000 		.4byte	bit_a
+ 954 01aa 0F       		.uleb128 0xf
+ 955 01ab 22010000 		.4byte	.LASF26
+ 956 01af 01       		.byte	0x1
+ 957 01b0 19       		.byte	0x19
+ 958 01b1 B7000000 		.4byte	0xb7
+ 959 01b5 05       		.uleb128 0x5
+ 960 01b6 03       		.byte	0x3
+ 961 01b7 00000000 		.4byte	status_a
+ 962 01bb 0F       		.uleb128 0xf
+ 963 01bc 5F000000 		.4byte	.LASF27
+ 964 01c0 01       		.byte	0x1
+ 965 01c1 1A       		.byte	0x1a
+ 966 01c2 B7000000 		.4byte	0xb7
+ 967 01c6 05       		.uleb128 0x5
+ 968 01c7 03       		.byte	0x3
+ 969 01c8 00000000 		.4byte	mov_x_a
+ 970 01cc 0F       		.uleb128 0xf
+ 971 01cd 38010000 		.4byte	.LASF28
+ 972 01d1 01       		.byte	0x1
+ 973 01d2 1B       		.byte	0x1b
+ 974 01d3 B7000000 		.4byte	0xb7
+ 975 01d7 05       		.uleb128 0x5
+ 976 01d8 03       		.byte	0x3
+ 977 01d9 00000000 		.4byte	mov_y_a
+ 978 01dd 0F       		.uleb128 0xf
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 22
+
+
+ 979 01de 63010000 		.4byte	.LASF29
+ 980 01e2 01       		.byte	0x1
+ 981 01e3 1D       		.byte	0x1d
+ 982 01e4 EE010000 		.4byte	0x1ee
+ 983 01e8 05       		.uleb128 0x5
+ 984 01e9 03       		.byte	0x3
+ 985 01ea 00000000 		.4byte	loc_x_a
+ 986 01ee 05       		.uleb128 0x5
+ 987 01ef 97000000 		.4byte	0x97
+ 988 01f3 0F       		.uleb128 0xf
+ 989 01f4 61020000 		.4byte	.LASF30
+ 990 01f8 01       		.byte	0x1
+ 991 01f9 1E       		.byte	0x1e
+ 992 01fa EE010000 		.4byte	0x1ee
+ 993 01fe 05       		.uleb128 0x5
+ 994 01ff 03       		.byte	0x3
+ 995 0200 00000000 		.4byte	loc_y_a
+ 996 0204 0F       		.uleb128 0xf
+ 997 0205 26020000 		.4byte	.LASF31
+ 998 0209 01       		.byte	0x1
+ 999 020a 20       		.byte	0x20
+ 1000 020b B7000000 		.4byte	0xb7
+ 1001 020f 05       		.uleb128 0x5
+ 1002 0210 03       		.byte	0x3
+ 1003 0211 00000000 		.4byte	data_ready_a
+ 1004 0215 0F       		.uleb128 0xf
+ 1005 0216 4E020000 		.4byte	.LASF32
+ 1006 021a 01       		.byte	0x1
+ 1007 021b 22       		.byte	0x22
+ 1008 021c BC000000 		.4byte	0xbc
+ 1009 0220 05       		.uleb128 0x5
+ 1010 0221 03       		.byte	0x3
+ 1011 0222 00000000 		.4byte	time_prev_a
+ 1012 0226 00       		.byte	0
+ 1013              		.section	.debug_abbrev,"",%progbits
+ 1014              	.Ldebug_abbrev0:
+ 1015 0000 01       		.uleb128 0x1
+ 1016 0001 11       		.uleb128 0x11
+ 1017 0002 01       		.byte	0x1
+ 1018 0003 25       		.uleb128 0x25
+ 1019 0004 0E       		.uleb128 0xe
+ 1020 0005 13       		.uleb128 0x13
+ 1021 0006 0B       		.uleb128 0xb
+ 1022 0007 03       		.uleb128 0x3
+ 1023 0008 0E       		.uleb128 0xe
+ 1024 0009 1B       		.uleb128 0x1b
+ 1025 000a 0E       		.uleb128 0xe
+ 1026 000b 55       		.uleb128 0x55
+ 1027 000c 17       		.uleb128 0x17
+ 1028 000d 11       		.uleb128 0x11
+ 1029 000e 01       		.uleb128 0x1
+ 1030 000f 10       		.uleb128 0x10
+ 1031 0010 17       		.uleb128 0x17
+ 1032 0011 00       		.byte	0
+ 1033 0012 00       		.byte	0
+ 1034 0013 02       		.uleb128 0x2
+ 1035 0014 24       		.uleb128 0x24
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 23
+
+
+ 1036 0015 00       		.byte	0
+ 1037 0016 0B       		.uleb128 0xb
+ 1038 0017 0B       		.uleb128 0xb
+ 1039 0018 3E       		.uleb128 0x3e
+ 1040 0019 0B       		.uleb128 0xb
+ 1041 001a 03       		.uleb128 0x3
+ 1042 001b 0E       		.uleb128 0xe
+ 1043 001c 00       		.byte	0
+ 1044 001d 00       		.byte	0
+ 1045 001e 03       		.uleb128 0x3
+ 1046 001f 16       		.uleb128 0x16
+ 1047 0020 00       		.byte	0
+ 1048 0021 03       		.uleb128 0x3
+ 1049 0022 0E       		.uleb128 0xe
+ 1050 0023 3A       		.uleb128 0x3a
+ 1051 0024 0B       		.uleb128 0xb
+ 1052 0025 3B       		.uleb128 0x3b
+ 1053 0026 0B       		.uleb128 0xb
+ 1054 0027 49       		.uleb128 0x49
+ 1055 0028 13       		.uleb128 0x13
+ 1056 0029 00       		.byte	0
+ 1057 002a 00       		.byte	0
+ 1058 002b 04       		.uleb128 0x4
+ 1059 002c 24       		.uleb128 0x24
+ 1060 002d 00       		.byte	0
+ 1061 002e 0B       		.uleb128 0xb
+ 1062 002f 0B       		.uleb128 0xb
+ 1063 0030 3E       		.uleb128 0x3e
+ 1064 0031 0B       		.uleb128 0xb
+ 1065 0032 03       		.uleb128 0x3
+ 1066 0033 08       		.uleb128 0x8
+ 1067 0034 00       		.byte	0
+ 1068 0035 00       		.byte	0
+ 1069 0036 05       		.uleb128 0x5
+ 1070 0037 35       		.uleb128 0x35
+ 1071 0038 00       		.byte	0
+ 1072 0039 49       		.uleb128 0x49
+ 1073 003a 13       		.uleb128 0x13
+ 1074 003b 00       		.byte	0
+ 1075 003c 00       		.byte	0
+ 1076 003d 06       		.uleb128 0x6
+ 1077 003e 2E       		.uleb128 0x2e
+ 1078 003f 01       		.byte	0x1
+ 1079 0040 3F       		.uleb128 0x3f
+ 1080 0041 19       		.uleb128 0x19
+ 1081 0042 03       		.uleb128 0x3
+ 1082 0043 0E       		.uleb128 0xe
+ 1083 0044 3A       		.uleb128 0x3a
+ 1084 0045 0B       		.uleb128 0xb
+ 1085 0046 3B       		.uleb128 0x3b
+ 1086 0047 0B       		.uleb128 0xb
+ 1087 0048 27       		.uleb128 0x27
+ 1088 0049 19       		.uleb128 0x19
+ 1089 004a 11       		.uleb128 0x11
+ 1090 004b 01       		.uleb128 0x1
+ 1091 004c 12       		.uleb128 0x12
+ 1092 004d 06       		.uleb128 0x6
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 24
+
+
+ 1093 004e 40       		.uleb128 0x40
+ 1094 004f 18       		.uleb128 0x18
+ 1095 0050 9642     		.uleb128 0x2116
+ 1096 0052 19       		.uleb128 0x19
+ 1097 0053 01       		.uleb128 0x1
+ 1098 0054 13       		.uleb128 0x13
+ 1099 0055 00       		.byte	0
+ 1100 0056 00       		.byte	0
+ 1101 0057 07       		.uleb128 0x7
+ 1102 0058 05       		.uleb128 0x5
+ 1103 0059 00       		.byte	0
+ 1104 005a 03       		.uleb128 0x3
+ 1105 005b 0E       		.uleb128 0xe
+ 1106 005c 3A       		.uleb128 0x3a
+ 1107 005d 0B       		.uleb128 0xb
+ 1108 005e 3B       		.uleb128 0x3b
+ 1109 005f 0B       		.uleb128 0xb
+ 1110 0060 49       		.uleb128 0x49
+ 1111 0061 13       		.uleb128 0x13
+ 1112 0062 02       		.uleb128 0x2
+ 1113 0063 18       		.uleb128 0x18
+ 1114 0064 00       		.byte	0
+ 1115 0065 00       		.byte	0
+ 1116 0066 08       		.uleb128 0x8
+ 1117 0067 34       		.uleb128 0x34
+ 1118 0068 00       		.byte	0
+ 1119 0069 03       		.uleb128 0x3
+ 1120 006a 08       		.uleb128 0x8
+ 1121 006b 3A       		.uleb128 0x3a
+ 1122 006c 0B       		.uleb128 0xb
+ 1123 006d 3B       		.uleb128 0x3b
+ 1124 006e 0B       		.uleb128 0xb
+ 1125 006f 49       		.uleb128 0x49
+ 1126 0070 13       		.uleb128 0x13
+ 1127 0071 02       		.uleb128 0x2
+ 1128 0072 18       		.uleb128 0x18
+ 1129 0073 00       		.byte	0
+ 1130 0074 00       		.byte	0
+ 1131 0075 09       		.uleb128 0x9
+ 1132 0076 34       		.uleb128 0x34
+ 1133 0077 00       		.byte	0
+ 1134 0078 03       		.uleb128 0x3
+ 1135 0079 0E       		.uleb128 0xe
+ 1136 007a 3A       		.uleb128 0x3a
+ 1137 007b 0B       		.uleb128 0xb
+ 1138 007c 3B       		.uleb128 0x3b
+ 1139 007d 0B       		.uleb128 0xb
+ 1140 007e 49       		.uleb128 0x49
+ 1141 007f 13       		.uleb128 0x13
+ 1142 0080 02       		.uleb128 0x2
+ 1143 0081 18       		.uleb128 0x18
+ 1144 0082 00       		.byte	0
+ 1145 0083 00       		.byte	0
+ 1146 0084 0A       		.uleb128 0xa
+ 1147 0085 2E       		.uleb128 0x2e
+ 1148 0086 00       		.byte	0
+ 1149 0087 3F       		.uleb128 0x3f
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 25
+
+
+ 1150 0088 19       		.uleb128 0x19
+ 1151 0089 03       		.uleb128 0x3
+ 1152 008a 0E       		.uleb128 0xe
+ 1153 008b 3A       		.uleb128 0x3a
+ 1154 008c 0B       		.uleb128 0xb
+ 1155 008d 3B       		.uleb128 0x3b
+ 1156 008e 0B       		.uleb128 0xb
+ 1157 008f 11       		.uleb128 0x11
+ 1158 0090 01       		.uleb128 0x1
+ 1159 0091 12       		.uleb128 0x12
+ 1160 0092 06       		.uleb128 0x6
+ 1161 0093 40       		.uleb128 0x40
+ 1162 0094 18       		.uleb128 0x18
+ 1163 0095 9642     		.uleb128 0x2116
+ 1164 0097 19       		.uleb128 0x19
+ 1165 0098 00       		.byte	0
+ 1166 0099 00       		.byte	0
+ 1167 009a 0B       		.uleb128 0xb
+ 1168 009b 2E       		.uleb128 0x2e
+ 1169 009c 00       		.byte	0
+ 1170 009d 3F       		.uleb128 0x3f
+ 1171 009e 19       		.uleb128 0x19
+ 1172 009f 03       		.uleb128 0x3
+ 1173 00a0 0E       		.uleb128 0xe
+ 1174 00a1 3A       		.uleb128 0x3a
+ 1175 00a2 0B       		.uleb128 0xb
+ 1176 00a3 3B       		.uleb128 0x3b
+ 1177 00a4 0B       		.uleb128 0xb
+ 1178 00a5 27       		.uleb128 0x27
+ 1179 00a6 19       		.uleb128 0x19
+ 1180 00a7 11       		.uleb128 0x11
+ 1181 00a8 01       		.uleb128 0x1
+ 1182 00a9 12       		.uleb128 0x12
+ 1183 00aa 06       		.uleb128 0x6
+ 1184 00ab 40       		.uleb128 0x40
+ 1185 00ac 18       		.uleb128 0x18
+ 1186 00ad 9642     		.uleb128 0x2116
+ 1187 00af 19       		.uleb128 0x19
+ 1188 00b0 00       		.byte	0
+ 1189 00b1 00       		.byte	0
+ 1190 00b2 0C       		.uleb128 0xc
+ 1191 00b3 34       		.uleb128 0x34
+ 1192 00b4 00       		.byte	0
+ 1193 00b5 03       		.uleb128 0x3
+ 1194 00b6 0E       		.uleb128 0xe
+ 1195 00b7 3A       		.uleb128 0x3a
+ 1196 00b8 0B       		.uleb128 0xb
+ 1197 00b9 3B       		.uleb128 0x3b
+ 1198 00ba 05       		.uleb128 0x5
+ 1199 00bb 49       		.uleb128 0x49
+ 1200 00bc 13       		.uleb128 0x13
+ 1201 00bd 3F       		.uleb128 0x3f
+ 1202 00be 19       		.uleb128 0x19
+ 1203 00bf 3C       		.uleb128 0x3c
+ 1204 00c0 19       		.uleb128 0x19
+ 1205 00c1 00       		.byte	0
+ 1206 00c2 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 26
+
+
+ 1207 00c3 0D       		.uleb128 0xd
+ 1208 00c4 01       		.uleb128 0x1
+ 1209 00c5 01       		.byte	0x1
+ 1210 00c6 49       		.uleb128 0x49
+ 1211 00c7 13       		.uleb128 0x13
+ 1212 00c8 01       		.uleb128 0x1
+ 1213 00c9 13       		.uleb128 0x13
+ 1214 00ca 00       		.byte	0
+ 1215 00cb 00       		.byte	0
+ 1216 00cc 0E       		.uleb128 0xe
+ 1217 00cd 21       		.uleb128 0x21
+ 1218 00ce 00       		.byte	0
+ 1219 00cf 49       		.uleb128 0x49
+ 1220 00d0 13       		.uleb128 0x13
+ 1221 00d1 2F       		.uleb128 0x2f
+ 1222 00d2 0B       		.uleb128 0xb
+ 1223 00d3 00       		.byte	0
+ 1224 00d4 00       		.byte	0
+ 1225 00d5 0F       		.uleb128 0xf
+ 1226 00d6 34       		.uleb128 0x34
+ 1227 00d7 00       		.byte	0
+ 1228 00d8 03       		.uleb128 0x3
+ 1229 00d9 0E       		.uleb128 0xe
+ 1230 00da 3A       		.uleb128 0x3a
+ 1231 00db 0B       		.uleb128 0xb
+ 1232 00dc 3B       		.uleb128 0x3b
+ 1233 00dd 0B       		.uleb128 0xb
+ 1234 00de 49       		.uleb128 0x49
+ 1235 00df 13       		.uleb128 0x13
+ 1236 00e0 3F       		.uleb128 0x3f
+ 1237 00e1 19       		.uleb128 0x19
+ 1238 00e2 02       		.uleb128 0x2
+ 1239 00e3 18       		.uleb128 0x18
+ 1240 00e4 00       		.byte	0
+ 1241 00e5 00       		.byte	0
+ 1242 00e6 00       		.byte	0
+ 1243              		.section	.debug_aranges,"",%progbits
+ 1244 0000 34000000 		.4byte	0x34
+ 1245 0004 0200     		.2byte	0x2
+ 1246 0006 00000000 		.4byte	.Ldebug_info0
+ 1247 000a 04       		.byte	0x4
+ 1248 000b 00       		.byte	0
+ 1249 000c 0000     		.2byte	0
+ 1250 000e 0000     		.2byte	0
+ 1251 0010 00000000 		.4byte	.LFB63
+ 1252 0014 02010000 		.4byte	.LFE63-.LFB63
+ 1253 0018 00000000 		.4byte	.LFB64
+ 1254 001c 4C000000 		.4byte	.LFE64-.LFB64
+ 1255 0020 00000000 		.4byte	.LFB65
+ 1256 0024 48000000 		.4byte	.LFE65-.LFB65
+ 1257 0028 00000000 		.4byte	.LFB66
+ 1258 002c BC020000 		.4byte	.LFE66-.LFB66
+ 1259 0030 00000000 		.4byte	0
+ 1260 0034 00000000 		.4byte	0
+ 1261              		.section	.debug_ranges,"",%progbits
+ 1262              	.Ldebug_ranges0:
+ 1263 0000 00000000 		.4byte	.LFB63
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 27
+
+
+ 1264 0004 02010000 		.4byte	.LFE63
+ 1265 0008 00000000 		.4byte	.LFB64
+ 1266 000c 4C000000 		.4byte	.LFE64
+ 1267 0010 00000000 		.4byte	.LFB65
+ 1268 0014 48000000 		.4byte	.LFE65
+ 1269 0018 00000000 		.4byte	.LFB66
+ 1270 001c BC020000 		.4byte	.LFE66
+ 1271 0020 00000000 		.4byte	0
+ 1272 0024 00000000 		.4byte	0
+ 1273              		.section	.debug_line,"",%progbits
+ 1274              	.Ldebug_line0:
+ 1275 0000 35020000 		.section	.debug_str,"MS",%progbits,1
+ 1275      02005801 
+ 1275      00000201 
+ 1275      FB0E0D00 
+ 1275      01010101 
+ 1276              	.LASF36:
+ 1277 0000 6D6F7573 		.ascii	"mouse_a_write\000"
+ 1277      655F615F 
+ 1277      77726974 
+ 1277      6500
+ 1278              	.LASF9:
+ 1279 000e 5F5F696E 		.ascii	"__int32_t\000"
+ 1279      7433325F 
+ 1279      7400
+ 1280              	.LASF3:
+ 1281 0018 73686F72 		.ascii	"short unsigned int\000"
+ 1281      7420756E 
+ 1281      7369676E 
+ 1281      65642069 
+ 1281      6E7400
+ 1282              	.LASF25:
+ 1283 002b 6269745F 		.ascii	"bit_a\000"
+ 1283      6100
+ 1284              	.LASF15:
+ 1285 0031 646F7562 		.ascii	"double\000"
+ 1285      6C6500
+ 1286              	.LASF23:
+ 1287 0038 73746174 		.ascii	"state_a\000"
+ 1287      655F6100 
+ 1288              	.LASF24:
+ 1289 0040 6269745F 		.ascii	"bit_count_a\000"
+ 1289      636F756E 
+ 1289      745F6100 
+ 1290              	.LASF22:
+ 1291 004c 43616D65 		.ascii	"Camera_framebuffer\000"
+ 1291      72615F66 
+ 1291      72616D65 
+ 1291      62756666 
+ 1291      657200
+ 1292              	.LASF27:
+ 1293 005f 6D6F765F 		.ascii	"mov_x_a\000"
+ 1293      785F6100 
+ 1294              	.LASF14:
+ 1295 0067 666C6F61 		.ascii	"float\000"
+ 1295      7400
+ 1296              	.LASF37:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 28
+
+
+ 1297 006d 64617461 		.ascii	"data\000"
+ 1297      00
+ 1298              	.LASF1:
+ 1299 0072 756E7369 		.ascii	"unsigned char\000"
+ 1299      676E6564 
+ 1299      20636861 
+ 1299      7200
+ 1300              	.LASF35:
+ 1301 0080 433A5C55 		.ascii	"C:\\Users\\xavieran\\Desktop\\ECE3091\\WorkingCamer"
+ 1301      73657273 
+ 1301      5C786176 
+ 1301      69657261 
+ 1301      6E5C4465 
+ 1302 00ae 615C576F 		.ascii	"a\\Working-Camera-And-Other\\camera_test.cydsn\000"
+ 1302      726B696E 
+ 1302      672D4361 
+ 1302      6D657261 
+ 1302      2D416E64 
+ 1303              	.LASF5:
+ 1304 00db 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1304      20756E73 
+ 1304      69676E65 
+ 1304      6420696E 
+ 1304      7400
+ 1305              	.LASF13:
+ 1306 00ed 696E7433 		.ascii	"int32\000"
+ 1306      3200
+ 1307              	.LASF21:
+ 1308 00f3 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1308      52784275 
+ 1308      66666572 
+ 1308      00
+ 1309              	.LASF19:
+ 1310 0100 6D6F7573 		.ascii	"mouse_a_init\000"
+ 1310      655F615F 
+ 1310      696E6974 
+ 1310      00
+ 1311              	.LASF38:
+ 1312 010d 4D595F53 		.ascii	"MY_SCLK_A_ISR\000"
+ 1312      434C4B5F 
+ 1312      415F4953 
+ 1312      5200
+ 1313              	.LASF12:
+ 1314 011b 75696E74 		.ascii	"uint32\000"
+ 1314      333200
+ 1315              	.LASF26:
+ 1316 0122 73746174 		.ascii	"status_a\000"
+ 1316      75735F61 
+ 1316      00
+ 1317              	.LASF8:
+ 1318 012b 756E7369 		.ascii	"unsigned int\000"
+ 1318      676E6564 
+ 1318      20696E74 
+ 1318      00
+ 1319              	.LASF28:
+ 1320 0138 6D6F765F 		.ascii	"mov_y_a\000"
+ 1320      795F6100 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 29
+
+
+ 1321              	.LASF7:
+ 1322 0140 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1322      206C6F6E 
+ 1322      6720756E 
+ 1322      7369676E 
+ 1322      65642069 
+ 1323              	.LASF34:
+ 1324 0157 2E5C6D6F 		.ascii	".\\mouse_a.c\000"
+ 1324      7573655F 
+ 1324      612E6300 
+ 1325              	.LASF29:
+ 1326 0163 6C6F635F 		.ascii	"loc_x_a\000"
+ 1326      785F6100 
+ 1327              	.LASF33:
+ 1328 016b 474E5520 		.ascii	"GNU C 4.8.4 20140526 (release) [ARM/embedded-4_8-br"
+ 1328      4320342E 
+ 1328      382E3420 
+ 1328      32303134 
+ 1328      30353236 
+ 1329 019e 616E6368 		.ascii	"anch revision 211358] -mcpu=cortex-m3 -mthumb -g -O"
+ 1329      20726576 
+ 1329      6973696F 
+ 1329      6E203231 
+ 1329      31333538 
+ 1330 01d1 30202D66 		.ascii	"0 -ffunction-sections\000"
+ 1330      66756E63 
+ 1330      74696F6E 
+ 1330      2D736563 
+ 1330      74696F6E 
+ 1331              	.LASF10:
+ 1332 01e7 696E7433 		.ascii	"int32_t\000"
+ 1332      325F7400 
+ 1333              	.LASF17:
+ 1334 01ef 73697A65 		.ascii	"sizetype\000"
+ 1334      74797065 
+ 1334      00
+ 1335              	.LASF20:
+ 1336 01f8 72657365 		.ascii	"reset_sclk_a_isr\000"
+ 1336      745F7363 
+ 1336      6C6B5F61 
+ 1336      5F697372 
+ 1336      00
+ 1337              	.LASF6:
+ 1338 0209 6C6F6E67 		.ascii	"long long int\000"
+ 1338      206C6F6E 
+ 1338      6720696E 
+ 1338      7400
+ 1339              	.LASF16:
+ 1340 0217 63686172 		.ascii	"char\000"
+ 1340      00
+ 1341              	.LASF2:
+ 1342 021c 73686F72 		.ascii	"short int\000"
+ 1342      7420696E 
+ 1342      7400
+ 1343              	.LASF31:
+ 1344 0226 64617461 		.ascii	"data_ready_a\000"
+ 1344      5F726561 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc31wF2C.s 			page 30
+
+
+ 1344      64795F61 
+ 1344      00
+ 1345              	.LASF11:
+ 1346 0233 75696E74 		.ascii	"uint8\000"
+ 1346      3800
+ 1347              	.LASF4:
+ 1348 0239 6C6F6E67 		.ascii	"long int\000"
+ 1348      20696E74 
+ 1348      00
+ 1349              	.LASF0:
+ 1350 0242 7369676E 		.ascii	"signed char\000"
+ 1350      65642063 
+ 1350      68617200 
+ 1351              	.LASF32:
+ 1352 024e 74696D65 		.ascii	"time_prev_a\000"
+ 1352      5F707265 
+ 1352      765F6100 
+ 1353              	.LASF18:
+ 1354 025a 70617269 		.ascii	"parity\000"
+ 1354      747900
+ 1355              	.LASF30:
+ 1356 0261 6C6F635F 		.ascii	"loc_y_a\000"
+ 1356      795F6100 
+ 1357              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.8.4 20140526 (release) [ARM/embedded-4_8-br

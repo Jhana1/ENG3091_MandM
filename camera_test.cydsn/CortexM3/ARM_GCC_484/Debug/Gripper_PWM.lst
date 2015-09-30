@@ -1,0 +1,2429 @@
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"Gripper_PWM.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.global	Gripper_PWM_initVar
+  19              		.bss
+  20              		.type	Gripper_PWM_initVar, %object
+  21              		.size	Gripper_PWM_initVar, 1
+  22              	Gripper_PWM_initVar:
+  23 0000 00       		.space	1
+  24              		.section	.text.Gripper_PWM_Start,"ax",%progbits
+  25              		.align	2
+  26              		.global	Gripper_PWM_Start
+  27              		.thumb
+  28              		.thumb_func
+  29              		.type	Gripper_PWM_Start, %function
+  30              	Gripper_PWM_Start:
+  31              	.LFB0:
+  32              		.file 1 ".\\Generated_Source\\PSoC5\\Gripper_PWM.c"
+   1:.\Generated_Source\PSoC5/Gripper_PWM.c **** /*******************************************************************************
+   2:.\Generated_Source\PSoC5/Gripper_PWM.c **** * File Name: Gripper_PWM.c
+   3:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Version 3.30
+   4:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+   5:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Description:
+   6:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  The PWM User Module consist of an 8 or 16-bit counter with two 8 or 16-bit
+   7:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  comparitors. Each instance of this user module is capable of generating
+   8:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  two PWM outputs with the same period. The pulse width is selectable between
+   9:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  1 and 255/65535. The period is selectable between 2 and 255/65536 clocks.
+  10:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  The compare value output may be configured to be active when the present
+  11:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  counter is less than or less than/equal to the compare value.
+  12:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  A terminal count output is also provided. It generates a pulse one clock
+  13:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  width wide when the counter is equal to zero.
+  14:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+  15:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Note:
+  16:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+  17:.\Generated_Source\PSoC5/Gripper_PWM.c **** *******************************************************************************
+  18:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Copyright 2008-2014, Cypress Semiconductor Corporation.  All rights reserved.
+  19:.\Generated_Source\PSoC5/Gripper_PWM.c **** * You may use this file only in accordance with the license, terms, conditions,
+  20:.\Generated_Source\PSoC5/Gripper_PWM.c **** * disclaimers, and limitations in the end user license agreement accompanying
+  21:.\Generated_Source\PSoC5/Gripper_PWM.c **** * the software package with which this file was provided.
+  22:.\Generated_Source\PSoC5/Gripper_PWM.c **** ********************************************************************************/
+  23:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+  24:.\Generated_Source\PSoC5/Gripper_PWM.c **** #include "Gripper_PWM.h"
+  25:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 2
+
+
+  26:.\Generated_Source\PSoC5/Gripper_PWM.c **** /* Error message for removed <resource> through optimization */
+  27:.\Generated_Source\PSoC5/Gripper_PWM.c **** #ifdef Gripper_PWM_PWMUDB_genblk1_ctrlreg__REMOVED
+  28:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #error PWM_v3_30 detected with a constant 0 for the enable or \
+  29:.\Generated_Source\PSoC5/Gripper_PWM.c ****          constant 1 for reset. This will prevent the component from operating.
+  30:.\Generated_Source\PSoC5/Gripper_PWM.c **** #endif /* Gripper_PWM_PWMUDB_genblk1_ctrlreg__REMOVED */
+  31:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+  32:.\Generated_Source\PSoC5/Gripper_PWM.c **** uint8 Gripper_PWM_initVar = 0u;
+  33:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+  34:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+  35:.\Generated_Source\PSoC5/Gripper_PWM.c **** /*******************************************************************************
+  36:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Function Name: Gripper_PWM_Start
+  37:.\Generated_Source\PSoC5/Gripper_PWM.c **** ********************************************************************************
+  38:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+  39:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Summary:
+  40:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  The start function initializes the pwm with the default values, the
+  41:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  enables the counter to begin counting.  It does not enable interrupts,
+  42:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  the EnableInt command should be called if interrupt generation is required.
+  43:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+  44:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Parameters:
+  45:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  None
+  46:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+  47:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Return:
+  48:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  None
+  49:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+  50:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Global variables:
+  51:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  Gripper_PWM_initVar: Is modified when this function is called for the
+  52:.\Generated_Source\PSoC5/Gripper_PWM.c **** *   first time. Is used to ensure that initialization happens only once.
+  53:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+  54:.\Generated_Source\PSoC5/Gripper_PWM.c **** *******************************************************************************/
+  55:.\Generated_Source\PSoC5/Gripper_PWM.c **** void Gripper_PWM_Start(void) 
+  56:.\Generated_Source\PSoC5/Gripper_PWM.c **** {
+  33              		.loc 1 56 0
+  34              		.cfi_startproc
+  35              		@ args = 0, pretend = 0, frame = 0
+  36              		@ frame_needed = 1, uses_anonymous_args = 0
+  37 0000 80B5     		push	{r7, lr}
+  38              		.cfi_def_cfa_offset 8
+  39              		.cfi_offset 7, -8
+  40              		.cfi_offset 14, -4
+  41 0002 00AF     		add	r7, sp, #0
+  42              		.cfi_def_cfa_register 7
+  57:.\Generated_Source\PSoC5/Gripper_PWM.c ****     /* If not Initialized then initialize all required hardware and software */
+  58:.\Generated_Source\PSoC5/Gripper_PWM.c ****     if(Gripper_PWM_initVar == 0u)
+  43              		.loc 1 58 0
+  44 0004 054B     		ldr	r3, .L3
+  45 0006 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  46 0008 002B     		cmp	r3, #0
+  47 000a 04D1     		bne	.L2
+  59:.\Generated_Source\PSoC5/Gripper_PWM.c ****     {
+  60:.\Generated_Source\PSoC5/Gripper_PWM.c ****         Gripper_PWM_Init();
+  48              		.loc 1 60 0
+  49 000c FFF7FEFF 		bl	Gripper_PWM_Init
+  61:.\Generated_Source\PSoC5/Gripper_PWM.c ****         Gripper_PWM_initVar = 1u;
+  50              		.loc 1 61 0
+  51 0010 024B     		ldr	r3, .L3
+  52 0012 0122     		movs	r2, #1
+  53 0014 1A70     		strb	r2, [r3]
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 3
+
+
+  54              	.L2:
+  62:.\Generated_Source\PSoC5/Gripper_PWM.c ****     }
+  63:.\Generated_Source\PSoC5/Gripper_PWM.c ****     Gripper_PWM_Enable();
+  55              		.loc 1 63 0
+  56 0016 FFF7FEFF 		bl	Gripper_PWM_Enable
+  64:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+  65:.\Generated_Source\PSoC5/Gripper_PWM.c **** }
+  57              		.loc 1 65 0
+  58 001a 80BD     		pop	{r7, pc}
+  59              	.L4:
+  60              		.align	2
+  61              	.L3:
+  62 001c 00000000 		.word	Gripper_PWM_initVar
+  63              		.cfi_endproc
+  64              	.LFE0:
+  65              		.size	Gripper_PWM_Start, .-Gripper_PWM_Start
+  66              		.section	.text.Gripper_PWM_Init,"ax",%progbits
+  67              		.align	2
+  68              		.global	Gripper_PWM_Init
+  69              		.thumb
+  70              		.thumb_func
+  71              		.type	Gripper_PWM_Init, %function
+  72              	Gripper_PWM_Init:
+  73              	.LFB1:
+  66:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+  67:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+  68:.\Generated_Source\PSoC5/Gripper_PWM.c **** /*******************************************************************************
+  69:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Function Name: Gripper_PWM_Init
+  70:.\Generated_Source\PSoC5/Gripper_PWM.c **** ********************************************************************************
+  71:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+  72:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Summary:
+  73:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  Initialize component's parameters to the parameters set by user in the
+  74:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  customizer of the component placed onto schematic. Usually called in
+  75:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  Gripper_PWM_Start().
+  76:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+  77:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Parameters:
+  78:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  None
+  79:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+  80:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Return:
+  81:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  None
+  82:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+  83:.\Generated_Source\PSoC5/Gripper_PWM.c **** *******************************************************************************/
+  84:.\Generated_Source\PSoC5/Gripper_PWM.c **** void Gripper_PWM_Init(void) 
+  85:.\Generated_Source\PSoC5/Gripper_PWM.c **** {
+  74              		.loc 1 85 0
+  75              		.cfi_startproc
+  76              		@ args = 0, pretend = 0, frame = 8
+  77              		@ frame_needed = 1, uses_anonymous_args = 0
+  78 0000 80B5     		push	{r7, lr}
+  79              		.cfi_def_cfa_offset 8
+  80              		.cfi_offset 7, -8
+  81              		.cfi_offset 14, -4
+  82 0002 82B0     		sub	sp, sp, #8
+  83              		.cfi_def_cfa_offset 16
+  84 0004 00AF     		add	r7, sp, #0
+  85              		.cfi_def_cfa_register 7
+  86:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #if (Gripper_PWM_UsingFixedFunction || Gripper_PWM_UseControl)
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 4
+
+
+  87:.\Generated_Source\PSoC5/Gripper_PWM.c ****         uint8 ctrl;
+  88:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #endif /* (Gripper_PWM_UsingFixedFunction || Gripper_PWM_UseControl) */
+  89:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+  90:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #if(!Gripper_PWM_UsingFixedFunction)
+  91:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #if(Gripper_PWM_UseStatus)
+  92:.\Generated_Source\PSoC5/Gripper_PWM.c ****             /* Interrupt State Backup for Critical Region*/
+  93:.\Generated_Source\PSoC5/Gripper_PWM.c ****             uint8 Gripper_PWM_interruptState;
+  94:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #endif /* (Gripper_PWM_UseStatus) */
+  95:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #endif /* (!Gripper_PWM_UsingFixedFunction) */
+  96:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+  97:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #if (Gripper_PWM_UsingFixedFunction)
+  98:.\Generated_Source\PSoC5/Gripper_PWM.c ****         /* You are allowed to write the compare value (FF only) */
+  99:.\Generated_Source\PSoC5/Gripper_PWM.c ****         Gripper_PWM_CONTROL |= Gripper_PWM_CFG0_MODE;
+  86              		.loc 1 99 0
+  87 0006 284B     		ldr	r3, .L6
+  88 0008 274A     		ldr	r2, .L6
+  89 000a 1278     		ldrb	r2, [r2]
+  90 000c D2B2     		uxtb	r2, r2
+  91 000e 42F00202 		orr	r2, r2, #2
+  92 0012 D2B2     		uxtb	r2, r2
+  93 0014 1A70     		strb	r2, [r3]
+ 100:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #if (Gripper_PWM_DeadBand2_4)
+ 101:.\Generated_Source\PSoC5/Gripper_PWM.c ****             Gripper_PWM_CONTROL |= Gripper_PWM_CFG0_DB;
+ 102:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #endif /* (Gripper_PWM_DeadBand2_4) */
+ 103:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 104:.\Generated_Source\PSoC5/Gripper_PWM.c ****         ctrl = Gripper_PWM_CONTROL3 & ((uint8 )(~Gripper_PWM_CTRL_CMPMODE1_MASK));
+  94              		.loc 1 104 0
+  95 0016 254B     		ldr	r3, .L6+4
+  96 0018 1B78     		ldrb	r3, [r3]
+  97 001a DBB2     		uxtb	r3, r3
+  98 001c 23F07003 		bic	r3, r3, #112
+  99 0020 FB71     		strb	r3, [r7, #7]
+ 105:.\Generated_Source\PSoC5/Gripper_PWM.c ****         Gripper_PWM_CONTROL3 = ctrl | Gripper_PWM_DEFAULT_COMPARE1_MODE;
+ 100              		.loc 1 105 0
+ 101 0022 224B     		ldr	r3, .L6+4
+ 102 0024 FA79     		ldrb	r2, [r7, #7]
+ 103 0026 42F01002 		orr	r2, r2, #16
+ 104 002a D2B2     		uxtb	r2, r2
+ 105 002c 1A70     		strb	r2, [r3]
+ 106:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 107:.\Generated_Source\PSoC5/Gripper_PWM.c ****          /* Clear and Set SYNCTC and SYNCCMP bits of RT1 register */
+ 108:.\Generated_Source\PSoC5/Gripper_PWM.c ****         Gripper_PWM_RT1 &= ((uint8)(~Gripper_PWM_RT1_MASK));
+ 106              		.loc 1 108 0
+ 107 002e 204B     		ldr	r3, .L6+8
+ 108 0030 1F4A     		ldr	r2, .L6+8
+ 109 0032 1278     		ldrb	r2, [r2]
+ 110 0034 D2B2     		uxtb	r2, r2
+ 111 0036 22F03002 		bic	r2, r2, #48
+ 112 003a D2B2     		uxtb	r2, r2
+ 113 003c 1A70     		strb	r2, [r3]
+ 109:.\Generated_Source\PSoC5/Gripper_PWM.c ****         Gripper_PWM_RT1 |= Gripper_PWM_SYNC;
+ 114              		.loc 1 109 0
+ 115 003e 1C4B     		ldr	r3, .L6+8
+ 116 0040 1B4A     		ldr	r2, .L6+8
+ 117 0042 1278     		ldrb	r2, [r2]
+ 118 0044 D2B2     		uxtb	r2, r2
+ 119 0046 42F03002 		orr	r2, r2, #48
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 5
+
+
+ 120 004a D2B2     		uxtb	r2, r2
+ 121 004c 1A70     		strb	r2, [r3]
+ 110:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 111:.\Generated_Source\PSoC5/Gripper_PWM.c ****         /*Enable DSI Sync all all inputs of the PWM*/
+ 112:.\Generated_Source\PSoC5/Gripper_PWM.c ****         Gripper_PWM_RT1 &= ((uint8)(~Gripper_PWM_SYNCDSI_MASK));
+ 122              		.loc 1 112 0
+ 123 004e 184B     		ldr	r3, .L6+8
+ 124 0050 174A     		ldr	r2, .L6+8
+ 125 0052 1278     		ldrb	r2, [r2]
+ 126 0054 D2B2     		uxtb	r2, r2
+ 127 0056 22F00F02 		bic	r2, r2, #15
+ 128 005a D2B2     		uxtb	r2, r2
+ 129 005c 1A70     		strb	r2, [r3]
+ 113:.\Generated_Source\PSoC5/Gripper_PWM.c ****         Gripper_PWM_RT1 |= Gripper_PWM_SYNCDSI_EN;
+ 130              		.loc 1 113 0
+ 131 005e 144B     		ldr	r3, .L6+8
+ 132 0060 134A     		ldr	r2, .L6+8
+ 133 0062 1278     		ldrb	r2, [r2]
+ 134 0064 D2B2     		uxtb	r2, r2
+ 135 0066 42F00F02 		orr	r2, r2, #15
+ 136 006a D2B2     		uxtb	r2, r2
+ 137 006c 1A70     		strb	r2, [r3]
+ 114:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 115:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #elif (Gripper_PWM_UseControl)
+ 116:.\Generated_Source\PSoC5/Gripper_PWM.c ****         /* Set the default compare mode defined in the parameter */
+ 117:.\Generated_Source\PSoC5/Gripper_PWM.c ****         ctrl = Gripper_PWM_CONTROL & ((uint8)(~Gripper_PWM_CTRL_CMPMODE2_MASK)) &
+ 118:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 ((uint8)(~Gripper_PWM_CTRL_CMPMODE1_MASK));
+ 119:.\Generated_Source\PSoC5/Gripper_PWM.c ****         Gripper_PWM_CONTROL = ctrl | Gripper_PWM_DEFAULT_COMPARE2_MODE |
+ 120:.\Generated_Source\PSoC5/Gripper_PWM.c ****                                    Gripper_PWM_DEFAULT_COMPARE1_MODE;
+ 121:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #endif /* (Gripper_PWM_UsingFixedFunction) */
+ 122:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 123:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #if (!Gripper_PWM_UsingFixedFunction)
+ 124:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #if (Gripper_PWM_Resolution == 8)
+ 125:.\Generated_Source\PSoC5/Gripper_PWM.c ****             /* Set FIFO 0 to 1 byte register for period*/
+ 126:.\Generated_Source\PSoC5/Gripper_PWM.c ****             Gripper_PWM_AUX_CONTROLDP0 |= (Gripper_PWM_AUX_CTRL_FIFO0_CLR);
+ 127:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #else /* (Gripper_PWM_Resolution == 16)*/
+ 128:.\Generated_Source\PSoC5/Gripper_PWM.c ****             /* Set FIFO 0 to 1 byte register for period */
+ 129:.\Generated_Source\PSoC5/Gripper_PWM.c ****             Gripper_PWM_AUX_CONTROLDP0 |= (Gripper_PWM_AUX_CTRL_FIFO0_CLR);
+ 130:.\Generated_Source\PSoC5/Gripper_PWM.c ****             Gripper_PWM_AUX_CONTROLDP1 |= (Gripper_PWM_AUX_CTRL_FIFO0_CLR);
+ 131:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #endif /* (Gripper_PWM_Resolution == 8) */
+ 132:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 133:.\Generated_Source\PSoC5/Gripper_PWM.c ****         Gripper_PWM_WriteCounter(Gripper_PWM_INIT_PERIOD_VALUE);
+ 134:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #endif /* (!Gripper_PWM_UsingFixedFunction) */
+ 135:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 136:.\Generated_Source\PSoC5/Gripper_PWM.c ****     Gripper_PWM_WritePeriod(Gripper_PWM_INIT_PERIOD_VALUE);
+ 138              		.loc 1 136 0
+ 139 006e 40F21F30 		movw	r0, #799
+ 140 0072 FFF7FEFF 		bl	Gripper_PWM_WritePeriod
+ 137:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 138:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #if (Gripper_PWM_UseOneCompareMode)
+ 139:.\Generated_Source\PSoC5/Gripper_PWM.c ****             Gripper_PWM_WriteCompare(Gripper_PWM_INIT_COMPARE_VALUE1);
+ 141              		.loc 1 139 0
+ 142 0076 1220     		movs	r0, #18
+ 143 0078 FFF7FEFF 		bl	Gripper_PWM_WriteCompare
+ 140:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #else
+ 141:.\Generated_Source\PSoC5/Gripper_PWM.c ****             Gripper_PWM_WriteCompare1(Gripper_PWM_INIT_COMPARE_VALUE1);
+ 142:.\Generated_Source\PSoC5/Gripper_PWM.c ****             Gripper_PWM_WriteCompare2(Gripper_PWM_INIT_COMPARE_VALUE2);
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 6
+
+
+ 143:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #endif /* (Gripper_PWM_UseOneCompareMode) */
+ 144:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 145:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #if (Gripper_PWM_KillModeMinTime)
+ 146:.\Generated_Source\PSoC5/Gripper_PWM.c ****             Gripper_PWM_WriteKillTime(Gripper_PWM_MinimumKillTime);
+ 147:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #endif /* (Gripper_PWM_KillModeMinTime) */
+ 148:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 149:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #if (Gripper_PWM_DeadBandUsed)
+ 150:.\Generated_Source\PSoC5/Gripper_PWM.c ****             Gripper_PWM_WriteDeadTime(Gripper_PWM_INIT_DEAD_TIME);
+ 151:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #endif /* (Gripper_PWM_DeadBandUsed) */
+ 152:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 153:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #if (Gripper_PWM_UseStatus || Gripper_PWM_UsingFixedFunction)
+ 154:.\Generated_Source\PSoC5/Gripper_PWM.c ****         Gripper_PWM_SetInterruptMode(Gripper_PWM_INIT_INTERRUPTS_MODE);
+ 144              		.loc 1 154 0
+ 145 007c 0020     		movs	r0, #0
+ 146 007e FFF7FEFF 		bl	Gripper_PWM_SetInterruptMode
+ 155:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #endif /* (Gripper_PWM_UseStatus || Gripper_PWM_UsingFixedFunction) */
+ 156:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 157:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #if (Gripper_PWM_UsingFixedFunction)
+ 158:.\Generated_Source\PSoC5/Gripper_PWM.c ****         /* Globally Enable the Fixed Function Block chosen */
+ 159:.\Generated_Source\PSoC5/Gripper_PWM.c ****         Gripper_PWM_GLOBAL_ENABLE |= Gripper_PWM_BLOCK_EN_MASK;
+ 147              		.loc 1 159 0
+ 148 0082 0C4B     		ldr	r3, .L6+12
+ 149 0084 0B4A     		ldr	r2, .L6+12
+ 150 0086 1278     		ldrb	r2, [r2]
+ 151 0088 D2B2     		uxtb	r2, r2
+ 152 008a 42F00202 		orr	r2, r2, #2
+ 153 008e D2B2     		uxtb	r2, r2
+ 154 0090 1A70     		strb	r2, [r3]
+ 160:.\Generated_Source\PSoC5/Gripper_PWM.c ****         /* Set the Interrupt source to come from the status register */
+ 161:.\Generated_Source\PSoC5/Gripper_PWM.c ****         Gripper_PWM_CONTROL2 |= Gripper_PWM_CTRL2_IRQ_SEL;
+ 155              		.loc 1 161 0
+ 156 0092 094B     		ldr	r3, .L6+16
+ 157 0094 084A     		ldr	r2, .L6+16
+ 158 0096 1278     		ldrb	r2, [r2]
+ 159 0098 D2B2     		uxtb	r2, r2
+ 160 009a 42F00102 		orr	r2, r2, #1
+ 161 009e D2B2     		uxtb	r2, r2
+ 162 00a0 1A70     		strb	r2, [r3]
+ 162:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #else
+ 163:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #if(Gripper_PWM_UseStatus)
+ 164:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 165:.\Generated_Source\PSoC5/Gripper_PWM.c ****             /* CyEnterCriticalRegion and CyExitCriticalRegion are used to mark following region cri
+ 166:.\Generated_Source\PSoC5/Gripper_PWM.c ****             /* Enter Critical Region*/
+ 167:.\Generated_Source\PSoC5/Gripper_PWM.c ****             Gripper_PWM_interruptState = CyEnterCriticalSection();
+ 168:.\Generated_Source\PSoC5/Gripper_PWM.c ****             /* Use the interrupt output of the status register for IRQ output */
+ 169:.\Generated_Source\PSoC5/Gripper_PWM.c ****             Gripper_PWM_STATUS_AUX_CTRL |= Gripper_PWM_STATUS_ACTL_INT_EN_MASK;
+ 170:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 171:.\Generated_Source\PSoC5/Gripper_PWM.c ****              /* Exit Critical Region*/
+ 172:.\Generated_Source\PSoC5/Gripper_PWM.c ****             CyExitCriticalSection(Gripper_PWM_interruptState);
+ 173:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 174:.\Generated_Source\PSoC5/Gripper_PWM.c ****             /* Clear the FIFO to enable the Gripper_PWM_STATUS_FIFOFULL
+ 175:.\Generated_Source\PSoC5/Gripper_PWM.c ****                    bit to be set on FIFO full. */
+ 176:.\Generated_Source\PSoC5/Gripper_PWM.c ****             Gripper_PWM_ClearFIFO();
+ 177:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #endif /* (Gripper_PWM_UseStatus) */
+ 178:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #endif /* (Gripper_PWM_UsingFixedFunction) */
+ 179:.\Generated_Source\PSoC5/Gripper_PWM.c **** }
+ 163              		.loc 1 179 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 7
+
+
+ 164 00a2 0837     		adds	r7, r7, #8
+ 165 00a4 BD46     		mov	sp, r7
+ 166              		@ sp needed
+ 167 00a6 80BD     		pop	{r7, pc}
+ 168              	.L7:
+ 169              		.align	2
+ 170              	.L6:
+ 171 00a8 0C4F0040 		.word	1073762060
+ 172 00ac 0E4F0040 		.word	1073762062
+ 173 00b0 174F0040 		.word	1073762071
+ 174 00b4 A3430040 		.word	1073759139
+ 175 00b8 0D4F0040 		.word	1073762061
+ 176              		.cfi_endproc
+ 177              	.LFE1:
+ 178              		.size	Gripper_PWM_Init, .-Gripper_PWM_Init
+ 179              		.section	.text.Gripper_PWM_Enable,"ax",%progbits
+ 180              		.align	2
+ 181              		.global	Gripper_PWM_Enable
+ 182              		.thumb
+ 183              		.thumb_func
+ 184              		.type	Gripper_PWM_Enable, %function
+ 185              	Gripper_PWM_Enable:
+ 186              	.LFB2:
+ 180:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 181:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 182:.\Generated_Source\PSoC5/Gripper_PWM.c **** /*******************************************************************************
+ 183:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Function Name: Gripper_PWM_Enable
+ 184:.\Generated_Source\PSoC5/Gripper_PWM.c **** ********************************************************************************
+ 185:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+ 186:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Summary:
+ 187:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  Enables the PWM block operation
+ 188:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+ 189:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Parameters:
+ 190:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  None
+ 191:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+ 192:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Return:
+ 193:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  None
+ 194:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+ 195:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Side Effects:
+ 196:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  This works only if software enable mode is chosen
+ 197:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+ 198:.\Generated_Source\PSoC5/Gripper_PWM.c **** *******************************************************************************/
+ 199:.\Generated_Source\PSoC5/Gripper_PWM.c **** void Gripper_PWM_Enable(void) 
+ 200:.\Generated_Source\PSoC5/Gripper_PWM.c **** {
+ 187              		.loc 1 200 0
+ 188              		.cfi_startproc
+ 189              		@ args = 0, pretend = 0, frame = 0
+ 190              		@ frame_needed = 1, uses_anonymous_args = 0
+ 191              		@ link register save eliminated.
+ 192 0000 80B4     		push	{r7}
+ 193              		.cfi_def_cfa_offset 4
+ 194              		.cfi_offset 7, -4
+ 195 0002 00AF     		add	r7, sp, #0
+ 196              		.cfi_def_cfa_register 7
+ 201:.\Generated_Source\PSoC5/Gripper_PWM.c ****     /* Globally Enable the Fixed Function Block chosen */
+ 202:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #if (Gripper_PWM_UsingFixedFunction)
+ 203:.\Generated_Source\PSoC5/Gripper_PWM.c ****         Gripper_PWM_GLOBAL_ENABLE |= Gripper_PWM_BLOCK_EN_MASK;
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 8
+
+
+ 197              		.loc 1 203 0
+ 198 0004 0D4B     		ldr	r3, .L9
+ 199 0006 0D4A     		ldr	r2, .L9
+ 200 0008 1278     		ldrb	r2, [r2]
+ 201 000a D2B2     		uxtb	r2, r2
+ 202 000c 42F00202 		orr	r2, r2, #2
+ 203 0010 D2B2     		uxtb	r2, r2
+ 204 0012 1A70     		strb	r2, [r3]
+ 204:.\Generated_Source\PSoC5/Gripper_PWM.c ****         Gripper_PWM_GLOBAL_STBY_ENABLE |= Gripper_PWM_BLOCK_STBY_EN_MASK;
+ 205              		.loc 1 204 0
+ 206 0014 0A4B     		ldr	r3, .L9+4
+ 207 0016 0A4A     		ldr	r2, .L9+4
+ 208 0018 1278     		ldrb	r2, [r2]
+ 209 001a D2B2     		uxtb	r2, r2
+ 210 001c 42F00202 		orr	r2, r2, #2
+ 211 0020 D2B2     		uxtb	r2, r2
+ 212 0022 1A70     		strb	r2, [r3]
+ 205:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #endif /* (Gripper_PWM_UsingFixedFunction) */
+ 206:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 207:.\Generated_Source\PSoC5/Gripper_PWM.c ****     /* Enable the PWM from the control register  */
+ 208:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #if (Gripper_PWM_UseControl || Gripper_PWM_UsingFixedFunction)
+ 209:.\Generated_Source\PSoC5/Gripper_PWM.c ****         Gripper_PWM_CONTROL |= Gripper_PWM_CTRL_ENABLE;
+ 213              		.loc 1 209 0
+ 214 0024 074B     		ldr	r3, .L9+8
+ 215 0026 074A     		ldr	r2, .L9+8
+ 216 0028 1278     		ldrb	r2, [r2]
+ 217 002a D2B2     		uxtb	r2, r2
+ 218 002c 42F00102 		orr	r2, r2, #1
+ 219 0030 D2B2     		uxtb	r2, r2
+ 220 0032 1A70     		strb	r2, [r3]
+ 210:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #endif /* (Gripper_PWM_UseControl || Gripper_PWM_UsingFixedFunction) */
+ 211:.\Generated_Source\PSoC5/Gripper_PWM.c **** }
+ 221              		.loc 1 211 0
+ 222 0034 BD46     		mov	sp, r7
+ 223              		@ sp needed
+ 224 0036 5DF8047B 		ldr	r7, [sp], #4
+ 225 003a 7047     		bx	lr
+ 226              	.L10:
+ 227              		.align	2
+ 228              	.L9:
+ 229 003c A3430040 		.word	1073759139
+ 230 0040 B3430040 		.word	1073759155
+ 231 0044 0C4F0040 		.word	1073762060
+ 232              		.cfi_endproc
+ 233              	.LFE2:
+ 234              		.size	Gripper_PWM_Enable, .-Gripper_PWM_Enable
+ 235              		.section	.text.Gripper_PWM_Stop,"ax",%progbits
+ 236              		.align	2
+ 237              		.global	Gripper_PWM_Stop
+ 238              		.thumb
+ 239              		.thumb_func
+ 240              		.type	Gripper_PWM_Stop, %function
+ 241              	Gripper_PWM_Stop:
+ 242              	.LFB3:
+ 212:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 213:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 214:.\Generated_Source\PSoC5/Gripper_PWM.c **** /*******************************************************************************
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 9
+
+
+ 215:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Function Name: Gripper_PWM_Stop
+ 216:.\Generated_Source\PSoC5/Gripper_PWM.c **** ********************************************************************************
+ 217:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+ 218:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Summary:
+ 219:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  The stop function halts the PWM, but does not change any modes or disable
+ 220:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  interrupts.
+ 221:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+ 222:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Parameters:
+ 223:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  None
+ 224:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+ 225:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Return:
+ 226:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  None
+ 227:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+ 228:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Side Effects:
+ 229:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  If the Enable mode is set to Hardware only then this function
+ 230:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  has no effect on the operation of the PWM
+ 231:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+ 232:.\Generated_Source\PSoC5/Gripper_PWM.c **** *******************************************************************************/
+ 233:.\Generated_Source\PSoC5/Gripper_PWM.c **** void Gripper_PWM_Stop(void) 
+ 234:.\Generated_Source\PSoC5/Gripper_PWM.c **** {
+ 243              		.loc 1 234 0
+ 244              		.cfi_startproc
+ 245              		@ args = 0, pretend = 0, frame = 0
+ 246              		@ frame_needed = 1, uses_anonymous_args = 0
+ 247              		@ link register save eliminated.
+ 248 0000 80B4     		push	{r7}
+ 249              		.cfi_def_cfa_offset 4
+ 250              		.cfi_offset 7, -4
+ 251 0002 00AF     		add	r7, sp, #0
+ 252              		.cfi_def_cfa_register 7
+ 235:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #if (Gripper_PWM_UseControl || Gripper_PWM_UsingFixedFunction)
+ 236:.\Generated_Source\PSoC5/Gripper_PWM.c ****         Gripper_PWM_CONTROL &= ((uint8)(~Gripper_PWM_CTRL_ENABLE));
+ 253              		.loc 1 236 0
+ 254 0004 0D4B     		ldr	r3, .L12
+ 255 0006 0D4A     		ldr	r2, .L12
+ 256 0008 1278     		ldrb	r2, [r2]
+ 257 000a D2B2     		uxtb	r2, r2
+ 258 000c 22F00102 		bic	r2, r2, #1
+ 259 0010 D2B2     		uxtb	r2, r2
+ 260 0012 1A70     		strb	r2, [r3]
+ 237:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #endif /* (Gripper_PWM_UseControl || Gripper_PWM_UsingFixedFunction) */
+ 238:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 239:.\Generated_Source\PSoC5/Gripper_PWM.c ****     /* Globally disable the Fixed Function Block chosen */
+ 240:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #if (Gripper_PWM_UsingFixedFunction)
+ 241:.\Generated_Source\PSoC5/Gripper_PWM.c ****         Gripper_PWM_GLOBAL_ENABLE &= ((uint8)(~Gripper_PWM_BLOCK_EN_MASK));
+ 261              		.loc 1 241 0
+ 262 0014 0A4B     		ldr	r3, .L12+4
+ 263 0016 0A4A     		ldr	r2, .L12+4
+ 264 0018 1278     		ldrb	r2, [r2]
+ 265 001a D2B2     		uxtb	r2, r2
+ 266 001c 22F00202 		bic	r2, r2, #2
+ 267 0020 D2B2     		uxtb	r2, r2
+ 268 0022 1A70     		strb	r2, [r3]
+ 242:.\Generated_Source\PSoC5/Gripper_PWM.c ****         Gripper_PWM_GLOBAL_STBY_ENABLE &= ((uint8)(~Gripper_PWM_BLOCK_STBY_EN_MASK));
+ 269              		.loc 1 242 0
+ 270 0024 074B     		ldr	r3, .L12+8
+ 271 0026 074A     		ldr	r2, .L12+8
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 10
+
+
+ 272 0028 1278     		ldrb	r2, [r2]
+ 273 002a D2B2     		uxtb	r2, r2
+ 274 002c 22F00202 		bic	r2, r2, #2
+ 275 0030 D2B2     		uxtb	r2, r2
+ 276 0032 1A70     		strb	r2, [r3]
+ 243:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #endif /* (Gripper_PWM_UsingFixedFunction) */
+ 244:.\Generated_Source\PSoC5/Gripper_PWM.c **** }
+ 277              		.loc 1 244 0
+ 278 0034 BD46     		mov	sp, r7
+ 279              		@ sp needed
+ 280 0036 5DF8047B 		ldr	r7, [sp], #4
+ 281 003a 7047     		bx	lr
+ 282              	.L13:
+ 283              		.align	2
+ 284              	.L12:
+ 285 003c 0C4F0040 		.word	1073762060
+ 286 0040 A3430040 		.word	1073759139
+ 287 0044 B3430040 		.word	1073759155
+ 288              		.cfi_endproc
+ 289              	.LFE3:
+ 290              		.size	Gripper_PWM_Stop, .-Gripper_PWM_Stop
+ 291              		.section	.text.Gripper_PWM_WritePeriod,"ax",%progbits
+ 292              		.align	2
+ 293              		.global	Gripper_PWM_WritePeriod
+ 294              		.thumb
+ 295              		.thumb_func
+ 296              		.type	Gripper_PWM_WritePeriod, %function
+ 297              	Gripper_PWM_WritePeriod:
+ 298              	.LFB4:
+ 245:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 246:.\Generated_Source\PSoC5/Gripper_PWM.c **** #if (Gripper_PWM_UseOneCompareMode)
+ 247:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #if (Gripper_PWM_CompareMode1SW)
+ 248:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 249:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 250:.\Generated_Source\PSoC5/Gripper_PWM.c ****         /*******************************************************************************
+ 251:.\Generated_Source\PSoC5/Gripper_PWM.c ****         * Function Name: Gripper_PWM_SetCompareMode
+ 252:.\Generated_Source\PSoC5/Gripper_PWM.c ****         ********************************************************************************
+ 253:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *
+ 254:.\Generated_Source\PSoC5/Gripper_PWM.c ****         * Summary:
+ 255:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *  This function writes the Compare Mode for the pwm output when in Dither mode,
+ 256:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *  Center Align Mode or One Output Mode.
+ 257:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *
+ 258:.\Generated_Source\PSoC5/Gripper_PWM.c ****         * Parameters:
+ 259:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *  comparemode:  The new compare mode for the PWM output. Use the compare types
+ 260:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *                defined in the H file as input arguments.
+ 261:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *
+ 262:.\Generated_Source\PSoC5/Gripper_PWM.c ****         * Return:
+ 263:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *  None
+ 264:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *
+ 265:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *******************************************************************************/
+ 266:.\Generated_Source\PSoC5/Gripper_PWM.c ****         void Gripper_PWM_SetCompareMode(uint8 comparemode) 
+ 267:.\Generated_Source\PSoC5/Gripper_PWM.c ****         {
+ 268:.\Generated_Source\PSoC5/Gripper_PWM.c ****             #if(Gripper_PWM_UsingFixedFunction)
+ 269:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 270:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 #if(0 != Gripper_PWM_CTRL_CMPMODE1_SHIFT)
+ 271:.\Generated_Source\PSoC5/Gripper_PWM.c ****                     uint8 comparemodemasked = ((uint8)((uint8)comparemode << Gripper_PWM_CTRL_CMPMO
+ 272:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 #else
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 11
+
+
+ 273:.\Generated_Source\PSoC5/Gripper_PWM.c ****                     uint8 comparemodemasked = comparemode;
+ 274:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 #endif /* (0 != Gripper_PWM_CTRL_CMPMODE1_SHIFT) */
+ 275:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 276:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 Gripper_PWM_CONTROL3 &= ((uint8)(~Gripper_PWM_CTRL_CMPMODE1_MASK)); /*Clear Existin
+ 277:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 Gripper_PWM_CONTROL3 |= comparemodemasked;
+ 278:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 279:.\Generated_Source\PSoC5/Gripper_PWM.c ****             #elif (Gripper_PWM_UseControl)
+ 280:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 281:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 #if(0 != Gripper_PWM_CTRL_CMPMODE1_SHIFT)
+ 282:.\Generated_Source\PSoC5/Gripper_PWM.c ****                     uint8 comparemode1masked = ((uint8)((uint8)comparemode << Gripper_PWM_CTRL_CMPM
+ 283:.\Generated_Source\PSoC5/Gripper_PWM.c ****                                                 Gripper_PWM_CTRL_CMPMODE1_MASK;
+ 284:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 #else
+ 285:.\Generated_Source\PSoC5/Gripper_PWM.c ****                     uint8 comparemode1masked = comparemode & Gripper_PWM_CTRL_CMPMODE1_MASK;
+ 286:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 #endif /* (0 != Gripper_PWM_CTRL_CMPMODE1_SHIFT) */
+ 287:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 288:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 #if(0 != Gripper_PWM_CTRL_CMPMODE2_SHIFT)
+ 289:.\Generated_Source\PSoC5/Gripper_PWM.c ****                     uint8 comparemode2masked = ((uint8)((uint8)comparemode << Gripper_PWM_CTRL_CMPM
+ 290:.\Generated_Source\PSoC5/Gripper_PWM.c ****                                                Gripper_PWM_CTRL_CMPMODE2_MASK;
+ 291:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 #else
+ 292:.\Generated_Source\PSoC5/Gripper_PWM.c ****                     uint8 comparemode2masked = comparemode & Gripper_PWM_CTRL_CMPMODE2_MASK;
+ 293:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 #endif /* (0 != Gripper_PWM_CTRL_CMPMODE2_SHIFT) */
+ 294:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 295:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 /*Clear existing mode */
+ 296:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 Gripper_PWM_CONTROL &= ((uint8)(~(Gripper_PWM_CTRL_CMPMODE1_MASK |
+ 297:.\Generated_Source\PSoC5/Gripper_PWM.c ****                                             Gripper_PWM_CTRL_CMPMODE2_MASK)));
+ 298:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 Gripper_PWM_CONTROL |= (comparemode1masked | comparemode2masked);
+ 299:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 300:.\Generated_Source\PSoC5/Gripper_PWM.c ****             #else
+ 301:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 uint8 temp = comparemode;
+ 302:.\Generated_Source\PSoC5/Gripper_PWM.c ****             #endif /* (Gripper_PWM_UsingFixedFunction) */
+ 303:.\Generated_Source\PSoC5/Gripper_PWM.c ****         }
+ 304:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #endif /* Gripper_PWM_CompareMode1SW */
+ 305:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 306:.\Generated_Source\PSoC5/Gripper_PWM.c **** #else /* UseOneCompareMode */
+ 307:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 308:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #if (Gripper_PWM_CompareMode1SW)
+ 309:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 310:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 311:.\Generated_Source\PSoC5/Gripper_PWM.c ****         /*******************************************************************************
+ 312:.\Generated_Source\PSoC5/Gripper_PWM.c ****         * Function Name: Gripper_PWM_SetCompareMode1
+ 313:.\Generated_Source\PSoC5/Gripper_PWM.c ****         ********************************************************************************
+ 314:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *
+ 315:.\Generated_Source\PSoC5/Gripper_PWM.c ****         * Summary:
+ 316:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *  This function writes the Compare Mode for the pwm or pwm1 output
+ 317:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *
+ 318:.\Generated_Source\PSoC5/Gripper_PWM.c ****         * Parameters:
+ 319:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *  comparemode:  The new compare mode for the PWM output. Use the compare types
+ 320:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *                defined in the H file as input arguments.
+ 321:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *
+ 322:.\Generated_Source\PSoC5/Gripper_PWM.c ****         * Return:
+ 323:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *  None
+ 324:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *
+ 325:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *******************************************************************************/
+ 326:.\Generated_Source\PSoC5/Gripper_PWM.c ****         void Gripper_PWM_SetCompareMode1(uint8 comparemode) 
+ 327:.\Generated_Source\PSoC5/Gripper_PWM.c ****         {
+ 328:.\Generated_Source\PSoC5/Gripper_PWM.c ****             #if(0 != Gripper_PWM_CTRL_CMPMODE1_SHIFT)
+ 329:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 uint8 comparemodemasked = ((uint8)((uint8)comparemode << Gripper_PWM_CTRL_CMPMODE1_
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 12
+
+
+ 330:.\Generated_Source\PSoC5/Gripper_PWM.c ****                                            Gripper_PWM_CTRL_CMPMODE1_MASK;
+ 331:.\Generated_Source\PSoC5/Gripper_PWM.c ****             #else
+ 332:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 uint8 comparemodemasked = comparemode & Gripper_PWM_CTRL_CMPMODE1_MASK;
+ 333:.\Generated_Source\PSoC5/Gripper_PWM.c ****             #endif /* (0 != Gripper_PWM_CTRL_CMPMODE1_SHIFT) */
+ 334:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 335:.\Generated_Source\PSoC5/Gripper_PWM.c ****             #if (Gripper_PWM_UseControl)
+ 336:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 Gripper_PWM_CONTROL &= ((uint8)(~Gripper_PWM_CTRL_CMPMODE1_MASK)); /*Clear existing
+ 337:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 Gripper_PWM_CONTROL |= comparemodemasked;
+ 338:.\Generated_Source\PSoC5/Gripper_PWM.c ****             #endif /* (Gripper_PWM_UseControl) */
+ 339:.\Generated_Source\PSoC5/Gripper_PWM.c ****         }
+ 340:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #endif /* Gripper_PWM_CompareMode1SW */
+ 341:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 342:.\Generated_Source\PSoC5/Gripper_PWM.c **** #if (Gripper_PWM_CompareMode2SW)
+ 343:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 344:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 345:.\Generated_Source\PSoC5/Gripper_PWM.c ****     /*******************************************************************************
+ 346:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Function Name: Gripper_PWM_SetCompareMode2
+ 347:.\Generated_Source\PSoC5/Gripper_PWM.c ****     ********************************************************************************
+ 348:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 349:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Summary:
+ 350:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  This function writes the Compare Mode for the pwm or pwm2 output
+ 351:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 352:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Parameters:
+ 353:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  comparemode:  The new compare mode for the PWM output. Use the compare types
+ 354:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *                defined in the H file as input arguments.
+ 355:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 356:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Return:
+ 357:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  None
+ 358:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 359:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *******************************************************************************/
+ 360:.\Generated_Source\PSoC5/Gripper_PWM.c ****     void Gripper_PWM_SetCompareMode2(uint8 comparemode) 
+ 361:.\Generated_Source\PSoC5/Gripper_PWM.c ****     {
+ 362:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 363:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #if(0 != Gripper_PWM_CTRL_CMPMODE2_SHIFT)
+ 364:.\Generated_Source\PSoC5/Gripper_PWM.c ****             uint8 comparemodemasked = ((uint8)((uint8)comparemode << Gripper_PWM_CTRL_CMPMODE2_SHIF
+ 365:.\Generated_Source\PSoC5/Gripper_PWM.c ****                                                  Gripper_PWM_CTRL_CMPMODE2_MASK;
+ 366:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #else
+ 367:.\Generated_Source\PSoC5/Gripper_PWM.c ****             uint8 comparemodemasked = comparemode & Gripper_PWM_CTRL_CMPMODE2_MASK;
+ 368:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #endif /* (0 != Gripper_PWM_CTRL_CMPMODE2_SHIFT) */
+ 369:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 370:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #if (Gripper_PWM_UseControl)
+ 371:.\Generated_Source\PSoC5/Gripper_PWM.c ****             Gripper_PWM_CONTROL &= ((uint8)(~Gripper_PWM_CTRL_CMPMODE2_MASK)); /*Clear existing mod
+ 372:.\Generated_Source\PSoC5/Gripper_PWM.c ****             Gripper_PWM_CONTROL |= comparemodemasked;
+ 373:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #endif /* (Gripper_PWM_UseControl) */
+ 374:.\Generated_Source\PSoC5/Gripper_PWM.c ****     }
+ 375:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #endif /*Gripper_PWM_CompareMode2SW */
+ 376:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 377:.\Generated_Source\PSoC5/Gripper_PWM.c **** #endif /* UseOneCompareMode */
+ 378:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 379:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 380:.\Generated_Source\PSoC5/Gripper_PWM.c **** #if (!Gripper_PWM_UsingFixedFunction)
+ 381:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 382:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 383:.\Generated_Source\PSoC5/Gripper_PWM.c ****     /*******************************************************************************
+ 384:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Function Name: Gripper_PWM_WriteCounter
+ 385:.\Generated_Source\PSoC5/Gripper_PWM.c ****     ********************************************************************************
+ 386:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 13
+
+
+ 387:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Summary:
+ 388:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  Writes a new counter value directly to the counter register. This will be
+ 389:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  implemented for that currently running period and only that period. This API
+ 390:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  is valid only for UDB implementation and not available for fixed function
+ 391:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  PWM implementation.
+ 392:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 393:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Parameters:
+ 394:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  counter:  The period new period counter value.
+ 395:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 396:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Return:
+ 397:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  None
+ 398:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 399:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Side Effects:
+ 400:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  The PWM Period will be reloaded when a counter value will be a zero
+ 401:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 402:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *******************************************************************************/
+ 403:.\Generated_Source\PSoC5/Gripper_PWM.c ****     void Gripper_PWM_WriteCounter(uint16 counter) \
+ 404:.\Generated_Source\PSoC5/Gripper_PWM.c ****                                        
+ 405:.\Generated_Source\PSoC5/Gripper_PWM.c ****     {
+ 406:.\Generated_Source\PSoC5/Gripper_PWM.c ****         CY_SET_REG16(Gripper_PWM_COUNTER_LSB_PTR, counter);
+ 407:.\Generated_Source\PSoC5/Gripper_PWM.c ****     }
+ 408:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 409:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 410:.\Generated_Source\PSoC5/Gripper_PWM.c ****     /*******************************************************************************
+ 411:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Function Name: Gripper_PWM_ReadCounter
+ 412:.\Generated_Source\PSoC5/Gripper_PWM.c ****     ********************************************************************************
+ 413:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 414:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Summary:
+ 415:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  This function returns the current value of the counter.  It doesn't matter
+ 416:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  if the counter is enabled or running.
+ 417:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 418:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Parameters:
+ 419:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  None
+ 420:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 421:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Return:
+ 422:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  The current value of the counter.
+ 423:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 424:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *******************************************************************************/
+ 425:.\Generated_Source\PSoC5/Gripper_PWM.c ****     uint16 Gripper_PWM_ReadCounter(void) 
+ 426:.\Generated_Source\PSoC5/Gripper_PWM.c ****     {
+ 427:.\Generated_Source\PSoC5/Gripper_PWM.c ****         /* Force capture by reading Accumulator */
+ 428:.\Generated_Source\PSoC5/Gripper_PWM.c ****         /* Must first do a software capture to be able to read the counter */
+ 429:.\Generated_Source\PSoC5/Gripper_PWM.c ****         /* It is up to the user code to make sure there isn't already captured data in the FIFO */
+ 430:.\Generated_Source\PSoC5/Gripper_PWM.c ****           (void)CY_GET_REG8(Gripper_PWM_COUNTERCAP_LSB_PTR_8BIT);
+ 431:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 432:.\Generated_Source\PSoC5/Gripper_PWM.c ****         /* Read the data from the FIFO */
+ 433:.\Generated_Source\PSoC5/Gripper_PWM.c ****         return (CY_GET_REG16(Gripper_PWM_CAPTURE_LSB_PTR));
+ 434:.\Generated_Source\PSoC5/Gripper_PWM.c ****     }
+ 435:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 436:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #if (Gripper_PWM_UseStatus)
+ 437:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 438:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 439:.\Generated_Source\PSoC5/Gripper_PWM.c ****         /*******************************************************************************
+ 440:.\Generated_Source\PSoC5/Gripper_PWM.c ****         * Function Name: Gripper_PWM_ClearFIFO
+ 441:.\Generated_Source\PSoC5/Gripper_PWM.c ****         ********************************************************************************
+ 442:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *
+ 443:.\Generated_Source\PSoC5/Gripper_PWM.c ****         * Summary:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 14
+
+
+ 444:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *  This function clears all capture data from the capture FIFO
+ 445:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *
+ 446:.\Generated_Source\PSoC5/Gripper_PWM.c ****         * Parameters:
+ 447:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *  None
+ 448:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *
+ 449:.\Generated_Source\PSoC5/Gripper_PWM.c ****         * Return:
+ 450:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *  None
+ 451:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *
+ 452:.\Generated_Source\PSoC5/Gripper_PWM.c ****         *******************************************************************************/
+ 453:.\Generated_Source\PSoC5/Gripper_PWM.c ****         void Gripper_PWM_ClearFIFO(void) 
+ 454:.\Generated_Source\PSoC5/Gripper_PWM.c ****         {
+ 455:.\Generated_Source\PSoC5/Gripper_PWM.c ****             while(0u != (Gripper_PWM_ReadStatusRegister() & Gripper_PWM_STATUS_FIFONEMPTY))
+ 456:.\Generated_Source\PSoC5/Gripper_PWM.c ****             {
+ 457:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 (void)Gripper_PWM_ReadCapture();
+ 458:.\Generated_Source\PSoC5/Gripper_PWM.c ****             }
+ 459:.\Generated_Source\PSoC5/Gripper_PWM.c ****         }
+ 460:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 461:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #endif /* Gripper_PWM_UseStatus */
+ 462:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 463:.\Generated_Source\PSoC5/Gripper_PWM.c **** #endif /* !Gripper_PWM_UsingFixedFunction */
+ 464:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 465:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 466:.\Generated_Source\PSoC5/Gripper_PWM.c **** /*******************************************************************************
+ 467:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Function Name: Gripper_PWM_WritePeriod
+ 468:.\Generated_Source\PSoC5/Gripper_PWM.c **** ********************************************************************************
+ 469:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+ 470:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Summary:
+ 471:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  This function is used to change the period of the counter.  The new period
+ 472:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  will be loaded the next time terminal count is detected.
+ 473:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+ 474:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Parameters:
+ 475:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  period:  Period value. May be between 1 and (2^Resolution)-1.  A value of 0
+ 476:.\Generated_Source\PSoC5/Gripper_PWM.c **** *           will result in the counter remaining at zero.
+ 477:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+ 478:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Return:
+ 479:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  None
+ 480:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+ 481:.\Generated_Source\PSoC5/Gripper_PWM.c **** *******************************************************************************/
+ 482:.\Generated_Source\PSoC5/Gripper_PWM.c **** void Gripper_PWM_WritePeriod(uint16 period) 
+ 483:.\Generated_Source\PSoC5/Gripper_PWM.c **** {
+ 299              		.loc 1 483 0
+ 300              		.cfi_startproc
+ 301              		@ args = 0, pretend = 0, frame = 8
+ 302              		@ frame_needed = 1, uses_anonymous_args = 0
+ 303              		@ link register save eliminated.
+ 304 0000 80B4     		push	{r7}
+ 305              		.cfi_def_cfa_offset 4
+ 306              		.cfi_offset 7, -4
+ 307 0002 83B0     		sub	sp, sp, #12
+ 308              		.cfi_def_cfa_offset 16
+ 309 0004 00AF     		add	r7, sp, #0
+ 310              		.cfi_def_cfa_register 7
+ 311 0006 0346     		mov	r3, r0
+ 312 0008 FB80     		strh	r3, [r7, #6]	@ movhi
+ 484:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #if(Gripper_PWM_UsingFixedFunction)
+ 485:.\Generated_Source\PSoC5/Gripper_PWM.c ****         CY_SET_REG16(Gripper_PWM_PERIOD_LSB_PTR, (uint16)period);
+ 313              		.loc 1 485 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 15
+
+
+ 314 000a 044B     		ldr	r3, .L15
+ 315 000c FA88     		ldrh	r2, [r7, #6]	@ movhi
+ 316 000e 1A80     		strh	r2, [r3]	@ movhi
+ 486:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #else
+ 487:.\Generated_Source\PSoC5/Gripper_PWM.c ****         CY_SET_REG16(Gripper_PWM_PERIOD_LSB_PTR, period);
+ 488:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #endif /* (Gripper_PWM_UsingFixedFunction) */
+ 489:.\Generated_Source\PSoC5/Gripper_PWM.c **** }
+ 317              		.loc 1 489 0
+ 318 0010 0C37     		adds	r7, r7, #12
+ 319 0012 BD46     		mov	sp, r7
+ 320              		@ sp needed
+ 321 0014 5DF8047B 		ldr	r7, [sp], #4
+ 322 0018 7047     		bx	lr
+ 323              	.L16:
+ 324 001a 00BF     		.align	2
+ 325              	.L15:
+ 326 001c 104F0040 		.word	1073762064
+ 327              		.cfi_endproc
+ 328              	.LFE4:
+ 329              		.size	Gripper_PWM_WritePeriod, .-Gripper_PWM_WritePeriod
+ 330              		.section	.text.Gripper_PWM_WriteCompare,"ax",%progbits
+ 331              		.align	2
+ 332              		.global	Gripper_PWM_WriteCompare
+ 333              		.thumb
+ 334              		.thumb_func
+ 335              		.type	Gripper_PWM_WriteCompare, %function
+ 336              	Gripper_PWM_WriteCompare:
+ 337              	.LFB5:
+ 490:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 491:.\Generated_Source\PSoC5/Gripper_PWM.c **** #if (Gripper_PWM_UseOneCompareMode)
+ 492:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 493:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 494:.\Generated_Source\PSoC5/Gripper_PWM.c ****     /*******************************************************************************
+ 495:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Function Name: Gripper_PWM_WriteCompare
+ 496:.\Generated_Source\PSoC5/Gripper_PWM.c ****     ********************************************************************************
+ 497:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 498:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Summary:
+ 499:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  This funtion is used to change the compare1 value when the PWM is in Dither
+ 500:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  mode. The compare output will reflect the new value on the next UDB clock.
+ 501:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  The compare output will be driven high when the present counter value is
+ 502:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  compared to the compare value based on the compare mode defined in
+ 503:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  Dither Mode.
+ 504:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 505:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Parameters:
+ 506:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  compare:  New compare value.
+ 507:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 508:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Return:
+ 509:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  None
+ 510:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 511:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Side Effects:
+ 512:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  This function is only available if the PWM mode parameter is set to
+ 513:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  Dither Mode, Center Aligned Mode or One Output Mode
+ 514:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 515:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *******************************************************************************/
+ 516:.\Generated_Source\PSoC5/Gripper_PWM.c ****     void Gripper_PWM_WriteCompare(uint16 compare) \
+ 517:.\Generated_Source\PSoC5/Gripper_PWM.c ****                                        
+ 518:.\Generated_Source\PSoC5/Gripper_PWM.c ****     {
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 16
+
+
+ 338              		.loc 1 518 0
+ 339              		.cfi_startproc
+ 340              		@ args = 0, pretend = 0, frame = 8
+ 341              		@ frame_needed = 1, uses_anonymous_args = 0
+ 342              		@ link register save eliminated.
+ 343 0000 80B4     		push	{r7}
+ 344              		.cfi_def_cfa_offset 4
+ 345              		.cfi_offset 7, -4
+ 346 0002 83B0     		sub	sp, sp, #12
+ 347              		.cfi_def_cfa_offset 16
+ 348 0004 00AF     		add	r7, sp, #0
+ 349              		.cfi_def_cfa_register 7
+ 350 0006 0346     		mov	r3, r0
+ 351 0008 FB80     		strh	r3, [r7, #6]	@ movhi
+ 519:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #if(Gripper_PWM_UsingFixedFunction)
+ 520:.\Generated_Source\PSoC5/Gripper_PWM.c ****             CY_SET_REG16(Gripper_PWM_COMPARE1_LSB_PTR, (uint16)compare);
+ 352              		.loc 1 520 0
+ 353 000a 044B     		ldr	r3, .L18
+ 354 000c FA88     		ldrh	r2, [r7, #6]	@ movhi
+ 355 000e 1A80     		strh	r2, [r3]	@ movhi
+ 521:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #else
+ 522:.\Generated_Source\PSoC5/Gripper_PWM.c ****             CY_SET_REG16(Gripper_PWM_COMPARE1_LSB_PTR, compare);
+ 523:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #endif /* (Gripper_PWM_UsingFixedFunction) */
+ 524:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 525:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #if (Gripper_PWM_PWMMode == Gripper_PWM__B_PWM__DITHER)
+ 526:.\Generated_Source\PSoC5/Gripper_PWM.c ****             #if(Gripper_PWM_UsingFixedFunction)
+ 527:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 CY_SET_REG16(Gripper_PWM_COMPARE2_LSB_PTR, (uint16)(compare + 1u));
+ 528:.\Generated_Source\PSoC5/Gripper_PWM.c ****             #else
+ 529:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 CY_SET_REG16(Gripper_PWM_COMPARE2_LSB_PTR, (compare + 1u));
+ 530:.\Generated_Source\PSoC5/Gripper_PWM.c ****             #endif /* (Gripper_PWM_UsingFixedFunction) */
+ 531:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #endif /* (Gripper_PWM_PWMMode == Gripper_PWM__B_PWM__DITHER) */
+ 532:.\Generated_Source\PSoC5/Gripper_PWM.c ****     }
+ 356              		.loc 1 532 0
+ 357 0010 0C37     		adds	r7, r7, #12
+ 358 0012 BD46     		mov	sp, r7
+ 359              		@ sp needed
+ 360 0014 5DF8047B 		ldr	r7, [sp], #4
+ 361 0018 7047     		bx	lr
+ 362              	.L19:
+ 363 001a 00BF     		.align	2
+ 364              	.L18:
+ 365 001c 124F0040 		.word	1073762066
+ 366              		.cfi_endproc
+ 367              	.LFE5:
+ 368              		.size	Gripper_PWM_WriteCompare, .-Gripper_PWM_WriteCompare
+ 369              		.section	.text.Gripper_PWM_SetInterruptMode,"ax",%progbits
+ 370              		.align	2
+ 371              		.global	Gripper_PWM_SetInterruptMode
+ 372              		.thumb
+ 373              		.thumb_func
+ 374              		.type	Gripper_PWM_SetInterruptMode, %function
+ 375              	Gripper_PWM_SetInterruptMode:
+ 376              	.LFB6:
+ 533:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 534:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 535:.\Generated_Source\PSoC5/Gripper_PWM.c **** #else
+ 536:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 17
+
+
+ 537:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 538:.\Generated_Source\PSoC5/Gripper_PWM.c ****     /*******************************************************************************
+ 539:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Function Name: Gripper_PWM_WriteCompare1
+ 540:.\Generated_Source\PSoC5/Gripper_PWM.c ****     ********************************************************************************
+ 541:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 542:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Summary:
+ 543:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  This funtion is used to change the compare1 value.  The compare output will
+ 544:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  reflect the new value on the next UDB clock.  The compare output will be
+ 545:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  driven high when the present counter value is less than or less than or
+ 546:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  equal to the compare register, depending on the mode.
+ 547:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 548:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Parameters:
+ 549:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  compare:  New compare value.
+ 550:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 551:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Return:
+ 552:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  None
+ 553:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 554:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *******************************************************************************/
+ 555:.\Generated_Source\PSoC5/Gripper_PWM.c ****     void Gripper_PWM_WriteCompare1(uint16 compare) \
+ 556:.\Generated_Source\PSoC5/Gripper_PWM.c ****                                         
+ 557:.\Generated_Source\PSoC5/Gripper_PWM.c ****     {
+ 558:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #if(Gripper_PWM_UsingFixedFunction)
+ 559:.\Generated_Source\PSoC5/Gripper_PWM.c ****             CY_SET_REG16(Gripper_PWM_COMPARE1_LSB_PTR, (uint16)compare);
+ 560:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #else
+ 561:.\Generated_Source\PSoC5/Gripper_PWM.c ****             CY_SET_REG16(Gripper_PWM_COMPARE1_LSB_PTR, compare);
+ 562:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #endif /* (Gripper_PWM_UsingFixedFunction) */
+ 563:.\Generated_Source\PSoC5/Gripper_PWM.c ****     }
+ 564:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 565:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 566:.\Generated_Source\PSoC5/Gripper_PWM.c ****     /*******************************************************************************
+ 567:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Function Name: Gripper_PWM_WriteCompare2
+ 568:.\Generated_Source\PSoC5/Gripper_PWM.c ****     ********************************************************************************
+ 569:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 570:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Summary:
+ 571:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  This funtion is used to change the compare value, for compare1 output.
+ 572:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  The compare output will reflect the new value on the next UDB clock.
+ 573:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  The compare output will be driven high when the present counter value is
+ 574:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  less than or less than or equal to the compare register, depending on the
+ 575:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  mode.
+ 576:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 577:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Parameters:
+ 578:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  compare:  New compare value.
+ 579:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 580:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Return:
+ 581:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  None
+ 582:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 583:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *******************************************************************************/
+ 584:.\Generated_Source\PSoC5/Gripper_PWM.c ****     void Gripper_PWM_WriteCompare2(uint16 compare) \
+ 585:.\Generated_Source\PSoC5/Gripper_PWM.c ****                                         
+ 586:.\Generated_Source\PSoC5/Gripper_PWM.c ****     {
+ 587:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #if(Gripper_PWM_UsingFixedFunction)
+ 588:.\Generated_Source\PSoC5/Gripper_PWM.c ****             CY_SET_REG16(Gripper_PWM_COMPARE2_LSB_PTR, compare);
+ 589:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #else
+ 590:.\Generated_Source\PSoC5/Gripper_PWM.c ****             CY_SET_REG16(Gripper_PWM_COMPARE2_LSB_PTR, compare);
+ 591:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #endif /* (Gripper_PWM_UsingFixedFunction) */
+ 592:.\Generated_Source\PSoC5/Gripper_PWM.c ****     }
+ 593:.\Generated_Source\PSoC5/Gripper_PWM.c **** #endif /* UseOneCompareMode */
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 18
+
+
+ 594:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 595:.\Generated_Source\PSoC5/Gripper_PWM.c **** #if (Gripper_PWM_DeadBandUsed)
+ 596:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 597:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 598:.\Generated_Source\PSoC5/Gripper_PWM.c ****     /*******************************************************************************
+ 599:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Function Name: Gripper_PWM_WriteDeadTime
+ 600:.\Generated_Source\PSoC5/Gripper_PWM.c ****     ********************************************************************************
+ 601:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 602:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Summary:
+ 603:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  This function writes the dead-band counts to the corresponding register
+ 604:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 605:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Parameters:
+ 606:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  deadtime:  Number of counts for dead time
+ 607:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 608:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Return:
+ 609:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  None
+ 610:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 611:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *******************************************************************************/
+ 612:.\Generated_Source\PSoC5/Gripper_PWM.c ****     void Gripper_PWM_WriteDeadTime(uint8 deadtime) 
+ 613:.\Generated_Source\PSoC5/Gripper_PWM.c ****     {
+ 614:.\Generated_Source\PSoC5/Gripper_PWM.c ****         /* If using the Dead Band 1-255 mode then just write the register */
+ 615:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #if(!Gripper_PWM_DeadBand2_4)
+ 616:.\Generated_Source\PSoC5/Gripper_PWM.c ****             CY_SET_REG8(Gripper_PWM_DEADBAND_COUNT_PTR, deadtime);
+ 617:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #else
+ 618:.\Generated_Source\PSoC5/Gripper_PWM.c ****             /* Otherwise the data has to be masked and offset */
+ 619:.\Generated_Source\PSoC5/Gripper_PWM.c ****             /* Clear existing data */
+ 620:.\Generated_Source\PSoC5/Gripper_PWM.c ****             Gripper_PWM_DEADBAND_COUNT &= ((uint8)(~Gripper_PWM_DEADBAND_COUNT_MASK));
+ 621:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 622:.\Generated_Source\PSoC5/Gripper_PWM.c ****             /* Set new dead time */
+ 623:.\Generated_Source\PSoC5/Gripper_PWM.c ****             #if(Gripper_PWM_DEADBAND_COUNT_SHIFT)
+ 624:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 Gripper_PWM_DEADBAND_COUNT |= ((uint8)((uint8)deadtime << Gripper_PWM_DEADBAND_COUN
+ 625:.\Generated_Source\PSoC5/Gripper_PWM.c ****                                                     Gripper_PWM_DEADBAND_COUNT_MASK;
+ 626:.\Generated_Source\PSoC5/Gripper_PWM.c ****             #else
+ 627:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 Gripper_PWM_DEADBAND_COUNT |= deadtime & Gripper_PWM_DEADBAND_COUNT_MASK;
+ 628:.\Generated_Source\PSoC5/Gripper_PWM.c ****             #endif /* (Gripper_PWM_DEADBAND_COUNT_SHIFT) */
+ 629:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 630:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #endif /* (!Gripper_PWM_DeadBand2_4) */
+ 631:.\Generated_Source\PSoC5/Gripper_PWM.c ****     }
+ 632:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 633:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 634:.\Generated_Source\PSoC5/Gripper_PWM.c ****     /*******************************************************************************
+ 635:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Function Name: Gripper_PWM_ReadDeadTime
+ 636:.\Generated_Source\PSoC5/Gripper_PWM.c ****     ********************************************************************************
+ 637:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 638:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Summary:
+ 639:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  This function reads the dead-band counts from the corresponding register
+ 640:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 641:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Parameters:
+ 642:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  None
+ 643:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 644:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Return:
+ 645:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  Dead Band Counts
+ 646:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 647:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *******************************************************************************/
+ 648:.\Generated_Source\PSoC5/Gripper_PWM.c ****     uint8 Gripper_PWM_ReadDeadTime(void) 
+ 649:.\Generated_Source\PSoC5/Gripper_PWM.c ****     {
+ 650:.\Generated_Source\PSoC5/Gripper_PWM.c ****         /* If using the Dead Band 1-255 mode then just read the register */
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 19
+
+
+ 651:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #if(!Gripper_PWM_DeadBand2_4)
+ 652:.\Generated_Source\PSoC5/Gripper_PWM.c ****             return (CY_GET_REG8(Gripper_PWM_DEADBAND_COUNT_PTR));
+ 653:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #else
+ 654:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 655:.\Generated_Source\PSoC5/Gripper_PWM.c ****             /* Otherwise the data has to be masked and offset */
+ 656:.\Generated_Source\PSoC5/Gripper_PWM.c ****             #if(Gripper_PWM_DEADBAND_COUNT_SHIFT)
+ 657:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 return ((uint8)(((uint8)(Gripper_PWM_DEADBAND_COUNT & Gripper_PWM_DEADBAND_COUNT_MA
+ 658:.\Generated_Source\PSoC5/Gripper_PWM.c ****                                                                            Gripper_PWM_DEADBAND_COU
+ 659:.\Generated_Source\PSoC5/Gripper_PWM.c ****             #else
+ 660:.\Generated_Source\PSoC5/Gripper_PWM.c ****                 return (Gripper_PWM_DEADBAND_COUNT & Gripper_PWM_DEADBAND_COUNT_MASK);
+ 661:.\Generated_Source\PSoC5/Gripper_PWM.c ****             #endif /* (Gripper_PWM_DEADBAND_COUNT_SHIFT) */
+ 662:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #endif /* (!Gripper_PWM_DeadBand2_4) */
+ 663:.\Generated_Source\PSoC5/Gripper_PWM.c ****     }
+ 664:.\Generated_Source\PSoC5/Gripper_PWM.c **** #endif /* DeadBandUsed */
+ 665:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 666:.\Generated_Source\PSoC5/Gripper_PWM.c **** #if (Gripper_PWM_UseStatus || Gripper_PWM_UsingFixedFunction)
+ 667:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 668:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 669:.\Generated_Source\PSoC5/Gripper_PWM.c ****     /*******************************************************************************
+ 670:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Function Name: Gripper_PWM_SetInterruptMode
+ 671:.\Generated_Source\PSoC5/Gripper_PWM.c ****     ********************************************************************************
+ 672:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 673:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Summary:
+ 674:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  This function configures the interrupts mask control of theinterrupt
+ 675:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  source status register.
+ 676:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 677:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Parameters:
+ 678:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  uint8 interruptMode: Bit field containing the interrupt sources enabled
+ 679:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 680:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Return:
+ 681:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  None
+ 682:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 683:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *******************************************************************************/
+ 684:.\Generated_Source\PSoC5/Gripper_PWM.c ****     void Gripper_PWM_SetInterruptMode(uint8 interruptMode) 
+ 685:.\Generated_Source\PSoC5/Gripper_PWM.c ****     {
+ 377              		.loc 1 685 0
+ 378              		.cfi_startproc
+ 379              		@ args = 0, pretend = 0, frame = 8
+ 380              		@ frame_needed = 1, uses_anonymous_args = 0
+ 381              		@ link register save eliminated.
+ 382 0000 80B4     		push	{r7}
+ 383              		.cfi_def_cfa_offset 4
+ 384              		.cfi_offset 7, -4
+ 385 0002 83B0     		sub	sp, sp, #12
+ 386              		.cfi_def_cfa_offset 16
+ 387 0004 00AF     		add	r7, sp, #0
+ 388              		.cfi_def_cfa_register 7
+ 389 0006 0346     		mov	r3, r0
+ 390 0008 FB71     		strb	r3, [r7, #7]
+ 686:.\Generated_Source\PSoC5/Gripper_PWM.c ****         CY_SET_REG8(Gripper_PWM_STATUS_MASK_PTR, interruptMode);
+ 391              		.loc 1 686 0
+ 392 000a 044B     		ldr	r3, .L21
+ 393 000c FA79     		ldrb	r2, [r7, #7]
+ 394 000e 1A70     		strb	r2, [r3]
+ 687:.\Generated_Source\PSoC5/Gripper_PWM.c ****     }
+ 395              		.loc 1 687 0
+ 396 0010 0C37     		adds	r7, r7, #12
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 20
+
+
+ 397 0012 BD46     		mov	sp, r7
+ 398              		@ sp needed
+ 399 0014 5DF8047B 		ldr	r7, [sp], #4
+ 400 0018 7047     		bx	lr
+ 401              	.L22:
+ 402 001a 00BF     		.align	2
+ 403              	.L21:
+ 404 001c 0F4F0040 		.word	1073762063
+ 405              		.cfi_endproc
+ 406              	.LFE6:
+ 407              		.size	Gripper_PWM_SetInterruptMode, .-Gripper_PWM_SetInterruptMode
+ 408              		.section	.text.Gripper_PWM_ReadStatusRegister,"ax",%progbits
+ 409              		.align	2
+ 410              		.global	Gripper_PWM_ReadStatusRegister
+ 411              		.thumb
+ 412              		.thumb_func
+ 413              		.type	Gripper_PWM_ReadStatusRegister, %function
+ 414              	Gripper_PWM_ReadStatusRegister:
+ 415              	.LFB7:
+ 688:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 689:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 690:.\Generated_Source\PSoC5/Gripper_PWM.c ****     /*******************************************************************************
+ 691:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Function Name: Gripper_PWM_ReadStatusRegister
+ 692:.\Generated_Source\PSoC5/Gripper_PWM.c ****     ********************************************************************************
+ 693:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 694:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Summary:
+ 695:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  This function returns the current state of the status register.
+ 696:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 697:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Parameters:
+ 698:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  None
+ 699:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 700:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Return:
+ 701:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  uint8 : Current status register value. The status register bits are:
+ 702:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  [7:6] : Unused(0)
+ 703:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  [5]   : Kill event output
+ 704:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  [4]   : FIFO not empty
+ 705:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  [3]   : FIFO full
+ 706:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  [2]   : Terminal count
+ 707:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  [1]   : Compare output 2
+ 708:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  [0]   : Compare output 1
+ 709:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 710:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *******************************************************************************/
+ 711:.\Generated_Source\PSoC5/Gripper_PWM.c ****     uint8 Gripper_PWM_ReadStatusRegister(void) 
+ 712:.\Generated_Source\PSoC5/Gripper_PWM.c ****     {
+ 416              		.loc 1 712 0
+ 417              		.cfi_startproc
+ 418              		@ args = 0, pretend = 0, frame = 0
+ 419              		@ frame_needed = 1, uses_anonymous_args = 0
+ 420              		@ link register save eliminated.
+ 421 0000 80B4     		push	{r7}
+ 422              		.cfi_def_cfa_offset 4
+ 423              		.cfi_offset 7, -4
+ 424 0002 00AF     		add	r7, sp, #0
+ 425              		.cfi_def_cfa_register 7
+ 713:.\Generated_Source\PSoC5/Gripper_PWM.c ****         return (CY_GET_REG8(Gripper_PWM_STATUS_PTR));
+ 426              		.loc 1 713 0
+ 427 0004 034B     		ldr	r3, .L25
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 21
+
+
+ 428 0006 1B78     		ldrb	r3, [r3]
+ 429 0008 DBB2     		uxtb	r3, r3
+ 714:.\Generated_Source\PSoC5/Gripper_PWM.c ****     }
+ 430              		.loc 1 714 0
+ 431 000a 1846     		mov	r0, r3
+ 432 000c BD46     		mov	sp, r7
+ 433              		@ sp needed
+ 434 000e 5DF8047B 		ldr	r7, [sp], #4
+ 435 0012 7047     		bx	lr
+ 436              	.L26:
+ 437              		.align	2
+ 438              	.L25:
+ 439 0014 0F4F0040 		.word	1073762063
+ 440              		.cfi_endproc
+ 441              	.LFE7:
+ 442              		.size	Gripper_PWM_ReadStatusRegister, .-Gripper_PWM_ReadStatusRegister
+ 443              		.section	.text.Gripper_PWM_ReadControlRegister,"ax",%progbits
+ 444              		.align	2
+ 445              		.global	Gripper_PWM_ReadControlRegister
+ 446              		.thumb
+ 447              		.thumb_func
+ 448              		.type	Gripper_PWM_ReadControlRegister, %function
+ 449              	Gripper_PWM_ReadControlRegister:
+ 450              	.LFB8:
+ 715:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 716:.\Generated_Source\PSoC5/Gripper_PWM.c **** #endif /* (Gripper_PWM_UseStatus || Gripper_PWM_UsingFixedFunction) */
+ 717:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 718:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 719:.\Generated_Source\PSoC5/Gripper_PWM.c **** #if (Gripper_PWM_UseControl)
+ 720:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 721:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 722:.\Generated_Source\PSoC5/Gripper_PWM.c ****     /*******************************************************************************
+ 723:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Function Name: Gripper_PWM_ReadControlRegister
+ 724:.\Generated_Source\PSoC5/Gripper_PWM.c ****     ********************************************************************************
+ 725:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 726:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Summary:
+ 727:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  Returns the current state of the control register. This API is available
+ 728:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  only if the control register is not removed.
+ 729:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 730:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Parameters:
+ 731:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  None
+ 732:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 733:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Return:
+ 734:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  uint8 : Current control register value
+ 735:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 736:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *******************************************************************************/
+ 737:.\Generated_Source\PSoC5/Gripper_PWM.c ****     uint8 Gripper_PWM_ReadControlRegister(void) 
+ 738:.\Generated_Source\PSoC5/Gripper_PWM.c ****     {
+ 451              		.loc 1 738 0
+ 452              		.cfi_startproc
+ 453              		@ args = 0, pretend = 0, frame = 8
+ 454              		@ frame_needed = 1, uses_anonymous_args = 0
+ 455              		@ link register save eliminated.
+ 456 0000 80B4     		push	{r7}
+ 457              		.cfi_def_cfa_offset 4
+ 458              		.cfi_offset 7, -4
+ 459 0002 83B0     		sub	sp, sp, #12
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 22
+
+
+ 460              		.cfi_def_cfa_offset 16
+ 461 0004 00AF     		add	r7, sp, #0
+ 462              		.cfi_def_cfa_register 7
+ 739:.\Generated_Source\PSoC5/Gripper_PWM.c ****         uint8 result;
+ 740:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 741:.\Generated_Source\PSoC5/Gripper_PWM.c ****         result = CY_GET_REG8(Gripper_PWM_CONTROL_PTR);
+ 463              		.loc 1 741 0
+ 464 0006 054B     		ldr	r3, .L29
+ 465 0008 1B78     		ldrb	r3, [r3]
+ 466 000a FB71     		strb	r3, [r7, #7]
+ 742:.\Generated_Source\PSoC5/Gripper_PWM.c ****         return (result);
+ 467              		.loc 1 742 0
+ 468 000c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 743:.\Generated_Source\PSoC5/Gripper_PWM.c ****     }
+ 469              		.loc 1 743 0
+ 470 000e 1846     		mov	r0, r3
+ 471 0010 0C37     		adds	r7, r7, #12
+ 472 0012 BD46     		mov	sp, r7
+ 473              		@ sp needed
+ 474 0014 5DF8047B 		ldr	r7, [sp], #4
+ 475 0018 7047     		bx	lr
+ 476              	.L30:
+ 477 001a 00BF     		.align	2
+ 478              	.L29:
+ 479 001c 0C4F0040 		.word	1073762060
+ 480              		.cfi_endproc
+ 481              	.LFE8:
+ 482              		.size	Gripper_PWM_ReadControlRegister, .-Gripper_PWM_ReadControlRegister
+ 483              		.section	.text.Gripper_PWM_WriteControlRegister,"ax",%progbits
+ 484              		.align	2
+ 485              		.global	Gripper_PWM_WriteControlRegister
+ 486              		.thumb
+ 487              		.thumb_func
+ 488              		.type	Gripper_PWM_WriteControlRegister, %function
+ 489              	Gripper_PWM_WriteControlRegister:
+ 490              	.LFB9:
+ 744:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 745:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 746:.\Generated_Source\PSoC5/Gripper_PWM.c ****     /*******************************************************************************
+ 747:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Function Name: Gripper_PWM_WriteControlRegister
+ 748:.\Generated_Source\PSoC5/Gripper_PWM.c ****     ********************************************************************************
+ 749:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 750:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Summary:
+ 751:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  Sets the bit field of the control register. This API is available only if
+ 752:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  the control register is not removed.
+ 753:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 754:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Parameters:
+ 755:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  uint8 control: Control register bit field, The status register bits are:
+ 756:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  [7]   : PWM Enable
+ 757:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  [6]   : Reset
+ 758:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  [5:3] : Compare Mode2
+ 759:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  [2:0] : Compare Mode2
+ 760:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 761:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Return:
+ 762:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  None
+ 763:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 764:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *******************************************************************************/
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 23
+
+
+ 765:.\Generated_Source\PSoC5/Gripper_PWM.c ****     void Gripper_PWM_WriteControlRegister(uint8 control) 
+ 766:.\Generated_Source\PSoC5/Gripper_PWM.c ****     {
+ 491              		.loc 1 766 0
+ 492              		.cfi_startproc
+ 493              		@ args = 0, pretend = 0, frame = 8
+ 494              		@ frame_needed = 1, uses_anonymous_args = 0
+ 495              		@ link register save eliminated.
+ 496 0000 80B4     		push	{r7}
+ 497              		.cfi_def_cfa_offset 4
+ 498              		.cfi_offset 7, -4
+ 499 0002 83B0     		sub	sp, sp, #12
+ 500              		.cfi_def_cfa_offset 16
+ 501 0004 00AF     		add	r7, sp, #0
+ 502              		.cfi_def_cfa_register 7
+ 503 0006 0346     		mov	r3, r0
+ 504 0008 FB71     		strb	r3, [r7, #7]
+ 767:.\Generated_Source\PSoC5/Gripper_PWM.c ****         CY_SET_REG8(Gripper_PWM_CONTROL_PTR, control);
+ 505              		.loc 1 767 0
+ 506 000a 044B     		ldr	r3, .L32
+ 507 000c FA79     		ldrb	r2, [r7, #7]
+ 508 000e 1A70     		strb	r2, [r3]
+ 768:.\Generated_Source\PSoC5/Gripper_PWM.c ****     }
+ 509              		.loc 1 768 0
+ 510 0010 0C37     		adds	r7, r7, #12
+ 511 0012 BD46     		mov	sp, r7
+ 512              		@ sp needed
+ 513 0014 5DF8047B 		ldr	r7, [sp], #4
+ 514 0018 7047     		bx	lr
+ 515              	.L33:
+ 516 001a 00BF     		.align	2
+ 517              	.L32:
+ 518 001c 0C4F0040 		.word	1073762060
+ 519              		.cfi_endproc
+ 520              	.LFE9:
+ 521              		.size	Gripper_PWM_WriteControlRegister, .-Gripper_PWM_WriteControlRegister
+ 522              		.section	.text.Gripper_PWM_ReadCompare,"ax",%progbits
+ 523              		.align	2
+ 524              		.global	Gripper_PWM_ReadCompare
+ 525              		.thumb
+ 526              		.thumb_func
+ 527              		.type	Gripper_PWM_ReadCompare, %function
+ 528              	Gripper_PWM_ReadCompare:
+ 529              	.LFB10:
+ 769:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 770:.\Generated_Source\PSoC5/Gripper_PWM.c **** #endif /* (Gripper_PWM_UseControl) */
+ 771:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 772:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 773:.\Generated_Source\PSoC5/Gripper_PWM.c **** #if (!Gripper_PWM_UsingFixedFunction)
+ 774:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 775:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 776:.\Generated_Source\PSoC5/Gripper_PWM.c ****     /*******************************************************************************
+ 777:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Function Name: Gripper_PWM_ReadCapture
+ 778:.\Generated_Source\PSoC5/Gripper_PWM.c ****     ********************************************************************************
+ 779:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 780:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Summary:
+ 781:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  Reads the capture value from the capture FIFO.
+ 782:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 24
+
+
+ 783:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Parameters:
+ 784:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  None
+ 785:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 786:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Return:
+ 787:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  uint8/uint16: The current capture value
+ 788:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 789:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *******************************************************************************/
+ 790:.\Generated_Source\PSoC5/Gripper_PWM.c ****     uint16 Gripper_PWM_ReadCapture(void) 
+ 791:.\Generated_Source\PSoC5/Gripper_PWM.c ****     {
+ 792:.\Generated_Source\PSoC5/Gripper_PWM.c ****         return (CY_GET_REG16(Gripper_PWM_CAPTURE_LSB_PTR));
+ 793:.\Generated_Source\PSoC5/Gripper_PWM.c ****     }
+ 794:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 795:.\Generated_Source\PSoC5/Gripper_PWM.c **** #endif /* (!Gripper_PWM_UsingFixedFunction) */
+ 796:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 797:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 798:.\Generated_Source\PSoC5/Gripper_PWM.c **** #if (Gripper_PWM_UseOneCompareMode)
+ 799:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 800:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 801:.\Generated_Source\PSoC5/Gripper_PWM.c ****     /*******************************************************************************
+ 802:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Function Name: Gripper_PWM_ReadCompare
+ 803:.\Generated_Source\PSoC5/Gripper_PWM.c ****     ********************************************************************************
+ 804:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 805:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Summary:
+ 806:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  Reads the compare value for the compare output when the PWM Mode parameter is
+ 807:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  set to Dither mode, Center Aligned mode, or One Output mode.
+ 808:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 809:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Parameters:
+ 810:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  None
+ 811:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 812:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Return:
+ 813:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  uint8/uint16: Current compare value
+ 814:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 815:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *******************************************************************************/
+ 816:.\Generated_Source\PSoC5/Gripper_PWM.c ****     uint16 Gripper_PWM_ReadCompare(void) 
+ 817:.\Generated_Source\PSoC5/Gripper_PWM.c ****     {
+ 530              		.loc 1 817 0
+ 531              		.cfi_startproc
+ 532              		@ args = 0, pretend = 0, frame = 0
+ 533              		@ frame_needed = 1, uses_anonymous_args = 0
+ 534              		@ link register save eliminated.
+ 535 0000 80B4     		push	{r7}
+ 536              		.cfi_def_cfa_offset 4
+ 537              		.cfi_offset 7, -4
+ 538 0002 00AF     		add	r7, sp, #0
+ 539              		.cfi_def_cfa_register 7
+ 818:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #if(Gripper_PWM_UsingFixedFunction)
+ 819:.\Generated_Source\PSoC5/Gripper_PWM.c ****             return ((uint16)CY_GET_REG16(Gripper_PWM_COMPARE1_LSB_PTR));
+ 540              		.loc 1 819 0
+ 541 0004 034B     		ldr	r3, .L36
+ 542 0006 1B88     		ldrh	r3, [r3]	@ movhi
+ 543 0008 9BB2     		uxth	r3, r3
+ 820:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #else
+ 821:.\Generated_Source\PSoC5/Gripper_PWM.c ****             return (CY_GET_REG16(Gripper_PWM_COMPARE1_LSB_PTR));
+ 822:.\Generated_Source\PSoC5/Gripper_PWM.c ****         #endif /* (Gripper_PWM_UsingFixedFunction) */
+ 823:.\Generated_Source\PSoC5/Gripper_PWM.c ****     }
+ 544              		.loc 1 823 0
+ 545 000a 1846     		mov	r0, r3
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 25
+
+
+ 546 000c BD46     		mov	sp, r7
+ 547              		@ sp needed
+ 548 000e 5DF8047B 		ldr	r7, [sp], #4
+ 549 0012 7047     		bx	lr
+ 550              	.L37:
+ 551              		.align	2
+ 552              	.L36:
+ 553 0014 124F0040 		.word	1073762066
+ 554              		.cfi_endproc
+ 555              	.LFE10:
+ 556              		.size	Gripper_PWM_ReadCompare, .-Gripper_PWM_ReadCompare
+ 557              		.section	.text.Gripper_PWM_ReadPeriod,"ax",%progbits
+ 558              		.align	2
+ 559              		.global	Gripper_PWM_ReadPeriod
+ 560              		.thumb
+ 561              		.thumb_func
+ 562              		.type	Gripper_PWM_ReadPeriod, %function
+ 563              	Gripper_PWM_ReadPeriod:
+ 564              	.LFB11:
+ 824:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 825:.\Generated_Source\PSoC5/Gripper_PWM.c **** #else
+ 826:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 827:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 828:.\Generated_Source\PSoC5/Gripper_PWM.c ****     /*******************************************************************************
+ 829:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Function Name: Gripper_PWM_ReadCompare1
+ 830:.\Generated_Source\PSoC5/Gripper_PWM.c ****     ********************************************************************************
+ 831:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 832:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Summary:
+ 833:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  Reads the compare value for the compare1 output.
+ 834:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 835:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Parameters:
+ 836:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  None
+ 837:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 838:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Return:
+ 839:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  uint8/uint16: Current compare value.
+ 840:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 841:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *******************************************************************************/
+ 842:.\Generated_Source\PSoC5/Gripper_PWM.c ****     uint16 Gripper_PWM_ReadCompare1(void) 
+ 843:.\Generated_Source\PSoC5/Gripper_PWM.c ****     {
+ 844:.\Generated_Source\PSoC5/Gripper_PWM.c ****         return (CY_GET_REG16(Gripper_PWM_COMPARE1_LSB_PTR));
+ 845:.\Generated_Source\PSoC5/Gripper_PWM.c ****     }
+ 846:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 847:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 848:.\Generated_Source\PSoC5/Gripper_PWM.c ****     /*******************************************************************************
+ 849:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Function Name: Gripper_PWM_ReadCompare2
+ 850:.\Generated_Source\PSoC5/Gripper_PWM.c ****     ********************************************************************************
+ 851:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 852:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Summary:
+ 853:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  Reads the compare value for the compare2 output.
+ 854:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 855:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Parameters:
+ 856:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  None
+ 857:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 858:.\Generated_Source\PSoC5/Gripper_PWM.c ****     * Return:
+ 859:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *  uint8/uint16: Current compare value.
+ 860:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *
+ 861:.\Generated_Source\PSoC5/Gripper_PWM.c ****     *******************************************************************************/
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 26
+
+
+ 862:.\Generated_Source\PSoC5/Gripper_PWM.c ****     uint16 Gripper_PWM_ReadCompare2(void) 
+ 863:.\Generated_Source\PSoC5/Gripper_PWM.c ****     {
+ 864:.\Generated_Source\PSoC5/Gripper_PWM.c ****         return (CY_GET_REG16(Gripper_PWM_COMPARE2_LSB_PTR));
+ 865:.\Generated_Source\PSoC5/Gripper_PWM.c ****     }
+ 866:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 867:.\Generated_Source\PSoC5/Gripper_PWM.c **** #endif /* (Gripper_PWM_UseOneCompareMode) */
+ 868:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 869:.\Generated_Source\PSoC5/Gripper_PWM.c **** 
+ 870:.\Generated_Source\PSoC5/Gripper_PWM.c **** /*******************************************************************************
+ 871:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Function Name: Gripper_PWM_ReadPeriod
+ 872:.\Generated_Source\PSoC5/Gripper_PWM.c **** ********************************************************************************
+ 873:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+ 874:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Summary:
+ 875:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  Reads the period value used by the PWM hardware.
+ 876:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+ 877:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Parameters:
+ 878:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  None
+ 879:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+ 880:.\Generated_Source\PSoC5/Gripper_PWM.c **** * Return:
+ 881:.\Generated_Source\PSoC5/Gripper_PWM.c **** *  uint8/16: Period value
+ 882:.\Generated_Source\PSoC5/Gripper_PWM.c **** *
+ 883:.\Generated_Source\PSoC5/Gripper_PWM.c **** *******************************************************************************/
+ 884:.\Generated_Source\PSoC5/Gripper_PWM.c **** uint16 Gripper_PWM_ReadPeriod(void) 
+ 885:.\Generated_Source\PSoC5/Gripper_PWM.c **** {
+ 565              		.loc 1 885 0
+ 566              		.cfi_startproc
+ 567              		@ args = 0, pretend = 0, frame = 0
+ 568              		@ frame_needed = 1, uses_anonymous_args = 0
+ 569              		@ link register save eliminated.
+ 570 0000 80B4     		push	{r7}
+ 571              		.cfi_def_cfa_offset 4
+ 572              		.cfi_offset 7, -4
+ 573 0002 00AF     		add	r7, sp, #0
+ 574              		.cfi_def_cfa_register 7
+ 886:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #if(Gripper_PWM_UsingFixedFunction)
+ 887:.\Generated_Source\PSoC5/Gripper_PWM.c ****         return ((uint16)CY_GET_REG16(Gripper_PWM_PERIOD_LSB_PTR));
+ 575              		.loc 1 887 0
+ 576 0004 034B     		ldr	r3, .L40
+ 577 0006 1B88     		ldrh	r3, [r3]	@ movhi
+ 578 0008 9BB2     		uxth	r3, r3
+ 888:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #else
+ 889:.\Generated_Source\PSoC5/Gripper_PWM.c ****         return (CY_GET_REG16(Gripper_PWM_PERIOD_LSB_PTR));
+ 890:.\Generated_Source\PSoC5/Gripper_PWM.c ****     #endif /* (Gripper_PWM_UsingFixedFunction) */
+ 891:.\Generated_Source\PSoC5/Gripper_PWM.c **** }
+ 579              		.loc 1 891 0
+ 580 000a 1846     		mov	r0, r3
+ 581 000c BD46     		mov	sp, r7
+ 582              		@ sp needed
+ 583 000e 5DF8047B 		ldr	r7, [sp], #4
+ 584 0012 7047     		bx	lr
+ 585              	.L41:
+ 586              		.align	2
+ 587              	.L40:
+ 588 0014 104F0040 		.word	1073762064
+ 589              		.cfi_endproc
+ 590              	.LFE11:
+ 591              		.size	Gripper_PWM_ReadPeriod, .-Gripper_PWM_ReadPeriod
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 27
+
+
+ 592              		.text
+ 593              	.Letext0:
+ 594              		.file 2 ".\\Generated_Source\\PSoC5\\cytypes.h"
+ 595              		.section	.debug_info,"",%progbits
+ 596              	.Ldebug_info0:
+ 597 0000 28020000 		.4byte	0x228
+ 598 0004 0400     		.2byte	0x4
+ 599 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 600 000a 04       		.byte	0x4
+ 601 000b 01       		.uleb128 0x1
+ 602 000c D3010000 		.4byte	.LASF34
+ 603 0010 01       		.byte	0x1
+ 604 0011 AC010000 		.4byte	.LASF35
+ 605 0015 95000000 		.4byte	.LASF36
+ 606 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 607 001d 00000000 		.4byte	0
+ 608 0021 00000000 		.4byte	.Ldebug_line0
+ 609 0025 02       		.uleb128 0x2
+ 610 0026 01       		.byte	0x1
+ 611 0027 06       		.byte	0x6
+ 612 0028 CD020000 		.4byte	.LASF0
+ 613 002c 02       		.uleb128 0x2
+ 614 002d 01       		.byte	0x1
+ 615 002e 08       		.byte	0x8
+ 616 002f 87000000 		.4byte	.LASF1
+ 617 0033 02       		.uleb128 0x2
+ 618 0034 02       		.byte	0x2
+ 619 0035 05       		.byte	0x5
+ 620 0036 9C020000 		.4byte	.LASF2
+ 621 003a 02       		.uleb128 0x2
+ 622 003b 02       		.byte	0x2
+ 623 003c 07       		.byte	0x7
+ 624 003d 15000000 		.4byte	.LASF3
+ 625 0041 02       		.uleb128 0x2
+ 626 0042 04       		.byte	0x4
+ 627 0043 05       		.byte	0x5
+ 628 0044 BF020000 		.4byte	.LASF4
+ 629 0048 02       		.uleb128 0x2
+ 630 0049 04       		.byte	0x4
+ 631 004a 07       		.byte	0x7
+ 632 004b 06010000 		.4byte	.LASF5
+ 633 004f 02       		.uleb128 0x2
+ 634 0050 08       		.byte	0x8
+ 635 0051 05       		.byte	0x5
+ 636 0052 00000000 		.4byte	.LASF6
+ 637 0056 02       		.uleb128 0x2
+ 638 0057 08       		.byte	0x8
+ 639 0058 07       		.byte	0x7
+ 640 0059 75010000 		.4byte	.LASF7
+ 641 005d 03       		.uleb128 0x3
+ 642 005e 04       		.byte	0x4
+ 643 005f 05       		.byte	0x5
+ 644 0060 696E7400 		.ascii	"int\000"
+ 645 0064 02       		.uleb128 0x2
+ 646 0065 04       		.byte	0x4
+ 647 0066 07       		.byte	0x7
+ 648 0067 68010000 		.4byte	.LASF8
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 28
+
+
+ 649 006b 04       		.uleb128 0x4
+ 650 006c 18010000 		.4byte	.LASF9
+ 651 0070 02       		.byte	0x2
+ 652 0071 B3       		.byte	0xb3
+ 653 0072 2C000000 		.4byte	0x2c
+ 654 0076 04       		.uleb128 0x4
+ 655 0077 61010000 		.4byte	.LASF10
+ 656 007b 02       		.byte	0x2
+ 657 007c B4       		.byte	0xb4
+ 658 007d 3A000000 		.4byte	0x3a
+ 659 0081 02       		.uleb128 0x2
+ 660 0082 04       		.byte	0x4
+ 661 0083 04       		.byte	0x4
+ 662 0084 81000000 		.4byte	.LASF11
+ 663 0088 02       		.uleb128 0x2
+ 664 0089 08       		.byte	0x8
+ 665 008a 04       		.byte	0x4
+ 666 008b 5A010000 		.4byte	.LASF12
+ 667 008f 02       		.uleb128 0x2
+ 668 0090 01       		.byte	0x1
+ 669 0091 08       		.byte	0x8
+ 670 0092 C8020000 		.4byte	.LASF13
+ 671 0096 05       		.uleb128 0x5
+ 672 0097 01010000 		.4byte	.LASF14
+ 673 009b 02       		.byte	0x2
+ 674 009c 5D01     		.2byte	0x15d
+ 675 009e A2000000 		.4byte	0xa2
+ 676 00a2 06       		.uleb128 0x6
+ 677 00a3 6B000000 		.4byte	0x6b
+ 678 00a7 05       		.uleb128 0x5
+ 679 00a8 A6020000 		.4byte	.LASF15
+ 680 00ac 02       		.byte	0x2
+ 681 00ad 5E01     		.2byte	0x15e
+ 682 00af B3000000 		.4byte	0xb3
+ 683 00b3 06       		.uleb128 0x6
+ 684 00b4 76000000 		.4byte	0x76
+ 685 00b8 02       		.uleb128 0x2
+ 686 00b9 04       		.byte	0x4
+ 687 00ba 07       		.byte	0x7
+ 688 00bb 54020000 		.4byte	.LASF16
+ 689 00bf 07       		.uleb128 0x7
+ 690 00c0 8A020000 		.4byte	.LASF17
+ 691 00c4 01       		.byte	0x1
+ 692 00c5 37       		.byte	0x37
+ 693 00c6 00000000 		.4byte	.LFB0
+ 694 00ca 20000000 		.4byte	.LFE0-.LFB0
+ 695 00ce 01       		.uleb128 0x1
+ 696 00cf 9C       		.byte	0x9c
+ 697 00d0 08       		.uleb128 0x8
+ 698 00d1 0D030000 		.4byte	.LASF20
+ 699 00d5 01       		.byte	0x1
+ 700 00d6 54       		.byte	0x54
+ 701 00d7 00000000 		.4byte	.LFB1
+ 702 00db BC000000 		.4byte	.LFE1-.LFB1
+ 703 00df 01       		.uleb128 0x1
+ 704 00e0 9C       		.byte	0x9c
+ 705 00e1 F4000000 		.4byte	0xf4
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 29
+
+
+ 706 00e5 09       		.uleb128 0x9
+ 707 00e6 4F020000 		.4byte	.LASF27
+ 708 00ea 01       		.byte	0x1
+ 709 00eb 57       		.byte	0x57
+ 710 00ec 6B000000 		.4byte	0x6b
+ 711 00f0 02       		.uleb128 0x2
+ 712 00f1 91       		.byte	0x91
+ 713 00f2 77       		.sleb128 -9
+ 714 00f3 00       		.byte	0
+ 715 00f4 0A       		.uleb128 0xa
+ 716 00f5 AC020000 		.4byte	.LASF18
+ 717 00f9 01       		.byte	0x1
+ 718 00fa C7       		.byte	0xc7
+ 719 00fb 00000000 		.4byte	.LFB2
+ 720 00ff 48000000 		.4byte	.LFE2-.LFB2
+ 721 0103 01       		.uleb128 0x1
+ 722 0104 9C       		.byte	0x9c
+ 723 0105 0A       		.uleb128 0xa
+ 724 0106 F0000000 		.4byte	.LASF19
+ 725 010a 01       		.byte	0x1
+ 726 010b E9       		.byte	0xe9
+ 727 010c 00000000 		.4byte	.LFB3
+ 728 0110 48000000 		.4byte	.LFE3-.LFB3
+ 729 0114 01       		.uleb128 0x1
+ 730 0115 9C       		.byte	0x9c
+ 731 0116 0B       		.uleb128 0xb
+ 732 0117 E1020000 		.4byte	.LASF21
+ 733 011b 01       		.byte	0x1
+ 734 011c E201     		.2byte	0x1e2
+ 735 011e 00000000 		.4byte	.LFB4
+ 736 0122 20000000 		.4byte	.LFE4-.LFB4
+ 737 0126 01       		.uleb128 0x1
+ 738 0127 9C       		.byte	0x9c
+ 739 0128 3C010000 		.4byte	0x13c
+ 740 012c 0C       		.uleb128 0xc
+ 741 012d 0E000000 		.4byte	.LASF23
+ 742 0131 01       		.byte	0x1
+ 743 0132 E201     		.2byte	0x1e2
+ 744 0134 76000000 		.4byte	0x76
+ 745 0138 02       		.uleb128 0x2
+ 746 0139 91       		.byte	0x91
+ 747 013a 76       		.sleb128 -10
+ 748 013b 00       		.byte	0
+ 749 013c 0B       		.uleb128 0xb
+ 750 013d 8C010000 		.4byte	.LASF22
+ 751 0141 01       		.byte	0x1
+ 752 0142 0402     		.2byte	0x204
+ 753 0144 00000000 		.4byte	.LFB5
+ 754 0148 20000000 		.4byte	.LFE5-.LFB5
+ 755 014c 01       		.uleb128 0x1
+ 756 014d 9C       		.byte	0x9c
+ 757 014e 62010000 		.4byte	0x162
+ 758 0152 0C       		.uleb128 0xc
+ 759 0153 D9020000 		.4byte	.LASF24
+ 760 0157 01       		.byte	0x1
+ 761 0158 0402     		.2byte	0x204
+ 762 015a 76000000 		.4byte	0x76
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 30
+
+
+ 763 015e 02       		.uleb128 0x2
+ 764 015f 91       		.byte	0x91
+ 765 0160 76       		.sleb128 -10
+ 766 0161 00       		.byte	0
+ 767 0162 0B       		.uleb128 0xb
+ 768 0163 26010000 		.4byte	.LASF25
+ 769 0167 01       		.byte	0x1
+ 770 0168 AC02     		.2byte	0x2ac
+ 771 016a 00000000 		.4byte	.LFB6
+ 772 016e 20000000 		.4byte	.LFE6-.LFB6
+ 773 0172 01       		.uleb128 0x1
+ 774 0173 9C       		.byte	0x9c
+ 775 0174 88010000 		.4byte	0x188
+ 776 0178 0C       		.uleb128 0xc
+ 777 0179 7C020000 		.4byte	.LASF26
+ 778 017d 01       		.byte	0x1
+ 779 017e AC02     		.2byte	0x2ac
+ 780 0180 6B000000 		.4byte	0x6b
+ 781 0184 02       		.uleb128 0x2
+ 782 0185 91       		.byte	0x91
+ 783 0186 77       		.sleb128 -9
+ 784 0187 00       		.byte	0
+ 785 0188 0D       		.uleb128 0xd
+ 786 0189 5D020000 		.4byte	.LASF31
+ 787 018d 01       		.byte	0x1
+ 788 018e C702     		.2byte	0x2c7
+ 789 0190 6B000000 		.4byte	0x6b
+ 790 0194 00000000 		.4byte	.LFB7
+ 791 0198 18000000 		.4byte	.LFE7-.LFB7
+ 792 019c 01       		.uleb128 0x1
+ 793 019d 9C       		.byte	0x9c
+ 794 019e 0E       		.uleb128 0xe
+ 795 019f 61000000 		.4byte	.LASF37
+ 796 01a3 01       		.byte	0x1
+ 797 01a4 E102     		.2byte	0x2e1
+ 798 01a6 6B000000 		.4byte	0x6b
+ 799 01aa 00000000 		.4byte	.LFB8
+ 800 01ae 20000000 		.4byte	.LFE8-.LFB8
+ 801 01b2 01       		.uleb128 0x1
+ 802 01b3 9C       		.byte	0x9c
+ 803 01b4 C8010000 		.4byte	0x1c8
+ 804 01b8 0F       		.uleb128 0xf
+ 805 01b9 A5010000 		.4byte	.LASF28
+ 806 01bd 01       		.byte	0x1
+ 807 01be E302     		.2byte	0x2e3
+ 808 01c0 6B000000 		.4byte	0x6b
+ 809 01c4 02       		.uleb128 0x2
+ 810 01c5 91       		.byte	0x91
+ 811 01c6 77       		.sleb128 -9
+ 812 01c7 00       		.byte	0
+ 813 01c8 0B       		.uleb128 0xb
+ 814 01c9 40000000 		.4byte	.LASF29
+ 815 01cd 01       		.byte	0x1
+ 816 01ce FD02     		.2byte	0x2fd
+ 817 01d0 00000000 		.4byte	.LFB9
+ 818 01d4 20000000 		.4byte	.LFE9-.LFB9
+ 819 01d8 01       		.uleb128 0x1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 31
+
+
+ 820 01d9 9C       		.byte	0x9c
+ 821 01da EE010000 		.4byte	0x1ee
+ 822 01de 0C       		.uleb128 0xc
+ 823 01df 1E010000 		.4byte	.LASF30
+ 824 01e3 01       		.byte	0x1
+ 825 01e4 FD02     		.2byte	0x2fd
+ 826 01e6 6B000000 		.4byte	0x6b
+ 827 01ea 02       		.uleb128 0x2
+ 828 01eb 91       		.byte	0x91
+ 829 01ec 77       		.sleb128 -9
+ 830 01ed 00       		.byte	0
+ 831 01ee 0D       		.uleb128 0xd
+ 832 01ef 28000000 		.4byte	.LASF32
+ 833 01f3 01       		.byte	0x1
+ 834 01f4 3003     		.2byte	0x330
+ 835 01f6 76000000 		.4byte	0x76
+ 836 01fa 00000000 		.4byte	.LFB10
+ 837 01fe 18000000 		.4byte	.LFE10-.LFB10
+ 838 0202 01       		.uleb128 0x1
+ 839 0203 9C       		.byte	0x9c
+ 840 0204 0D       		.uleb128 0xd
+ 841 0205 43010000 		.4byte	.LASF33
+ 842 0209 01       		.byte	0x1
+ 843 020a 7403     		.2byte	0x374
+ 844 020c 76000000 		.4byte	0x76
+ 845 0210 00000000 		.4byte	.LFB11
+ 846 0214 18000000 		.4byte	.LFE11-.LFB11
+ 847 0218 01       		.uleb128 0x1
+ 848 0219 9C       		.byte	0x9c
+ 849 021a 10       		.uleb128 0x10
+ 850 021b F9020000 		.4byte	.LASF38
+ 851 021f 01       		.byte	0x1
+ 852 0220 20       		.byte	0x20
+ 853 0221 6B000000 		.4byte	0x6b
+ 854 0225 05       		.uleb128 0x5
+ 855 0226 03       		.byte	0x3
+ 856 0227 00000000 		.4byte	Gripper_PWM_initVar
+ 857 022b 00       		.byte	0
+ 858              		.section	.debug_abbrev,"",%progbits
+ 859              	.Ldebug_abbrev0:
+ 860 0000 01       		.uleb128 0x1
+ 861 0001 11       		.uleb128 0x11
+ 862 0002 01       		.byte	0x1
+ 863 0003 25       		.uleb128 0x25
+ 864 0004 0E       		.uleb128 0xe
+ 865 0005 13       		.uleb128 0x13
+ 866 0006 0B       		.uleb128 0xb
+ 867 0007 03       		.uleb128 0x3
+ 868 0008 0E       		.uleb128 0xe
+ 869 0009 1B       		.uleb128 0x1b
+ 870 000a 0E       		.uleb128 0xe
+ 871 000b 55       		.uleb128 0x55
+ 872 000c 17       		.uleb128 0x17
+ 873 000d 11       		.uleb128 0x11
+ 874 000e 01       		.uleb128 0x1
+ 875 000f 10       		.uleb128 0x10
+ 876 0010 17       		.uleb128 0x17
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 32
+
+
+ 877 0011 00       		.byte	0
+ 878 0012 00       		.byte	0
+ 879 0013 02       		.uleb128 0x2
+ 880 0014 24       		.uleb128 0x24
+ 881 0015 00       		.byte	0
+ 882 0016 0B       		.uleb128 0xb
+ 883 0017 0B       		.uleb128 0xb
+ 884 0018 3E       		.uleb128 0x3e
+ 885 0019 0B       		.uleb128 0xb
+ 886 001a 03       		.uleb128 0x3
+ 887 001b 0E       		.uleb128 0xe
+ 888 001c 00       		.byte	0
+ 889 001d 00       		.byte	0
+ 890 001e 03       		.uleb128 0x3
+ 891 001f 24       		.uleb128 0x24
+ 892 0020 00       		.byte	0
+ 893 0021 0B       		.uleb128 0xb
+ 894 0022 0B       		.uleb128 0xb
+ 895 0023 3E       		.uleb128 0x3e
+ 896 0024 0B       		.uleb128 0xb
+ 897 0025 03       		.uleb128 0x3
+ 898 0026 08       		.uleb128 0x8
+ 899 0027 00       		.byte	0
+ 900 0028 00       		.byte	0
+ 901 0029 04       		.uleb128 0x4
+ 902 002a 16       		.uleb128 0x16
+ 903 002b 00       		.byte	0
+ 904 002c 03       		.uleb128 0x3
+ 905 002d 0E       		.uleb128 0xe
+ 906 002e 3A       		.uleb128 0x3a
+ 907 002f 0B       		.uleb128 0xb
+ 908 0030 3B       		.uleb128 0x3b
+ 909 0031 0B       		.uleb128 0xb
+ 910 0032 49       		.uleb128 0x49
+ 911 0033 13       		.uleb128 0x13
+ 912 0034 00       		.byte	0
+ 913 0035 00       		.byte	0
+ 914 0036 05       		.uleb128 0x5
+ 915 0037 16       		.uleb128 0x16
+ 916 0038 00       		.byte	0
+ 917 0039 03       		.uleb128 0x3
+ 918 003a 0E       		.uleb128 0xe
+ 919 003b 3A       		.uleb128 0x3a
+ 920 003c 0B       		.uleb128 0xb
+ 921 003d 3B       		.uleb128 0x3b
+ 922 003e 05       		.uleb128 0x5
+ 923 003f 49       		.uleb128 0x49
+ 924 0040 13       		.uleb128 0x13
+ 925 0041 00       		.byte	0
+ 926 0042 00       		.byte	0
+ 927 0043 06       		.uleb128 0x6
+ 928 0044 35       		.uleb128 0x35
+ 929 0045 00       		.byte	0
+ 930 0046 49       		.uleb128 0x49
+ 931 0047 13       		.uleb128 0x13
+ 932 0048 00       		.byte	0
+ 933 0049 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 33
+
+
+ 934 004a 07       		.uleb128 0x7
+ 935 004b 2E       		.uleb128 0x2e
+ 936 004c 00       		.byte	0
+ 937 004d 3F       		.uleb128 0x3f
+ 938 004e 19       		.uleb128 0x19
+ 939 004f 03       		.uleb128 0x3
+ 940 0050 0E       		.uleb128 0xe
+ 941 0051 3A       		.uleb128 0x3a
+ 942 0052 0B       		.uleb128 0xb
+ 943 0053 3B       		.uleb128 0x3b
+ 944 0054 0B       		.uleb128 0xb
+ 945 0055 27       		.uleb128 0x27
+ 946 0056 19       		.uleb128 0x19
+ 947 0057 11       		.uleb128 0x11
+ 948 0058 01       		.uleb128 0x1
+ 949 0059 12       		.uleb128 0x12
+ 950 005a 06       		.uleb128 0x6
+ 951 005b 40       		.uleb128 0x40
+ 952 005c 18       		.uleb128 0x18
+ 953 005d 9642     		.uleb128 0x2116
+ 954 005f 19       		.uleb128 0x19
+ 955 0060 00       		.byte	0
+ 956 0061 00       		.byte	0
+ 957 0062 08       		.uleb128 0x8
+ 958 0063 2E       		.uleb128 0x2e
+ 959 0064 01       		.byte	0x1
+ 960 0065 3F       		.uleb128 0x3f
+ 961 0066 19       		.uleb128 0x19
+ 962 0067 03       		.uleb128 0x3
+ 963 0068 0E       		.uleb128 0xe
+ 964 0069 3A       		.uleb128 0x3a
+ 965 006a 0B       		.uleb128 0xb
+ 966 006b 3B       		.uleb128 0x3b
+ 967 006c 0B       		.uleb128 0xb
+ 968 006d 27       		.uleb128 0x27
+ 969 006e 19       		.uleb128 0x19
+ 970 006f 11       		.uleb128 0x11
+ 971 0070 01       		.uleb128 0x1
+ 972 0071 12       		.uleb128 0x12
+ 973 0072 06       		.uleb128 0x6
+ 974 0073 40       		.uleb128 0x40
+ 975 0074 18       		.uleb128 0x18
+ 976 0075 9642     		.uleb128 0x2116
+ 977 0077 19       		.uleb128 0x19
+ 978 0078 01       		.uleb128 0x1
+ 979 0079 13       		.uleb128 0x13
+ 980 007a 00       		.byte	0
+ 981 007b 00       		.byte	0
+ 982 007c 09       		.uleb128 0x9
+ 983 007d 34       		.uleb128 0x34
+ 984 007e 00       		.byte	0
+ 985 007f 03       		.uleb128 0x3
+ 986 0080 0E       		.uleb128 0xe
+ 987 0081 3A       		.uleb128 0x3a
+ 988 0082 0B       		.uleb128 0xb
+ 989 0083 3B       		.uleb128 0x3b
+ 990 0084 0B       		.uleb128 0xb
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 34
+
+
+ 991 0085 49       		.uleb128 0x49
+ 992 0086 13       		.uleb128 0x13
+ 993 0087 02       		.uleb128 0x2
+ 994 0088 18       		.uleb128 0x18
+ 995 0089 00       		.byte	0
+ 996 008a 00       		.byte	0
+ 997 008b 0A       		.uleb128 0xa
+ 998 008c 2E       		.uleb128 0x2e
+ 999 008d 00       		.byte	0
+ 1000 008e 3F       		.uleb128 0x3f
+ 1001 008f 19       		.uleb128 0x19
+ 1002 0090 03       		.uleb128 0x3
+ 1003 0091 0E       		.uleb128 0xe
+ 1004 0092 3A       		.uleb128 0x3a
+ 1005 0093 0B       		.uleb128 0xb
+ 1006 0094 3B       		.uleb128 0x3b
+ 1007 0095 0B       		.uleb128 0xb
+ 1008 0096 27       		.uleb128 0x27
+ 1009 0097 19       		.uleb128 0x19
+ 1010 0098 11       		.uleb128 0x11
+ 1011 0099 01       		.uleb128 0x1
+ 1012 009a 12       		.uleb128 0x12
+ 1013 009b 06       		.uleb128 0x6
+ 1014 009c 40       		.uleb128 0x40
+ 1015 009d 18       		.uleb128 0x18
+ 1016 009e 9742     		.uleb128 0x2117
+ 1017 00a0 19       		.uleb128 0x19
+ 1018 00a1 00       		.byte	0
+ 1019 00a2 00       		.byte	0
+ 1020 00a3 0B       		.uleb128 0xb
+ 1021 00a4 2E       		.uleb128 0x2e
+ 1022 00a5 01       		.byte	0x1
+ 1023 00a6 3F       		.uleb128 0x3f
+ 1024 00a7 19       		.uleb128 0x19
+ 1025 00a8 03       		.uleb128 0x3
+ 1026 00a9 0E       		.uleb128 0xe
+ 1027 00aa 3A       		.uleb128 0x3a
+ 1028 00ab 0B       		.uleb128 0xb
+ 1029 00ac 3B       		.uleb128 0x3b
+ 1030 00ad 05       		.uleb128 0x5
+ 1031 00ae 27       		.uleb128 0x27
+ 1032 00af 19       		.uleb128 0x19
+ 1033 00b0 11       		.uleb128 0x11
+ 1034 00b1 01       		.uleb128 0x1
+ 1035 00b2 12       		.uleb128 0x12
+ 1036 00b3 06       		.uleb128 0x6
+ 1037 00b4 40       		.uleb128 0x40
+ 1038 00b5 18       		.uleb128 0x18
+ 1039 00b6 9742     		.uleb128 0x2117
+ 1040 00b8 19       		.uleb128 0x19
+ 1041 00b9 01       		.uleb128 0x1
+ 1042 00ba 13       		.uleb128 0x13
+ 1043 00bb 00       		.byte	0
+ 1044 00bc 00       		.byte	0
+ 1045 00bd 0C       		.uleb128 0xc
+ 1046 00be 05       		.uleb128 0x5
+ 1047 00bf 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 35
+
+
+ 1048 00c0 03       		.uleb128 0x3
+ 1049 00c1 0E       		.uleb128 0xe
+ 1050 00c2 3A       		.uleb128 0x3a
+ 1051 00c3 0B       		.uleb128 0xb
+ 1052 00c4 3B       		.uleb128 0x3b
+ 1053 00c5 05       		.uleb128 0x5
+ 1054 00c6 49       		.uleb128 0x49
+ 1055 00c7 13       		.uleb128 0x13
+ 1056 00c8 02       		.uleb128 0x2
+ 1057 00c9 18       		.uleb128 0x18
+ 1058 00ca 00       		.byte	0
+ 1059 00cb 00       		.byte	0
+ 1060 00cc 0D       		.uleb128 0xd
+ 1061 00cd 2E       		.uleb128 0x2e
+ 1062 00ce 00       		.byte	0
+ 1063 00cf 3F       		.uleb128 0x3f
+ 1064 00d0 19       		.uleb128 0x19
+ 1065 00d1 03       		.uleb128 0x3
+ 1066 00d2 0E       		.uleb128 0xe
+ 1067 00d3 3A       		.uleb128 0x3a
+ 1068 00d4 0B       		.uleb128 0xb
+ 1069 00d5 3B       		.uleb128 0x3b
+ 1070 00d6 05       		.uleb128 0x5
+ 1071 00d7 27       		.uleb128 0x27
+ 1072 00d8 19       		.uleb128 0x19
+ 1073 00d9 49       		.uleb128 0x49
+ 1074 00da 13       		.uleb128 0x13
+ 1075 00db 11       		.uleb128 0x11
+ 1076 00dc 01       		.uleb128 0x1
+ 1077 00dd 12       		.uleb128 0x12
+ 1078 00de 06       		.uleb128 0x6
+ 1079 00df 40       		.uleb128 0x40
+ 1080 00e0 18       		.uleb128 0x18
+ 1081 00e1 9742     		.uleb128 0x2117
+ 1082 00e3 19       		.uleb128 0x19
+ 1083 00e4 00       		.byte	0
+ 1084 00e5 00       		.byte	0
+ 1085 00e6 0E       		.uleb128 0xe
+ 1086 00e7 2E       		.uleb128 0x2e
+ 1087 00e8 01       		.byte	0x1
+ 1088 00e9 3F       		.uleb128 0x3f
+ 1089 00ea 19       		.uleb128 0x19
+ 1090 00eb 03       		.uleb128 0x3
+ 1091 00ec 0E       		.uleb128 0xe
+ 1092 00ed 3A       		.uleb128 0x3a
+ 1093 00ee 0B       		.uleb128 0xb
+ 1094 00ef 3B       		.uleb128 0x3b
+ 1095 00f0 05       		.uleb128 0x5
+ 1096 00f1 27       		.uleb128 0x27
+ 1097 00f2 19       		.uleb128 0x19
+ 1098 00f3 49       		.uleb128 0x49
+ 1099 00f4 13       		.uleb128 0x13
+ 1100 00f5 11       		.uleb128 0x11
+ 1101 00f6 01       		.uleb128 0x1
+ 1102 00f7 12       		.uleb128 0x12
+ 1103 00f8 06       		.uleb128 0x6
+ 1104 00f9 40       		.uleb128 0x40
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 36
+
+
+ 1105 00fa 18       		.uleb128 0x18
+ 1106 00fb 9742     		.uleb128 0x2117
+ 1107 00fd 19       		.uleb128 0x19
+ 1108 00fe 01       		.uleb128 0x1
+ 1109 00ff 13       		.uleb128 0x13
+ 1110 0100 00       		.byte	0
+ 1111 0101 00       		.byte	0
+ 1112 0102 0F       		.uleb128 0xf
+ 1113 0103 34       		.uleb128 0x34
+ 1114 0104 00       		.byte	0
+ 1115 0105 03       		.uleb128 0x3
+ 1116 0106 0E       		.uleb128 0xe
+ 1117 0107 3A       		.uleb128 0x3a
+ 1118 0108 0B       		.uleb128 0xb
+ 1119 0109 3B       		.uleb128 0x3b
+ 1120 010a 05       		.uleb128 0x5
+ 1121 010b 49       		.uleb128 0x49
+ 1122 010c 13       		.uleb128 0x13
+ 1123 010d 02       		.uleb128 0x2
+ 1124 010e 18       		.uleb128 0x18
+ 1125 010f 00       		.byte	0
+ 1126 0110 00       		.byte	0
+ 1127 0111 10       		.uleb128 0x10
+ 1128 0112 34       		.uleb128 0x34
+ 1129 0113 00       		.byte	0
+ 1130 0114 03       		.uleb128 0x3
+ 1131 0115 0E       		.uleb128 0xe
+ 1132 0116 3A       		.uleb128 0x3a
+ 1133 0117 0B       		.uleb128 0xb
+ 1134 0118 3B       		.uleb128 0x3b
+ 1135 0119 0B       		.uleb128 0xb
+ 1136 011a 49       		.uleb128 0x49
+ 1137 011b 13       		.uleb128 0x13
+ 1138 011c 3F       		.uleb128 0x3f
+ 1139 011d 19       		.uleb128 0x19
+ 1140 011e 02       		.uleb128 0x2
+ 1141 011f 18       		.uleb128 0x18
+ 1142 0120 00       		.byte	0
+ 1143 0121 00       		.byte	0
+ 1144 0122 00       		.byte	0
+ 1145              		.section	.debug_aranges,"",%progbits
+ 1146 0000 74000000 		.4byte	0x74
+ 1147 0004 0200     		.2byte	0x2
+ 1148 0006 00000000 		.4byte	.Ldebug_info0
+ 1149 000a 04       		.byte	0x4
+ 1150 000b 00       		.byte	0
+ 1151 000c 0000     		.2byte	0
+ 1152 000e 0000     		.2byte	0
+ 1153 0010 00000000 		.4byte	.LFB0
+ 1154 0014 20000000 		.4byte	.LFE0-.LFB0
+ 1155 0018 00000000 		.4byte	.LFB1
+ 1156 001c BC000000 		.4byte	.LFE1-.LFB1
+ 1157 0020 00000000 		.4byte	.LFB2
+ 1158 0024 48000000 		.4byte	.LFE2-.LFB2
+ 1159 0028 00000000 		.4byte	.LFB3
+ 1160 002c 48000000 		.4byte	.LFE3-.LFB3
+ 1161 0030 00000000 		.4byte	.LFB4
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 37
+
+
+ 1162 0034 20000000 		.4byte	.LFE4-.LFB4
+ 1163 0038 00000000 		.4byte	.LFB5
+ 1164 003c 20000000 		.4byte	.LFE5-.LFB5
+ 1165 0040 00000000 		.4byte	.LFB6
+ 1166 0044 20000000 		.4byte	.LFE6-.LFB6
+ 1167 0048 00000000 		.4byte	.LFB7
+ 1168 004c 18000000 		.4byte	.LFE7-.LFB7
+ 1169 0050 00000000 		.4byte	.LFB8
+ 1170 0054 20000000 		.4byte	.LFE8-.LFB8
+ 1171 0058 00000000 		.4byte	.LFB9
+ 1172 005c 20000000 		.4byte	.LFE9-.LFB9
+ 1173 0060 00000000 		.4byte	.LFB10
+ 1174 0064 18000000 		.4byte	.LFE10-.LFB10
+ 1175 0068 00000000 		.4byte	.LFB11
+ 1176 006c 18000000 		.4byte	.LFE11-.LFB11
+ 1177 0070 00000000 		.4byte	0
+ 1178 0074 00000000 		.4byte	0
+ 1179              		.section	.debug_ranges,"",%progbits
+ 1180              	.Ldebug_ranges0:
+ 1181 0000 00000000 		.4byte	.LFB0
+ 1182 0004 20000000 		.4byte	.LFE0
+ 1183 0008 00000000 		.4byte	.LFB1
+ 1184 000c BC000000 		.4byte	.LFE1
+ 1185 0010 00000000 		.4byte	.LFB2
+ 1186 0014 48000000 		.4byte	.LFE2
+ 1187 0018 00000000 		.4byte	.LFB3
+ 1188 001c 48000000 		.4byte	.LFE3
+ 1189 0020 00000000 		.4byte	.LFB4
+ 1190 0024 20000000 		.4byte	.LFE4
+ 1191 0028 00000000 		.4byte	.LFB5
+ 1192 002c 20000000 		.4byte	.LFE5
+ 1193 0030 00000000 		.4byte	.LFB6
+ 1194 0034 20000000 		.4byte	.LFE6
+ 1195 0038 00000000 		.4byte	.LFB7
+ 1196 003c 18000000 		.4byte	.LFE7
+ 1197 0040 00000000 		.4byte	.LFB8
+ 1198 0044 20000000 		.4byte	.LFE8
+ 1199 0048 00000000 		.4byte	.LFB9
+ 1200 004c 20000000 		.4byte	.LFE9
+ 1201 0050 00000000 		.4byte	.LFB10
+ 1202 0054 18000000 		.4byte	.LFE10
+ 1203 0058 00000000 		.4byte	.LFB11
+ 1204 005c 18000000 		.4byte	.LFE11
+ 1205 0060 00000000 		.4byte	0
+ 1206 0064 00000000 		.4byte	0
+ 1207              		.section	.debug_line,"",%progbits
+ 1208              	.Ldebug_line0:
+ 1209 0000 44010000 		.section	.debug_str,"MS",%progbits,1
+ 1209      02004A00 
+ 1209      00000201 
+ 1209      FB0E0D00 
+ 1209      01010101 
+ 1210              	.LASF6:
+ 1211 0000 6C6F6E67 		.ascii	"long long int\000"
+ 1211      206C6F6E 
+ 1211      6720696E 
+ 1211      7400
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 38
+
+
+ 1212              	.LASF23:
+ 1213 000e 70657269 		.ascii	"period\000"
+ 1213      6F6400
+ 1214              	.LASF3:
+ 1215 0015 73686F72 		.ascii	"short unsigned int\000"
+ 1215      7420756E 
+ 1215      7369676E 
+ 1215      65642069 
+ 1215      6E7400
+ 1216              	.LASF32:
+ 1217 0028 47726970 		.ascii	"Gripper_PWM_ReadCompare\000"
+ 1217      7065725F 
+ 1217      50574D5F 
+ 1217      52656164 
+ 1217      436F6D70 
+ 1218              	.LASF29:
+ 1219 0040 47726970 		.ascii	"Gripper_PWM_WriteControlRegister\000"
+ 1219      7065725F 
+ 1219      50574D5F 
+ 1219      57726974 
+ 1219      65436F6E 
+ 1220              	.LASF37:
+ 1221 0061 47726970 		.ascii	"Gripper_PWM_ReadControlRegister\000"
+ 1221      7065725F 
+ 1221      50574D5F 
+ 1221      52656164 
+ 1221      436F6E74 
+ 1222              	.LASF11:
+ 1223 0081 666C6F61 		.ascii	"float\000"
+ 1223      7400
+ 1224              	.LASF1:
+ 1225 0087 756E7369 		.ascii	"unsigned char\000"
+ 1225      676E6564 
+ 1225      20636861 
+ 1225      7200
+ 1226              	.LASF36:
+ 1227 0095 433A5C55 		.ascii	"C:\\Users\\xavieran\\Desktop\\ECE3091\\WorkingCamer"
+ 1227      73657273 
+ 1227      5C786176 
+ 1227      69657261 
+ 1227      6E5C4465 
+ 1228 00c3 615C576F 		.ascii	"a\\Working-Camera-And-Other\\camera_test.cydsn\000"
+ 1228      726B696E 
+ 1228      672D4361 
+ 1228      6D657261 
+ 1228      2D416E64 
+ 1229              	.LASF19:
+ 1230 00f0 47726970 		.ascii	"Gripper_PWM_Stop\000"
+ 1230      7065725F 
+ 1230      50574D5F 
+ 1230      53746F70 
+ 1230      00
+ 1231              	.LASF14:
+ 1232 0101 72656738 		.ascii	"reg8\000"
+ 1232      00
+ 1233              	.LASF5:
+ 1234 0106 6C6F6E67 		.ascii	"long unsigned int\000"
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 39
+
+
+ 1234      20756E73 
+ 1234      69676E65 
+ 1234      6420696E 
+ 1234      7400
+ 1235              	.LASF9:
+ 1236 0118 75696E74 		.ascii	"uint8\000"
+ 1236      3800
+ 1237              	.LASF30:
+ 1238 011e 636F6E74 		.ascii	"control\000"
+ 1238      726F6C00 
+ 1239              	.LASF25:
+ 1240 0126 47726970 		.ascii	"Gripper_PWM_SetInterruptMode\000"
+ 1240      7065725F 
+ 1240      50574D5F 
+ 1240      53657449 
+ 1240      6E746572 
+ 1241              	.LASF33:
+ 1242 0143 47726970 		.ascii	"Gripper_PWM_ReadPeriod\000"
+ 1242      7065725F 
+ 1242      50574D5F 
+ 1242      52656164 
+ 1242      50657269 
+ 1243              	.LASF12:
+ 1244 015a 646F7562 		.ascii	"double\000"
+ 1244      6C6500
+ 1245              	.LASF10:
+ 1246 0161 75696E74 		.ascii	"uint16\000"
+ 1246      313600
+ 1247              	.LASF8:
+ 1248 0168 756E7369 		.ascii	"unsigned int\000"
+ 1248      676E6564 
+ 1248      20696E74 
+ 1248      00
+ 1249              	.LASF7:
+ 1250 0175 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1250      206C6F6E 
+ 1250      6720756E 
+ 1250      7369676E 
+ 1250      65642069 
+ 1251              	.LASF22:
+ 1252 018c 47726970 		.ascii	"Gripper_PWM_WriteCompare\000"
+ 1252      7065725F 
+ 1252      50574D5F 
+ 1252      57726974 
+ 1252      65436F6D 
+ 1253              	.LASF28:
+ 1254 01a5 72657375 		.ascii	"result\000"
+ 1254      6C7400
+ 1255              	.LASF35:
+ 1256 01ac 2E5C4765 		.ascii	".\\Generated_Source\\PSoC5\\Gripper_PWM.c\000"
+ 1256      6E657261 
+ 1256      7465645F 
+ 1256      536F7572 
+ 1256      63655C50 
+ 1257              	.LASF34:
+ 1258 01d3 474E5520 		.ascii	"GNU C 4.8.4 20140526 (release) [ARM/embedded-4_8-br"
+ 1258      4320342E 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 40
+
+
+ 1258      382E3420 
+ 1258      32303134 
+ 1258      30353236 
+ 1259 0206 616E6368 		.ascii	"anch revision 211358] -mcpu=cortex-m3 -mthumb -g -O"
+ 1259      20726576 
+ 1259      6973696F 
+ 1259      6E203231 
+ 1259      31333538 
+ 1260 0239 30202D66 		.ascii	"0 -ffunction-sections\000"
+ 1260      66756E63 
+ 1260      74696F6E 
+ 1260      2D736563 
+ 1260      74696F6E 
+ 1261              	.LASF27:
+ 1262 024f 6374726C 		.ascii	"ctrl\000"
+ 1262      00
+ 1263              	.LASF16:
+ 1264 0254 73697A65 		.ascii	"sizetype\000"
+ 1264      74797065 
+ 1264      00
+ 1265              	.LASF31:
+ 1266 025d 47726970 		.ascii	"Gripper_PWM_ReadStatusRegister\000"
+ 1266      7065725F 
+ 1266      50574D5F 
+ 1266      52656164 
+ 1266      53746174 
+ 1267              	.LASF26:
+ 1268 027c 696E7465 		.ascii	"interruptMode\000"
+ 1268      72727570 
+ 1268      744D6F64 
+ 1268      6500
+ 1269              	.LASF17:
+ 1270 028a 47726970 		.ascii	"Gripper_PWM_Start\000"
+ 1270      7065725F 
+ 1270      50574D5F 
+ 1270      53746172 
+ 1270      7400
+ 1271              	.LASF2:
+ 1272 029c 73686F72 		.ascii	"short int\000"
+ 1272      7420696E 
+ 1272      7400
+ 1273              	.LASF15:
+ 1274 02a6 72656731 		.ascii	"reg16\000"
+ 1274      3600
+ 1275              	.LASF18:
+ 1276 02ac 47726970 		.ascii	"Gripper_PWM_Enable\000"
+ 1276      7065725F 
+ 1276      50574D5F 
+ 1276      456E6162 
+ 1276      6C6500
+ 1277              	.LASF4:
+ 1278 02bf 6C6F6E67 		.ascii	"long int\000"
+ 1278      20696E74 
+ 1278      00
+ 1279              	.LASF13:
+ 1280 02c8 63686172 		.ascii	"char\000"
+ 1280      00
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccPqPKGd.s 			page 41
+
+
+ 1281              	.LASF0:
+ 1282 02cd 7369676E 		.ascii	"signed char\000"
+ 1282      65642063 
+ 1282      68617200 
+ 1283              	.LASF24:
+ 1284 02d9 636F6D70 		.ascii	"compare\000"
+ 1284      61726500 
+ 1285              	.LASF21:
+ 1286 02e1 47726970 		.ascii	"Gripper_PWM_WritePeriod\000"
+ 1286      7065725F 
+ 1286      50574D5F 
+ 1286      57726974 
+ 1286      65506572 
+ 1287              	.LASF38:
+ 1288 02f9 47726970 		.ascii	"Gripper_PWM_initVar\000"
+ 1288      7065725F 
+ 1288      50574D5F 
+ 1288      696E6974 
+ 1288      56617200 
+ 1289              	.LASF20:
+ 1290 030d 47726970 		.ascii	"Gripper_PWM_Init\000"
+ 1290      7065725F 
+ 1290      50574D5F 
+ 1290      496E6974 
+ 1290      00
+ 1291              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.8.4 20140526 (release) [ARM/embedded-4_8-br

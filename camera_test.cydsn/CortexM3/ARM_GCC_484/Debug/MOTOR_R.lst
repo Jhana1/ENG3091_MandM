@@ -1,0 +1,2428 @@
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"MOTOR_R.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.global	MOTOR_R_initVar
+  19              		.bss
+  20              		.type	MOTOR_R_initVar, %object
+  21              		.size	MOTOR_R_initVar, 1
+  22              	MOTOR_R_initVar:
+  23 0000 00       		.space	1
+  24              		.section	.text.MOTOR_R_Start,"ax",%progbits
+  25              		.align	2
+  26              		.global	MOTOR_R_Start
+  27              		.thumb
+  28              		.thumb_func
+  29              		.type	MOTOR_R_Start, %function
+  30              	MOTOR_R_Start:
+  31              	.LFB0:
+  32              		.file 1 ".\\Generated_Source\\PSoC5\\MOTOR_R.c"
+   1:.\Generated_Source\PSoC5/MOTOR_R.c **** /*******************************************************************************
+   2:.\Generated_Source\PSoC5/MOTOR_R.c **** * File Name: MOTOR_R.c
+   3:.\Generated_Source\PSoC5/MOTOR_R.c **** * Version 3.30
+   4:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+   5:.\Generated_Source\PSoC5/MOTOR_R.c **** * Description:
+   6:.\Generated_Source\PSoC5/MOTOR_R.c **** *  The PWM User Module consist of an 8 or 16-bit counter with two 8 or 16-bit
+   7:.\Generated_Source\PSoC5/MOTOR_R.c **** *  comparitors. Each instance of this user module is capable of generating
+   8:.\Generated_Source\PSoC5/MOTOR_R.c **** *  two PWM outputs with the same period. The pulse width is selectable between
+   9:.\Generated_Source\PSoC5/MOTOR_R.c **** *  1 and 255/65535. The period is selectable between 2 and 255/65536 clocks.
+  10:.\Generated_Source\PSoC5/MOTOR_R.c **** *  The compare value output may be configured to be active when the present
+  11:.\Generated_Source\PSoC5/MOTOR_R.c **** *  counter is less than or less than/equal to the compare value.
+  12:.\Generated_Source\PSoC5/MOTOR_R.c **** *  A terminal count output is also provided. It generates a pulse one clock
+  13:.\Generated_Source\PSoC5/MOTOR_R.c **** *  width wide when the counter is equal to zero.
+  14:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+  15:.\Generated_Source\PSoC5/MOTOR_R.c **** * Note:
+  16:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+  17:.\Generated_Source\PSoC5/MOTOR_R.c **** *******************************************************************************
+  18:.\Generated_Source\PSoC5/MOTOR_R.c **** * Copyright 2008-2014, Cypress Semiconductor Corporation.  All rights reserved.
+  19:.\Generated_Source\PSoC5/MOTOR_R.c **** * You may use this file only in accordance with the license, terms, conditions,
+  20:.\Generated_Source\PSoC5/MOTOR_R.c **** * disclaimers, and limitations in the end user license agreement accompanying
+  21:.\Generated_Source\PSoC5/MOTOR_R.c **** * the software package with which this file was provided.
+  22:.\Generated_Source\PSoC5/MOTOR_R.c **** ********************************************************************************/
+  23:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+  24:.\Generated_Source\PSoC5/MOTOR_R.c **** #include "MOTOR_R.h"
+  25:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 2
+
+
+  26:.\Generated_Source\PSoC5/MOTOR_R.c **** /* Error message for removed <resource> through optimization */
+  27:.\Generated_Source\PSoC5/MOTOR_R.c **** #ifdef MOTOR_R_PWMUDB_genblk1_ctrlreg__REMOVED
+  28:.\Generated_Source\PSoC5/MOTOR_R.c ****     #error PWM_v3_30 detected with a constant 0 for the enable or \
+  29:.\Generated_Source\PSoC5/MOTOR_R.c ****          constant 1 for reset. This will prevent the component from operating.
+  30:.\Generated_Source\PSoC5/MOTOR_R.c **** #endif /* MOTOR_R_PWMUDB_genblk1_ctrlreg__REMOVED */
+  31:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+  32:.\Generated_Source\PSoC5/MOTOR_R.c **** uint8 MOTOR_R_initVar = 0u;
+  33:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+  34:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+  35:.\Generated_Source\PSoC5/MOTOR_R.c **** /*******************************************************************************
+  36:.\Generated_Source\PSoC5/MOTOR_R.c **** * Function Name: MOTOR_R_Start
+  37:.\Generated_Source\PSoC5/MOTOR_R.c **** ********************************************************************************
+  38:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+  39:.\Generated_Source\PSoC5/MOTOR_R.c **** * Summary:
+  40:.\Generated_Source\PSoC5/MOTOR_R.c **** *  The start function initializes the pwm with the default values, the
+  41:.\Generated_Source\PSoC5/MOTOR_R.c **** *  enables the counter to begin counting.  It does not enable interrupts,
+  42:.\Generated_Source\PSoC5/MOTOR_R.c **** *  the EnableInt command should be called if interrupt generation is required.
+  43:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+  44:.\Generated_Source\PSoC5/MOTOR_R.c **** * Parameters:
+  45:.\Generated_Source\PSoC5/MOTOR_R.c **** *  None
+  46:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+  47:.\Generated_Source\PSoC5/MOTOR_R.c **** * Return:
+  48:.\Generated_Source\PSoC5/MOTOR_R.c **** *  None
+  49:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+  50:.\Generated_Source\PSoC5/MOTOR_R.c **** * Global variables:
+  51:.\Generated_Source\PSoC5/MOTOR_R.c **** *  MOTOR_R_initVar: Is modified when this function is called for the
+  52:.\Generated_Source\PSoC5/MOTOR_R.c **** *   first time. Is used to ensure that initialization happens only once.
+  53:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+  54:.\Generated_Source\PSoC5/MOTOR_R.c **** *******************************************************************************/
+  55:.\Generated_Source\PSoC5/MOTOR_R.c **** void MOTOR_R_Start(void) 
+  56:.\Generated_Source\PSoC5/MOTOR_R.c **** {
+  33              		.loc 1 56 0
+  34              		.cfi_startproc
+  35              		@ args = 0, pretend = 0, frame = 0
+  36              		@ frame_needed = 1, uses_anonymous_args = 0
+  37 0000 80B5     		push	{r7, lr}
+  38              		.cfi_def_cfa_offset 8
+  39              		.cfi_offset 7, -8
+  40              		.cfi_offset 14, -4
+  41 0002 00AF     		add	r7, sp, #0
+  42              		.cfi_def_cfa_register 7
+  57:.\Generated_Source\PSoC5/MOTOR_R.c ****     /* If not Initialized then initialize all required hardware and software */
+  58:.\Generated_Source\PSoC5/MOTOR_R.c ****     if(MOTOR_R_initVar == 0u)
+  43              		.loc 1 58 0
+  44 0004 054B     		ldr	r3, .L3
+  45 0006 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  46 0008 002B     		cmp	r3, #0
+  47 000a 04D1     		bne	.L2
+  59:.\Generated_Source\PSoC5/MOTOR_R.c ****     {
+  60:.\Generated_Source\PSoC5/MOTOR_R.c ****         MOTOR_R_Init();
+  48              		.loc 1 60 0
+  49 000c FFF7FEFF 		bl	MOTOR_R_Init
+  61:.\Generated_Source\PSoC5/MOTOR_R.c ****         MOTOR_R_initVar = 1u;
+  50              		.loc 1 61 0
+  51 0010 024B     		ldr	r3, .L3
+  52 0012 0122     		movs	r2, #1
+  53 0014 1A70     		strb	r2, [r3]
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 3
+
+
+  54              	.L2:
+  62:.\Generated_Source\PSoC5/MOTOR_R.c ****     }
+  63:.\Generated_Source\PSoC5/MOTOR_R.c ****     MOTOR_R_Enable();
+  55              		.loc 1 63 0
+  56 0016 FFF7FEFF 		bl	MOTOR_R_Enable
+  64:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+  65:.\Generated_Source\PSoC5/MOTOR_R.c **** }
+  57              		.loc 1 65 0
+  58 001a 80BD     		pop	{r7, pc}
+  59              	.L4:
+  60              		.align	2
+  61              	.L3:
+  62 001c 00000000 		.word	MOTOR_R_initVar
+  63              		.cfi_endproc
+  64              	.LFE0:
+  65              		.size	MOTOR_R_Start, .-MOTOR_R_Start
+  66              		.section	.text.MOTOR_R_Init,"ax",%progbits
+  67              		.align	2
+  68              		.global	MOTOR_R_Init
+  69              		.thumb
+  70              		.thumb_func
+  71              		.type	MOTOR_R_Init, %function
+  72              	MOTOR_R_Init:
+  73              	.LFB1:
+  66:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+  67:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+  68:.\Generated_Source\PSoC5/MOTOR_R.c **** /*******************************************************************************
+  69:.\Generated_Source\PSoC5/MOTOR_R.c **** * Function Name: MOTOR_R_Init
+  70:.\Generated_Source\PSoC5/MOTOR_R.c **** ********************************************************************************
+  71:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+  72:.\Generated_Source\PSoC5/MOTOR_R.c **** * Summary:
+  73:.\Generated_Source\PSoC5/MOTOR_R.c **** *  Initialize component's parameters to the parameters set by user in the
+  74:.\Generated_Source\PSoC5/MOTOR_R.c **** *  customizer of the component placed onto schematic. Usually called in
+  75:.\Generated_Source\PSoC5/MOTOR_R.c **** *  MOTOR_R_Start().
+  76:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+  77:.\Generated_Source\PSoC5/MOTOR_R.c **** * Parameters:
+  78:.\Generated_Source\PSoC5/MOTOR_R.c **** *  None
+  79:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+  80:.\Generated_Source\PSoC5/MOTOR_R.c **** * Return:
+  81:.\Generated_Source\PSoC5/MOTOR_R.c **** *  None
+  82:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+  83:.\Generated_Source\PSoC5/MOTOR_R.c **** *******************************************************************************/
+  84:.\Generated_Source\PSoC5/MOTOR_R.c **** void MOTOR_R_Init(void) 
+  85:.\Generated_Source\PSoC5/MOTOR_R.c **** {
+  74              		.loc 1 85 0
+  75              		.cfi_startproc
+  76              		@ args = 0, pretend = 0, frame = 8
+  77              		@ frame_needed = 1, uses_anonymous_args = 0
+  78 0000 80B5     		push	{r7, lr}
+  79              		.cfi_def_cfa_offset 8
+  80              		.cfi_offset 7, -8
+  81              		.cfi_offset 14, -4
+  82 0002 82B0     		sub	sp, sp, #8
+  83              		.cfi_def_cfa_offset 16
+  84 0004 00AF     		add	r7, sp, #0
+  85              		.cfi_def_cfa_register 7
+  86:.\Generated_Source\PSoC5/MOTOR_R.c ****     #if (MOTOR_R_UsingFixedFunction || MOTOR_R_UseControl)
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 4
+
+
+  87:.\Generated_Source\PSoC5/MOTOR_R.c ****         uint8 ctrl;
+  88:.\Generated_Source\PSoC5/MOTOR_R.c ****     #endif /* (MOTOR_R_UsingFixedFunction || MOTOR_R_UseControl) */
+  89:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+  90:.\Generated_Source\PSoC5/MOTOR_R.c ****     #if(!MOTOR_R_UsingFixedFunction)
+  91:.\Generated_Source\PSoC5/MOTOR_R.c ****         #if(MOTOR_R_UseStatus)
+  92:.\Generated_Source\PSoC5/MOTOR_R.c ****             /* Interrupt State Backup for Critical Region*/
+  93:.\Generated_Source\PSoC5/MOTOR_R.c ****             uint8 MOTOR_R_interruptState;
+  94:.\Generated_Source\PSoC5/MOTOR_R.c ****         #endif /* (MOTOR_R_UseStatus) */
+  95:.\Generated_Source\PSoC5/MOTOR_R.c ****     #endif /* (!MOTOR_R_UsingFixedFunction) */
+  96:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+  97:.\Generated_Source\PSoC5/MOTOR_R.c ****     #if (MOTOR_R_UsingFixedFunction)
+  98:.\Generated_Source\PSoC5/MOTOR_R.c ****         /* You are allowed to write the compare value (FF only) */
+  99:.\Generated_Source\PSoC5/MOTOR_R.c ****         MOTOR_R_CONTROL |= MOTOR_R_CFG0_MODE;
+  86              		.loc 1 99 0
+  87 0006 284B     		ldr	r3, .L6
+  88 0008 274A     		ldr	r2, .L6
+  89 000a 1278     		ldrb	r2, [r2]
+  90 000c D2B2     		uxtb	r2, r2
+  91 000e 42F00202 		orr	r2, r2, #2
+  92 0012 D2B2     		uxtb	r2, r2
+  93 0014 1A70     		strb	r2, [r3]
+ 100:.\Generated_Source\PSoC5/MOTOR_R.c ****         #if (MOTOR_R_DeadBand2_4)
+ 101:.\Generated_Source\PSoC5/MOTOR_R.c ****             MOTOR_R_CONTROL |= MOTOR_R_CFG0_DB;
+ 102:.\Generated_Source\PSoC5/MOTOR_R.c ****         #endif /* (MOTOR_R_DeadBand2_4) */
+ 103:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 104:.\Generated_Source\PSoC5/MOTOR_R.c ****         ctrl = MOTOR_R_CONTROL3 & ((uint8 )(~MOTOR_R_CTRL_CMPMODE1_MASK));
+  94              		.loc 1 104 0
+  95 0016 254B     		ldr	r3, .L6+4
+  96 0018 1B78     		ldrb	r3, [r3]
+  97 001a DBB2     		uxtb	r3, r3
+  98 001c 23F07003 		bic	r3, r3, #112
+  99 0020 FB71     		strb	r3, [r7, #7]
+ 105:.\Generated_Source\PSoC5/MOTOR_R.c ****         MOTOR_R_CONTROL3 = ctrl | MOTOR_R_DEFAULT_COMPARE1_MODE;
+ 100              		.loc 1 105 0
+ 101 0022 224B     		ldr	r3, .L6+4
+ 102 0024 FA79     		ldrb	r2, [r7, #7]
+ 103 0026 42F01002 		orr	r2, r2, #16
+ 104 002a D2B2     		uxtb	r2, r2
+ 105 002c 1A70     		strb	r2, [r3]
+ 106:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 107:.\Generated_Source\PSoC5/MOTOR_R.c ****          /* Clear and Set SYNCTC and SYNCCMP bits of RT1 register */
+ 108:.\Generated_Source\PSoC5/MOTOR_R.c ****         MOTOR_R_RT1 &= ((uint8)(~MOTOR_R_RT1_MASK));
+ 106              		.loc 1 108 0
+ 107 002e 204B     		ldr	r3, .L6+8
+ 108 0030 1F4A     		ldr	r2, .L6+8
+ 109 0032 1278     		ldrb	r2, [r2]
+ 110 0034 D2B2     		uxtb	r2, r2
+ 111 0036 22F03002 		bic	r2, r2, #48
+ 112 003a D2B2     		uxtb	r2, r2
+ 113 003c 1A70     		strb	r2, [r3]
+ 109:.\Generated_Source\PSoC5/MOTOR_R.c ****         MOTOR_R_RT1 |= MOTOR_R_SYNC;
+ 114              		.loc 1 109 0
+ 115 003e 1C4B     		ldr	r3, .L6+8
+ 116 0040 1B4A     		ldr	r2, .L6+8
+ 117 0042 1278     		ldrb	r2, [r2]
+ 118 0044 D2B2     		uxtb	r2, r2
+ 119 0046 42F03002 		orr	r2, r2, #48
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 5
+
+
+ 120 004a D2B2     		uxtb	r2, r2
+ 121 004c 1A70     		strb	r2, [r3]
+ 110:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 111:.\Generated_Source\PSoC5/MOTOR_R.c ****         /*Enable DSI Sync all all inputs of the PWM*/
+ 112:.\Generated_Source\PSoC5/MOTOR_R.c ****         MOTOR_R_RT1 &= ((uint8)(~MOTOR_R_SYNCDSI_MASK));
+ 122              		.loc 1 112 0
+ 123 004e 184B     		ldr	r3, .L6+8
+ 124 0050 174A     		ldr	r2, .L6+8
+ 125 0052 1278     		ldrb	r2, [r2]
+ 126 0054 D2B2     		uxtb	r2, r2
+ 127 0056 22F00F02 		bic	r2, r2, #15
+ 128 005a D2B2     		uxtb	r2, r2
+ 129 005c 1A70     		strb	r2, [r3]
+ 113:.\Generated_Source\PSoC5/MOTOR_R.c ****         MOTOR_R_RT1 |= MOTOR_R_SYNCDSI_EN;
+ 130              		.loc 1 113 0
+ 131 005e 144B     		ldr	r3, .L6+8
+ 132 0060 134A     		ldr	r2, .L6+8
+ 133 0062 1278     		ldrb	r2, [r2]
+ 134 0064 D2B2     		uxtb	r2, r2
+ 135 0066 42F00F02 		orr	r2, r2, #15
+ 136 006a D2B2     		uxtb	r2, r2
+ 137 006c 1A70     		strb	r2, [r3]
+ 114:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 115:.\Generated_Source\PSoC5/MOTOR_R.c ****     #elif (MOTOR_R_UseControl)
+ 116:.\Generated_Source\PSoC5/MOTOR_R.c ****         /* Set the default compare mode defined in the parameter */
+ 117:.\Generated_Source\PSoC5/MOTOR_R.c ****         ctrl = MOTOR_R_CONTROL & ((uint8)(~MOTOR_R_CTRL_CMPMODE2_MASK)) &
+ 118:.\Generated_Source\PSoC5/MOTOR_R.c ****                 ((uint8)(~MOTOR_R_CTRL_CMPMODE1_MASK));
+ 119:.\Generated_Source\PSoC5/MOTOR_R.c ****         MOTOR_R_CONTROL = ctrl | MOTOR_R_DEFAULT_COMPARE2_MODE |
+ 120:.\Generated_Source\PSoC5/MOTOR_R.c ****                                    MOTOR_R_DEFAULT_COMPARE1_MODE;
+ 121:.\Generated_Source\PSoC5/MOTOR_R.c ****     #endif /* (MOTOR_R_UsingFixedFunction) */
+ 122:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 123:.\Generated_Source\PSoC5/MOTOR_R.c ****     #if (!MOTOR_R_UsingFixedFunction)
+ 124:.\Generated_Source\PSoC5/MOTOR_R.c ****         #if (MOTOR_R_Resolution == 8)
+ 125:.\Generated_Source\PSoC5/MOTOR_R.c ****             /* Set FIFO 0 to 1 byte register for period*/
+ 126:.\Generated_Source\PSoC5/MOTOR_R.c ****             MOTOR_R_AUX_CONTROLDP0 |= (MOTOR_R_AUX_CTRL_FIFO0_CLR);
+ 127:.\Generated_Source\PSoC5/MOTOR_R.c ****         #else /* (MOTOR_R_Resolution == 16)*/
+ 128:.\Generated_Source\PSoC5/MOTOR_R.c ****             /* Set FIFO 0 to 1 byte register for period */
+ 129:.\Generated_Source\PSoC5/MOTOR_R.c ****             MOTOR_R_AUX_CONTROLDP0 |= (MOTOR_R_AUX_CTRL_FIFO0_CLR);
+ 130:.\Generated_Source\PSoC5/MOTOR_R.c ****             MOTOR_R_AUX_CONTROLDP1 |= (MOTOR_R_AUX_CTRL_FIFO0_CLR);
+ 131:.\Generated_Source\PSoC5/MOTOR_R.c ****         #endif /* (MOTOR_R_Resolution == 8) */
+ 132:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 133:.\Generated_Source\PSoC5/MOTOR_R.c ****         MOTOR_R_WriteCounter(MOTOR_R_INIT_PERIOD_VALUE);
+ 134:.\Generated_Source\PSoC5/MOTOR_R.c ****     #endif /* (!MOTOR_R_UsingFixedFunction) */
+ 135:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 136:.\Generated_Source\PSoC5/MOTOR_R.c ****     MOTOR_R_WritePeriod(MOTOR_R_INIT_PERIOD_VALUE);
+ 138              		.loc 1 136 0
+ 139 006e FF20     		movs	r0, #255
+ 140 0070 FFF7FEFF 		bl	MOTOR_R_WritePeriod
+ 137:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 138:.\Generated_Source\PSoC5/MOTOR_R.c ****         #if (MOTOR_R_UseOneCompareMode)
+ 139:.\Generated_Source\PSoC5/MOTOR_R.c ****             MOTOR_R_WriteCompare(MOTOR_R_INIT_COMPARE_VALUE1);
+ 141              		.loc 1 139 0
+ 142 0074 7F20     		movs	r0, #127
+ 143 0076 FFF7FEFF 		bl	MOTOR_R_WriteCompare
+ 140:.\Generated_Source\PSoC5/MOTOR_R.c ****         #else
+ 141:.\Generated_Source\PSoC5/MOTOR_R.c ****             MOTOR_R_WriteCompare1(MOTOR_R_INIT_COMPARE_VALUE1);
+ 142:.\Generated_Source\PSoC5/MOTOR_R.c ****             MOTOR_R_WriteCompare2(MOTOR_R_INIT_COMPARE_VALUE2);
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 6
+
+
+ 143:.\Generated_Source\PSoC5/MOTOR_R.c ****         #endif /* (MOTOR_R_UseOneCompareMode) */
+ 144:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 145:.\Generated_Source\PSoC5/MOTOR_R.c ****         #if (MOTOR_R_KillModeMinTime)
+ 146:.\Generated_Source\PSoC5/MOTOR_R.c ****             MOTOR_R_WriteKillTime(MOTOR_R_MinimumKillTime);
+ 147:.\Generated_Source\PSoC5/MOTOR_R.c ****         #endif /* (MOTOR_R_KillModeMinTime) */
+ 148:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 149:.\Generated_Source\PSoC5/MOTOR_R.c ****         #if (MOTOR_R_DeadBandUsed)
+ 150:.\Generated_Source\PSoC5/MOTOR_R.c ****             MOTOR_R_WriteDeadTime(MOTOR_R_INIT_DEAD_TIME);
+ 151:.\Generated_Source\PSoC5/MOTOR_R.c ****         #endif /* (MOTOR_R_DeadBandUsed) */
+ 152:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 153:.\Generated_Source\PSoC5/MOTOR_R.c ****     #if (MOTOR_R_UseStatus || MOTOR_R_UsingFixedFunction)
+ 154:.\Generated_Source\PSoC5/MOTOR_R.c ****         MOTOR_R_SetInterruptMode(MOTOR_R_INIT_INTERRUPTS_MODE);
+ 144              		.loc 1 154 0
+ 145 007a 0020     		movs	r0, #0
+ 146 007c FFF7FEFF 		bl	MOTOR_R_SetInterruptMode
+ 155:.\Generated_Source\PSoC5/MOTOR_R.c ****     #endif /* (MOTOR_R_UseStatus || MOTOR_R_UsingFixedFunction) */
+ 156:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 157:.\Generated_Source\PSoC5/MOTOR_R.c ****     #if (MOTOR_R_UsingFixedFunction)
+ 158:.\Generated_Source\PSoC5/MOTOR_R.c ****         /* Globally Enable the Fixed Function Block chosen */
+ 159:.\Generated_Source\PSoC5/MOTOR_R.c ****         MOTOR_R_GLOBAL_ENABLE |= MOTOR_R_BLOCK_EN_MASK;
+ 147              		.loc 1 159 0
+ 148 0080 0C4B     		ldr	r3, .L6+12
+ 149 0082 0C4A     		ldr	r2, .L6+12
+ 150 0084 1278     		ldrb	r2, [r2]
+ 151 0086 D2B2     		uxtb	r2, r2
+ 152 0088 42F00802 		orr	r2, r2, #8
+ 153 008c D2B2     		uxtb	r2, r2
+ 154 008e 1A70     		strb	r2, [r3]
+ 160:.\Generated_Source\PSoC5/MOTOR_R.c ****         /* Set the Interrupt source to come from the status register */
+ 161:.\Generated_Source\PSoC5/MOTOR_R.c ****         MOTOR_R_CONTROL2 |= MOTOR_R_CTRL2_IRQ_SEL;
+ 155              		.loc 1 161 0
+ 156 0090 094B     		ldr	r3, .L6+16
+ 157 0092 094A     		ldr	r2, .L6+16
+ 158 0094 1278     		ldrb	r2, [r2]
+ 159 0096 D2B2     		uxtb	r2, r2
+ 160 0098 42F00102 		orr	r2, r2, #1
+ 161 009c D2B2     		uxtb	r2, r2
+ 162 009e 1A70     		strb	r2, [r3]
+ 162:.\Generated_Source\PSoC5/MOTOR_R.c ****     #else
+ 163:.\Generated_Source\PSoC5/MOTOR_R.c ****         #if(MOTOR_R_UseStatus)
+ 164:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 165:.\Generated_Source\PSoC5/MOTOR_R.c ****             /* CyEnterCriticalRegion and CyExitCriticalRegion are used to mark following region cri
+ 166:.\Generated_Source\PSoC5/MOTOR_R.c ****             /* Enter Critical Region*/
+ 167:.\Generated_Source\PSoC5/MOTOR_R.c ****             MOTOR_R_interruptState = CyEnterCriticalSection();
+ 168:.\Generated_Source\PSoC5/MOTOR_R.c ****             /* Use the interrupt output of the status register for IRQ output */
+ 169:.\Generated_Source\PSoC5/MOTOR_R.c ****             MOTOR_R_STATUS_AUX_CTRL |= MOTOR_R_STATUS_ACTL_INT_EN_MASK;
+ 170:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 171:.\Generated_Source\PSoC5/MOTOR_R.c ****              /* Exit Critical Region*/
+ 172:.\Generated_Source\PSoC5/MOTOR_R.c ****             CyExitCriticalSection(MOTOR_R_interruptState);
+ 173:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 174:.\Generated_Source\PSoC5/MOTOR_R.c ****             /* Clear the FIFO to enable the MOTOR_R_STATUS_FIFOFULL
+ 175:.\Generated_Source\PSoC5/MOTOR_R.c ****                    bit to be set on FIFO full. */
+ 176:.\Generated_Source\PSoC5/MOTOR_R.c ****             MOTOR_R_ClearFIFO();
+ 177:.\Generated_Source\PSoC5/MOTOR_R.c ****         #endif /* (MOTOR_R_UseStatus) */
+ 178:.\Generated_Source\PSoC5/MOTOR_R.c ****     #endif /* (MOTOR_R_UsingFixedFunction) */
+ 179:.\Generated_Source\PSoC5/MOTOR_R.c **** }
+ 163              		.loc 1 179 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 7
+
+
+ 164 00a0 0837     		adds	r7, r7, #8
+ 165 00a2 BD46     		mov	sp, r7
+ 166              		@ sp needed
+ 167 00a4 80BD     		pop	{r7, pc}
+ 168              	.L7:
+ 169 00a6 00BF     		.align	2
+ 170              	.L6:
+ 171 00a8 244F0040 		.word	1073762084
+ 172 00ac 264F0040 		.word	1073762086
+ 173 00b0 2F4F0040 		.word	1073762095
+ 174 00b4 A3430040 		.word	1073759139
+ 175 00b8 254F0040 		.word	1073762085
+ 176              		.cfi_endproc
+ 177              	.LFE1:
+ 178              		.size	MOTOR_R_Init, .-MOTOR_R_Init
+ 179              		.section	.text.MOTOR_R_Enable,"ax",%progbits
+ 180              		.align	2
+ 181              		.global	MOTOR_R_Enable
+ 182              		.thumb
+ 183              		.thumb_func
+ 184              		.type	MOTOR_R_Enable, %function
+ 185              	MOTOR_R_Enable:
+ 186              	.LFB2:
+ 180:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 181:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 182:.\Generated_Source\PSoC5/MOTOR_R.c **** /*******************************************************************************
+ 183:.\Generated_Source\PSoC5/MOTOR_R.c **** * Function Name: MOTOR_R_Enable
+ 184:.\Generated_Source\PSoC5/MOTOR_R.c **** ********************************************************************************
+ 185:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+ 186:.\Generated_Source\PSoC5/MOTOR_R.c **** * Summary:
+ 187:.\Generated_Source\PSoC5/MOTOR_R.c **** *  Enables the PWM block operation
+ 188:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+ 189:.\Generated_Source\PSoC5/MOTOR_R.c **** * Parameters:
+ 190:.\Generated_Source\PSoC5/MOTOR_R.c **** *  None
+ 191:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+ 192:.\Generated_Source\PSoC5/MOTOR_R.c **** * Return:
+ 193:.\Generated_Source\PSoC5/MOTOR_R.c **** *  None
+ 194:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+ 195:.\Generated_Source\PSoC5/MOTOR_R.c **** * Side Effects:
+ 196:.\Generated_Source\PSoC5/MOTOR_R.c **** *  This works only if software enable mode is chosen
+ 197:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+ 198:.\Generated_Source\PSoC5/MOTOR_R.c **** *******************************************************************************/
+ 199:.\Generated_Source\PSoC5/MOTOR_R.c **** void MOTOR_R_Enable(void) 
+ 200:.\Generated_Source\PSoC5/MOTOR_R.c **** {
+ 187              		.loc 1 200 0
+ 188              		.cfi_startproc
+ 189              		@ args = 0, pretend = 0, frame = 0
+ 190              		@ frame_needed = 1, uses_anonymous_args = 0
+ 191              		@ link register save eliminated.
+ 192 0000 80B4     		push	{r7}
+ 193              		.cfi_def_cfa_offset 4
+ 194              		.cfi_offset 7, -4
+ 195 0002 00AF     		add	r7, sp, #0
+ 196              		.cfi_def_cfa_register 7
+ 201:.\Generated_Source\PSoC5/MOTOR_R.c ****     /* Globally Enable the Fixed Function Block chosen */
+ 202:.\Generated_Source\PSoC5/MOTOR_R.c ****     #if (MOTOR_R_UsingFixedFunction)
+ 203:.\Generated_Source\PSoC5/MOTOR_R.c ****         MOTOR_R_GLOBAL_ENABLE |= MOTOR_R_BLOCK_EN_MASK;
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 8
+
+
+ 197              		.loc 1 203 0
+ 198 0004 0D4B     		ldr	r3, .L9
+ 199 0006 0D4A     		ldr	r2, .L9
+ 200 0008 1278     		ldrb	r2, [r2]
+ 201 000a D2B2     		uxtb	r2, r2
+ 202 000c 42F00802 		orr	r2, r2, #8
+ 203 0010 D2B2     		uxtb	r2, r2
+ 204 0012 1A70     		strb	r2, [r3]
+ 204:.\Generated_Source\PSoC5/MOTOR_R.c ****         MOTOR_R_GLOBAL_STBY_ENABLE |= MOTOR_R_BLOCK_STBY_EN_MASK;
+ 205              		.loc 1 204 0
+ 206 0014 0A4B     		ldr	r3, .L9+4
+ 207 0016 0A4A     		ldr	r2, .L9+4
+ 208 0018 1278     		ldrb	r2, [r2]
+ 209 001a D2B2     		uxtb	r2, r2
+ 210 001c 42F00802 		orr	r2, r2, #8
+ 211 0020 D2B2     		uxtb	r2, r2
+ 212 0022 1A70     		strb	r2, [r3]
+ 205:.\Generated_Source\PSoC5/MOTOR_R.c ****     #endif /* (MOTOR_R_UsingFixedFunction) */
+ 206:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 207:.\Generated_Source\PSoC5/MOTOR_R.c ****     /* Enable the PWM from the control register  */
+ 208:.\Generated_Source\PSoC5/MOTOR_R.c ****     #if (MOTOR_R_UseControl || MOTOR_R_UsingFixedFunction)
+ 209:.\Generated_Source\PSoC5/MOTOR_R.c ****         MOTOR_R_CONTROL |= MOTOR_R_CTRL_ENABLE;
+ 213              		.loc 1 209 0
+ 214 0024 074B     		ldr	r3, .L9+8
+ 215 0026 074A     		ldr	r2, .L9+8
+ 216 0028 1278     		ldrb	r2, [r2]
+ 217 002a D2B2     		uxtb	r2, r2
+ 218 002c 42F00102 		orr	r2, r2, #1
+ 219 0030 D2B2     		uxtb	r2, r2
+ 220 0032 1A70     		strb	r2, [r3]
+ 210:.\Generated_Source\PSoC5/MOTOR_R.c ****     #endif /* (MOTOR_R_UseControl || MOTOR_R_UsingFixedFunction) */
+ 211:.\Generated_Source\PSoC5/MOTOR_R.c **** }
+ 221              		.loc 1 211 0
+ 222 0034 BD46     		mov	sp, r7
+ 223              		@ sp needed
+ 224 0036 5DF8047B 		ldr	r7, [sp], #4
+ 225 003a 7047     		bx	lr
+ 226              	.L10:
+ 227              		.align	2
+ 228              	.L9:
+ 229 003c A3430040 		.word	1073759139
+ 230 0040 B3430040 		.word	1073759155
+ 231 0044 244F0040 		.word	1073762084
+ 232              		.cfi_endproc
+ 233              	.LFE2:
+ 234              		.size	MOTOR_R_Enable, .-MOTOR_R_Enable
+ 235              		.section	.text.MOTOR_R_Stop,"ax",%progbits
+ 236              		.align	2
+ 237              		.global	MOTOR_R_Stop
+ 238              		.thumb
+ 239              		.thumb_func
+ 240              		.type	MOTOR_R_Stop, %function
+ 241              	MOTOR_R_Stop:
+ 242              	.LFB3:
+ 212:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 213:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 214:.\Generated_Source\PSoC5/MOTOR_R.c **** /*******************************************************************************
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 9
+
+
+ 215:.\Generated_Source\PSoC5/MOTOR_R.c **** * Function Name: MOTOR_R_Stop
+ 216:.\Generated_Source\PSoC5/MOTOR_R.c **** ********************************************************************************
+ 217:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+ 218:.\Generated_Source\PSoC5/MOTOR_R.c **** * Summary:
+ 219:.\Generated_Source\PSoC5/MOTOR_R.c **** *  The stop function halts the PWM, but does not change any modes or disable
+ 220:.\Generated_Source\PSoC5/MOTOR_R.c **** *  interrupts.
+ 221:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+ 222:.\Generated_Source\PSoC5/MOTOR_R.c **** * Parameters:
+ 223:.\Generated_Source\PSoC5/MOTOR_R.c **** *  None
+ 224:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+ 225:.\Generated_Source\PSoC5/MOTOR_R.c **** * Return:
+ 226:.\Generated_Source\PSoC5/MOTOR_R.c **** *  None
+ 227:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+ 228:.\Generated_Source\PSoC5/MOTOR_R.c **** * Side Effects:
+ 229:.\Generated_Source\PSoC5/MOTOR_R.c **** *  If the Enable mode is set to Hardware only then this function
+ 230:.\Generated_Source\PSoC5/MOTOR_R.c **** *  has no effect on the operation of the PWM
+ 231:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+ 232:.\Generated_Source\PSoC5/MOTOR_R.c **** *******************************************************************************/
+ 233:.\Generated_Source\PSoC5/MOTOR_R.c **** void MOTOR_R_Stop(void) 
+ 234:.\Generated_Source\PSoC5/MOTOR_R.c **** {
+ 243              		.loc 1 234 0
+ 244              		.cfi_startproc
+ 245              		@ args = 0, pretend = 0, frame = 0
+ 246              		@ frame_needed = 1, uses_anonymous_args = 0
+ 247              		@ link register save eliminated.
+ 248 0000 80B4     		push	{r7}
+ 249              		.cfi_def_cfa_offset 4
+ 250              		.cfi_offset 7, -4
+ 251 0002 00AF     		add	r7, sp, #0
+ 252              		.cfi_def_cfa_register 7
+ 235:.\Generated_Source\PSoC5/MOTOR_R.c ****     #if (MOTOR_R_UseControl || MOTOR_R_UsingFixedFunction)
+ 236:.\Generated_Source\PSoC5/MOTOR_R.c ****         MOTOR_R_CONTROL &= ((uint8)(~MOTOR_R_CTRL_ENABLE));
+ 253              		.loc 1 236 0
+ 254 0004 0D4B     		ldr	r3, .L12
+ 255 0006 0D4A     		ldr	r2, .L12
+ 256 0008 1278     		ldrb	r2, [r2]
+ 257 000a D2B2     		uxtb	r2, r2
+ 258 000c 22F00102 		bic	r2, r2, #1
+ 259 0010 D2B2     		uxtb	r2, r2
+ 260 0012 1A70     		strb	r2, [r3]
+ 237:.\Generated_Source\PSoC5/MOTOR_R.c ****     #endif /* (MOTOR_R_UseControl || MOTOR_R_UsingFixedFunction) */
+ 238:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 239:.\Generated_Source\PSoC5/MOTOR_R.c ****     /* Globally disable the Fixed Function Block chosen */
+ 240:.\Generated_Source\PSoC5/MOTOR_R.c ****     #if (MOTOR_R_UsingFixedFunction)
+ 241:.\Generated_Source\PSoC5/MOTOR_R.c ****         MOTOR_R_GLOBAL_ENABLE &= ((uint8)(~MOTOR_R_BLOCK_EN_MASK));
+ 261              		.loc 1 241 0
+ 262 0014 0A4B     		ldr	r3, .L12+4
+ 263 0016 0A4A     		ldr	r2, .L12+4
+ 264 0018 1278     		ldrb	r2, [r2]
+ 265 001a D2B2     		uxtb	r2, r2
+ 266 001c 22F00802 		bic	r2, r2, #8
+ 267 0020 D2B2     		uxtb	r2, r2
+ 268 0022 1A70     		strb	r2, [r3]
+ 242:.\Generated_Source\PSoC5/MOTOR_R.c ****         MOTOR_R_GLOBAL_STBY_ENABLE &= ((uint8)(~MOTOR_R_BLOCK_STBY_EN_MASK));
+ 269              		.loc 1 242 0
+ 270 0024 074B     		ldr	r3, .L12+8
+ 271 0026 074A     		ldr	r2, .L12+8
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 10
+
+
+ 272 0028 1278     		ldrb	r2, [r2]
+ 273 002a D2B2     		uxtb	r2, r2
+ 274 002c 22F00802 		bic	r2, r2, #8
+ 275 0030 D2B2     		uxtb	r2, r2
+ 276 0032 1A70     		strb	r2, [r3]
+ 243:.\Generated_Source\PSoC5/MOTOR_R.c ****     #endif /* (MOTOR_R_UsingFixedFunction) */
+ 244:.\Generated_Source\PSoC5/MOTOR_R.c **** }
+ 277              		.loc 1 244 0
+ 278 0034 BD46     		mov	sp, r7
+ 279              		@ sp needed
+ 280 0036 5DF8047B 		ldr	r7, [sp], #4
+ 281 003a 7047     		bx	lr
+ 282              	.L13:
+ 283              		.align	2
+ 284              	.L12:
+ 285 003c 244F0040 		.word	1073762084
+ 286 0040 A3430040 		.word	1073759139
+ 287 0044 B3430040 		.word	1073759155
+ 288              		.cfi_endproc
+ 289              	.LFE3:
+ 290              		.size	MOTOR_R_Stop, .-MOTOR_R_Stop
+ 291              		.section	.text.MOTOR_R_WritePeriod,"ax",%progbits
+ 292              		.align	2
+ 293              		.global	MOTOR_R_WritePeriod
+ 294              		.thumb
+ 295              		.thumb_func
+ 296              		.type	MOTOR_R_WritePeriod, %function
+ 297              	MOTOR_R_WritePeriod:
+ 298              	.LFB4:
+ 245:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 246:.\Generated_Source\PSoC5/MOTOR_R.c **** #if (MOTOR_R_UseOneCompareMode)
+ 247:.\Generated_Source\PSoC5/MOTOR_R.c ****     #if (MOTOR_R_CompareMode1SW)
+ 248:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 249:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 250:.\Generated_Source\PSoC5/MOTOR_R.c ****         /*******************************************************************************
+ 251:.\Generated_Source\PSoC5/MOTOR_R.c ****         * Function Name: MOTOR_R_SetCompareMode
+ 252:.\Generated_Source\PSoC5/MOTOR_R.c ****         ********************************************************************************
+ 253:.\Generated_Source\PSoC5/MOTOR_R.c ****         *
+ 254:.\Generated_Source\PSoC5/MOTOR_R.c ****         * Summary:
+ 255:.\Generated_Source\PSoC5/MOTOR_R.c ****         *  This function writes the Compare Mode for the pwm output when in Dither mode,
+ 256:.\Generated_Source\PSoC5/MOTOR_R.c ****         *  Center Align Mode or One Output Mode.
+ 257:.\Generated_Source\PSoC5/MOTOR_R.c ****         *
+ 258:.\Generated_Source\PSoC5/MOTOR_R.c ****         * Parameters:
+ 259:.\Generated_Source\PSoC5/MOTOR_R.c ****         *  comparemode:  The new compare mode for the PWM output. Use the compare types
+ 260:.\Generated_Source\PSoC5/MOTOR_R.c ****         *                defined in the H file as input arguments.
+ 261:.\Generated_Source\PSoC5/MOTOR_R.c ****         *
+ 262:.\Generated_Source\PSoC5/MOTOR_R.c ****         * Return:
+ 263:.\Generated_Source\PSoC5/MOTOR_R.c ****         *  None
+ 264:.\Generated_Source\PSoC5/MOTOR_R.c ****         *
+ 265:.\Generated_Source\PSoC5/MOTOR_R.c ****         *******************************************************************************/
+ 266:.\Generated_Source\PSoC5/MOTOR_R.c ****         void MOTOR_R_SetCompareMode(uint8 comparemode) 
+ 267:.\Generated_Source\PSoC5/MOTOR_R.c ****         {
+ 268:.\Generated_Source\PSoC5/MOTOR_R.c ****             #if(MOTOR_R_UsingFixedFunction)
+ 269:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 270:.\Generated_Source\PSoC5/MOTOR_R.c ****                 #if(0 != MOTOR_R_CTRL_CMPMODE1_SHIFT)
+ 271:.\Generated_Source\PSoC5/MOTOR_R.c ****                     uint8 comparemodemasked = ((uint8)((uint8)comparemode << MOTOR_R_CTRL_CMPMODE1_
+ 272:.\Generated_Source\PSoC5/MOTOR_R.c ****                 #else
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 11
+
+
+ 273:.\Generated_Source\PSoC5/MOTOR_R.c ****                     uint8 comparemodemasked = comparemode;
+ 274:.\Generated_Source\PSoC5/MOTOR_R.c ****                 #endif /* (0 != MOTOR_R_CTRL_CMPMODE1_SHIFT) */
+ 275:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 276:.\Generated_Source\PSoC5/MOTOR_R.c ****                 MOTOR_R_CONTROL3 &= ((uint8)(~MOTOR_R_CTRL_CMPMODE1_MASK)); /*Clear Existing Data *
+ 277:.\Generated_Source\PSoC5/MOTOR_R.c ****                 MOTOR_R_CONTROL3 |= comparemodemasked;
+ 278:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 279:.\Generated_Source\PSoC5/MOTOR_R.c ****             #elif (MOTOR_R_UseControl)
+ 280:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 281:.\Generated_Source\PSoC5/MOTOR_R.c ****                 #if(0 != MOTOR_R_CTRL_CMPMODE1_SHIFT)
+ 282:.\Generated_Source\PSoC5/MOTOR_R.c ****                     uint8 comparemode1masked = ((uint8)((uint8)comparemode << MOTOR_R_CTRL_CMPMODE1
+ 283:.\Generated_Source\PSoC5/MOTOR_R.c ****                                                 MOTOR_R_CTRL_CMPMODE1_MASK;
+ 284:.\Generated_Source\PSoC5/MOTOR_R.c ****                 #else
+ 285:.\Generated_Source\PSoC5/MOTOR_R.c ****                     uint8 comparemode1masked = comparemode & MOTOR_R_CTRL_CMPMODE1_MASK;
+ 286:.\Generated_Source\PSoC5/MOTOR_R.c ****                 #endif /* (0 != MOTOR_R_CTRL_CMPMODE1_SHIFT) */
+ 287:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 288:.\Generated_Source\PSoC5/MOTOR_R.c ****                 #if(0 != MOTOR_R_CTRL_CMPMODE2_SHIFT)
+ 289:.\Generated_Source\PSoC5/MOTOR_R.c ****                     uint8 comparemode2masked = ((uint8)((uint8)comparemode << MOTOR_R_CTRL_CMPMODE2
+ 290:.\Generated_Source\PSoC5/MOTOR_R.c ****                                                MOTOR_R_CTRL_CMPMODE2_MASK;
+ 291:.\Generated_Source\PSoC5/MOTOR_R.c ****                 #else
+ 292:.\Generated_Source\PSoC5/MOTOR_R.c ****                     uint8 comparemode2masked = comparemode & MOTOR_R_CTRL_CMPMODE2_MASK;
+ 293:.\Generated_Source\PSoC5/MOTOR_R.c ****                 #endif /* (0 != MOTOR_R_CTRL_CMPMODE2_SHIFT) */
+ 294:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 295:.\Generated_Source\PSoC5/MOTOR_R.c ****                 /*Clear existing mode */
+ 296:.\Generated_Source\PSoC5/MOTOR_R.c ****                 MOTOR_R_CONTROL &= ((uint8)(~(MOTOR_R_CTRL_CMPMODE1_MASK |
+ 297:.\Generated_Source\PSoC5/MOTOR_R.c ****                                             MOTOR_R_CTRL_CMPMODE2_MASK)));
+ 298:.\Generated_Source\PSoC5/MOTOR_R.c ****                 MOTOR_R_CONTROL |= (comparemode1masked | comparemode2masked);
+ 299:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 300:.\Generated_Source\PSoC5/MOTOR_R.c ****             #else
+ 301:.\Generated_Source\PSoC5/MOTOR_R.c ****                 uint8 temp = comparemode;
+ 302:.\Generated_Source\PSoC5/MOTOR_R.c ****             #endif /* (MOTOR_R_UsingFixedFunction) */
+ 303:.\Generated_Source\PSoC5/MOTOR_R.c ****         }
+ 304:.\Generated_Source\PSoC5/MOTOR_R.c ****     #endif /* MOTOR_R_CompareMode1SW */
+ 305:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 306:.\Generated_Source\PSoC5/MOTOR_R.c **** #else /* UseOneCompareMode */
+ 307:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 308:.\Generated_Source\PSoC5/MOTOR_R.c ****     #if (MOTOR_R_CompareMode1SW)
+ 309:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 310:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 311:.\Generated_Source\PSoC5/MOTOR_R.c ****         /*******************************************************************************
+ 312:.\Generated_Source\PSoC5/MOTOR_R.c ****         * Function Name: MOTOR_R_SetCompareMode1
+ 313:.\Generated_Source\PSoC5/MOTOR_R.c ****         ********************************************************************************
+ 314:.\Generated_Source\PSoC5/MOTOR_R.c ****         *
+ 315:.\Generated_Source\PSoC5/MOTOR_R.c ****         * Summary:
+ 316:.\Generated_Source\PSoC5/MOTOR_R.c ****         *  This function writes the Compare Mode for the pwm or pwm1 output
+ 317:.\Generated_Source\PSoC5/MOTOR_R.c ****         *
+ 318:.\Generated_Source\PSoC5/MOTOR_R.c ****         * Parameters:
+ 319:.\Generated_Source\PSoC5/MOTOR_R.c ****         *  comparemode:  The new compare mode for the PWM output. Use the compare types
+ 320:.\Generated_Source\PSoC5/MOTOR_R.c ****         *                defined in the H file as input arguments.
+ 321:.\Generated_Source\PSoC5/MOTOR_R.c ****         *
+ 322:.\Generated_Source\PSoC5/MOTOR_R.c ****         * Return:
+ 323:.\Generated_Source\PSoC5/MOTOR_R.c ****         *  None
+ 324:.\Generated_Source\PSoC5/MOTOR_R.c ****         *
+ 325:.\Generated_Source\PSoC5/MOTOR_R.c ****         *******************************************************************************/
+ 326:.\Generated_Source\PSoC5/MOTOR_R.c ****         void MOTOR_R_SetCompareMode1(uint8 comparemode) 
+ 327:.\Generated_Source\PSoC5/MOTOR_R.c ****         {
+ 328:.\Generated_Source\PSoC5/MOTOR_R.c ****             #if(0 != MOTOR_R_CTRL_CMPMODE1_SHIFT)
+ 329:.\Generated_Source\PSoC5/MOTOR_R.c ****                 uint8 comparemodemasked = ((uint8)((uint8)comparemode << MOTOR_R_CTRL_CMPMODE1_SHIF
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 12
+
+
+ 330:.\Generated_Source\PSoC5/MOTOR_R.c ****                                            MOTOR_R_CTRL_CMPMODE1_MASK;
+ 331:.\Generated_Source\PSoC5/MOTOR_R.c ****             #else
+ 332:.\Generated_Source\PSoC5/MOTOR_R.c ****                 uint8 comparemodemasked = comparemode & MOTOR_R_CTRL_CMPMODE1_MASK;
+ 333:.\Generated_Source\PSoC5/MOTOR_R.c ****             #endif /* (0 != MOTOR_R_CTRL_CMPMODE1_SHIFT) */
+ 334:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 335:.\Generated_Source\PSoC5/MOTOR_R.c ****             #if (MOTOR_R_UseControl)
+ 336:.\Generated_Source\PSoC5/MOTOR_R.c ****                 MOTOR_R_CONTROL &= ((uint8)(~MOTOR_R_CTRL_CMPMODE1_MASK)); /*Clear existing mode */
+ 337:.\Generated_Source\PSoC5/MOTOR_R.c ****                 MOTOR_R_CONTROL |= comparemodemasked;
+ 338:.\Generated_Source\PSoC5/MOTOR_R.c ****             #endif /* (MOTOR_R_UseControl) */
+ 339:.\Generated_Source\PSoC5/MOTOR_R.c ****         }
+ 340:.\Generated_Source\PSoC5/MOTOR_R.c ****     #endif /* MOTOR_R_CompareMode1SW */
+ 341:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 342:.\Generated_Source\PSoC5/MOTOR_R.c **** #if (MOTOR_R_CompareMode2SW)
+ 343:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 344:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 345:.\Generated_Source\PSoC5/MOTOR_R.c ****     /*******************************************************************************
+ 346:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Function Name: MOTOR_R_SetCompareMode2
+ 347:.\Generated_Source\PSoC5/MOTOR_R.c ****     ********************************************************************************
+ 348:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 349:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Summary:
+ 350:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  This function writes the Compare Mode for the pwm or pwm2 output
+ 351:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 352:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Parameters:
+ 353:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  comparemode:  The new compare mode for the PWM output. Use the compare types
+ 354:.\Generated_Source\PSoC5/MOTOR_R.c ****     *                defined in the H file as input arguments.
+ 355:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 356:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Return:
+ 357:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  None
+ 358:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 359:.\Generated_Source\PSoC5/MOTOR_R.c ****     *******************************************************************************/
+ 360:.\Generated_Source\PSoC5/MOTOR_R.c ****     void MOTOR_R_SetCompareMode2(uint8 comparemode) 
+ 361:.\Generated_Source\PSoC5/MOTOR_R.c ****     {
+ 362:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 363:.\Generated_Source\PSoC5/MOTOR_R.c ****         #if(0 != MOTOR_R_CTRL_CMPMODE2_SHIFT)
+ 364:.\Generated_Source\PSoC5/MOTOR_R.c ****             uint8 comparemodemasked = ((uint8)((uint8)comparemode << MOTOR_R_CTRL_CMPMODE2_SHIFT)) 
+ 365:.\Generated_Source\PSoC5/MOTOR_R.c ****                                                  MOTOR_R_CTRL_CMPMODE2_MASK;
+ 366:.\Generated_Source\PSoC5/MOTOR_R.c ****         #else
+ 367:.\Generated_Source\PSoC5/MOTOR_R.c ****             uint8 comparemodemasked = comparemode & MOTOR_R_CTRL_CMPMODE2_MASK;
+ 368:.\Generated_Source\PSoC5/MOTOR_R.c ****         #endif /* (0 != MOTOR_R_CTRL_CMPMODE2_SHIFT) */
+ 369:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 370:.\Generated_Source\PSoC5/MOTOR_R.c ****         #if (MOTOR_R_UseControl)
+ 371:.\Generated_Source\PSoC5/MOTOR_R.c ****             MOTOR_R_CONTROL &= ((uint8)(~MOTOR_R_CTRL_CMPMODE2_MASK)); /*Clear existing mode */
+ 372:.\Generated_Source\PSoC5/MOTOR_R.c ****             MOTOR_R_CONTROL |= comparemodemasked;
+ 373:.\Generated_Source\PSoC5/MOTOR_R.c ****         #endif /* (MOTOR_R_UseControl) */
+ 374:.\Generated_Source\PSoC5/MOTOR_R.c ****     }
+ 375:.\Generated_Source\PSoC5/MOTOR_R.c ****     #endif /*MOTOR_R_CompareMode2SW */
+ 376:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 377:.\Generated_Source\PSoC5/MOTOR_R.c **** #endif /* UseOneCompareMode */
+ 378:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 379:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 380:.\Generated_Source\PSoC5/MOTOR_R.c **** #if (!MOTOR_R_UsingFixedFunction)
+ 381:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 382:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 383:.\Generated_Source\PSoC5/MOTOR_R.c ****     /*******************************************************************************
+ 384:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Function Name: MOTOR_R_WriteCounter
+ 385:.\Generated_Source\PSoC5/MOTOR_R.c ****     ********************************************************************************
+ 386:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 13
+
+
+ 387:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Summary:
+ 388:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  Writes a new counter value directly to the counter register. This will be
+ 389:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  implemented for that currently running period and only that period. This API
+ 390:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  is valid only for UDB implementation and not available for fixed function
+ 391:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  PWM implementation.
+ 392:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 393:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Parameters:
+ 394:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  counter:  The period new period counter value.
+ 395:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 396:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Return:
+ 397:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  None
+ 398:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 399:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Side Effects:
+ 400:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  The PWM Period will be reloaded when a counter value will be a zero
+ 401:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 402:.\Generated_Source\PSoC5/MOTOR_R.c ****     *******************************************************************************/
+ 403:.\Generated_Source\PSoC5/MOTOR_R.c ****     void MOTOR_R_WriteCounter(uint8 counter) \
+ 404:.\Generated_Source\PSoC5/MOTOR_R.c ****                                        
+ 405:.\Generated_Source\PSoC5/MOTOR_R.c ****     {
+ 406:.\Generated_Source\PSoC5/MOTOR_R.c ****         CY_SET_REG8(MOTOR_R_COUNTER_LSB_PTR, counter);
+ 407:.\Generated_Source\PSoC5/MOTOR_R.c ****     }
+ 408:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 409:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 410:.\Generated_Source\PSoC5/MOTOR_R.c ****     /*******************************************************************************
+ 411:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Function Name: MOTOR_R_ReadCounter
+ 412:.\Generated_Source\PSoC5/MOTOR_R.c ****     ********************************************************************************
+ 413:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 414:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Summary:
+ 415:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  This function returns the current value of the counter.  It doesn't matter
+ 416:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  if the counter is enabled or running.
+ 417:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 418:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Parameters:
+ 419:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  None
+ 420:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 421:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Return:
+ 422:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  The current value of the counter.
+ 423:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 424:.\Generated_Source\PSoC5/MOTOR_R.c ****     *******************************************************************************/
+ 425:.\Generated_Source\PSoC5/MOTOR_R.c ****     uint8 MOTOR_R_ReadCounter(void) 
+ 426:.\Generated_Source\PSoC5/MOTOR_R.c ****     {
+ 427:.\Generated_Source\PSoC5/MOTOR_R.c ****         /* Force capture by reading Accumulator */
+ 428:.\Generated_Source\PSoC5/MOTOR_R.c ****         /* Must first do a software capture to be able to read the counter */
+ 429:.\Generated_Source\PSoC5/MOTOR_R.c ****         /* It is up to the user code to make sure there isn't already captured data in the FIFO */
+ 430:.\Generated_Source\PSoC5/MOTOR_R.c ****           (void)CY_GET_REG8(MOTOR_R_COUNTERCAP_LSB_PTR_8BIT);
+ 431:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 432:.\Generated_Source\PSoC5/MOTOR_R.c ****         /* Read the data from the FIFO */
+ 433:.\Generated_Source\PSoC5/MOTOR_R.c ****         return (CY_GET_REG8(MOTOR_R_CAPTURE_LSB_PTR));
+ 434:.\Generated_Source\PSoC5/MOTOR_R.c ****     }
+ 435:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 436:.\Generated_Source\PSoC5/MOTOR_R.c ****     #if (MOTOR_R_UseStatus)
+ 437:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 438:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 439:.\Generated_Source\PSoC5/MOTOR_R.c ****         /*******************************************************************************
+ 440:.\Generated_Source\PSoC5/MOTOR_R.c ****         * Function Name: MOTOR_R_ClearFIFO
+ 441:.\Generated_Source\PSoC5/MOTOR_R.c ****         ********************************************************************************
+ 442:.\Generated_Source\PSoC5/MOTOR_R.c ****         *
+ 443:.\Generated_Source\PSoC5/MOTOR_R.c ****         * Summary:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 14
+
+
+ 444:.\Generated_Source\PSoC5/MOTOR_R.c ****         *  This function clears all capture data from the capture FIFO
+ 445:.\Generated_Source\PSoC5/MOTOR_R.c ****         *
+ 446:.\Generated_Source\PSoC5/MOTOR_R.c ****         * Parameters:
+ 447:.\Generated_Source\PSoC5/MOTOR_R.c ****         *  None
+ 448:.\Generated_Source\PSoC5/MOTOR_R.c ****         *
+ 449:.\Generated_Source\PSoC5/MOTOR_R.c ****         * Return:
+ 450:.\Generated_Source\PSoC5/MOTOR_R.c ****         *  None
+ 451:.\Generated_Source\PSoC5/MOTOR_R.c ****         *
+ 452:.\Generated_Source\PSoC5/MOTOR_R.c ****         *******************************************************************************/
+ 453:.\Generated_Source\PSoC5/MOTOR_R.c ****         void MOTOR_R_ClearFIFO(void) 
+ 454:.\Generated_Source\PSoC5/MOTOR_R.c ****         {
+ 455:.\Generated_Source\PSoC5/MOTOR_R.c ****             while(0u != (MOTOR_R_ReadStatusRegister() & MOTOR_R_STATUS_FIFONEMPTY))
+ 456:.\Generated_Source\PSoC5/MOTOR_R.c ****             {
+ 457:.\Generated_Source\PSoC5/MOTOR_R.c ****                 (void)MOTOR_R_ReadCapture();
+ 458:.\Generated_Source\PSoC5/MOTOR_R.c ****             }
+ 459:.\Generated_Source\PSoC5/MOTOR_R.c ****         }
+ 460:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 461:.\Generated_Source\PSoC5/MOTOR_R.c ****     #endif /* MOTOR_R_UseStatus */
+ 462:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 463:.\Generated_Source\PSoC5/MOTOR_R.c **** #endif /* !MOTOR_R_UsingFixedFunction */
+ 464:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 465:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 466:.\Generated_Source\PSoC5/MOTOR_R.c **** /*******************************************************************************
+ 467:.\Generated_Source\PSoC5/MOTOR_R.c **** * Function Name: MOTOR_R_WritePeriod
+ 468:.\Generated_Source\PSoC5/MOTOR_R.c **** ********************************************************************************
+ 469:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+ 470:.\Generated_Source\PSoC5/MOTOR_R.c **** * Summary:
+ 471:.\Generated_Source\PSoC5/MOTOR_R.c **** *  This function is used to change the period of the counter.  The new period
+ 472:.\Generated_Source\PSoC5/MOTOR_R.c **** *  will be loaded the next time terminal count is detected.
+ 473:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+ 474:.\Generated_Source\PSoC5/MOTOR_R.c **** * Parameters:
+ 475:.\Generated_Source\PSoC5/MOTOR_R.c **** *  period:  Period value. May be between 1 and (2^Resolution)-1.  A value of 0
+ 476:.\Generated_Source\PSoC5/MOTOR_R.c **** *           will result in the counter remaining at zero.
+ 477:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+ 478:.\Generated_Source\PSoC5/MOTOR_R.c **** * Return:
+ 479:.\Generated_Source\PSoC5/MOTOR_R.c **** *  None
+ 480:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+ 481:.\Generated_Source\PSoC5/MOTOR_R.c **** *******************************************************************************/
+ 482:.\Generated_Source\PSoC5/MOTOR_R.c **** void MOTOR_R_WritePeriod(uint8 period) 
+ 483:.\Generated_Source\PSoC5/MOTOR_R.c **** {
+ 299              		.loc 1 483 0
+ 300              		.cfi_startproc
+ 301              		@ args = 0, pretend = 0, frame = 8
+ 302              		@ frame_needed = 1, uses_anonymous_args = 0
+ 303              		@ link register save eliminated.
+ 304 0000 80B4     		push	{r7}
+ 305              		.cfi_def_cfa_offset 4
+ 306              		.cfi_offset 7, -4
+ 307 0002 83B0     		sub	sp, sp, #12
+ 308              		.cfi_def_cfa_offset 16
+ 309 0004 00AF     		add	r7, sp, #0
+ 310              		.cfi_def_cfa_register 7
+ 311 0006 0346     		mov	r3, r0
+ 312 0008 FB71     		strb	r3, [r7, #7]
+ 484:.\Generated_Source\PSoC5/MOTOR_R.c ****     #if(MOTOR_R_UsingFixedFunction)
+ 485:.\Generated_Source\PSoC5/MOTOR_R.c ****         CY_SET_REG16(MOTOR_R_PERIOD_LSB_PTR, (uint16)period);
+ 313              		.loc 1 485 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 15
+
+
+ 314 000a 044B     		ldr	r3, .L15
+ 315 000c FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 316 000e 92B2     		uxth	r2, r2
+ 317 0010 1A80     		strh	r2, [r3]	@ movhi
+ 486:.\Generated_Source\PSoC5/MOTOR_R.c ****     #else
+ 487:.\Generated_Source\PSoC5/MOTOR_R.c ****         CY_SET_REG8(MOTOR_R_PERIOD_LSB_PTR, period);
+ 488:.\Generated_Source\PSoC5/MOTOR_R.c ****     #endif /* (MOTOR_R_UsingFixedFunction) */
+ 489:.\Generated_Source\PSoC5/MOTOR_R.c **** }
+ 318              		.loc 1 489 0
+ 319 0012 0C37     		adds	r7, r7, #12
+ 320 0014 BD46     		mov	sp, r7
+ 321              		@ sp needed
+ 322 0016 5DF8047B 		ldr	r7, [sp], #4
+ 323 001a 7047     		bx	lr
+ 324              	.L16:
+ 325              		.align	2
+ 326              	.L15:
+ 327 001c 284F0040 		.word	1073762088
+ 328              		.cfi_endproc
+ 329              	.LFE4:
+ 330              		.size	MOTOR_R_WritePeriod, .-MOTOR_R_WritePeriod
+ 331              		.section	.text.MOTOR_R_WriteCompare,"ax",%progbits
+ 332              		.align	2
+ 333              		.global	MOTOR_R_WriteCompare
+ 334              		.thumb
+ 335              		.thumb_func
+ 336              		.type	MOTOR_R_WriteCompare, %function
+ 337              	MOTOR_R_WriteCompare:
+ 338              	.LFB5:
+ 490:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 491:.\Generated_Source\PSoC5/MOTOR_R.c **** #if (MOTOR_R_UseOneCompareMode)
+ 492:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 493:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 494:.\Generated_Source\PSoC5/MOTOR_R.c ****     /*******************************************************************************
+ 495:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Function Name: MOTOR_R_WriteCompare
+ 496:.\Generated_Source\PSoC5/MOTOR_R.c ****     ********************************************************************************
+ 497:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 498:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Summary:
+ 499:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  This funtion is used to change the compare1 value when the PWM is in Dither
+ 500:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  mode. The compare output will reflect the new value on the next UDB clock.
+ 501:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  The compare output will be driven high when the present counter value is
+ 502:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  compared to the compare value based on the compare mode defined in
+ 503:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  Dither Mode.
+ 504:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 505:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Parameters:
+ 506:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  compare:  New compare value.
+ 507:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 508:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Return:
+ 509:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  None
+ 510:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 511:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Side Effects:
+ 512:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  This function is only available if the PWM mode parameter is set to
+ 513:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  Dither Mode, Center Aligned Mode or One Output Mode
+ 514:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 515:.\Generated_Source\PSoC5/MOTOR_R.c ****     *******************************************************************************/
+ 516:.\Generated_Source\PSoC5/MOTOR_R.c ****     void MOTOR_R_WriteCompare(uint8 compare) \
+ 517:.\Generated_Source\PSoC5/MOTOR_R.c ****                                        
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 16
+
+
+ 518:.\Generated_Source\PSoC5/MOTOR_R.c ****     {
+ 339              		.loc 1 518 0
+ 340              		.cfi_startproc
+ 341              		@ args = 0, pretend = 0, frame = 8
+ 342              		@ frame_needed = 1, uses_anonymous_args = 0
+ 343              		@ link register save eliminated.
+ 344 0000 80B4     		push	{r7}
+ 345              		.cfi_def_cfa_offset 4
+ 346              		.cfi_offset 7, -4
+ 347 0002 83B0     		sub	sp, sp, #12
+ 348              		.cfi_def_cfa_offset 16
+ 349 0004 00AF     		add	r7, sp, #0
+ 350              		.cfi_def_cfa_register 7
+ 351 0006 0346     		mov	r3, r0
+ 352 0008 FB71     		strb	r3, [r7, #7]
+ 519:.\Generated_Source\PSoC5/MOTOR_R.c ****         #if(MOTOR_R_UsingFixedFunction)
+ 520:.\Generated_Source\PSoC5/MOTOR_R.c ****             CY_SET_REG16(MOTOR_R_COMPARE1_LSB_PTR, (uint16)compare);
+ 353              		.loc 1 520 0
+ 354 000a 044B     		ldr	r3, .L18
+ 355 000c FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 356 000e 92B2     		uxth	r2, r2
+ 357 0010 1A80     		strh	r2, [r3]	@ movhi
+ 521:.\Generated_Source\PSoC5/MOTOR_R.c ****         #else
+ 522:.\Generated_Source\PSoC5/MOTOR_R.c ****             CY_SET_REG8(MOTOR_R_COMPARE1_LSB_PTR, compare);
+ 523:.\Generated_Source\PSoC5/MOTOR_R.c ****         #endif /* (MOTOR_R_UsingFixedFunction) */
+ 524:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 525:.\Generated_Source\PSoC5/MOTOR_R.c ****         #if (MOTOR_R_PWMMode == MOTOR_R__B_PWM__DITHER)
+ 526:.\Generated_Source\PSoC5/MOTOR_R.c ****             #if(MOTOR_R_UsingFixedFunction)
+ 527:.\Generated_Source\PSoC5/MOTOR_R.c ****                 CY_SET_REG16(MOTOR_R_COMPARE2_LSB_PTR, (uint16)(compare + 1u));
+ 528:.\Generated_Source\PSoC5/MOTOR_R.c ****             #else
+ 529:.\Generated_Source\PSoC5/MOTOR_R.c ****                 CY_SET_REG8(MOTOR_R_COMPARE2_LSB_PTR, (compare + 1u));
+ 530:.\Generated_Source\PSoC5/MOTOR_R.c ****             #endif /* (MOTOR_R_UsingFixedFunction) */
+ 531:.\Generated_Source\PSoC5/MOTOR_R.c ****         #endif /* (MOTOR_R_PWMMode == MOTOR_R__B_PWM__DITHER) */
+ 532:.\Generated_Source\PSoC5/MOTOR_R.c ****     }
+ 358              		.loc 1 532 0
+ 359 0012 0C37     		adds	r7, r7, #12
+ 360 0014 BD46     		mov	sp, r7
+ 361              		@ sp needed
+ 362 0016 5DF8047B 		ldr	r7, [sp], #4
+ 363 001a 7047     		bx	lr
+ 364              	.L19:
+ 365              		.align	2
+ 366              	.L18:
+ 367 001c 2A4F0040 		.word	1073762090
+ 368              		.cfi_endproc
+ 369              	.LFE5:
+ 370              		.size	MOTOR_R_WriteCompare, .-MOTOR_R_WriteCompare
+ 371              		.section	.text.MOTOR_R_SetInterruptMode,"ax",%progbits
+ 372              		.align	2
+ 373              		.global	MOTOR_R_SetInterruptMode
+ 374              		.thumb
+ 375              		.thumb_func
+ 376              		.type	MOTOR_R_SetInterruptMode, %function
+ 377              	MOTOR_R_SetInterruptMode:
+ 378              	.LFB6:
+ 533:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 534:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 17
+
+
+ 535:.\Generated_Source\PSoC5/MOTOR_R.c **** #else
+ 536:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 537:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 538:.\Generated_Source\PSoC5/MOTOR_R.c ****     /*******************************************************************************
+ 539:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Function Name: MOTOR_R_WriteCompare1
+ 540:.\Generated_Source\PSoC5/MOTOR_R.c ****     ********************************************************************************
+ 541:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 542:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Summary:
+ 543:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  This funtion is used to change the compare1 value.  The compare output will
+ 544:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  reflect the new value on the next UDB clock.  The compare output will be
+ 545:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  driven high when the present counter value is less than or less than or
+ 546:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  equal to the compare register, depending on the mode.
+ 547:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 548:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Parameters:
+ 549:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  compare:  New compare value.
+ 550:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 551:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Return:
+ 552:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  None
+ 553:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 554:.\Generated_Source\PSoC5/MOTOR_R.c ****     *******************************************************************************/
+ 555:.\Generated_Source\PSoC5/MOTOR_R.c ****     void MOTOR_R_WriteCompare1(uint8 compare) \
+ 556:.\Generated_Source\PSoC5/MOTOR_R.c ****                                         
+ 557:.\Generated_Source\PSoC5/MOTOR_R.c ****     {
+ 558:.\Generated_Source\PSoC5/MOTOR_R.c ****         #if(MOTOR_R_UsingFixedFunction)
+ 559:.\Generated_Source\PSoC5/MOTOR_R.c ****             CY_SET_REG16(MOTOR_R_COMPARE1_LSB_PTR, (uint16)compare);
+ 560:.\Generated_Source\PSoC5/MOTOR_R.c ****         #else
+ 561:.\Generated_Source\PSoC5/MOTOR_R.c ****             CY_SET_REG8(MOTOR_R_COMPARE1_LSB_PTR, compare);
+ 562:.\Generated_Source\PSoC5/MOTOR_R.c ****         #endif /* (MOTOR_R_UsingFixedFunction) */
+ 563:.\Generated_Source\PSoC5/MOTOR_R.c ****     }
+ 564:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 565:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 566:.\Generated_Source\PSoC5/MOTOR_R.c ****     /*******************************************************************************
+ 567:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Function Name: MOTOR_R_WriteCompare2
+ 568:.\Generated_Source\PSoC5/MOTOR_R.c ****     ********************************************************************************
+ 569:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 570:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Summary:
+ 571:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  This funtion is used to change the compare value, for compare1 output.
+ 572:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  The compare output will reflect the new value on the next UDB clock.
+ 573:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  The compare output will be driven high when the present counter value is
+ 574:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  less than or less than or equal to the compare register, depending on the
+ 575:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  mode.
+ 576:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 577:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Parameters:
+ 578:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  compare:  New compare value.
+ 579:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 580:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Return:
+ 581:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  None
+ 582:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 583:.\Generated_Source\PSoC5/MOTOR_R.c ****     *******************************************************************************/
+ 584:.\Generated_Source\PSoC5/MOTOR_R.c ****     void MOTOR_R_WriteCompare2(uint8 compare) \
+ 585:.\Generated_Source\PSoC5/MOTOR_R.c ****                                         
+ 586:.\Generated_Source\PSoC5/MOTOR_R.c ****     {
+ 587:.\Generated_Source\PSoC5/MOTOR_R.c ****         #if(MOTOR_R_UsingFixedFunction)
+ 588:.\Generated_Source\PSoC5/MOTOR_R.c ****             CY_SET_REG16(MOTOR_R_COMPARE2_LSB_PTR, compare);
+ 589:.\Generated_Source\PSoC5/MOTOR_R.c ****         #else
+ 590:.\Generated_Source\PSoC5/MOTOR_R.c ****             CY_SET_REG8(MOTOR_R_COMPARE2_LSB_PTR, compare);
+ 591:.\Generated_Source\PSoC5/MOTOR_R.c ****         #endif /* (MOTOR_R_UsingFixedFunction) */
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 18
+
+
+ 592:.\Generated_Source\PSoC5/MOTOR_R.c ****     }
+ 593:.\Generated_Source\PSoC5/MOTOR_R.c **** #endif /* UseOneCompareMode */
+ 594:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 595:.\Generated_Source\PSoC5/MOTOR_R.c **** #if (MOTOR_R_DeadBandUsed)
+ 596:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 597:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 598:.\Generated_Source\PSoC5/MOTOR_R.c ****     /*******************************************************************************
+ 599:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Function Name: MOTOR_R_WriteDeadTime
+ 600:.\Generated_Source\PSoC5/MOTOR_R.c ****     ********************************************************************************
+ 601:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 602:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Summary:
+ 603:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  This function writes the dead-band counts to the corresponding register
+ 604:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 605:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Parameters:
+ 606:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  deadtime:  Number of counts for dead time
+ 607:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 608:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Return:
+ 609:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  None
+ 610:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 611:.\Generated_Source\PSoC5/MOTOR_R.c ****     *******************************************************************************/
+ 612:.\Generated_Source\PSoC5/MOTOR_R.c ****     void MOTOR_R_WriteDeadTime(uint8 deadtime) 
+ 613:.\Generated_Source\PSoC5/MOTOR_R.c ****     {
+ 614:.\Generated_Source\PSoC5/MOTOR_R.c ****         /* If using the Dead Band 1-255 mode then just write the register */
+ 615:.\Generated_Source\PSoC5/MOTOR_R.c ****         #if(!MOTOR_R_DeadBand2_4)
+ 616:.\Generated_Source\PSoC5/MOTOR_R.c ****             CY_SET_REG8(MOTOR_R_DEADBAND_COUNT_PTR, deadtime);
+ 617:.\Generated_Source\PSoC5/MOTOR_R.c ****         #else
+ 618:.\Generated_Source\PSoC5/MOTOR_R.c ****             /* Otherwise the data has to be masked and offset */
+ 619:.\Generated_Source\PSoC5/MOTOR_R.c ****             /* Clear existing data */
+ 620:.\Generated_Source\PSoC5/MOTOR_R.c ****             MOTOR_R_DEADBAND_COUNT &= ((uint8)(~MOTOR_R_DEADBAND_COUNT_MASK));
+ 621:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 622:.\Generated_Source\PSoC5/MOTOR_R.c ****             /* Set new dead time */
+ 623:.\Generated_Source\PSoC5/MOTOR_R.c ****             #if(MOTOR_R_DEADBAND_COUNT_SHIFT)
+ 624:.\Generated_Source\PSoC5/MOTOR_R.c ****                 MOTOR_R_DEADBAND_COUNT |= ((uint8)((uint8)deadtime << MOTOR_R_DEADBAND_COUNT_SHIFT)
+ 625:.\Generated_Source\PSoC5/MOTOR_R.c ****                                                     MOTOR_R_DEADBAND_COUNT_MASK;
+ 626:.\Generated_Source\PSoC5/MOTOR_R.c ****             #else
+ 627:.\Generated_Source\PSoC5/MOTOR_R.c ****                 MOTOR_R_DEADBAND_COUNT |= deadtime & MOTOR_R_DEADBAND_COUNT_MASK;
+ 628:.\Generated_Source\PSoC5/MOTOR_R.c ****             #endif /* (MOTOR_R_DEADBAND_COUNT_SHIFT) */
+ 629:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 630:.\Generated_Source\PSoC5/MOTOR_R.c ****         #endif /* (!MOTOR_R_DeadBand2_4) */
+ 631:.\Generated_Source\PSoC5/MOTOR_R.c ****     }
+ 632:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 633:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 634:.\Generated_Source\PSoC5/MOTOR_R.c ****     /*******************************************************************************
+ 635:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Function Name: MOTOR_R_ReadDeadTime
+ 636:.\Generated_Source\PSoC5/MOTOR_R.c ****     ********************************************************************************
+ 637:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 638:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Summary:
+ 639:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  This function reads the dead-band counts from the corresponding register
+ 640:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 641:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Parameters:
+ 642:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  None
+ 643:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 644:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Return:
+ 645:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  Dead Band Counts
+ 646:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 647:.\Generated_Source\PSoC5/MOTOR_R.c ****     *******************************************************************************/
+ 648:.\Generated_Source\PSoC5/MOTOR_R.c ****     uint8 MOTOR_R_ReadDeadTime(void) 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 19
+
+
+ 649:.\Generated_Source\PSoC5/MOTOR_R.c ****     {
+ 650:.\Generated_Source\PSoC5/MOTOR_R.c ****         /* If using the Dead Band 1-255 mode then just read the register */
+ 651:.\Generated_Source\PSoC5/MOTOR_R.c ****         #if(!MOTOR_R_DeadBand2_4)
+ 652:.\Generated_Source\PSoC5/MOTOR_R.c ****             return (CY_GET_REG8(MOTOR_R_DEADBAND_COUNT_PTR));
+ 653:.\Generated_Source\PSoC5/MOTOR_R.c ****         #else
+ 654:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 655:.\Generated_Source\PSoC5/MOTOR_R.c ****             /* Otherwise the data has to be masked and offset */
+ 656:.\Generated_Source\PSoC5/MOTOR_R.c ****             #if(MOTOR_R_DEADBAND_COUNT_SHIFT)
+ 657:.\Generated_Source\PSoC5/MOTOR_R.c ****                 return ((uint8)(((uint8)(MOTOR_R_DEADBAND_COUNT & MOTOR_R_DEADBAND_COUNT_MASK)) >>
+ 658:.\Generated_Source\PSoC5/MOTOR_R.c ****                                                                            MOTOR_R_DEADBAND_COUNT_S
+ 659:.\Generated_Source\PSoC5/MOTOR_R.c ****             #else
+ 660:.\Generated_Source\PSoC5/MOTOR_R.c ****                 return (MOTOR_R_DEADBAND_COUNT & MOTOR_R_DEADBAND_COUNT_MASK);
+ 661:.\Generated_Source\PSoC5/MOTOR_R.c ****             #endif /* (MOTOR_R_DEADBAND_COUNT_SHIFT) */
+ 662:.\Generated_Source\PSoC5/MOTOR_R.c ****         #endif /* (!MOTOR_R_DeadBand2_4) */
+ 663:.\Generated_Source\PSoC5/MOTOR_R.c ****     }
+ 664:.\Generated_Source\PSoC5/MOTOR_R.c **** #endif /* DeadBandUsed */
+ 665:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 666:.\Generated_Source\PSoC5/MOTOR_R.c **** #if (MOTOR_R_UseStatus || MOTOR_R_UsingFixedFunction)
+ 667:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 668:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 669:.\Generated_Source\PSoC5/MOTOR_R.c ****     /*******************************************************************************
+ 670:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Function Name: MOTOR_R_SetInterruptMode
+ 671:.\Generated_Source\PSoC5/MOTOR_R.c ****     ********************************************************************************
+ 672:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 673:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Summary:
+ 674:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  This function configures the interrupts mask control of theinterrupt
+ 675:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  source status register.
+ 676:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 677:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Parameters:
+ 678:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  uint8 interruptMode: Bit field containing the interrupt sources enabled
+ 679:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 680:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Return:
+ 681:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  None
+ 682:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 683:.\Generated_Source\PSoC5/MOTOR_R.c ****     *******************************************************************************/
+ 684:.\Generated_Source\PSoC5/MOTOR_R.c ****     void MOTOR_R_SetInterruptMode(uint8 interruptMode) 
+ 685:.\Generated_Source\PSoC5/MOTOR_R.c ****     {
+ 379              		.loc 1 685 0
+ 380              		.cfi_startproc
+ 381              		@ args = 0, pretend = 0, frame = 8
+ 382              		@ frame_needed = 1, uses_anonymous_args = 0
+ 383              		@ link register save eliminated.
+ 384 0000 80B4     		push	{r7}
+ 385              		.cfi_def_cfa_offset 4
+ 386              		.cfi_offset 7, -4
+ 387 0002 83B0     		sub	sp, sp, #12
+ 388              		.cfi_def_cfa_offset 16
+ 389 0004 00AF     		add	r7, sp, #0
+ 390              		.cfi_def_cfa_register 7
+ 391 0006 0346     		mov	r3, r0
+ 392 0008 FB71     		strb	r3, [r7, #7]
+ 686:.\Generated_Source\PSoC5/MOTOR_R.c ****         CY_SET_REG8(MOTOR_R_STATUS_MASK_PTR, interruptMode);
+ 393              		.loc 1 686 0
+ 394 000a 044B     		ldr	r3, .L21
+ 395 000c FA79     		ldrb	r2, [r7, #7]
+ 396 000e 1A70     		strb	r2, [r3]
+ 687:.\Generated_Source\PSoC5/MOTOR_R.c ****     }
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 20
+
+
+ 397              		.loc 1 687 0
+ 398 0010 0C37     		adds	r7, r7, #12
+ 399 0012 BD46     		mov	sp, r7
+ 400              		@ sp needed
+ 401 0014 5DF8047B 		ldr	r7, [sp], #4
+ 402 0018 7047     		bx	lr
+ 403              	.L22:
+ 404 001a 00BF     		.align	2
+ 405              	.L21:
+ 406 001c 274F0040 		.word	1073762087
+ 407              		.cfi_endproc
+ 408              	.LFE6:
+ 409              		.size	MOTOR_R_SetInterruptMode, .-MOTOR_R_SetInterruptMode
+ 410              		.section	.text.MOTOR_R_ReadStatusRegister,"ax",%progbits
+ 411              		.align	2
+ 412              		.global	MOTOR_R_ReadStatusRegister
+ 413              		.thumb
+ 414              		.thumb_func
+ 415              		.type	MOTOR_R_ReadStatusRegister, %function
+ 416              	MOTOR_R_ReadStatusRegister:
+ 417              	.LFB7:
+ 688:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 689:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 690:.\Generated_Source\PSoC5/MOTOR_R.c ****     /*******************************************************************************
+ 691:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Function Name: MOTOR_R_ReadStatusRegister
+ 692:.\Generated_Source\PSoC5/MOTOR_R.c ****     ********************************************************************************
+ 693:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 694:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Summary:
+ 695:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  This function returns the current state of the status register.
+ 696:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 697:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Parameters:
+ 698:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  None
+ 699:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 700:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Return:
+ 701:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  uint8 : Current status register value. The status register bits are:
+ 702:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  [7:6] : Unused(0)
+ 703:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  [5]   : Kill event output
+ 704:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  [4]   : FIFO not empty
+ 705:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  [3]   : FIFO full
+ 706:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  [2]   : Terminal count
+ 707:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  [1]   : Compare output 2
+ 708:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  [0]   : Compare output 1
+ 709:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 710:.\Generated_Source\PSoC5/MOTOR_R.c ****     *******************************************************************************/
+ 711:.\Generated_Source\PSoC5/MOTOR_R.c ****     uint8 MOTOR_R_ReadStatusRegister(void) 
+ 712:.\Generated_Source\PSoC5/MOTOR_R.c ****     {
+ 418              		.loc 1 712 0
+ 419              		.cfi_startproc
+ 420              		@ args = 0, pretend = 0, frame = 0
+ 421              		@ frame_needed = 1, uses_anonymous_args = 0
+ 422              		@ link register save eliminated.
+ 423 0000 80B4     		push	{r7}
+ 424              		.cfi_def_cfa_offset 4
+ 425              		.cfi_offset 7, -4
+ 426 0002 00AF     		add	r7, sp, #0
+ 427              		.cfi_def_cfa_register 7
+ 713:.\Generated_Source\PSoC5/MOTOR_R.c ****         return (CY_GET_REG8(MOTOR_R_STATUS_PTR));
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 21
+
+
+ 428              		.loc 1 713 0
+ 429 0004 034B     		ldr	r3, .L25
+ 430 0006 1B78     		ldrb	r3, [r3]
+ 431 0008 DBB2     		uxtb	r3, r3
+ 714:.\Generated_Source\PSoC5/MOTOR_R.c ****     }
+ 432              		.loc 1 714 0
+ 433 000a 1846     		mov	r0, r3
+ 434 000c BD46     		mov	sp, r7
+ 435              		@ sp needed
+ 436 000e 5DF8047B 		ldr	r7, [sp], #4
+ 437 0012 7047     		bx	lr
+ 438              	.L26:
+ 439              		.align	2
+ 440              	.L25:
+ 441 0014 274F0040 		.word	1073762087
+ 442              		.cfi_endproc
+ 443              	.LFE7:
+ 444              		.size	MOTOR_R_ReadStatusRegister, .-MOTOR_R_ReadStatusRegister
+ 445              		.section	.text.MOTOR_R_ReadControlRegister,"ax",%progbits
+ 446              		.align	2
+ 447              		.global	MOTOR_R_ReadControlRegister
+ 448              		.thumb
+ 449              		.thumb_func
+ 450              		.type	MOTOR_R_ReadControlRegister, %function
+ 451              	MOTOR_R_ReadControlRegister:
+ 452              	.LFB8:
+ 715:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 716:.\Generated_Source\PSoC5/MOTOR_R.c **** #endif /* (MOTOR_R_UseStatus || MOTOR_R_UsingFixedFunction) */
+ 717:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 718:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 719:.\Generated_Source\PSoC5/MOTOR_R.c **** #if (MOTOR_R_UseControl)
+ 720:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 721:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 722:.\Generated_Source\PSoC5/MOTOR_R.c ****     /*******************************************************************************
+ 723:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Function Name: MOTOR_R_ReadControlRegister
+ 724:.\Generated_Source\PSoC5/MOTOR_R.c ****     ********************************************************************************
+ 725:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 726:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Summary:
+ 727:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  Returns the current state of the control register. This API is available
+ 728:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  only if the control register is not removed.
+ 729:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 730:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Parameters:
+ 731:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  None
+ 732:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 733:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Return:
+ 734:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  uint8 : Current control register value
+ 735:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 736:.\Generated_Source\PSoC5/MOTOR_R.c ****     *******************************************************************************/
+ 737:.\Generated_Source\PSoC5/MOTOR_R.c ****     uint8 MOTOR_R_ReadControlRegister(void) 
+ 738:.\Generated_Source\PSoC5/MOTOR_R.c ****     {
+ 453              		.loc 1 738 0
+ 454              		.cfi_startproc
+ 455              		@ args = 0, pretend = 0, frame = 8
+ 456              		@ frame_needed = 1, uses_anonymous_args = 0
+ 457              		@ link register save eliminated.
+ 458 0000 80B4     		push	{r7}
+ 459              		.cfi_def_cfa_offset 4
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 22
+
+
+ 460              		.cfi_offset 7, -4
+ 461 0002 83B0     		sub	sp, sp, #12
+ 462              		.cfi_def_cfa_offset 16
+ 463 0004 00AF     		add	r7, sp, #0
+ 464              		.cfi_def_cfa_register 7
+ 739:.\Generated_Source\PSoC5/MOTOR_R.c ****         uint8 result;
+ 740:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 741:.\Generated_Source\PSoC5/MOTOR_R.c ****         result = CY_GET_REG8(MOTOR_R_CONTROL_PTR);
+ 465              		.loc 1 741 0
+ 466 0006 054B     		ldr	r3, .L29
+ 467 0008 1B78     		ldrb	r3, [r3]
+ 468 000a FB71     		strb	r3, [r7, #7]
+ 742:.\Generated_Source\PSoC5/MOTOR_R.c ****         return (result);
+ 469              		.loc 1 742 0
+ 470 000c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 743:.\Generated_Source\PSoC5/MOTOR_R.c ****     }
+ 471              		.loc 1 743 0
+ 472 000e 1846     		mov	r0, r3
+ 473 0010 0C37     		adds	r7, r7, #12
+ 474 0012 BD46     		mov	sp, r7
+ 475              		@ sp needed
+ 476 0014 5DF8047B 		ldr	r7, [sp], #4
+ 477 0018 7047     		bx	lr
+ 478              	.L30:
+ 479 001a 00BF     		.align	2
+ 480              	.L29:
+ 481 001c 244F0040 		.word	1073762084
+ 482              		.cfi_endproc
+ 483              	.LFE8:
+ 484              		.size	MOTOR_R_ReadControlRegister, .-MOTOR_R_ReadControlRegister
+ 485              		.section	.text.MOTOR_R_WriteControlRegister,"ax",%progbits
+ 486              		.align	2
+ 487              		.global	MOTOR_R_WriteControlRegister
+ 488              		.thumb
+ 489              		.thumb_func
+ 490              		.type	MOTOR_R_WriteControlRegister, %function
+ 491              	MOTOR_R_WriteControlRegister:
+ 492              	.LFB9:
+ 744:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 745:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 746:.\Generated_Source\PSoC5/MOTOR_R.c ****     /*******************************************************************************
+ 747:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Function Name: MOTOR_R_WriteControlRegister
+ 748:.\Generated_Source\PSoC5/MOTOR_R.c ****     ********************************************************************************
+ 749:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 750:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Summary:
+ 751:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  Sets the bit field of the control register. This API is available only if
+ 752:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  the control register is not removed.
+ 753:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 754:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Parameters:
+ 755:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  uint8 control: Control register bit field, The status register bits are:
+ 756:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  [7]   : PWM Enable
+ 757:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  [6]   : Reset
+ 758:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  [5:3] : Compare Mode2
+ 759:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  [2:0] : Compare Mode2
+ 760:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 761:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Return:
+ 762:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  None
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 23
+
+
+ 763:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 764:.\Generated_Source\PSoC5/MOTOR_R.c ****     *******************************************************************************/
+ 765:.\Generated_Source\PSoC5/MOTOR_R.c ****     void MOTOR_R_WriteControlRegister(uint8 control) 
+ 766:.\Generated_Source\PSoC5/MOTOR_R.c ****     {
+ 493              		.loc 1 766 0
+ 494              		.cfi_startproc
+ 495              		@ args = 0, pretend = 0, frame = 8
+ 496              		@ frame_needed = 1, uses_anonymous_args = 0
+ 497              		@ link register save eliminated.
+ 498 0000 80B4     		push	{r7}
+ 499              		.cfi_def_cfa_offset 4
+ 500              		.cfi_offset 7, -4
+ 501 0002 83B0     		sub	sp, sp, #12
+ 502              		.cfi_def_cfa_offset 16
+ 503 0004 00AF     		add	r7, sp, #0
+ 504              		.cfi_def_cfa_register 7
+ 505 0006 0346     		mov	r3, r0
+ 506 0008 FB71     		strb	r3, [r7, #7]
+ 767:.\Generated_Source\PSoC5/MOTOR_R.c ****         CY_SET_REG8(MOTOR_R_CONTROL_PTR, control);
+ 507              		.loc 1 767 0
+ 508 000a 044B     		ldr	r3, .L32
+ 509 000c FA79     		ldrb	r2, [r7, #7]
+ 510 000e 1A70     		strb	r2, [r3]
+ 768:.\Generated_Source\PSoC5/MOTOR_R.c ****     }
+ 511              		.loc 1 768 0
+ 512 0010 0C37     		adds	r7, r7, #12
+ 513 0012 BD46     		mov	sp, r7
+ 514              		@ sp needed
+ 515 0014 5DF8047B 		ldr	r7, [sp], #4
+ 516 0018 7047     		bx	lr
+ 517              	.L33:
+ 518 001a 00BF     		.align	2
+ 519              	.L32:
+ 520 001c 244F0040 		.word	1073762084
+ 521              		.cfi_endproc
+ 522              	.LFE9:
+ 523              		.size	MOTOR_R_WriteControlRegister, .-MOTOR_R_WriteControlRegister
+ 524              		.section	.text.MOTOR_R_ReadCompare,"ax",%progbits
+ 525              		.align	2
+ 526              		.global	MOTOR_R_ReadCompare
+ 527              		.thumb
+ 528              		.thumb_func
+ 529              		.type	MOTOR_R_ReadCompare, %function
+ 530              	MOTOR_R_ReadCompare:
+ 531              	.LFB10:
+ 769:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 770:.\Generated_Source\PSoC5/MOTOR_R.c **** #endif /* (MOTOR_R_UseControl) */
+ 771:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 772:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 773:.\Generated_Source\PSoC5/MOTOR_R.c **** #if (!MOTOR_R_UsingFixedFunction)
+ 774:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 775:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 776:.\Generated_Source\PSoC5/MOTOR_R.c ****     /*******************************************************************************
+ 777:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Function Name: MOTOR_R_ReadCapture
+ 778:.\Generated_Source\PSoC5/MOTOR_R.c ****     ********************************************************************************
+ 779:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 780:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Summary:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 24
+
+
+ 781:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  Reads the capture value from the capture FIFO.
+ 782:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 783:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Parameters:
+ 784:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  None
+ 785:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 786:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Return:
+ 787:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  uint8/uint16: The current capture value
+ 788:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 789:.\Generated_Source\PSoC5/MOTOR_R.c ****     *******************************************************************************/
+ 790:.\Generated_Source\PSoC5/MOTOR_R.c ****     uint8 MOTOR_R_ReadCapture(void) 
+ 791:.\Generated_Source\PSoC5/MOTOR_R.c ****     {
+ 792:.\Generated_Source\PSoC5/MOTOR_R.c ****         return (CY_GET_REG8(MOTOR_R_CAPTURE_LSB_PTR));
+ 793:.\Generated_Source\PSoC5/MOTOR_R.c ****     }
+ 794:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 795:.\Generated_Source\PSoC5/MOTOR_R.c **** #endif /* (!MOTOR_R_UsingFixedFunction) */
+ 796:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 797:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 798:.\Generated_Source\PSoC5/MOTOR_R.c **** #if (MOTOR_R_UseOneCompareMode)
+ 799:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 800:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 801:.\Generated_Source\PSoC5/MOTOR_R.c ****     /*******************************************************************************
+ 802:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Function Name: MOTOR_R_ReadCompare
+ 803:.\Generated_Source\PSoC5/MOTOR_R.c ****     ********************************************************************************
+ 804:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 805:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Summary:
+ 806:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  Reads the compare value for the compare output when the PWM Mode parameter is
+ 807:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  set to Dither mode, Center Aligned mode, or One Output mode.
+ 808:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 809:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Parameters:
+ 810:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  None
+ 811:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 812:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Return:
+ 813:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  uint8/uint16: Current compare value
+ 814:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 815:.\Generated_Source\PSoC5/MOTOR_R.c ****     *******************************************************************************/
+ 816:.\Generated_Source\PSoC5/MOTOR_R.c ****     uint8 MOTOR_R_ReadCompare(void) 
+ 817:.\Generated_Source\PSoC5/MOTOR_R.c ****     {
+ 532              		.loc 1 817 0
+ 533              		.cfi_startproc
+ 534              		@ args = 0, pretend = 0, frame = 0
+ 535              		@ frame_needed = 1, uses_anonymous_args = 0
+ 536              		@ link register save eliminated.
+ 537 0000 80B4     		push	{r7}
+ 538              		.cfi_def_cfa_offset 4
+ 539              		.cfi_offset 7, -4
+ 540 0002 00AF     		add	r7, sp, #0
+ 541              		.cfi_def_cfa_register 7
+ 818:.\Generated_Source\PSoC5/MOTOR_R.c ****         #if(MOTOR_R_UsingFixedFunction)
+ 819:.\Generated_Source\PSoC5/MOTOR_R.c ****             return ((uint8)CY_GET_REG16(MOTOR_R_COMPARE1_LSB_PTR));
+ 542              		.loc 1 819 0
+ 543 0004 044B     		ldr	r3, .L36
+ 544 0006 1B88     		ldrh	r3, [r3]	@ movhi
+ 545 0008 9BB2     		uxth	r3, r3
+ 546 000a DBB2     		uxtb	r3, r3
+ 820:.\Generated_Source\PSoC5/MOTOR_R.c ****         #else
+ 821:.\Generated_Source\PSoC5/MOTOR_R.c ****             return (CY_GET_REG8(MOTOR_R_COMPARE1_LSB_PTR));
+ 822:.\Generated_Source\PSoC5/MOTOR_R.c ****         #endif /* (MOTOR_R_UsingFixedFunction) */
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 25
+
+
+ 823:.\Generated_Source\PSoC5/MOTOR_R.c ****     }
+ 547              		.loc 1 823 0
+ 548 000c 1846     		mov	r0, r3
+ 549 000e BD46     		mov	sp, r7
+ 550              		@ sp needed
+ 551 0010 5DF8047B 		ldr	r7, [sp], #4
+ 552 0014 7047     		bx	lr
+ 553              	.L37:
+ 554 0016 00BF     		.align	2
+ 555              	.L36:
+ 556 0018 2A4F0040 		.word	1073762090
+ 557              		.cfi_endproc
+ 558              	.LFE10:
+ 559              		.size	MOTOR_R_ReadCompare, .-MOTOR_R_ReadCompare
+ 560              		.section	.text.MOTOR_R_ReadPeriod,"ax",%progbits
+ 561              		.align	2
+ 562              		.global	MOTOR_R_ReadPeriod
+ 563              		.thumb
+ 564              		.thumb_func
+ 565              		.type	MOTOR_R_ReadPeriod, %function
+ 566              	MOTOR_R_ReadPeriod:
+ 567              	.LFB11:
+ 824:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 825:.\Generated_Source\PSoC5/MOTOR_R.c **** #else
+ 826:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 827:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 828:.\Generated_Source\PSoC5/MOTOR_R.c ****     /*******************************************************************************
+ 829:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Function Name: MOTOR_R_ReadCompare1
+ 830:.\Generated_Source\PSoC5/MOTOR_R.c ****     ********************************************************************************
+ 831:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 832:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Summary:
+ 833:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  Reads the compare value for the compare1 output.
+ 834:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 835:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Parameters:
+ 836:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  None
+ 837:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 838:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Return:
+ 839:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  uint8/uint16: Current compare value.
+ 840:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 841:.\Generated_Source\PSoC5/MOTOR_R.c ****     *******************************************************************************/
+ 842:.\Generated_Source\PSoC5/MOTOR_R.c ****     uint8 MOTOR_R_ReadCompare1(void) 
+ 843:.\Generated_Source\PSoC5/MOTOR_R.c ****     {
+ 844:.\Generated_Source\PSoC5/MOTOR_R.c ****         return (CY_GET_REG8(MOTOR_R_COMPARE1_LSB_PTR));
+ 845:.\Generated_Source\PSoC5/MOTOR_R.c ****     }
+ 846:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 847:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 848:.\Generated_Source\PSoC5/MOTOR_R.c ****     /*******************************************************************************
+ 849:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Function Name: MOTOR_R_ReadCompare2
+ 850:.\Generated_Source\PSoC5/MOTOR_R.c ****     ********************************************************************************
+ 851:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 852:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Summary:
+ 853:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  Reads the compare value for the compare2 output.
+ 854:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 855:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Parameters:
+ 856:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  None
+ 857:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 858:.\Generated_Source\PSoC5/MOTOR_R.c ****     * Return:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 26
+
+
+ 859:.\Generated_Source\PSoC5/MOTOR_R.c ****     *  uint8/uint16: Current compare value.
+ 860:.\Generated_Source\PSoC5/MOTOR_R.c ****     *
+ 861:.\Generated_Source\PSoC5/MOTOR_R.c ****     *******************************************************************************/
+ 862:.\Generated_Source\PSoC5/MOTOR_R.c ****     uint8 MOTOR_R_ReadCompare2(void) 
+ 863:.\Generated_Source\PSoC5/MOTOR_R.c ****     {
+ 864:.\Generated_Source\PSoC5/MOTOR_R.c ****         return (CY_GET_REG8(MOTOR_R_COMPARE2_LSB_PTR));
+ 865:.\Generated_Source\PSoC5/MOTOR_R.c ****     }
+ 866:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 867:.\Generated_Source\PSoC5/MOTOR_R.c **** #endif /* (MOTOR_R_UseOneCompareMode) */
+ 868:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 869:.\Generated_Source\PSoC5/MOTOR_R.c **** 
+ 870:.\Generated_Source\PSoC5/MOTOR_R.c **** /*******************************************************************************
+ 871:.\Generated_Source\PSoC5/MOTOR_R.c **** * Function Name: MOTOR_R_ReadPeriod
+ 872:.\Generated_Source\PSoC5/MOTOR_R.c **** ********************************************************************************
+ 873:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+ 874:.\Generated_Source\PSoC5/MOTOR_R.c **** * Summary:
+ 875:.\Generated_Source\PSoC5/MOTOR_R.c **** *  Reads the period value used by the PWM hardware.
+ 876:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+ 877:.\Generated_Source\PSoC5/MOTOR_R.c **** * Parameters:
+ 878:.\Generated_Source\PSoC5/MOTOR_R.c **** *  None
+ 879:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+ 880:.\Generated_Source\PSoC5/MOTOR_R.c **** * Return:
+ 881:.\Generated_Source\PSoC5/MOTOR_R.c **** *  uint8/16: Period value
+ 882:.\Generated_Source\PSoC5/MOTOR_R.c **** *
+ 883:.\Generated_Source\PSoC5/MOTOR_R.c **** *******************************************************************************/
+ 884:.\Generated_Source\PSoC5/MOTOR_R.c **** uint8 MOTOR_R_ReadPeriod(void) 
+ 885:.\Generated_Source\PSoC5/MOTOR_R.c **** {
+ 568              		.loc 1 885 0
+ 569              		.cfi_startproc
+ 570              		@ args = 0, pretend = 0, frame = 0
+ 571              		@ frame_needed = 1, uses_anonymous_args = 0
+ 572              		@ link register save eliminated.
+ 573 0000 80B4     		push	{r7}
+ 574              		.cfi_def_cfa_offset 4
+ 575              		.cfi_offset 7, -4
+ 576 0002 00AF     		add	r7, sp, #0
+ 577              		.cfi_def_cfa_register 7
+ 886:.\Generated_Source\PSoC5/MOTOR_R.c ****     #if(MOTOR_R_UsingFixedFunction)
+ 887:.\Generated_Source\PSoC5/MOTOR_R.c ****         return ((uint8)CY_GET_REG16(MOTOR_R_PERIOD_LSB_PTR));
+ 578              		.loc 1 887 0
+ 579 0004 044B     		ldr	r3, .L40
+ 580 0006 1B88     		ldrh	r3, [r3]	@ movhi
+ 581 0008 9BB2     		uxth	r3, r3
+ 582 000a DBB2     		uxtb	r3, r3
+ 888:.\Generated_Source\PSoC5/MOTOR_R.c ****     #else
+ 889:.\Generated_Source\PSoC5/MOTOR_R.c ****         return (CY_GET_REG8(MOTOR_R_PERIOD_LSB_PTR));
+ 890:.\Generated_Source\PSoC5/MOTOR_R.c ****     #endif /* (MOTOR_R_UsingFixedFunction) */
+ 891:.\Generated_Source\PSoC5/MOTOR_R.c **** }
+ 583              		.loc 1 891 0
+ 584 000c 1846     		mov	r0, r3
+ 585 000e BD46     		mov	sp, r7
+ 586              		@ sp needed
+ 587 0010 5DF8047B 		ldr	r7, [sp], #4
+ 588 0014 7047     		bx	lr
+ 589              	.L41:
+ 590 0016 00BF     		.align	2
+ 591              	.L40:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 27
+
+
+ 592 0018 284F0040 		.word	1073762088
+ 593              		.cfi_endproc
+ 594              	.LFE11:
+ 595              		.size	MOTOR_R_ReadPeriod, .-MOTOR_R_ReadPeriod
+ 596              		.text
+ 597              	.Letext0:
+ 598              		.file 2 ".\\Generated_Source\\PSoC5\\cytypes.h"
+ 599              		.section	.debug_info,"",%progbits
+ 600              	.Ldebug_info0:
+ 601 0000 28020000 		.4byte	0x228
+ 602 0004 0400     		.2byte	0x4
+ 603 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 604 000a 04       		.byte	0x4
+ 605 000b 01       		.uleb128 0x1
+ 606 000c CB010000 		.4byte	.LASF34
+ 607 0010 01       		.byte	0x1
+ 608 0011 74000000 		.4byte	.LASF35
+ 609 0015 DF000000 		.4byte	.LASF36
+ 610 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 611 001d 00000000 		.4byte	0
+ 612 0021 00000000 		.4byte	.Ldebug_line0
+ 613 0025 02       		.uleb128 0x2
+ 614 0026 01       		.byte	0x1
+ 615 0027 06       		.byte	0x6
+ 616 0028 C3020000 		.4byte	.LASF0
+ 617 002c 02       		.uleb128 0x2
+ 618 002d 01       		.byte	0x1
+ 619 002e 08       		.byte	0x8
+ 620 002f D1000000 		.4byte	.LASF1
+ 621 0033 02       		.uleb128 0x2
+ 622 0034 02       		.byte	0x2
+ 623 0035 05       		.byte	0x5
+ 624 0036 85020000 		.4byte	.LASF2
+ 625 003a 02       		.uleb128 0x2
+ 626 003b 02       		.byte	0x2
+ 627 003c 07       		.byte	0x7
+ 628 003d 97000000 		.4byte	.LASF3
+ 629 0041 02       		.uleb128 0x2
+ 630 0042 04       		.byte	0x4
+ 631 0043 05       		.byte	0x5
+ 632 0044 9C020000 		.4byte	.LASF4
+ 633 0048 02       		.uleb128 0x2
+ 634 0049 04       		.byte	0x4
+ 635 004a 07       		.byte	0x7
+ 636 004b 3F010000 		.4byte	.LASF5
+ 637 004f 02       		.uleb128 0x2
+ 638 0050 08       		.byte	0x8
+ 639 0051 05       		.byte	0x5
+ 640 0052 55020000 		.4byte	.LASF6
+ 641 0056 02       		.uleb128 0x2
+ 642 0057 08       		.byte	0x8
+ 643 0058 07       		.byte	0x7
+ 644 0059 98010000 		.4byte	.LASF7
+ 645 005d 03       		.uleb128 0x3
+ 646 005e 04       		.byte	0x4
+ 647 005f 05       		.byte	0x5
+ 648 0060 696E7400 		.ascii	"int\000"
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 28
+
+
+ 649 0064 02       		.uleb128 0x2
+ 650 0065 04       		.byte	0x4
+ 651 0066 07       		.byte	0x7
+ 652 0067 8B010000 		.4byte	.LASF8
+ 653 006b 04       		.uleb128 0x4
+ 654 006c 51010000 		.4byte	.LASF9
+ 655 0070 02       		.byte	0x2
+ 656 0071 B3       		.byte	0xb3
+ 657 0072 2C000000 		.4byte	0x2c
+ 658 0076 04       		.uleb128 0x4
+ 659 0077 66010000 		.4byte	.LASF10
+ 660 007b 02       		.byte	0x2
+ 661 007c B4       		.byte	0xb4
+ 662 007d 3A000000 		.4byte	0x3a
+ 663 0081 02       		.uleb128 0x2
+ 664 0082 04       		.byte	0x4
+ 665 0083 04       		.byte	0x4
+ 666 0084 CB000000 		.4byte	.LASF11
+ 667 0088 02       		.uleb128 0x2
+ 668 0089 08       		.byte	0x8
+ 669 008a 04       		.byte	0x4
+ 670 008b 5F010000 		.4byte	.LASF12
+ 671 008f 02       		.uleb128 0x2
+ 672 0090 01       		.byte	0x1
+ 673 0091 08       		.byte	0x8
+ 674 0092 A5020000 		.4byte	.LASF13
+ 675 0096 05       		.uleb128 0x5
+ 676 0097 3A010000 		.4byte	.LASF14
+ 677 009b 02       		.byte	0x2
+ 678 009c 5D01     		.2byte	0x15d
+ 679 009e A2000000 		.4byte	0xa2
+ 680 00a2 06       		.uleb128 0x6
+ 681 00a3 6B000000 		.4byte	0x6b
+ 682 00a7 05       		.uleb128 0x5
+ 683 00a8 00000000 		.4byte	.LASF15
+ 684 00ac 02       		.byte	0x2
+ 685 00ad 5E01     		.2byte	0x15e
+ 686 00af B3000000 		.4byte	0xb3
+ 687 00b3 06       		.uleb128 0x6
+ 688 00b4 76000000 		.4byte	0x76
+ 689 00b8 02       		.uleb128 0x2
+ 690 00b9 04       		.byte	0x4
+ 691 00ba 07       		.byte	0x7
+ 692 00bb 4C020000 		.4byte	.LASF16
+ 693 00bf 07       		.uleb128 0x7
+ 694 00c0 6D010000 		.4byte	.LASF17
+ 695 00c4 01       		.byte	0x1
+ 696 00c5 37       		.byte	0x37
+ 697 00c6 00000000 		.4byte	.LFB0
+ 698 00ca 20000000 		.4byte	.LFE0-.LFB0
+ 699 00ce 01       		.uleb128 0x1
+ 700 00cf 9C       		.byte	0x9c
+ 701 00d0 08       		.uleb128 0x8
+ 702 00d1 8F020000 		.4byte	.LASF20
+ 703 00d5 01       		.byte	0x1
+ 704 00d6 54       		.byte	0x54
+ 705 00d7 00000000 		.4byte	.LFB1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 29
+
+
+ 706 00db BC000000 		.4byte	.LFE1-.LFB1
+ 707 00df 01       		.uleb128 0x1
+ 708 00e0 9C       		.byte	0x9c
+ 709 00e1 F4000000 		.4byte	0xf4
+ 710 00e5 09       		.uleb128 0x9
+ 711 00e6 47020000 		.4byte	.LASF27
+ 712 00ea 01       		.byte	0x1
+ 713 00eb 57       		.byte	0x57
+ 714 00ec 6B000000 		.4byte	0x6b
+ 715 00f0 02       		.uleb128 0x2
+ 716 00f1 91       		.byte	0x91
+ 717 00f2 77       		.sleb128 -9
+ 718 00f3 00       		.byte	0
+ 719 00f4 0A       		.uleb128 0xa
+ 720 00f5 D7020000 		.4byte	.LASF18
+ 721 00f9 01       		.byte	0x1
+ 722 00fa C7       		.byte	0xc7
+ 723 00fb 00000000 		.4byte	.LFB2
+ 724 00ff 48000000 		.4byte	.LFE2-.LFB2
+ 725 0103 01       		.uleb128 0x1
+ 726 0104 9C       		.byte	0x9c
+ 727 0105 0A       		.uleb128 0xa
+ 728 0106 AA000000 		.4byte	.LASF19
+ 729 010a 01       		.byte	0x1
+ 730 010b E9       		.byte	0xe9
+ 731 010c 00000000 		.4byte	.LFB3
+ 732 0110 48000000 		.4byte	.LFE3-.LFB3
+ 733 0114 01       		.uleb128 0x1
+ 734 0115 9C       		.byte	0x9c
+ 735 0116 0B       		.uleb128 0xb
+ 736 0117 71020000 		.4byte	.LASF21
+ 737 011b 01       		.byte	0x1
+ 738 011c E201     		.2byte	0x1e2
+ 739 011e 00000000 		.4byte	.LFB4
+ 740 0122 20000000 		.4byte	.LFE4-.LFB4
+ 741 0126 01       		.uleb128 0x1
+ 742 0127 9C       		.byte	0x9c
+ 743 0128 3C010000 		.4byte	0x13c
+ 744 012c 0C       		.uleb128 0xc
+ 745 012d 6D000000 		.4byte	.LASF23
+ 746 0131 01       		.byte	0x1
+ 747 0132 E201     		.2byte	0x1e2
+ 748 0134 6B000000 		.4byte	0x6b
+ 749 0138 02       		.uleb128 0x2
+ 750 0139 91       		.byte	0x91
+ 751 013a 77       		.sleb128 -9
+ 752 013b 00       		.byte	0
+ 753 013c 0B       		.uleb128 0xb
+ 754 013d AF010000 		.4byte	.LASF22
+ 755 0141 01       		.byte	0x1
+ 756 0142 0402     		.2byte	0x204
+ 757 0144 00000000 		.4byte	.LFB5
+ 758 0148 20000000 		.4byte	.LFE5-.LFB5
+ 759 014c 01       		.uleb128 0x1
+ 760 014d 9C       		.byte	0x9c
+ 761 014e 62010000 		.4byte	0x162
+ 762 0152 0C       		.uleb128 0xc
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 30
+
+
+ 763 0153 CF020000 		.4byte	.LASF24
+ 764 0157 01       		.byte	0x1
+ 765 0158 0402     		.2byte	0x204
+ 766 015a 6B000000 		.4byte	0x6b
+ 767 015e 02       		.uleb128 0x2
+ 768 015f 91       		.byte	0x91
+ 769 0160 77       		.sleb128 -9
+ 770 0161 00       		.byte	0
+ 771 0162 0B       		.uleb128 0xb
+ 772 0163 AA020000 		.4byte	.LASF25
+ 773 0167 01       		.byte	0x1
+ 774 0168 AC02     		.2byte	0x2ac
+ 775 016a 00000000 		.4byte	.LFB6
+ 776 016e 20000000 		.4byte	.LFE6-.LFB6
+ 777 0172 01       		.uleb128 0x1
+ 778 0173 9C       		.byte	0x9c
+ 779 0174 88010000 		.4byte	0x188
+ 780 0178 0C       		.uleb128 0xc
+ 781 0179 63020000 		.4byte	.LASF26
+ 782 017d 01       		.byte	0x1
+ 783 017e AC02     		.2byte	0x2ac
+ 784 0180 6B000000 		.4byte	0x6b
+ 785 0184 02       		.uleb128 0x2
+ 786 0185 91       		.byte	0x91
+ 787 0186 77       		.sleb128 -9
+ 788 0187 00       		.byte	0
+ 789 0188 0D       		.uleb128 0xd
+ 790 0189 22000000 		.4byte	.LASF31
+ 791 018d 01       		.byte	0x1
+ 792 018e C702     		.2byte	0x2c7
+ 793 0190 6B000000 		.4byte	0x6b
+ 794 0194 00000000 		.4byte	.LFB7
+ 795 0198 18000000 		.4byte	.LFE7-.LFB7
+ 796 019c 01       		.uleb128 0x1
+ 797 019d 9C       		.byte	0x9c
+ 798 019e 0E       		.uleb128 0xe
+ 799 019f 06000000 		.4byte	.LASF37
+ 800 01a3 01       		.byte	0x1
+ 801 01a4 E102     		.2byte	0x2e1
+ 802 01a6 6B000000 		.4byte	0x6b
+ 803 01aa 00000000 		.4byte	.LFB8
+ 804 01ae 20000000 		.4byte	.LFE8-.LFB8
+ 805 01b2 01       		.uleb128 0x1
+ 806 01b3 9C       		.byte	0x9c
+ 807 01b4 C8010000 		.4byte	0x1c8
+ 808 01b8 0F       		.uleb128 0xf
+ 809 01b9 C4010000 		.4byte	.LASF28
+ 810 01bd 01       		.byte	0x1
+ 811 01be E302     		.2byte	0x2e3
+ 812 01c0 6B000000 		.4byte	0x6b
+ 813 01c4 02       		.uleb128 0x2
+ 814 01c5 91       		.byte	0x91
+ 815 01c6 77       		.sleb128 -9
+ 816 01c7 00       		.byte	0
+ 817 01c8 0B       		.uleb128 0xb
+ 818 01c9 50000000 		.4byte	.LASF29
+ 819 01cd 01       		.byte	0x1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 31
+
+
+ 820 01ce FD02     		.2byte	0x2fd
+ 821 01d0 00000000 		.4byte	.LFB9
+ 822 01d4 20000000 		.4byte	.LFE9-.LFB9
+ 823 01d8 01       		.uleb128 0x1
+ 824 01d9 9C       		.byte	0x9c
+ 825 01da EE010000 		.4byte	0x1ee
+ 826 01de 0C       		.uleb128 0xc
+ 827 01df 57010000 		.4byte	.LASF30
+ 828 01e3 01       		.byte	0x1
+ 829 01e4 FD02     		.2byte	0x2fd
+ 830 01e6 6B000000 		.4byte	0x6b
+ 831 01ea 02       		.uleb128 0x2
+ 832 01eb 91       		.byte	0x91
+ 833 01ec 77       		.sleb128 -9
+ 834 01ed 00       		.byte	0
+ 835 01ee 0D       		.uleb128 0xd
+ 836 01ef B7000000 		.4byte	.LASF32
+ 837 01f3 01       		.byte	0x1
+ 838 01f4 3003     		.2byte	0x330
+ 839 01f6 6B000000 		.4byte	0x6b
+ 840 01fa 00000000 		.4byte	.LFB10
+ 841 01fe 1C000000 		.4byte	.LFE10-.LFB10
+ 842 0202 01       		.uleb128 0x1
+ 843 0203 9C       		.byte	0x9c
+ 844 0204 0D       		.uleb128 0xd
+ 845 0205 3D000000 		.4byte	.LASF33
+ 846 0209 01       		.byte	0x1
+ 847 020a 7403     		.2byte	0x374
+ 848 020c 6B000000 		.4byte	0x6b
+ 849 0210 00000000 		.4byte	.LFB11
+ 850 0214 1C000000 		.4byte	.LFE11-.LFB11
+ 851 0218 01       		.uleb128 0x1
+ 852 0219 9C       		.byte	0x9c
+ 853 021a 10       		.uleb128 0x10
+ 854 021b 7B010000 		.4byte	.LASF38
+ 855 021f 01       		.byte	0x1
+ 856 0220 20       		.byte	0x20
+ 857 0221 6B000000 		.4byte	0x6b
+ 858 0225 05       		.uleb128 0x5
+ 859 0226 03       		.byte	0x3
+ 860 0227 00000000 		.4byte	MOTOR_R_initVar
+ 861 022b 00       		.byte	0
+ 862              		.section	.debug_abbrev,"",%progbits
+ 863              	.Ldebug_abbrev0:
+ 864 0000 01       		.uleb128 0x1
+ 865 0001 11       		.uleb128 0x11
+ 866 0002 01       		.byte	0x1
+ 867 0003 25       		.uleb128 0x25
+ 868 0004 0E       		.uleb128 0xe
+ 869 0005 13       		.uleb128 0x13
+ 870 0006 0B       		.uleb128 0xb
+ 871 0007 03       		.uleb128 0x3
+ 872 0008 0E       		.uleb128 0xe
+ 873 0009 1B       		.uleb128 0x1b
+ 874 000a 0E       		.uleb128 0xe
+ 875 000b 55       		.uleb128 0x55
+ 876 000c 17       		.uleb128 0x17
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 32
+
+
+ 877 000d 11       		.uleb128 0x11
+ 878 000e 01       		.uleb128 0x1
+ 879 000f 10       		.uleb128 0x10
+ 880 0010 17       		.uleb128 0x17
+ 881 0011 00       		.byte	0
+ 882 0012 00       		.byte	0
+ 883 0013 02       		.uleb128 0x2
+ 884 0014 24       		.uleb128 0x24
+ 885 0015 00       		.byte	0
+ 886 0016 0B       		.uleb128 0xb
+ 887 0017 0B       		.uleb128 0xb
+ 888 0018 3E       		.uleb128 0x3e
+ 889 0019 0B       		.uleb128 0xb
+ 890 001a 03       		.uleb128 0x3
+ 891 001b 0E       		.uleb128 0xe
+ 892 001c 00       		.byte	0
+ 893 001d 00       		.byte	0
+ 894 001e 03       		.uleb128 0x3
+ 895 001f 24       		.uleb128 0x24
+ 896 0020 00       		.byte	0
+ 897 0021 0B       		.uleb128 0xb
+ 898 0022 0B       		.uleb128 0xb
+ 899 0023 3E       		.uleb128 0x3e
+ 900 0024 0B       		.uleb128 0xb
+ 901 0025 03       		.uleb128 0x3
+ 902 0026 08       		.uleb128 0x8
+ 903 0027 00       		.byte	0
+ 904 0028 00       		.byte	0
+ 905 0029 04       		.uleb128 0x4
+ 906 002a 16       		.uleb128 0x16
+ 907 002b 00       		.byte	0
+ 908 002c 03       		.uleb128 0x3
+ 909 002d 0E       		.uleb128 0xe
+ 910 002e 3A       		.uleb128 0x3a
+ 911 002f 0B       		.uleb128 0xb
+ 912 0030 3B       		.uleb128 0x3b
+ 913 0031 0B       		.uleb128 0xb
+ 914 0032 49       		.uleb128 0x49
+ 915 0033 13       		.uleb128 0x13
+ 916 0034 00       		.byte	0
+ 917 0035 00       		.byte	0
+ 918 0036 05       		.uleb128 0x5
+ 919 0037 16       		.uleb128 0x16
+ 920 0038 00       		.byte	0
+ 921 0039 03       		.uleb128 0x3
+ 922 003a 0E       		.uleb128 0xe
+ 923 003b 3A       		.uleb128 0x3a
+ 924 003c 0B       		.uleb128 0xb
+ 925 003d 3B       		.uleb128 0x3b
+ 926 003e 05       		.uleb128 0x5
+ 927 003f 49       		.uleb128 0x49
+ 928 0040 13       		.uleb128 0x13
+ 929 0041 00       		.byte	0
+ 930 0042 00       		.byte	0
+ 931 0043 06       		.uleb128 0x6
+ 932 0044 35       		.uleb128 0x35
+ 933 0045 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 33
+
+
+ 934 0046 49       		.uleb128 0x49
+ 935 0047 13       		.uleb128 0x13
+ 936 0048 00       		.byte	0
+ 937 0049 00       		.byte	0
+ 938 004a 07       		.uleb128 0x7
+ 939 004b 2E       		.uleb128 0x2e
+ 940 004c 00       		.byte	0
+ 941 004d 3F       		.uleb128 0x3f
+ 942 004e 19       		.uleb128 0x19
+ 943 004f 03       		.uleb128 0x3
+ 944 0050 0E       		.uleb128 0xe
+ 945 0051 3A       		.uleb128 0x3a
+ 946 0052 0B       		.uleb128 0xb
+ 947 0053 3B       		.uleb128 0x3b
+ 948 0054 0B       		.uleb128 0xb
+ 949 0055 27       		.uleb128 0x27
+ 950 0056 19       		.uleb128 0x19
+ 951 0057 11       		.uleb128 0x11
+ 952 0058 01       		.uleb128 0x1
+ 953 0059 12       		.uleb128 0x12
+ 954 005a 06       		.uleb128 0x6
+ 955 005b 40       		.uleb128 0x40
+ 956 005c 18       		.uleb128 0x18
+ 957 005d 9642     		.uleb128 0x2116
+ 958 005f 19       		.uleb128 0x19
+ 959 0060 00       		.byte	0
+ 960 0061 00       		.byte	0
+ 961 0062 08       		.uleb128 0x8
+ 962 0063 2E       		.uleb128 0x2e
+ 963 0064 01       		.byte	0x1
+ 964 0065 3F       		.uleb128 0x3f
+ 965 0066 19       		.uleb128 0x19
+ 966 0067 03       		.uleb128 0x3
+ 967 0068 0E       		.uleb128 0xe
+ 968 0069 3A       		.uleb128 0x3a
+ 969 006a 0B       		.uleb128 0xb
+ 970 006b 3B       		.uleb128 0x3b
+ 971 006c 0B       		.uleb128 0xb
+ 972 006d 27       		.uleb128 0x27
+ 973 006e 19       		.uleb128 0x19
+ 974 006f 11       		.uleb128 0x11
+ 975 0070 01       		.uleb128 0x1
+ 976 0071 12       		.uleb128 0x12
+ 977 0072 06       		.uleb128 0x6
+ 978 0073 40       		.uleb128 0x40
+ 979 0074 18       		.uleb128 0x18
+ 980 0075 9642     		.uleb128 0x2116
+ 981 0077 19       		.uleb128 0x19
+ 982 0078 01       		.uleb128 0x1
+ 983 0079 13       		.uleb128 0x13
+ 984 007a 00       		.byte	0
+ 985 007b 00       		.byte	0
+ 986 007c 09       		.uleb128 0x9
+ 987 007d 34       		.uleb128 0x34
+ 988 007e 00       		.byte	0
+ 989 007f 03       		.uleb128 0x3
+ 990 0080 0E       		.uleb128 0xe
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 34
+
+
+ 991 0081 3A       		.uleb128 0x3a
+ 992 0082 0B       		.uleb128 0xb
+ 993 0083 3B       		.uleb128 0x3b
+ 994 0084 0B       		.uleb128 0xb
+ 995 0085 49       		.uleb128 0x49
+ 996 0086 13       		.uleb128 0x13
+ 997 0087 02       		.uleb128 0x2
+ 998 0088 18       		.uleb128 0x18
+ 999 0089 00       		.byte	0
+ 1000 008a 00       		.byte	0
+ 1001 008b 0A       		.uleb128 0xa
+ 1002 008c 2E       		.uleb128 0x2e
+ 1003 008d 00       		.byte	0
+ 1004 008e 3F       		.uleb128 0x3f
+ 1005 008f 19       		.uleb128 0x19
+ 1006 0090 03       		.uleb128 0x3
+ 1007 0091 0E       		.uleb128 0xe
+ 1008 0092 3A       		.uleb128 0x3a
+ 1009 0093 0B       		.uleb128 0xb
+ 1010 0094 3B       		.uleb128 0x3b
+ 1011 0095 0B       		.uleb128 0xb
+ 1012 0096 27       		.uleb128 0x27
+ 1013 0097 19       		.uleb128 0x19
+ 1014 0098 11       		.uleb128 0x11
+ 1015 0099 01       		.uleb128 0x1
+ 1016 009a 12       		.uleb128 0x12
+ 1017 009b 06       		.uleb128 0x6
+ 1018 009c 40       		.uleb128 0x40
+ 1019 009d 18       		.uleb128 0x18
+ 1020 009e 9742     		.uleb128 0x2117
+ 1021 00a0 19       		.uleb128 0x19
+ 1022 00a1 00       		.byte	0
+ 1023 00a2 00       		.byte	0
+ 1024 00a3 0B       		.uleb128 0xb
+ 1025 00a4 2E       		.uleb128 0x2e
+ 1026 00a5 01       		.byte	0x1
+ 1027 00a6 3F       		.uleb128 0x3f
+ 1028 00a7 19       		.uleb128 0x19
+ 1029 00a8 03       		.uleb128 0x3
+ 1030 00a9 0E       		.uleb128 0xe
+ 1031 00aa 3A       		.uleb128 0x3a
+ 1032 00ab 0B       		.uleb128 0xb
+ 1033 00ac 3B       		.uleb128 0x3b
+ 1034 00ad 05       		.uleb128 0x5
+ 1035 00ae 27       		.uleb128 0x27
+ 1036 00af 19       		.uleb128 0x19
+ 1037 00b0 11       		.uleb128 0x11
+ 1038 00b1 01       		.uleb128 0x1
+ 1039 00b2 12       		.uleb128 0x12
+ 1040 00b3 06       		.uleb128 0x6
+ 1041 00b4 40       		.uleb128 0x40
+ 1042 00b5 18       		.uleb128 0x18
+ 1043 00b6 9742     		.uleb128 0x2117
+ 1044 00b8 19       		.uleb128 0x19
+ 1045 00b9 01       		.uleb128 0x1
+ 1046 00ba 13       		.uleb128 0x13
+ 1047 00bb 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 35
+
+
+ 1048 00bc 00       		.byte	0
+ 1049 00bd 0C       		.uleb128 0xc
+ 1050 00be 05       		.uleb128 0x5
+ 1051 00bf 00       		.byte	0
+ 1052 00c0 03       		.uleb128 0x3
+ 1053 00c1 0E       		.uleb128 0xe
+ 1054 00c2 3A       		.uleb128 0x3a
+ 1055 00c3 0B       		.uleb128 0xb
+ 1056 00c4 3B       		.uleb128 0x3b
+ 1057 00c5 05       		.uleb128 0x5
+ 1058 00c6 49       		.uleb128 0x49
+ 1059 00c7 13       		.uleb128 0x13
+ 1060 00c8 02       		.uleb128 0x2
+ 1061 00c9 18       		.uleb128 0x18
+ 1062 00ca 00       		.byte	0
+ 1063 00cb 00       		.byte	0
+ 1064 00cc 0D       		.uleb128 0xd
+ 1065 00cd 2E       		.uleb128 0x2e
+ 1066 00ce 00       		.byte	0
+ 1067 00cf 3F       		.uleb128 0x3f
+ 1068 00d0 19       		.uleb128 0x19
+ 1069 00d1 03       		.uleb128 0x3
+ 1070 00d2 0E       		.uleb128 0xe
+ 1071 00d3 3A       		.uleb128 0x3a
+ 1072 00d4 0B       		.uleb128 0xb
+ 1073 00d5 3B       		.uleb128 0x3b
+ 1074 00d6 05       		.uleb128 0x5
+ 1075 00d7 27       		.uleb128 0x27
+ 1076 00d8 19       		.uleb128 0x19
+ 1077 00d9 49       		.uleb128 0x49
+ 1078 00da 13       		.uleb128 0x13
+ 1079 00db 11       		.uleb128 0x11
+ 1080 00dc 01       		.uleb128 0x1
+ 1081 00dd 12       		.uleb128 0x12
+ 1082 00de 06       		.uleb128 0x6
+ 1083 00df 40       		.uleb128 0x40
+ 1084 00e0 18       		.uleb128 0x18
+ 1085 00e1 9742     		.uleb128 0x2117
+ 1086 00e3 19       		.uleb128 0x19
+ 1087 00e4 00       		.byte	0
+ 1088 00e5 00       		.byte	0
+ 1089 00e6 0E       		.uleb128 0xe
+ 1090 00e7 2E       		.uleb128 0x2e
+ 1091 00e8 01       		.byte	0x1
+ 1092 00e9 3F       		.uleb128 0x3f
+ 1093 00ea 19       		.uleb128 0x19
+ 1094 00eb 03       		.uleb128 0x3
+ 1095 00ec 0E       		.uleb128 0xe
+ 1096 00ed 3A       		.uleb128 0x3a
+ 1097 00ee 0B       		.uleb128 0xb
+ 1098 00ef 3B       		.uleb128 0x3b
+ 1099 00f0 05       		.uleb128 0x5
+ 1100 00f1 27       		.uleb128 0x27
+ 1101 00f2 19       		.uleb128 0x19
+ 1102 00f3 49       		.uleb128 0x49
+ 1103 00f4 13       		.uleb128 0x13
+ 1104 00f5 11       		.uleb128 0x11
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 36
+
+
+ 1105 00f6 01       		.uleb128 0x1
+ 1106 00f7 12       		.uleb128 0x12
+ 1107 00f8 06       		.uleb128 0x6
+ 1108 00f9 40       		.uleb128 0x40
+ 1109 00fa 18       		.uleb128 0x18
+ 1110 00fb 9742     		.uleb128 0x2117
+ 1111 00fd 19       		.uleb128 0x19
+ 1112 00fe 01       		.uleb128 0x1
+ 1113 00ff 13       		.uleb128 0x13
+ 1114 0100 00       		.byte	0
+ 1115 0101 00       		.byte	0
+ 1116 0102 0F       		.uleb128 0xf
+ 1117 0103 34       		.uleb128 0x34
+ 1118 0104 00       		.byte	0
+ 1119 0105 03       		.uleb128 0x3
+ 1120 0106 0E       		.uleb128 0xe
+ 1121 0107 3A       		.uleb128 0x3a
+ 1122 0108 0B       		.uleb128 0xb
+ 1123 0109 3B       		.uleb128 0x3b
+ 1124 010a 05       		.uleb128 0x5
+ 1125 010b 49       		.uleb128 0x49
+ 1126 010c 13       		.uleb128 0x13
+ 1127 010d 02       		.uleb128 0x2
+ 1128 010e 18       		.uleb128 0x18
+ 1129 010f 00       		.byte	0
+ 1130 0110 00       		.byte	0
+ 1131 0111 10       		.uleb128 0x10
+ 1132 0112 34       		.uleb128 0x34
+ 1133 0113 00       		.byte	0
+ 1134 0114 03       		.uleb128 0x3
+ 1135 0115 0E       		.uleb128 0xe
+ 1136 0116 3A       		.uleb128 0x3a
+ 1137 0117 0B       		.uleb128 0xb
+ 1138 0118 3B       		.uleb128 0x3b
+ 1139 0119 0B       		.uleb128 0xb
+ 1140 011a 49       		.uleb128 0x49
+ 1141 011b 13       		.uleb128 0x13
+ 1142 011c 3F       		.uleb128 0x3f
+ 1143 011d 19       		.uleb128 0x19
+ 1144 011e 02       		.uleb128 0x2
+ 1145 011f 18       		.uleb128 0x18
+ 1146 0120 00       		.byte	0
+ 1147 0121 00       		.byte	0
+ 1148 0122 00       		.byte	0
+ 1149              		.section	.debug_aranges,"",%progbits
+ 1150 0000 74000000 		.4byte	0x74
+ 1151 0004 0200     		.2byte	0x2
+ 1152 0006 00000000 		.4byte	.Ldebug_info0
+ 1153 000a 04       		.byte	0x4
+ 1154 000b 00       		.byte	0
+ 1155 000c 0000     		.2byte	0
+ 1156 000e 0000     		.2byte	0
+ 1157 0010 00000000 		.4byte	.LFB0
+ 1158 0014 20000000 		.4byte	.LFE0-.LFB0
+ 1159 0018 00000000 		.4byte	.LFB1
+ 1160 001c BC000000 		.4byte	.LFE1-.LFB1
+ 1161 0020 00000000 		.4byte	.LFB2
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 37
+
+
+ 1162 0024 48000000 		.4byte	.LFE2-.LFB2
+ 1163 0028 00000000 		.4byte	.LFB3
+ 1164 002c 48000000 		.4byte	.LFE3-.LFB3
+ 1165 0030 00000000 		.4byte	.LFB4
+ 1166 0034 20000000 		.4byte	.LFE4-.LFB4
+ 1167 0038 00000000 		.4byte	.LFB5
+ 1168 003c 20000000 		.4byte	.LFE5-.LFB5
+ 1169 0040 00000000 		.4byte	.LFB6
+ 1170 0044 20000000 		.4byte	.LFE6-.LFB6
+ 1171 0048 00000000 		.4byte	.LFB7
+ 1172 004c 18000000 		.4byte	.LFE7-.LFB7
+ 1173 0050 00000000 		.4byte	.LFB8
+ 1174 0054 20000000 		.4byte	.LFE8-.LFB8
+ 1175 0058 00000000 		.4byte	.LFB9
+ 1176 005c 20000000 		.4byte	.LFE9-.LFB9
+ 1177 0060 00000000 		.4byte	.LFB10
+ 1178 0064 1C000000 		.4byte	.LFE10-.LFB10
+ 1179 0068 00000000 		.4byte	.LFB11
+ 1180 006c 1C000000 		.4byte	.LFE11-.LFB11
+ 1181 0070 00000000 		.4byte	0
+ 1182 0074 00000000 		.4byte	0
+ 1183              		.section	.debug_ranges,"",%progbits
+ 1184              	.Ldebug_ranges0:
+ 1185 0000 00000000 		.4byte	.LFB0
+ 1186 0004 20000000 		.4byte	.LFE0
+ 1187 0008 00000000 		.4byte	.LFB1
+ 1188 000c BC000000 		.4byte	.LFE1
+ 1189 0010 00000000 		.4byte	.LFB2
+ 1190 0014 48000000 		.4byte	.LFE2
+ 1191 0018 00000000 		.4byte	.LFB3
+ 1192 001c 48000000 		.4byte	.LFE3
+ 1193 0020 00000000 		.4byte	.LFB4
+ 1194 0024 20000000 		.4byte	.LFE4
+ 1195 0028 00000000 		.4byte	.LFB5
+ 1196 002c 20000000 		.4byte	.LFE5
+ 1197 0030 00000000 		.4byte	.LFB6
+ 1198 0034 20000000 		.4byte	.LFE6
+ 1199 0038 00000000 		.4byte	.LFB7
+ 1200 003c 18000000 		.4byte	.LFE7
+ 1201 0040 00000000 		.4byte	.LFB8
+ 1202 0044 20000000 		.4byte	.LFE8
+ 1203 0048 00000000 		.4byte	.LFB9
+ 1204 004c 20000000 		.4byte	.LFE9
+ 1205 0050 00000000 		.4byte	.LFB10
+ 1206 0054 1C000000 		.4byte	.LFE10
+ 1207 0058 00000000 		.4byte	.LFB11
+ 1208 005c 1C000000 		.4byte	.LFE11
+ 1209 0060 00000000 		.4byte	0
+ 1210 0064 00000000 		.4byte	0
+ 1211              		.section	.debug_line,"",%progbits
+ 1212              	.Ldebug_line0:
+ 1213 0000 40010000 		.section	.debug_str,"MS",%progbits,1
+ 1213      02004600 
+ 1213      00000201 
+ 1213      FB0E0D00 
+ 1213      01010101 
+ 1214              	.LASF15:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 38
+
+
+ 1215 0000 72656731 		.ascii	"reg16\000"
+ 1215      3600
+ 1216              	.LASF37:
+ 1217 0006 4D4F544F 		.ascii	"MOTOR_R_ReadControlRegister\000"
+ 1217      525F525F 
+ 1217      52656164 
+ 1217      436F6E74 
+ 1217      726F6C52 
+ 1218              	.LASF31:
+ 1219 0022 4D4F544F 		.ascii	"MOTOR_R_ReadStatusRegister\000"
+ 1219      525F525F 
+ 1219      52656164 
+ 1219      53746174 
+ 1219      75735265 
+ 1220              	.LASF33:
+ 1221 003d 4D4F544F 		.ascii	"MOTOR_R_ReadPeriod\000"
+ 1221      525F525F 
+ 1221      52656164 
+ 1221      50657269 
+ 1221      6F6400
+ 1222              	.LASF29:
+ 1223 0050 4D4F544F 		.ascii	"MOTOR_R_WriteControlRegister\000"
+ 1223      525F525F 
+ 1223      57726974 
+ 1223      65436F6E 
+ 1223      74726F6C 
+ 1224              	.LASF23:
+ 1225 006d 70657269 		.ascii	"period\000"
+ 1225      6F6400
+ 1226              	.LASF35:
+ 1227 0074 2E5C4765 		.ascii	".\\Generated_Source\\PSoC5\\MOTOR_R.c\000"
+ 1227      6E657261 
+ 1227      7465645F 
+ 1227      536F7572 
+ 1227      63655C50 
+ 1228              	.LASF3:
+ 1229 0097 73686F72 		.ascii	"short unsigned int\000"
+ 1229      7420756E 
+ 1229      7369676E 
+ 1229      65642069 
+ 1229      6E7400
+ 1230              	.LASF19:
+ 1231 00aa 4D4F544F 		.ascii	"MOTOR_R_Stop\000"
+ 1231      525F525F 
+ 1231      53746F70 
+ 1231      00
+ 1232              	.LASF32:
+ 1233 00b7 4D4F544F 		.ascii	"MOTOR_R_ReadCompare\000"
+ 1233      525F525F 
+ 1233      52656164 
+ 1233      436F6D70 
+ 1233      61726500 
+ 1234              	.LASF11:
+ 1235 00cb 666C6F61 		.ascii	"float\000"
+ 1235      7400
+ 1236              	.LASF1:
+ 1237 00d1 756E7369 		.ascii	"unsigned char\000"
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 39
+
+
+ 1237      676E6564 
+ 1237      20636861 
+ 1237      7200
+ 1238              	.LASF36:
+ 1239 00df 433A5C55 		.ascii	"C:\\Users\\xavieran\\Desktop\\ECE3091\\WorkingCamer"
+ 1239      73657273 
+ 1239      5C786176 
+ 1239      69657261 
+ 1239      6E5C4465 
+ 1240 010d 615C576F 		.ascii	"a\\Working-Camera-And-Other\\camera_test.cydsn\000"
+ 1240      726B696E 
+ 1240      672D4361 
+ 1240      6D657261 
+ 1240      2D416E64 
+ 1241              	.LASF14:
+ 1242 013a 72656738 		.ascii	"reg8\000"
+ 1242      00
+ 1243              	.LASF5:
+ 1244 013f 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1244      20756E73 
+ 1244      69676E65 
+ 1244      6420696E 
+ 1244      7400
+ 1245              	.LASF9:
+ 1246 0151 75696E74 		.ascii	"uint8\000"
+ 1246      3800
+ 1247              	.LASF30:
+ 1248 0157 636F6E74 		.ascii	"control\000"
+ 1248      726F6C00 
+ 1249              	.LASF12:
+ 1250 015f 646F7562 		.ascii	"double\000"
+ 1250      6C6500
+ 1251              	.LASF10:
+ 1252 0166 75696E74 		.ascii	"uint16\000"
+ 1252      313600
+ 1253              	.LASF17:
+ 1254 016d 4D4F544F 		.ascii	"MOTOR_R_Start\000"
+ 1254      525F525F 
+ 1254      53746172 
+ 1254      7400
+ 1255              	.LASF38:
+ 1256 017b 4D4F544F 		.ascii	"MOTOR_R_initVar\000"
+ 1256      525F525F 
+ 1256      696E6974 
+ 1256      56617200 
+ 1257              	.LASF8:
+ 1258 018b 756E7369 		.ascii	"unsigned int\000"
+ 1258      676E6564 
+ 1258      20696E74 
+ 1258      00
+ 1259              	.LASF7:
+ 1260 0198 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1260      206C6F6E 
+ 1260      6720756E 
+ 1260      7369676E 
+ 1260      65642069 
+ 1261              	.LASF22:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 40
+
+
+ 1262 01af 4D4F544F 		.ascii	"MOTOR_R_WriteCompare\000"
+ 1262      525F525F 
+ 1262      57726974 
+ 1262      65436F6D 
+ 1262      70617265 
+ 1263              	.LASF28:
+ 1264 01c4 72657375 		.ascii	"result\000"
+ 1264      6C7400
+ 1265              	.LASF34:
+ 1266 01cb 474E5520 		.ascii	"GNU C 4.8.4 20140526 (release) [ARM/embedded-4_8-br"
+ 1266      4320342E 
+ 1266      382E3420 
+ 1266      32303134 
+ 1266      30353236 
+ 1267 01fe 616E6368 		.ascii	"anch revision 211358] -mcpu=cortex-m3 -mthumb -g -O"
+ 1267      20726576 
+ 1267      6973696F 
+ 1267      6E203231 
+ 1267      31333538 
+ 1268 0231 30202D66 		.ascii	"0 -ffunction-sections\000"
+ 1268      66756E63 
+ 1268      74696F6E 
+ 1268      2D736563 
+ 1268      74696F6E 
+ 1269              	.LASF27:
+ 1270 0247 6374726C 		.ascii	"ctrl\000"
+ 1270      00
+ 1271              	.LASF16:
+ 1272 024c 73697A65 		.ascii	"sizetype\000"
+ 1272      74797065 
+ 1272      00
+ 1273              	.LASF6:
+ 1274 0255 6C6F6E67 		.ascii	"long long int\000"
+ 1274      206C6F6E 
+ 1274      6720696E 
+ 1274      7400
+ 1275              	.LASF26:
+ 1276 0263 696E7465 		.ascii	"interruptMode\000"
+ 1276      72727570 
+ 1276      744D6F64 
+ 1276      6500
+ 1277              	.LASF21:
+ 1278 0271 4D4F544F 		.ascii	"MOTOR_R_WritePeriod\000"
+ 1278      525F525F 
+ 1278      57726974 
+ 1278      65506572 
+ 1278      696F6400 
+ 1279              	.LASF2:
+ 1280 0285 73686F72 		.ascii	"short int\000"
+ 1280      7420696E 
+ 1280      7400
+ 1281              	.LASF20:
+ 1282 028f 4D4F544F 		.ascii	"MOTOR_R_Init\000"
+ 1282      525F525F 
+ 1282      496E6974 
+ 1282      00
+ 1283              	.LASF4:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccWR5U2u.s 			page 41
+
+
+ 1284 029c 6C6F6E67 		.ascii	"long int\000"
+ 1284      20696E74 
+ 1284      00
+ 1285              	.LASF13:
+ 1286 02a5 63686172 		.ascii	"char\000"
+ 1286      00
+ 1287              	.LASF25:
+ 1288 02aa 4D4F544F 		.ascii	"MOTOR_R_SetInterruptMode\000"
+ 1288      525F525F 
+ 1288      53657449 
+ 1288      6E746572 
+ 1288      72757074 
+ 1289              	.LASF0:
+ 1290 02c3 7369676E 		.ascii	"signed char\000"
+ 1290      65642063 
+ 1290      68617200 
+ 1291              	.LASF24:
+ 1292 02cf 636F6D70 		.ascii	"compare\000"
+ 1292      61726500 
+ 1293              	.LASF18:
+ 1294 02d7 4D4F544F 		.ascii	"MOTOR_R_Enable\000"
+ 1294      525F525F 
+ 1294      456E6162 
+ 1294      6C6500
+ 1295              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.8.4 20140526 (release) [ARM/embedded-4_8-br
