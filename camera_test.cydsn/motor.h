@@ -28,11 +28,10 @@
     #define MEND_S_ROTATING 1
     #define MEND_S_DRIVING 2
     
-    #define STALL_SPEED 60
+    #define STALL_SPEED 80
     #define MAX_SPEED 150
-    #define HEADING_ERROR_LIMIT 5 //degrees
+    #define HEADING_ERROR_LIMIT 3 //degrees
     #define LEFT_MOTOR_SPEED_CORRECTION 0 //attempt to correct for unmatched motors
-    #define MOTOR_FORWARD_ERROR_LIMIT 100
     
     void start_motors(void);
     void stop_driving();
@@ -47,10 +46,10 @@
     void rotate_degrees(int16 angle);
     void rotate_left(int speed);
     void rotate_right(int speed);
-    void go_forward(int32 distance);
-    void go_backward(int32 distance);
-    void setHeading(int16 new_heading);
-    void setDistance(int32 distance);
+    void go_forward(uint32 time, uint8 speed);
+    void go_backward(uint32 time, uint8 speed);
+    void go_backward_ultra(uint16 ultra_dist, uint8 speed);
+    void set_heading(int16 new_heading);
     void setRightRotate();
     void setLeftRotate();
     void setSpeed(uint8 motor, uint8 speed);

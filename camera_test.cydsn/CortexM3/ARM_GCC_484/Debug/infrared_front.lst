@@ -1,0 +1,908 @@
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccLBwuGc.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"infrared_front.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.comm	Camera_framebuffer,50688,4
+  19              		.comm	pulse_length_arr,6,4
+  20              		.comm	max,2,2
+  21              		.comm	arr_i,4,4
+  22              		.comm	pulse_length_front,2,2
+  23              		.section	.text.ir_front_isr,"ax",%progbits
+  24              		.align	2
+  25              		.global	ir_front_isr
+  26              		.thumb
+  27              		.thumb_func
+  28              		.type	ir_front_isr, %function
+  29              	ir_front_isr:
+  30              	.LFB63:
+  31              		.file 1 ".\\infrared_front.c"
+   1:.\infrared_front.c **** /* ========================================
+   2:.\infrared_front.c ****  *
+   3:.\infrared_front.c ****  * Copyright YOUR COMPANY, THE YEAR
+   4:.\infrared_front.c ****  * All Rights Reserved
+   5:.\infrared_front.c ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:.\infrared_front.c ****  *
+   7:.\infrared_front.c ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:.\infrared_front.c ****  * WHICH IS THE PROPERTY OF your company.
+   9:.\infrared_front.c ****  *
+  10:.\infrared_front.c ****  * ========================================
+  11:.\infrared_front.c **** */
+  12:.\infrared_front.c **** 
+  13:.\infrared_front.c **** #include <project.h>
+  14:.\infrared_front.c **** 
+  15:.\infrared_front.c **** volatile uint16 pulse_length_arr[3], max;
+  16:.\infrared_front.c **** volatile int arr_i;
+  17:.\infrared_front.c **** volatile uint16 pulse_length_front;
+  18:.\infrared_front.c **** 
+  19:.\infrared_front.c **** CY_ISR(ir_front_isr){
+  32              		.loc 1 19 0
+  33              		.cfi_startproc
+  34              		@ args = 0, pretend = 0, frame = 8
+  35              		@ frame_needed = 1, uses_anonymous_args = 0
+  36 0000 80B5     		push	{r7, lr}
+  37              		.cfi_def_cfa_offset 8
+  38              		.cfi_offset 7, -8
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccLBwuGc.s 			page 2
+
+
+  39              		.cfi_offset 14, -4
+  40 0002 82B0     		sub	sp, sp, #8
+  41              		.cfi_def_cfa_offset 16
+  42 0004 00AF     		add	r7, sp, #0
+  43              		.cfi_def_cfa_register 7
+  20:.\infrared_front.c ****     pulse_length_front = (65535 - IR_FRONT_Timer_ReadCounter()) / 100;
+  44              		.loc 1 20 0
+  45 0006 FFF7FEFF 		bl	IR_FRONT_Timer_ReadCounter
+  46 000a 0346     		mov	r3, r0
+  47 000c C3F57F43 		rsb	r3, r3, #65280
+  48 0010 FF33     		adds	r3, r3, #255
+  49 0012 234A     		ldr	r2, .L5
+  50 0014 82FB0302 		smull	r0, r2, r2, r3
+  51 0018 5211     		asrs	r2, r2, #5
+  52 001a DB17     		asrs	r3, r3, #31
+  53 001c D31A     		subs	r3, r2, r3
+  54 001e 9AB2     		uxth	r2, r3
+  55 0020 204B     		ldr	r3, .L5+4
+  56 0022 1A80     		strh	r2, [r3]	@ movhi
+  21:.\infrared_front.c ****     pulse_length_arr[arr_i] = pulse_length_front;
+  57              		.loc 1 21 0
+  58 0024 204B     		ldr	r3, .L5+8
+  59 0026 1A68     		ldr	r2, [r3]
+  60 0028 1E4B     		ldr	r3, .L5+4
+  61 002a 1B88     		ldrh	r3, [r3]	@ movhi
+  62 002c 99B2     		uxth	r1, r3
+  63 002e 1F4B     		ldr	r3, .L5+12
+  64 0030 23F81210 		strh	r1, [r3, r2, lsl #1]	@ movhi
+  22:.\infrared_front.c ****     arr_i = (arr_i + 1) % 3;
+  65              		.loc 1 22 0
+  66 0034 1C4B     		ldr	r3, .L5+8
+  67 0036 1B68     		ldr	r3, [r3]
+  68 0038 591C     		adds	r1, r3, #1
+  69 003a 1D4B     		ldr	r3, .L5+16
+  70 003c 83FB0102 		smull	r0, r2, r3, r1
+  71 0040 CB17     		asrs	r3, r1, #31
+  72 0042 D21A     		subs	r2, r2, r3
+  73 0044 1346     		mov	r3, r2
+  74 0046 5B00     		lsls	r3, r3, #1
+  75 0048 1344     		add	r3, r3, r2
+  76 004a CA1A     		subs	r2, r1, r3
+  77 004c 164B     		ldr	r3, .L5+8
+  78 004e 1A60     		str	r2, [r3]
+  23:.\infrared_front.c ****     
+  24:.\infrared_front.c ****     int i;
+  25:.\infrared_front.c ****     max = 0;
+  79              		.loc 1 25 0
+  80 0050 184B     		ldr	r3, .L5+20
+  81 0052 0022     		movs	r2, #0
+  82 0054 1A80     		strh	r2, [r3]	@ movhi
+  26:.\infrared_front.c ****     for(i = 0; i < 3; i++)
+  83              		.loc 1 26 0
+  84 0056 0023     		movs	r3, #0
+  85 0058 7B60     		str	r3, [r7, #4]
+  86 005a 13E0     		b	.L2
+  87              	.L4:
+  27:.\infrared_front.c ****     {
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccLBwuGc.s 			page 3
+
+
+  28:.\infrared_front.c ****         if(pulse_length_arr[i] > max)
+  88              		.loc 1 28 0
+  89 005c 134B     		ldr	r3, .L5+12
+  90 005e 7A68     		ldr	r2, [r7, #4]
+  91 0060 33F81230 		ldrh	r3, [r3, r2, lsl #1]	@ movhi
+  92 0064 9AB2     		uxth	r2, r3
+  93 0066 134B     		ldr	r3, .L5+20
+  94 0068 1B88     		ldrh	r3, [r3]	@ movhi
+  95 006a 9BB2     		uxth	r3, r3
+  96 006c 9A42     		cmp	r2, r3
+  97 006e 06D9     		bls	.L3
+  29:.\infrared_front.c ****         {
+  30:.\infrared_front.c ****             max = pulse_length_arr[i];
+  98              		.loc 1 30 0
+  99 0070 0E4B     		ldr	r3, .L5+12
+ 100 0072 7A68     		ldr	r2, [r7, #4]
+ 101 0074 33F81230 		ldrh	r3, [r3, r2, lsl #1]	@ movhi
+ 102 0078 9AB2     		uxth	r2, r3
+ 103 007a 0E4B     		ldr	r3, .L5+20
+ 104 007c 1A80     		strh	r2, [r3]	@ movhi
+ 105              	.L3:
+  26:.\infrared_front.c ****     for(i = 0; i < 3; i++)
+ 106              		.loc 1 26 0
+ 107 007e 7B68     		ldr	r3, [r7, #4]
+ 108 0080 0133     		adds	r3, r3, #1
+ 109 0082 7B60     		str	r3, [r7, #4]
+ 110              	.L2:
+  26:.\infrared_front.c ****     for(i = 0; i < 3; i++)
+ 111              		.loc 1 26 0 is_stmt 0 discriminator 1
+ 112 0084 7B68     		ldr	r3, [r7, #4]
+ 113 0086 022B     		cmp	r3, #2
+ 114 0088 E8DD     		ble	.L4
+  31:.\infrared_front.c ****         }
+  32:.\infrared_front.c ****     }
+  33:.\infrared_front.c ****     
+  34:.\infrared_front.c ****     pulse_length_front = max;
+ 115              		.loc 1 34 0 is_stmt 1
+ 116 008a 0A4B     		ldr	r3, .L5+20
+ 117 008c 1B88     		ldrh	r3, [r3]	@ movhi
+ 118 008e 9AB2     		uxth	r2, r3
+ 119 0090 044B     		ldr	r3, .L5+4
+ 120 0092 1A80     		strh	r2, [r3]	@ movhi
+  35:.\infrared_front.c ****     
+  36:.\infrared_front.c ****     IR_FRONT_DONE_ClearPending();
+ 121              		.loc 1 36 0
+ 122 0094 FFF7FEFF 		bl	IR_FRONT_DONE_ClearPending
+  37:.\infrared_front.c **** }
+ 123              		.loc 1 37 0
+ 124 0098 0837     		adds	r7, r7, #8
+ 125 009a BD46     		mov	sp, r7
+ 126              		@ sp needed
+ 127 009c 80BD     		pop	{r7, pc}
+ 128              	.L6:
+ 129 009e 00BF     		.align	2
+ 130              	.L5:
+ 131 00a0 1F85EB51 		.word	1374389535
+ 132 00a4 00000000 		.word	pulse_length_front
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccLBwuGc.s 			page 4
+
+
+ 133 00a8 00000000 		.word	arr_i
+ 134 00ac 00000000 		.word	pulse_length_arr
+ 135 00b0 56555555 		.word	1431655766
+ 136 00b4 00000000 		.word	max
+ 137              		.cfi_endproc
+ 138              	.LFE63:
+ 139              		.size	ir_front_isr, .-ir_front_isr
+ 140              		.section	.text.get_front_ir,"ax",%progbits
+ 141              		.align	2
+ 142              		.global	get_front_ir
+ 143              		.thumb
+ 144              		.thumb_func
+ 145              		.type	get_front_ir, %function
+ 146              	get_front_ir:
+ 147              	.LFB64:
+  38:.\infrared_front.c **** 
+  39:.\infrared_front.c **** uint16 get_front_ir(){
+ 148              		.loc 1 39 0
+ 149              		.cfi_startproc
+ 150              		@ args = 0, pretend = 0, frame = 0
+ 151              		@ frame_needed = 1, uses_anonymous_args = 0
+ 152              		@ link register save eliminated.
+ 153 0000 80B4     		push	{r7}
+ 154              		.cfi_def_cfa_offset 4
+ 155              		.cfi_offset 7, -4
+ 156 0002 00AF     		add	r7, sp, #0
+ 157              		.cfi_def_cfa_register 7
+  40:.\infrared_front.c ****     return pulse_length_front;
+ 158              		.loc 1 40 0
+ 159 0004 034B     		ldr	r3, .L9
+ 160 0006 1B88     		ldrh	r3, [r3]	@ movhi
+ 161 0008 9BB2     		uxth	r3, r3
+  41:.\infrared_front.c **** }
+ 162              		.loc 1 41 0
+ 163 000a 1846     		mov	r0, r3
+ 164 000c BD46     		mov	sp, r7
+ 165              		@ sp needed
+ 166 000e 5DF8047B 		ldr	r7, [sp], #4
+ 167 0012 7047     		bx	lr
+ 168              	.L10:
+ 169              		.align	2
+ 170              	.L9:
+ 171 0014 00000000 		.word	pulse_length_front
+ 172              		.cfi_endproc
+ 173              	.LFE64:
+ 174              		.size	get_front_ir, .-get_front_ir
+ 175              		.section	.text.start_infrared_front,"ax",%progbits
+ 176              		.align	2
+ 177              		.global	start_infrared_front
+ 178              		.thumb
+ 179              		.thumb_func
+ 180              		.type	start_infrared_front, %function
+ 181              	start_infrared_front:
+ 182              	.LFB65:
+  42:.\infrared_front.c **** 
+  43:.\infrared_front.c **** void start_infrared_front(){
+ 183              		.loc 1 43 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccLBwuGc.s 			page 5
+
+
+ 184              		.cfi_startproc
+ 185              		@ args = 0, pretend = 0, frame = 0
+ 186              		@ frame_needed = 1, uses_anonymous_args = 0
+ 187 0000 80B5     		push	{r7, lr}
+ 188              		.cfi_def_cfa_offset 8
+ 189              		.cfi_offset 7, -8
+ 190              		.cfi_offset 14, -4
+ 191 0002 00AF     		add	r7, sp, #0
+ 192              		.cfi_def_cfa_register 7
+  44:.\infrared_front.c ****     IR_FRONT_PWM_Start();
+ 193              		.loc 1 44 0
+ 194 0004 FFF7FEFF 		bl	IR_FRONT_PWM_Start
+  45:.\infrared_front.c ****     IR_FRONT_Timer_Start();
+ 195              		.loc 1 45 0
+ 196 0008 FFF7FEFF 		bl	IR_FRONT_Timer_Start
+  46:.\infrared_front.c ****     IR_FRONT_DONE_StartEx(ir_front_isr);
+ 197              		.loc 1 46 0
+ 198 000c 0148     		ldr	r0, .L12
+ 199 000e FFF7FEFF 		bl	IR_FRONT_DONE_StartEx
+  47:.\infrared_front.c **** }
+ 200              		.loc 1 47 0
+ 201 0012 80BD     		pop	{r7, pc}
+ 202              	.L13:
+ 203              		.align	2
+ 204              	.L12:
+ 205 0014 00000000 		.word	ir_front_isr
+ 206              		.cfi_endproc
+ 207              	.LFE65:
+ 208              		.size	start_infrared_front, .-start_infrared_front
+ 209              		.text
+ 210              	.Letext0:
+ 211              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 212              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 213              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 214              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 215              		.file 6 "Generated_Source\\PSoC5/Camera.h"
+ 216              		.section	.debug_info,"",%progbits
+ 217              	.Ldebug_info0:
+ 218 0000 99010000 		.4byte	0x199
+ 219 0004 0400     		.2byte	0x4
+ 220 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 221 000a 04       		.byte	0x4
+ 222 000b 01       		.uleb128 0x1
+ 223 000c 30010000 		.4byte	.LASF22
+ 224 0010 01       		.byte	0x1
+ 225 0011 DD000000 		.4byte	.LASF23
+ 226 0015 4F000000 		.4byte	.LASF24
+ 227 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 228 001d 00000000 		.4byte	0
+ 229 0021 00000000 		.4byte	.Ldebug_line0
+ 230 0025 02       		.uleb128 0x2
+ 231 0026 01       		.byte	0x1
+ 232 0027 06       		.byte	0x6
+ 233 0028 09020000 		.4byte	.LASF0
+ 234 002c 02       		.uleb128 0x2
+ 235 002d 01       		.byte	0x1
+ 236 002e 08       		.byte	0x8
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccLBwuGc.s 			page 6
+
+
+ 237 002f 41000000 		.4byte	.LASF1
+ 238 0033 02       		.uleb128 0x2
+ 239 0034 02       		.byte	0x2
+ 240 0035 05       		.byte	0x5
+ 241 0036 E3010000 		.4byte	.LASF2
+ 242 003a 02       		.uleb128 0x2
+ 243 003b 02       		.byte	0x2
+ 244 003c 07       		.byte	0x7
+ 245 003d AB000000 		.4byte	.LASF3
+ 246 0041 03       		.uleb128 0x3
+ 247 0042 11000000 		.4byte	.LASF9
+ 248 0046 02       		.byte	0x2
+ 249 0047 37       		.byte	0x37
+ 250 0048 4C000000 		.4byte	0x4c
+ 251 004c 02       		.uleb128 0x2
+ 252 004d 04       		.byte	0x4
+ 253 004e 05       		.byte	0x5
+ 254 004f F3010000 		.4byte	.LASF4
+ 255 0053 02       		.uleb128 0x2
+ 256 0054 04       		.byte	0x4
+ 257 0055 07       		.byte	0x7
+ 258 0056 CB000000 		.4byte	.LASF5
+ 259 005a 02       		.uleb128 0x2
+ 260 005b 08       		.byte	0x8
+ 261 005c 05       		.byte	0x5
+ 262 005d BD010000 		.4byte	.LASF6
+ 263 0061 02       		.uleb128 0x2
+ 264 0062 08       		.byte	0x8
+ 265 0063 07       		.byte	0x7
+ 266 0064 19010000 		.4byte	.LASF7
+ 267 0068 04       		.uleb128 0x4
+ 268 0069 04       		.byte	0x4
+ 269 006a 05       		.byte	0x5
+ 270 006b 696E7400 		.ascii	"int\000"
+ 271 006f 02       		.uleb128 0x2
+ 272 0070 04       		.byte	0x4
+ 273 0071 07       		.byte	0x7
+ 274 0072 0C010000 		.4byte	.LASF8
+ 275 0076 03       		.uleb128 0x3
+ 276 0077 AC010000 		.4byte	.LASF10
+ 277 007b 03       		.byte	0x3
+ 278 007c 41       		.byte	0x41
+ 279 007d 41000000 		.4byte	0x41
+ 280 0081 03       		.uleb128 0x3
+ 281 0082 ED010000 		.4byte	.LASF11
+ 282 0086 04       		.byte	0x4
+ 283 0087 B3       		.byte	0xb3
+ 284 0088 2C000000 		.4byte	0x2c
+ 285 008c 03       		.uleb128 0x3
+ 286 008d F0000000 		.4byte	.LASF12
+ 287 0091 04       		.byte	0x4
+ 288 0092 B4       		.byte	0xb4
+ 289 0093 3A000000 		.4byte	0x3a
+ 290 0097 02       		.uleb128 0x2
+ 291 0098 04       		.byte	0x4
+ 292 0099 04       		.byte	0x4
+ 293 009a 3B000000 		.4byte	.LASF13
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccLBwuGc.s 			page 7
+
+
+ 294 009e 02       		.uleb128 0x2
+ 295 009f 08       		.byte	0x8
+ 296 00a0 04       		.byte	0x4
+ 297 00a1 1B000000 		.4byte	.LASF14
+ 298 00a5 02       		.uleb128 0x2
+ 299 00a6 01       		.byte	0x1
+ 300 00a7 08       		.byte	0x8
+ 301 00a8 CB010000 		.4byte	.LASF15
+ 302 00ac 05       		.uleb128 0x5
+ 303 00ad 8C000000 		.4byte	0x8c
+ 304 00b1 02       		.uleb128 0x2
+ 305 00b2 04       		.byte	0x4
+ 306 00b3 07       		.byte	0x7
+ 307 00b4 B4010000 		.4byte	.LASF16
+ 308 00b8 06       		.uleb128 0x6
+ 309 00b9 9E000000 		.4byte	.LASF25
+ 310 00bd 01       		.byte	0x1
+ 311 00be 13       		.byte	0x13
+ 312 00bf 00000000 		.4byte	.LFB63
+ 313 00c3 B8000000 		.4byte	.LFE63-.LFB63
+ 314 00c7 01       		.uleb128 0x1
+ 315 00c8 9C       		.byte	0x9c
+ 316 00c9 DA000000 		.4byte	0xda
+ 317 00cd 07       		.uleb128 0x7
+ 318 00ce 6900     		.ascii	"i\000"
+ 319 00d0 01       		.byte	0x1
+ 320 00d1 18       		.byte	0x18
+ 321 00d2 68000000 		.4byte	0x68
+ 322 00d6 02       		.uleb128 0x2
+ 323 00d7 91       		.byte	0x91
+ 324 00d8 74       		.sleb128 -12
+ 325 00d9 00       		.byte	0
+ 326 00da 08       		.uleb128 0x8
+ 327 00db FC010000 		.4byte	.LASF26
+ 328 00df 01       		.byte	0x1
+ 329 00e0 27       		.byte	0x27
+ 330 00e1 8C000000 		.4byte	0x8c
+ 331 00e5 00000000 		.4byte	.LFB64
+ 332 00e9 18000000 		.4byte	.LFE64-.LFB64
+ 333 00ed 01       		.uleb128 0x1
+ 334 00ee 9C       		.byte	0x9c
+ 335 00ef 09       		.uleb128 0x9
+ 336 00f0 F7000000 		.4byte	.LASF27
+ 337 00f4 01       		.byte	0x1
+ 338 00f5 2B       		.byte	0x2b
+ 339 00f6 00000000 		.4byte	.LFB65
+ 340 00fa 18000000 		.4byte	.LFE65-.LFB65
+ 341 00fe 01       		.uleb128 0x1
+ 342 00ff 9C       		.byte	0x9c
+ 343 0100 0A       		.uleb128 0xa
+ 344 0101 BE000000 		.4byte	.LASF17
+ 345 0105 05       		.byte	0x5
+ 346 0106 2A06     		.2byte	0x62a
+ 347 0108 0C010000 		.4byte	0x10c
+ 348 010c 05       		.uleb128 0x5
+ 349 010d 76000000 		.4byte	0x76
+ 350 0111 0B       		.uleb128 0xb
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccLBwuGc.s 			page 8
+
+
+ 351 0112 81000000 		.4byte	0x81
+ 352 0116 2D010000 		.4byte	0x12d
+ 353 011a 0C       		.uleb128 0xc
+ 354 011b B1000000 		.4byte	0xb1
+ 355 011f 8F       		.byte	0x8f
+ 356 0120 0C       		.uleb128 0xc
+ 357 0121 B1000000 		.4byte	0xb1
+ 358 0125 57       		.byte	0x57
+ 359 0126 0C       		.uleb128 0xc
+ 360 0127 B1000000 		.4byte	0xb1
+ 361 012b 03       		.byte	0x3
+ 362 012c 00       		.byte	0
+ 363 012d 0D       		.uleb128 0xd
+ 364 012e 28000000 		.4byte	.LASF18
+ 365 0132 06       		.byte	0x6
+ 366 0133 08       		.byte	0x8
+ 367 0134 11010000 		.4byte	0x111
+ 368 0138 05       		.uleb128 0x5
+ 369 0139 03       		.byte	0x3
+ 370 013a 00000000 		.4byte	Camera_framebuffer
+ 371 013e 0B       		.uleb128 0xb
+ 372 013f 8C000000 		.4byte	0x8c
+ 373 0143 4E010000 		.4byte	0x14e
+ 374 0147 0C       		.uleb128 0xc
+ 375 0148 B1000000 		.4byte	0xb1
+ 376 014c 02       		.byte	0x2
+ 377 014d 00       		.byte	0
+ 378 014e 0D       		.uleb128 0xd
+ 379 014f 00000000 		.4byte	.LASF19
+ 380 0153 01       		.byte	0x1
+ 381 0154 0F       		.byte	0xf
+ 382 0155 5F010000 		.4byte	0x15f
+ 383 0159 05       		.uleb128 0x5
+ 384 015a 03       		.byte	0x3
+ 385 015b 00000000 		.4byte	pulse_length_arr
+ 386 015f 05       		.uleb128 0x5
+ 387 0160 3E010000 		.4byte	0x13e
+ 388 0164 0E       		.uleb128 0xe
+ 389 0165 6D617800 		.ascii	"max\000"
+ 390 0169 01       		.byte	0x1
+ 391 016a 0F       		.byte	0xf
+ 392 016b AC000000 		.4byte	0xac
+ 393 016f 05       		.uleb128 0x5
+ 394 0170 03       		.byte	0x3
+ 395 0171 00000000 		.4byte	max
+ 396 0175 0D       		.uleb128 0xd
+ 397 0176 22000000 		.4byte	.LASF20
+ 398 017a 01       		.byte	0x1
+ 399 017b 10       		.byte	0x10
+ 400 017c 86010000 		.4byte	0x186
+ 401 0180 05       		.uleb128 0x5
+ 402 0181 03       		.byte	0x3
+ 403 0182 00000000 		.4byte	arr_i
+ 404 0186 05       		.uleb128 0x5
+ 405 0187 68000000 		.4byte	0x68
+ 406 018b 0D       		.uleb128 0xd
+ 407 018c D0010000 		.4byte	.LASF21
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccLBwuGc.s 			page 9
+
+
+ 408 0190 01       		.byte	0x1
+ 409 0191 11       		.byte	0x11
+ 410 0192 AC000000 		.4byte	0xac
+ 411 0196 05       		.uleb128 0x5
+ 412 0197 03       		.byte	0x3
+ 413 0198 00000000 		.4byte	pulse_length_front
+ 414 019c 00       		.byte	0
+ 415              		.section	.debug_abbrev,"",%progbits
+ 416              	.Ldebug_abbrev0:
+ 417 0000 01       		.uleb128 0x1
+ 418 0001 11       		.uleb128 0x11
+ 419 0002 01       		.byte	0x1
+ 420 0003 25       		.uleb128 0x25
+ 421 0004 0E       		.uleb128 0xe
+ 422 0005 13       		.uleb128 0x13
+ 423 0006 0B       		.uleb128 0xb
+ 424 0007 03       		.uleb128 0x3
+ 425 0008 0E       		.uleb128 0xe
+ 426 0009 1B       		.uleb128 0x1b
+ 427 000a 0E       		.uleb128 0xe
+ 428 000b 55       		.uleb128 0x55
+ 429 000c 17       		.uleb128 0x17
+ 430 000d 11       		.uleb128 0x11
+ 431 000e 01       		.uleb128 0x1
+ 432 000f 10       		.uleb128 0x10
+ 433 0010 17       		.uleb128 0x17
+ 434 0011 00       		.byte	0
+ 435 0012 00       		.byte	0
+ 436 0013 02       		.uleb128 0x2
+ 437 0014 24       		.uleb128 0x24
+ 438 0015 00       		.byte	0
+ 439 0016 0B       		.uleb128 0xb
+ 440 0017 0B       		.uleb128 0xb
+ 441 0018 3E       		.uleb128 0x3e
+ 442 0019 0B       		.uleb128 0xb
+ 443 001a 03       		.uleb128 0x3
+ 444 001b 0E       		.uleb128 0xe
+ 445 001c 00       		.byte	0
+ 446 001d 00       		.byte	0
+ 447 001e 03       		.uleb128 0x3
+ 448 001f 16       		.uleb128 0x16
+ 449 0020 00       		.byte	0
+ 450 0021 03       		.uleb128 0x3
+ 451 0022 0E       		.uleb128 0xe
+ 452 0023 3A       		.uleb128 0x3a
+ 453 0024 0B       		.uleb128 0xb
+ 454 0025 3B       		.uleb128 0x3b
+ 455 0026 0B       		.uleb128 0xb
+ 456 0027 49       		.uleb128 0x49
+ 457 0028 13       		.uleb128 0x13
+ 458 0029 00       		.byte	0
+ 459 002a 00       		.byte	0
+ 460 002b 04       		.uleb128 0x4
+ 461 002c 24       		.uleb128 0x24
+ 462 002d 00       		.byte	0
+ 463 002e 0B       		.uleb128 0xb
+ 464 002f 0B       		.uleb128 0xb
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccLBwuGc.s 			page 10
+
+
+ 465 0030 3E       		.uleb128 0x3e
+ 466 0031 0B       		.uleb128 0xb
+ 467 0032 03       		.uleb128 0x3
+ 468 0033 08       		.uleb128 0x8
+ 469 0034 00       		.byte	0
+ 470 0035 00       		.byte	0
+ 471 0036 05       		.uleb128 0x5
+ 472 0037 35       		.uleb128 0x35
+ 473 0038 00       		.byte	0
+ 474 0039 49       		.uleb128 0x49
+ 475 003a 13       		.uleb128 0x13
+ 476 003b 00       		.byte	0
+ 477 003c 00       		.byte	0
+ 478 003d 06       		.uleb128 0x6
+ 479 003e 2E       		.uleb128 0x2e
+ 480 003f 01       		.byte	0x1
+ 481 0040 3F       		.uleb128 0x3f
+ 482 0041 19       		.uleb128 0x19
+ 483 0042 03       		.uleb128 0x3
+ 484 0043 0E       		.uleb128 0xe
+ 485 0044 3A       		.uleb128 0x3a
+ 486 0045 0B       		.uleb128 0xb
+ 487 0046 3B       		.uleb128 0x3b
+ 488 0047 0B       		.uleb128 0xb
+ 489 0048 27       		.uleb128 0x27
+ 490 0049 19       		.uleb128 0x19
+ 491 004a 11       		.uleb128 0x11
+ 492 004b 01       		.uleb128 0x1
+ 493 004c 12       		.uleb128 0x12
+ 494 004d 06       		.uleb128 0x6
+ 495 004e 40       		.uleb128 0x40
+ 496 004f 18       		.uleb128 0x18
+ 497 0050 9642     		.uleb128 0x2116
+ 498 0052 19       		.uleb128 0x19
+ 499 0053 01       		.uleb128 0x1
+ 500 0054 13       		.uleb128 0x13
+ 501 0055 00       		.byte	0
+ 502 0056 00       		.byte	0
+ 503 0057 07       		.uleb128 0x7
+ 504 0058 34       		.uleb128 0x34
+ 505 0059 00       		.byte	0
+ 506 005a 03       		.uleb128 0x3
+ 507 005b 08       		.uleb128 0x8
+ 508 005c 3A       		.uleb128 0x3a
+ 509 005d 0B       		.uleb128 0xb
+ 510 005e 3B       		.uleb128 0x3b
+ 511 005f 0B       		.uleb128 0xb
+ 512 0060 49       		.uleb128 0x49
+ 513 0061 13       		.uleb128 0x13
+ 514 0062 02       		.uleb128 0x2
+ 515 0063 18       		.uleb128 0x18
+ 516 0064 00       		.byte	0
+ 517 0065 00       		.byte	0
+ 518 0066 08       		.uleb128 0x8
+ 519 0067 2E       		.uleb128 0x2e
+ 520 0068 00       		.byte	0
+ 521 0069 3F       		.uleb128 0x3f
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccLBwuGc.s 			page 11
+
+
+ 522 006a 19       		.uleb128 0x19
+ 523 006b 03       		.uleb128 0x3
+ 524 006c 0E       		.uleb128 0xe
+ 525 006d 3A       		.uleb128 0x3a
+ 526 006e 0B       		.uleb128 0xb
+ 527 006f 3B       		.uleb128 0x3b
+ 528 0070 0B       		.uleb128 0xb
+ 529 0071 49       		.uleb128 0x49
+ 530 0072 13       		.uleb128 0x13
+ 531 0073 11       		.uleb128 0x11
+ 532 0074 01       		.uleb128 0x1
+ 533 0075 12       		.uleb128 0x12
+ 534 0076 06       		.uleb128 0x6
+ 535 0077 40       		.uleb128 0x40
+ 536 0078 18       		.uleb128 0x18
+ 537 0079 9742     		.uleb128 0x2117
+ 538 007b 19       		.uleb128 0x19
+ 539 007c 00       		.byte	0
+ 540 007d 00       		.byte	0
+ 541 007e 09       		.uleb128 0x9
+ 542 007f 2E       		.uleb128 0x2e
+ 543 0080 00       		.byte	0
+ 544 0081 3F       		.uleb128 0x3f
+ 545 0082 19       		.uleb128 0x19
+ 546 0083 03       		.uleb128 0x3
+ 547 0084 0E       		.uleb128 0xe
+ 548 0085 3A       		.uleb128 0x3a
+ 549 0086 0B       		.uleb128 0xb
+ 550 0087 3B       		.uleb128 0x3b
+ 551 0088 0B       		.uleb128 0xb
+ 552 0089 11       		.uleb128 0x11
+ 553 008a 01       		.uleb128 0x1
+ 554 008b 12       		.uleb128 0x12
+ 555 008c 06       		.uleb128 0x6
+ 556 008d 40       		.uleb128 0x40
+ 557 008e 18       		.uleb128 0x18
+ 558 008f 9642     		.uleb128 0x2116
+ 559 0091 19       		.uleb128 0x19
+ 560 0092 00       		.byte	0
+ 561 0093 00       		.byte	0
+ 562 0094 0A       		.uleb128 0xa
+ 563 0095 34       		.uleb128 0x34
+ 564 0096 00       		.byte	0
+ 565 0097 03       		.uleb128 0x3
+ 566 0098 0E       		.uleb128 0xe
+ 567 0099 3A       		.uleb128 0x3a
+ 568 009a 0B       		.uleb128 0xb
+ 569 009b 3B       		.uleb128 0x3b
+ 570 009c 05       		.uleb128 0x5
+ 571 009d 49       		.uleb128 0x49
+ 572 009e 13       		.uleb128 0x13
+ 573 009f 3F       		.uleb128 0x3f
+ 574 00a0 19       		.uleb128 0x19
+ 575 00a1 3C       		.uleb128 0x3c
+ 576 00a2 19       		.uleb128 0x19
+ 577 00a3 00       		.byte	0
+ 578 00a4 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccLBwuGc.s 			page 12
+
+
+ 579 00a5 0B       		.uleb128 0xb
+ 580 00a6 01       		.uleb128 0x1
+ 581 00a7 01       		.byte	0x1
+ 582 00a8 49       		.uleb128 0x49
+ 583 00a9 13       		.uleb128 0x13
+ 584 00aa 01       		.uleb128 0x1
+ 585 00ab 13       		.uleb128 0x13
+ 586 00ac 00       		.byte	0
+ 587 00ad 00       		.byte	0
+ 588 00ae 0C       		.uleb128 0xc
+ 589 00af 21       		.uleb128 0x21
+ 590 00b0 00       		.byte	0
+ 591 00b1 49       		.uleb128 0x49
+ 592 00b2 13       		.uleb128 0x13
+ 593 00b3 2F       		.uleb128 0x2f
+ 594 00b4 0B       		.uleb128 0xb
+ 595 00b5 00       		.byte	0
+ 596 00b6 00       		.byte	0
+ 597 00b7 0D       		.uleb128 0xd
+ 598 00b8 34       		.uleb128 0x34
+ 599 00b9 00       		.byte	0
+ 600 00ba 03       		.uleb128 0x3
+ 601 00bb 0E       		.uleb128 0xe
+ 602 00bc 3A       		.uleb128 0x3a
+ 603 00bd 0B       		.uleb128 0xb
+ 604 00be 3B       		.uleb128 0x3b
+ 605 00bf 0B       		.uleb128 0xb
+ 606 00c0 49       		.uleb128 0x49
+ 607 00c1 13       		.uleb128 0x13
+ 608 00c2 3F       		.uleb128 0x3f
+ 609 00c3 19       		.uleb128 0x19
+ 610 00c4 02       		.uleb128 0x2
+ 611 00c5 18       		.uleb128 0x18
+ 612 00c6 00       		.byte	0
+ 613 00c7 00       		.byte	0
+ 614 00c8 0E       		.uleb128 0xe
+ 615 00c9 34       		.uleb128 0x34
+ 616 00ca 00       		.byte	0
+ 617 00cb 03       		.uleb128 0x3
+ 618 00cc 08       		.uleb128 0x8
+ 619 00cd 3A       		.uleb128 0x3a
+ 620 00ce 0B       		.uleb128 0xb
+ 621 00cf 3B       		.uleb128 0x3b
+ 622 00d0 0B       		.uleb128 0xb
+ 623 00d1 49       		.uleb128 0x49
+ 624 00d2 13       		.uleb128 0x13
+ 625 00d3 3F       		.uleb128 0x3f
+ 626 00d4 19       		.uleb128 0x19
+ 627 00d5 02       		.uleb128 0x2
+ 628 00d6 18       		.uleb128 0x18
+ 629 00d7 00       		.byte	0
+ 630 00d8 00       		.byte	0
+ 631 00d9 00       		.byte	0
+ 632              		.section	.debug_aranges,"",%progbits
+ 633 0000 2C000000 		.4byte	0x2c
+ 634 0004 0200     		.2byte	0x2
+ 635 0006 00000000 		.4byte	.Ldebug_info0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccLBwuGc.s 			page 13
+
+
+ 636 000a 04       		.byte	0x4
+ 637 000b 00       		.byte	0
+ 638 000c 0000     		.2byte	0
+ 639 000e 0000     		.2byte	0
+ 640 0010 00000000 		.4byte	.LFB63
+ 641 0014 B8000000 		.4byte	.LFE63-.LFB63
+ 642 0018 00000000 		.4byte	.LFB64
+ 643 001c 18000000 		.4byte	.LFE64-.LFB64
+ 644 0020 00000000 		.4byte	.LFB65
+ 645 0024 18000000 		.4byte	.LFE65-.LFB65
+ 646 0028 00000000 		.4byte	0
+ 647 002c 00000000 		.4byte	0
+ 648              		.section	.debug_ranges,"",%progbits
+ 649              	.Ldebug_ranges0:
+ 650 0000 00000000 		.4byte	.LFB63
+ 651 0004 B8000000 		.4byte	.LFE63
+ 652 0008 00000000 		.4byte	.LFB64
+ 653 000c 18000000 		.4byte	.LFE64
+ 654 0010 00000000 		.4byte	.LFB65
+ 655 0014 18000000 		.4byte	.LFE65
+ 656 0018 00000000 		.4byte	0
+ 657 001c 00000000 		.4byte	0
+ 658              		.section	.debug_line,"",%progbits
+ 659              	.Ldebug_line0:
+ 660 0000 AA010000 		.section	.debug_str,"MS",%progbits,1
+ 660      02005F01 
+ 660      00000201 
+ 660      FB0E0D00 
+ 660      01010101 
+ 661              	.LASF19:
+ 662 0000 70756C73 		.ascii	"pulse_length_arr\000"
+ 662      655F6C65 
+ 662      6E677468 
+ 662      5F617272 
+ 662      00
+ 663              	.LASF9:
+ 664 0011 5F5F696E 		.ascii	"__int32_t\000"
+ 664      7433325F 
+ 664      7400
+ 665              	.LASF14:
+ 666 001b 646F7562 		.ascii	"double\000"
+ 666      6C6500
+ 667              	.LASF20:
+ 668 0022 6172725F 		.ascii	"arr_i\000"
+ 668      6900
+ 669              	.LASF18:
+ 670 0028 43616D65 		.ascii	"Camera_framebuffer\000"
+ 670      72615F66 
+ 670      72616D65 
+ 670      62756666 
+ 670      657200
+ 671              	.LASF13:
+ 672 003b 666C6F61 		.ascii	"float\000"
+ 672      7400
+ 673              	.LASF1:
+ 674 0041 756E7369 		.ascii	"unsigned char\000"
+ 674      676E6564 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccLBwuGc.s 			page 14
+
+
+ 674      20636861 
+ 674      7200
+ 675              	.LASF24:
+ 676 004f 433A5C55 		.ascii	"C:\\Users\\xavieran\\Desktop\\ECE3091\\PSOCProjects"
+ 676      73657273 
+ 676      5C786176 
+ 676      69657261 
+ 676      6E5C4465 
+ 677 007d 5C454E47 		.ascii	"\\ENG3091_MandM\\camera_test.cydsn\000"
+ 677      33303931 
+ 677      5F4D616E 
+ 677      644D5C63 
+ 677      616D6572 
+ 678              	.LASF25:
+ 679 009e 69725F66 		.ascii	"ir_front_isr\000"
+ 679      726F6E74 
+ 679      5F697372 
+ 679      00
+ 680              	.LASF3:
+ 681 00ab 73686F72 		.ascii	"short unsigned int\000"
+ 681      7420756E 
+ 681      7369676E 
+ 681      65642069 
+ 681      6E7400
+ 682              	.LASF17:
+ 683 00be 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 683      52784275 
+ 683      66666572 
+ 683      00
+ 684              	.LASF5:
+ 685 00cb 6C6F6E67 		.ascii	"long unsigned int\000"
+ 685      20756E73 
+ 685      69676E65 
+ 685      6420696E 
+ 685      7400
+ 686              	.LASF23:
+ 687 00dd 2E5C696E 		.ascii	".\\infrared_front.c\000"
+ 687      66726172 
+ 687      65645F66 
+ 687      726F6E74 
+ 687      2E6300
+ 688              	.LASF12:
+ 689 00f0 75696E74 		.ascii	"uint16\000"
+ 689      313600
+ 690              	.LASF27:
+ 691 00f7 73746172 		.ascii	"start_infrared_front\000"
+ 691      745F696E 
+ 691      66726172 
+ 691      65645F66 
+ 691      726F6E74 
+ 692              	.LASF8:
+ 693 010c 756E7369 		.ascii	"unsigned int\000"
+ 693      676E6564 
+ 693      20696E74 
+ 693      00
+ 694              	.LASF7:
+ 695 0119 6C6F6E67 		.ascii	"long long unsigned int\000"
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccLBwuGc.s 			page 15
+
+
+ 695      206C6F6E 
+ 695      6720756E 
+ 695      7369676E 
+ 695      65642069 
+ 696              	.LASF22:
+ 697 0130 474E5520 		.ascii	"GNU C 4.8.4 20140526 (release) [ARM/embedded-4_8-br"
+ 697      4320342E 
+ 697      382E3420 
+ 697      32303134 
+ 697      30353236 
+ 698 0163 616E6368 		.ascii	"anch revision 211358] -mcpu=cortex-m3 -mthumb -g -O"
+ 698      20726576 
+ 698      6973696F 
+ 698      6E203231 
+ 698      31333538 
+ 699 0196 30202D66 		.ascii	"0 -ffunction-sections\000"
+ 699      66756E63 
+ 699      74696F6E 
+ 699      2D736563 
+ 699      74696F6E 
+ 700              	.LASF10:
+ 701 01ac 696E7433 		.ascii	"int32_t\000"
+ 701      325F7400 
+ 702              	.LASF16:
+ 703 01b4 73697A65 		.ascii	"sizetype\000"
+ 703      74797065 
+ 703      00
+ 704              	.LASF6:
+ 705 01bd 6C6F6E67 		.ascii	"long long int\000"
+ 705      206C6F6E 
+ 705      6720696E 
+ 705      7400
+ 706              	.LASF15:
+ 707 01cb 63686172 		.ascii	"char\000"
+ 707      00
+ 708              	.LASF21:
+ 709 01d0 70756C73 		.ascii	"pulse_length_front\000"
+ 709      655F6C65 
+ 709      6E677468 
+ 709      5F66726F 
+ 709      6E7400
+ 710              	.LASF2:
+ 711 01e3 73686F72 		.ascii	"short int\000"
+ 711      7420696E 
+ 711      7400
+ 712              	.LASF11:
+ 713 01ed 75696E74 		.ascii	"uint8\000"
+ 713      3800
+ 714              	.LASF4:
+ 715 01f3 6C6F6E67 		.ascii	"long int\000"
+ 715      20696E74 
+ 715      00
+ 716              	.LASF26:
+ 717 01fc 6765745F 		.ascii	"get_front_ir\000"
+ 717      66726F6E 
+ 717      745F6972 
+ 717      00
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccLBwuGc.s 			page 16
+
+
+ 718              	.LASF0:
+ 719 0209 7369676E 		.ascii	"signed char\000"
+ 719      65642063 
+ 719      68617200 
+ 720              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.8.4 20140526 (release) [ARM/embedded-4_8-br

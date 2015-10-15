@@ -1,0 +1,2209 @@
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"IR_LEFT_Timer.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.global	IR_LEFT_Timer_initVar
+  19              		.bss
+  20              		.type	IR_LEFT_Timer_initVar, %object
+  21              		.size	IR_LEFT_Timer_initVar, 1
+  22              	IR_LEFT_Timer_initVar:
+  23 0000 00       		.space	1
+  24              		.section	.text.IR_LEFT_Timer_Init,"ax",%progbits
+  25              		.align	2
+  26              		.global	IR_LEFT_Timer_Init
+  27              		.thumb
+  28              		.thumb_func
+  29              		.type	IR_LEFT_Timer_Init, %function
+  30              	IR_LEFT_Timer_Init:
+  31              	.LFB0:
+  32              		.file 1 ".\\Generated_Source\\PSoC5\\IR_LEFT_Timer.c"
+   1:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+   2:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * File Name: IR_LEFT_Timer.c
+   3:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Version 2.70
+   4:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+   5:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Description:
+   6:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  The Timer component consists of a 8, 16, 24 or 32-bit timer with
+   7:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  a selectable period between 2 and 2^Width - 1.  The timer may free run
+   8:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  or be used as a capture timer as well.  The capture can be initiated
+   9:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  by a positive or negative edge signal as well as via software.
+  10:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  A trigger input can be programmed to enable the timer on rising edge
+  11:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  falling edge, either edge or continous run.
+  12:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  Interrupts may be generated due to a terminal count condition
+  13:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  or a capture event.
+  14:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+  15:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Note:
+  16:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+  17:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************
+  18:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Copyright 2008-2014, Cypress Semiconductor Corporation.  All rights reserved.
+  19:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * You may use this file only in accordance with the license, terms, conditions,
+  20:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * disclaimers, and limitations in the end user license agreement accompanying
+  21:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * the software package with which this file was provided.
+  22:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************/
+  23:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+  24:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** #include "IR_LEFT_Timer.h"
+  25:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 2
+
+
+  26:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** uint8 IR_LEFT_Timer_initVar = 0u;
+  27:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+  28:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+  29:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+  30:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Function Name: IR_LEFT_Timer_Init
+  31:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************
+  32:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+  33:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Summary:
+  34:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  Initialize to the schematic state
+  35:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+  36:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Parameters:
+  37:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+  38:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+  39:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Return:
+  40:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+  41:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+  42:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *******************************************************************************/
+  43:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** void IR_LEFT_Timer_Init(void) 
+  44:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** {
+  33              		.loc 1 44 0
+  34              		.cfi_startproc
+  35              		@ args = 0, pretend = 0, frame = 8
+  36              		@ frame_needed = 1, uses_anonymous_args = 0
+  37 0000 80B5     		push	{r7, lr}
+  38              		.cfi_def_cfa_offset 8
+  39              		.cfi_offset 7, -8
+  40              		.cfi_offset 14, -4
+  41 0002 82B0     		sub	sp, sp, #8
+  42              		.cfi_def_cfa_offset 16
+  43 0004 00AF     		add	r7, sp, #0
+  44              		.cfi_def_cfa_register 7
+  45:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #if(!IR_LEFT_Timer_UsingFixedFunction)
+  46:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****             /* Interrupt State Backup for Critical Region*/
+  47:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****             uint8 IR_LEFT_Timer_interruptState;
+  48:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #endif /* Interrupt state back up for Fixed Function only */
+  49:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+  50:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #if (IR_LEFT_Timer_UsingFixedFunction)
+  51:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         /* Clear all bits but the enable bit (if it's already set) for Timer operation */
+  52:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_CONTROL &= IR_LEFT_Timer_CTRL_ENABLE;
+  53:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+  54:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         /* Clear the mode bits for continuous run mode */
+  55:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         #if (CY_PSOC5A)
+  56:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****             IR_LEFT_Timer_CONTROL2 &= ((uint8)(~IR_LEFT_Timer_CTRL_MODE_MASK));
+  57:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         #endif /* Clear bits in CONTROL2 only in PSOC5A */
+  58:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+  59:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         #if (CY_PSOC3 || CY_PSOC5LP)
+  60:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****             IR_LEFT_Timer_CONTROL3 &= ((uint8)(~IR_LEFT_Timer_CTRL_MODE_MASK));
+  61:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         #endif /* CONTROL3 register exists only in PSoC3 OR PSoC5LP */
+  62:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+  63:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         /* Check if One Shot mode is enabled i.e. RunMode !=0*/
+  64:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         #if (IR_LEFT_Timer_RunModeUsed != 0x0u)
+  65:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****             /* Set 3rd bit of Control register to enable one shot mode */
+  66:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****             IR_LEFT_Timer_CONTROL |= 0x04u;
+  67:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         #endif /* One Shot enabled only when RunModeUsed is not Continuous*/
+  68:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+  69:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         #if (IR_LEFT_Timer_RunModeUsed == 2)
+  70:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****             #if (CY_PSOC5A)
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 3
+
+
+  71:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****                 /* Set last 2 bits of control2 register if one shot(halt on
+  72:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****                 interrupt) is enabled*/
+  73:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****                 IR_LEFT_Timer_CONTROL2 |= 0x03u;
+  74:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****             #endif /* Set One-Shot Halt on Interrupt bit in CONTROL2 for PSoC5A */
+  75:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+  76:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****             #if (CY_PSOC3 || CY_PSOC5LP)
+  77:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****                 /* Set last 2 bits of control3 register if one shot(halt on
+  78:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****                 interrupt) is enabled*/
+  79:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****                 IR_LEFT_Timer_CONTROL3 |= 0x03u;
+  80:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****             #endif /* Set One-Shot Halt on Interrupt bit in CONTROL3 for PSoC3 or PSoC5LP */
+  81:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+  82:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         #endif /* Remove section if One Shot Halt on Interrupt is not enabled */
+  83:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+  84:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         #if (IR_LEFT_Timer_UsingHWEnable != 0)
+  85:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****             #if (CY_PSOC5A)
+  86:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****                 /* Set the default Run Mode of the Timer to Continuous */
+  87:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****                 IR_LEFT_Timer_CONTROL2 |= IR_LEFT_Timer_CTRL_MODE_PULSEWIDTH;
+  88:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****             #endif /* Set Continuous Run Mode in CONTROL2 for PSoC5A */
+  89:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+  90:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****             #if (CY_PSOC3 || CY_PSOC5LP)
+  91:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****                 /* Clear and Set ROD and COD bits of CFG2 register */
+  92:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****                 IR_LEFT_Timer_CONTROL3 &= ((uint8)(~IR_LEFT_Timer_CTRL_RCOD_MASK));
+  93:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****                 IR_LEFT_Timer_CONTROL3 |= IR_LEFT_Timer_CTRL_RCOD;
+  94:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+  95:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****                 /* Clear and Enable the HW enable bit in CFG2 register */
+  96:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****                 IR_LEFT_Timer_CONTROL3 &= ((uint8)(~IR_LEFT_Timer_CTRL_ENBL_MASK));
+  97:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****                 IR_LEFT_Timer_CONTROL3 |= IR_LEFT_Timer_CTRL_ENBL;
+  98:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+  99:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****                 /* Set the default Run Mode of the Timer to Continuous */
+ 100:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****                 IR_LEFT_Timer_CONTROL3 |= IR_LEFT_Timer_CTRL_MODE_CONTINUOUS;
+ 101:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****             #endif /* Set Continuous Run Mode in CONTROL3 for PSoC3ES3 or PSoC5A */
+ 102:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 103:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         #endif /* Configure Run Mode with hardware enable */
+ 104:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 105:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         /* Clear and Set SYNCTC and SYNCCMP bits of RT1 register */
+ 106:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_RT1 &= ((uint8)(~IR_LEFT_Timer_RT1_MASK));
+ 107:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_RT1 |= IR_LEFT_Timer_SYNC;
+ 108:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 109:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         /*Enable DSI Sync all all inputs of the Timer*/
+ 110:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_RT1 &= ((uint8)(~IR_LEFT_Timer_SYNCDSI_MASK));
+ 111:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_RT1 |= IR_LEFT_Timer_SYNCDSI_EN;
+ 112:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 113:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         /* Set the IRQ to use the status register interrupts */
+ 114:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_CONTROL2 |= IR_LEFT_Timer_CTRL2_IRQ_SEL;
+ 115:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #endif /* Configuring registers of fixed function implementation */
+ 116:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 117:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     /* Set Initial values from Configuration */
+ 118:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     IR_LEFT_Timer_WritePeriod(IR_LEFT_Timer_INIT_PERIOD);
+  45              		.loc 1 118 0
+  46 0006 4FF6FF70 		movw	r0, #65535
+  47 000a FFF7FEFF 		bl	IR_LEFT_Timer_WritePeriod
+ 119:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     IR_LEFT_Timer_WriteCounter(IR_LEFT_Timer_INIT_PERIOD);
+  48              		.loc 1 119 0
+  49 000e 4FF6FF70 		movw	r0, #65535
+  50 0012 FFF7FEFF 		bl	IR_LEFT_Timer_WriteCounter
+ 120:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 121:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #if (IR_LEFT_Timer_UsingHWCaptureCounter)/* Capture counter is enabled */
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 4
+
+
+ 122:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_CAPTURE_COUNT_CTRL |= IR_LEFT_Timer_CNTR_ENABLE;
+ 123:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_SetCaptureCount(IR_LEFT_Timer_INIT_CAPTURE_COUNT);
+ 124:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #endif /* Configure capture counter value */
+ 125:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 126:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #if (!IR_LEFT_Timer_UsingFixedFunction)
+ 127:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         #if (IR_LEFT_Timer_SoftwareCaptureMode)
+ 128:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****             IR_LEFT_Timer_SetCaptureMode(IR_LEFT_Timer_INIT_CAPTURE_MODE);
+ 129:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         #endif /* Set Capture Mode for UDB implementation if capture mode is software controlled */
+ 130:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 131:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         #if (IR_LEFT_Timer_SoftwareTriggerMode)
+ 132:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****             #if (!IR_LEFT_Timer_UDB_CONTROL_REG_REMOVED)
+ 133:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****                 if (0u == (IR_LEFT_Timer_CONTROL & IR_LEFT_Timer__B_TIMER__TM_SOFTWARE))
+ 134:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****                 {
+ 135:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****                     IR_LEFT_Timer_SetTriggerMode(IR_LEFT_Timer_INIT_TRIGGER_MODE);
+ 136:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****                 }
+ 137:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****             #endif /* (!IR_LEFT_Timer_UDB_CONTROL_REG_REMOVED) */
+ 138:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         #endif /* Set trigger mode for UDB Implementation if trigger mode is software controlled */
+ 139:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 140:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         /* CyEnterCriticalRegion and CyExitCriticalRegion are used to mark following region critica
+ 141:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         /* Enter Critical Region*/
+ 142:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_interruptState = CyEnterCriticalSection();
+  51              		.loc 1 142 0
+  52 0016 FFF7FEFF 		bl	CyEnterCriticalSection
+  53 001a 0346     		mov	r3, r0
+  54 001c FB71     		strb	r3, [r7, #7]
+ 143:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 144:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         /* Use the interrupt output of the status register for IRQ output */
+ 145:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_STATUS_AUX_CTRL |= IR_LEFT_Timer_STATUS_ACTL_INT_EN_MASK;
+  55              		.loc 1 145 0
+  56 001e 0A4B     		ldr	r3, .L2
+  57 0020 094A     		ldr	r2, .L2
+  58 0022 1278     		ldrb	r2, [r2]
+  59 0024 D2B2     		uxtb	r2, r2
+  60 0026 42F01002 		orr	r2, r2, #16
+  61 002a D2B2     		uxtb	r2, r2
+  62 002c 1A70     		strb	r2, [r3]
+ 146:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 147:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         /* Exit Critical Region*/
+ 148:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         CyExitCriticalSection(IR_LEFT_Timer_interruptState);
+  63              		.loc 1 148 0
+  64 002e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+  65 0030 1846     		mov	r0, r3
+  66 0032 FFF7FEFF 		bl	CyExitCriticalSection
+ 149:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 150:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         #if (IR_LEFT_Timer_EnableTriggerMode)
+ 151:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****             IR_LEFT_Timer_EnableTrigger();
+ 152:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         #endif /* Set Trigger enable bit for UDB implementation in the control register*/
+ 153:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 		
+ 154:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 		
+ 155:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         #if (IR_LEFT_Timer_InterruptOnCaptureCount && !IR_LEFT_Timer_UDB_CONTROL_REG_REMOVED)
+ 156:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****             IR_LEFT_Timer_SetInterruptCount(IR_LEFT_Timer_INIT_INT_CAPTURE_COUNT);
+ 157:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         #endif /* Set interrupt count in UDB implementation if interrupt count feature is checked.*
+ 158:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 159:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_ClearFIFO();
+  67              		.loc 1 159 0
+  68 0036 FFF7FEFF 		bl	IR_LEFT_Timer_ClearFIFO
+ 160:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #endif /* Configure additional features of UDB implementation */
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 5
+
+
+ 161:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 162:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     IR_LEFT_Timer_SetInterruptMode(IR_LEFT_Timer_INIT_INTERRUPT_MODE);
+  69              		.loc 1 162 0
+  70 003a 0020     		movs	r0, #0
+  71 003c FFF7FEFF 		bl	IR_LEFT_Timer_SetInterruptMode
+ 163:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** }
+  72              		.loc 1 163 0
+  73 0040 0837     		adds	r7, r7, #8
+  74 0042 BD46     		mov	sp, r7
+  75              		@ sp needed
+  76 0044 80BD     		pop	{r7, pc}
+  77              	.L3:
+  78 0046 00BF     		.align	2
+  79              	.L2:
+  80 0048 93640040 		.word	1073767571
+  81              		.cfi_endproc
+  82              	.LFE0:
+  83              		.size	IR_LEFT_Timer_Init, .-IR_LEFT_Timer_Init
+  84              		.section	.text.IR_LEFT_Timer_Enable,"ax",%progbits
+  85              		.align	2
+  86              		.global	IR_LEFT_Timer_Enable
+  87              		.thumb
+  88              		.thumb_func
+  89              		.type	IR_LEFT_Timer_Enable, %function
+  90              	IR_LEFT_Timer_Enable:
+  91              	.LFB1:
+ 164:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 165:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 166:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+ 167:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Function Name: IR_LEFT_Timer_Enable
+ 168:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************
+ 169:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 170:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Summary:
+ 171:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  Enable the Timer
+ 172:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 173:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Parameters:
+ 174:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 175:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 176:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Return:
+ 177:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 178:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 179:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *******************************************************************************/
+ 180:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** void IR_LEFT_Timer_Enable(void) 
+ 181:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** {
+  92              		.loc 1 181 0
+  93              		.cfi_startproc
+  94              		@ args = 0, pretend = 0, frame = 0
+  95              		@ frame_needed = 1, uses_anonymous_args = 0
+  96              		@ link register save eliminated.
+  97 0000 80B4     		push	{r7}
+  98              		.cfi_def_cfa_offset 4
+  99              		.cfi_offset 7, -4
+ 100 0002 00AF     		add	r7, sp, #0
+ 101              		.cfi_def_cfa_register 7
+ 182:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     /* Globally Enable the Fixed Function Block chosen */
+ 183:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #if (IR_LEFT_Timer_UsingFixedFunction)
+ 184:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_GLOBAL_ENABLE |= IR_LEFT_Timer_BLOCK_EN_MASK;
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 6
+
+
+ 185:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_GLOBAL_STBY_ENABLE |= IR_LEFT_Timer_BLOCK_STBY_EN_MASK;
+ 186:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #endif /* Set Enable bit for enabling Fixed function timer*/
+ 187:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 188:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     /* Remove assignment if control register is removed */
+ 189:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #if (!IR_LEFT_Timer_UDB_CONTROL_REG_REMOVED || IR_LEFT_Timer_UsingFixedFunction)
+ 190:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_CONTROL |= IR_LEFT_Timer_CTRL_ENABLE;
+ 191:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #endif /* Remove assignment if control register is removed */
+ 192:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** }
+ 102              		.loc 1 192 0
+ 103 0004 BD46     		mov	sp, r7
+ 104              		@ sp needed
+ 105 0006 5DF8047B 		ldr	r7, [sp], #4
+ 106 000a 7047     		bx	lr
+ 107              		.cfi_endproc
+ 108              	.LFE1:
+ 109              		.size	IR_LEFT_Timer_Enable, .-IR_LEFT_Timer_Enable
+ 110              		.section	.text.IR_LEFT_Timer_Start,"ax",%progbits
+ 111              		.align	2
+ 112              		.global	IR_LEFT_Timer_Start
+ 113              		.thumb
+ 114              		.thumb_func
+ 115              		.type	IR_LEFT_Timer_Start, %function
+ 116              	IR_LEFT_Timer_Start:
+ 117              	.LFB2:
+ 193:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 194:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 195:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+ 196:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Function Name: IR_LEFT_Timer_Start
+ 197:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************
+ 198:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 199:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Summary:
+ 200:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  The start function initializes the timer with the default values, the
+ 201:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  enables the timerto begin counting.  It does not enable interrupts,
+ 202:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  the EnableInt command should be called if interrupt generation is required.
+ 203:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 204:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Parameters:
+ 205:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 206:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 207:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Return:
+ 208:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 209:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 210:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Global variables:
+ 211:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  IR_LEFT_Timer_initVar: Is modified when this function is called for the
+ 212:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *   first time. Is used to ensure that initialization happens only once.
+ 213:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 214:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *******************************************************************************/
+ 215:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** void IR_LEFT_Timer_Start(void) 
+ 216:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** {
+ 118              		.loc 1 216 0
+ 119              		.cfi_startproc
+ 120              		@ args = 0, pretend = 0, frame = 0
+ 121              		@ frame_needed = 1, uses_anonymous_args = 0
+ 122 0000 80B5     		push	{r7, lr}
+ 123              		.cfi_def_cfa_offset 8
+ 124              		.cfi_offset 7, -8
+ 125              		.cfi_offset 14, -4
+ 126 0002 00AF     		add	r7, sp, #0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 7
+
+
+ 127              		.cfi_def_cfa_register 7
+ 217:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     if(IR_LEFT_Timer_initVar == 0u)
+ 128              		.loc 1 217 0
+ 129 0004 054B     		ldr	r3, .L7
+ 130 0006 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 131 0008 002B     		cmp	r3, #0
+ 132 000a 04D1     		bne	.L6
+ 218:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     {
+ 219:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_Init();
+ 133              		.loc 1 219 0
+ 134 000c FFF7FEFF 		bl	IR_LEFT_Timer_Init
+ 220:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 221:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_initVar = 1u;   /* Clear this bit for Initialization */
+ 135              		.loc 1 221 0
+ 136 0010 024B     		ldr	r3, .L7
+ 137 0012 0122     		movs	r2, #1
+ 138 0014 1A70     		strb	r2, [r3]
+ 139              	.L6:
+ 222:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     }
+ 223:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 224:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     /* Enable the Timer */
+ 225:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     IR_LEFT_Timer_Enable();
+ 140              		.loc 1 225 0
+ 141 0016 FFF7FEFF 		bl	IR_LEFT_Timer_Enable
+ 226:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** }
+ 142              		.loc 1 226 0
+ 143 001a 80BD     		pop	{r7, pc}
+ 144              	.L8:
+ 145              		.align	2
+ 146              	.L7:
+ 147 001c 00000000 		.word	IR_LEFT_Timer_initVar
+ 148              		.cfi_endproc
+ 149              	.LFE2:
+ 150              		.size	IR_LEFT_Timer_Start, .-IR_LEFT_Timer_Start
+ 151              		.section	.text.IR_LEFT_Timer_Stop,"ax",%progbits
+ 152              		.align	2
+ 153              		.global	IR_LEFT_Timer_Stop
+ 154              		.thumb
+ 155              		.thumb_func
+ 156              		.type	IR_LEFT_Timer_Stop, %function
+ 157              	IR_LEFT_Timer_Stop:
+ 158              	.LFB3:
+ 227:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 228:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 229:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+ 230:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Function Name: IR_LEFT_Timer_Stop
+ 231:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************
+ 232:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 233:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Summary:
+ 234:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  The stop function halts the timer, but does not change any modes or disable
+ 235:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  interrupts.
+ 236:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 237:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Parameters:
+ 238:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 239:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 240:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Return:
+ 241:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 8
+
+
+ 242:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 243:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Side Effects: If the Enable mode is set to Hardware only then this function
+ 244:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *               has no effect on the operation of the timer.
+ 245:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 246:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *******************************************************************************/
+ 247:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** void IR_LEFT_Timer_Stop(void) 
+ 248:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** {
+ 159              		.loc 1 248 0
+ 160              		.cfi_startproc
+ 161              		@ args = 0, pretend = 0, frame = 0
+ 162              		@ frame_needed = 1, uses_anonymous_args = 0
+ 163              		@ link register save eliminated.
+ 164 0000 80B4     		push	{r7}
+ 165              		.cfi_def_cfa_offset 4
+ 166              		.cfi_offset 7, -4
+ 167 0002 00AF     		add	r7, sp, #0
+ 168              		.cfi_def_cfa_register 7
+ 249:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     /* Disable Timer */
+ 250:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #if(!IR_LEFT_Timer_UDB_CONTROL_REG_REMOVED || IR_LEFT_Timer_UsingFixedFunction)
+ 251:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_CONTROL &= ((uint8)(~IR_LEFT_Timer_CTRL_ENABLE));
+ 252:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #endif /* Remove assignment if control register is removed */
+ 253:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 254:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     /* Globally disable the Fixed Function Block chosen */
+ 255:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #if (IR_LEFT_Timer_UsingFixedFunction)
+ 256:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_GLOBAL_ENABLE &= ((uint8)(~IR_LEFT_Timer_BLOCK_EN_MASK));
+ 257:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_GLOBAL_STBY_ENABLE &= ((uint8)(~IR_LEFT_Timer_BLOCK_STBY_EN_MASK));
+ 258:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #endif /* Disable global enable for the Timer Fixed function block to stop the Timer*/
+ 259:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** }
+ 169              		.loc 1 259 0
+ 170 0004 BD46     		mov	sp, r7
+ 171              		@ sp needed
+ 172 0006 5DF8047B 		ldr	r7, [sp], #4
+ 173 000a 7047     		bx	lr
+ 174              		.cfi_endproc
+ 175              	.LFE3:
+ 176              		.size	IR_LEFT_Timer_Stop, .-IR_LEFT_Timer_Stop
+ 177              		.section	.text.IR_LEFT_Timer_SetInterruptMode,"ax",%progbits
+ 178              		.align	2
+ 179              		.global	IR_LEFT_Timer_SetInterruptMode
+ 180              		.thumb
+ 181              		.thumb_func
+ 182              		.type	IR_LEFT_Timer_SetInterruptMode, %function
+ 183              	IR_LEFT_Timer_SetInterruptMode:
+ 184              	.LFB4:
+ 260:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 261:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 262:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+ 263:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Function Name: IR_LEFT_Timer_SetInterruptMode
+ 264:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************
+ 265:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 266:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Summary:
+ 267:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  This function selects which of the interrupt inputs may cause an interrupt.
+ 268:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  The twosources are caputure and terminal.  One, both or neither may
+ 269:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  be selected.
+ 270:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 271:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Parameters:
+ 272:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  interruptMode:   This parameter is used to enable interrups on either/or
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 9
+
+
+ 273:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *                   terminal count or capture.
+ 274:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 275:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Return:
+ 276:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 277:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 278:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *******************************************************************************/
+ 279:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** void IR_LEFT_Timer_SetInterruptMode(uint8 interruptMode) 
+ 280:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** {
+ 185              		.loc 1 280 0
+ 186              		.cfi_startproc
+ 187              		@ args = 0, pretend = 0, frame = 8
+ 188              		@ frame_needed = 1, uses_anonymous_args = 0
+ 189              		@ link register save eliminated.
+ 190 0000 80B4     		push	{r7}
+ 191              		.cfi_def_cfa_offset 4
+ 192              		.cfi_offset 7, -4
+ 193 0002 83B0     		sub	sp, sp, #12
+ 194              		.cfi_def_cfa_offset 16
+ 195 0004 00AF     		add	r7, sp, #0
+ 196              		.cfi_def_cfa_register 7
+ 197 0006 0346     		mov	r3, r0
+ 198 0008 FB71     		strb	r3, [r7, #7]
+ 281:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     IR_LEFT_Timer_STATUS_MASK = interruptMode;
+ 199              		.loc 1 281 0
+ 200 000a 044B     		ldr	r3, .L11
+ 201 000c FA79     		ldrb	r2, [r7, #7]
+ 202 000e 1A70     		strb	r2, [r3]
+ 282:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** }
+ 203              		.loc 1 282 0
+ 204 0010 0C37     		adds	r7, r7, #12
+ 205 0012 BD46     		mov	sp, r7
+ 206              		@ sp needed
+ 207 0014 5DF8047B 		ldr	r7, [sp], #4
+ 208 0018 7047     		bx	lr
+ 209              	.L12:
+ 210 001a 00BF     		.align	2
+ 211              	.L11:
+ 212 001c 83640040 		.word	1073767555
+ 213              		.cfi_endproc
+ 214              	.LFE4:
+ 215              		.size	IR_LEFT_Timer_SetInterruptMode, .-IR_LEFT_Timer_SetInterruptMode
+ 216              		.section	.text.IR_LEFT_Timer_SoftwareCapture,"ax",%progbits
+ 217              		.align	2
+ 218              		.global	IR_LEFT_Timer_SoftwareCapture
+ 219              		.thumb
+ 220              		.thumb_func
+ 221              		.type	IR_LEFT_Timer_SoftwareCapture, %function
+ 222              	IR_LEFT_Timer_SoftwareCapture:
+ 223              	.LFB5:
+ 283:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 284:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 285:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+ 286:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Function Name: IR_LEFT_Timer_SoftwareCapture
+ 287:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************
+ 288:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 289:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Summary:
+ 290:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  This function forces a capture independent of the capture signal.
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 10
+
+
+ 291:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 292:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Parameters:
+ 293:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 294:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 295:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Return:
+ 296:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 297:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 298:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Side Effects:
+ 299:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  An existing hardware capture could be overwritten.
+ 300:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 301:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *******************************************************************************/
+ 302:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** void IR_LEFT_Timer_SoftwareCapture(void) 
+ 303:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** {
+ 224              		.loc 1 303 0
+ 225              		.cfi_startproc
+ 226              		@ args = 0, pretend = 0, frame = 0
+ 227              		@ frame_needed = 1, uses_anonymous_args = 0
+ 228              		@ link register save eliminated.
+ 229 0000 80B4     		push	{r7}
+ 230              		.cfi_def_cfa_offset 4
+ 231              		.cfi_offset 7, -4
+ 232 0002 00AF     		add	r7, sp, #0
+ 233              		.cfi_def_cfa_register 7
+ 304:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     /* Generate a software capture by reading the counter register */
+ 305:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #if(IR_LEFT_Timer_UsingFixedFunction)
+ 306:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         (void)CY_GET_REG16(IR_LEFT_Timer_COUNTER_LSB_PTR);
+ 307:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #else
+ 308:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         (void)CY_GET_REG8(IR_LEFT_Timer_COUNTER_LSB_PTR_8BIT);
+ 234              		.loc 1 308 0
+ 235 0004 024B     		ldr	r3, .L14
+ 236 0006 1B78     		ldrb	r3, [r3]
+ 309:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #endif/* (IR_LEFT_Timer_UsingFixedFunction) */
+ 310:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     /* Capture Data is now in the FIFO */
+ 311:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** }
+ 237              		.loc 1 311 0
+ 238 0008 BD46     		mov	sp, r7
+ 239              		@ sp needed
+ 240 000a 5DF8047B 		ldr	r7, [sp], #4
+ 241 000e 7047     		bx	lr
+ 242              	.L15:
+ 243              		.align	2
+ 244              	.L14:
+ 245 0010 02640040 		.word	1073767426
+ 246              		.cfi_endproc
+ 247              	.LFE5:
+ 248              		.size	IR_LEFT_Timer_SoftwareCapture, .-IR_LEFT_Timer_SoftwareCapture
+ 249              		.section	.text.IR_LEFT_Timer_ReadStatusRegister,"ax",%progbits
+ 250              		.align	2
+ 251              		.global	IR_LEFT_Timer_ReadStatusRegister
+ 252              		.thumb
+ 253              		.thumb_func
+ 254              		.type	IR_LEFT_Timer_ReadStatusRegister, %function
+ 255              	IR_LEFT_Timer_ReadStatusRegister:
+ 256              	.LFB6:
+ 312:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 313:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 314:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 11
+
+
+ 315:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Function Name: IR_LEFT_Timer_ReadStatusRegister
+ 316:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************
+ 317:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 318:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Summary:
+ 319:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  Reads the status register and returns it's state. This function should use
+ 320:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  defined types for the bit-field information as the bits in this register may
+ 321:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  be permuteable.
+ 322:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 323:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Parameters:
+ 324:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 325:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 326:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Return:
+ 327:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  The contents of the status register
+ 328:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 329:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Side Effects:
+ 330:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  Status register bits may be clear on read.
+ 331:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 332:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *******************************************************************************/
+ 333:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** uint8   IR_LEFT_Timer_ReadStatusRegister(void) 
+ 334:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** {
+ 257              		.loc 1 334 0
+ 258              		.cfi_startproc
+ 259              		@ args = 0, pretend = 0, frame = 0
+ 260              		@ frame_needed = 1, uses_anonymous_args = 0
+ 261              		@ link register save eliminated.
+ 262 0000 80B4     		push	{r7}
+ 263              		.cfi_def_cfa_offset 4
+ 264              		.cfi_offset 7, -4
+ 265 0002 00AF     		add	r7, sp, #0
+ 266              		.cfi_def_cfa_register 7
+ 335:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     return (IR_LEFT_Timer_STATUS);
+ 267              		.loc 1 335 0
+ 268 0004 034B     		ldr	r3, .L18
+ 269 0006 1B78     		ldrb	r3, [r3]
+ 270 0008 DBB2     		uxtb	r3, r3
+ 336:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** }
+ 271              		.loc 1 336 0
+ 272 000a 1846     		mov	r0, r3
+ 273 000c BD46     		mov	sp, r7
+ 274              		@ sp needed
+ 275 000e 5DF8047B 		ldr	r7, [sp], #4
+ 276 0012 7047     		bx	lr
+ 277              	.L19:
+ 278              		.align	2
+ 279              	.L18:
+ 280 0014 63640040 		.word	1073767523
+ 281              		.cfi_endproc
+ 282              	.LFE6:
+ 283              		.size	IR_LEFT_Timer_ReadStatusRegister, .-IR_LEFT_Timer_ReadStatusRegister
+ 284              		.section	.text.IR_LEFT_Timer_ReadPeriod,"ax",%progbits
+ 285              		.align	2
+ 286              		.global	IR_LEFT_Timer_ReadPeriod
+ 287              		.thumb
+ 288              		.thumb_func
+ 289              		.type	IR_LEFT_Timer_ReadPeriod, %function
+ 290              	IR_LEFT_Timer_ReadPeriod:
+ 291              	.LFB7:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 12
+
+
+ 337:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 338:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 339:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** #if (!IR_LEFT_Timer_UDB_CONTROL_REG_REMOVED) /* Remove API if control register is unused */
+ 340:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 341:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 342:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+ 343:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Function Name: IR_LEFT_Timer_ReadControlRegister
+ 344:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************
+ 345:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 346:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Summary:
+ 347:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  Reads the control register and returns it's value.
+ 348:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 349:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Parameters:
+ 350:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 351:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 352:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Return:
+ 353:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  The contents of the control register
+ 354:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 355:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *******************************************************************************/
+ 356:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** uint8 IR_LEFT_Timer_ReadControlRegister(void) 
+ 357:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** {
+ 358:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #if (!IR_LEFT_Timer_UDB_CONTROL_REG_REMOVED) 
+ 359:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         return ((uint8)IR_LEFT_Timer_CONTROL);
+ 360:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #else
+ 361:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         return (0);
+ 362:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #endif /* (!IR_LEFT_Timer_UDB_CONTROL_REG_REMOVED) */
+ 363:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** }
+ 364:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 365:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 366:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+ 367:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Function Name: IR_LEFT_Timer_WriteControlRegister
+ 368:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************
+ 369:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 370:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Summary:
+ 371:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  Sets the bit-field of the control register.
+ 372:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 373:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Parameters:
+ 374:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  control: The contents of the control register
+ 375:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 376:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Return:
+ 377:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 378:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *******************************************************************************/
+ 379:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** void IR_LEFT_Timer_WriteControlRegister(uint8 control) 
+ 380:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** {
+ 381:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #if (!IR_LEFT_Timer_UDB_CONTROL_REG_REMOVED) 
+ 382:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_CONTROL = control;
+ 383:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #else
+ 384:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         control = 0u;
+ 385:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #endif /* (!IR_LEFT_Timer_UDB_CONTROL_REG_REMOVED) */
+ 386:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** }
+ 387:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 388:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** #endif /* Remove API if control register is unused */
+ 389:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 390:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 391:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+ 392:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Function Name: IR_LEFT_Timer_ReadPeriod
+ 393:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 13
+
+
+ 394:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 395:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Summary:
+ 396:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  This function returns the current value of the Period.
+ 397:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 398:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Parameters:
+ 399:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 400:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 401:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Return:
+ 402:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  The present value of the counter.
+ 403:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 404:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *******************************************************************************/
+ 405:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** uint16 IR_LEFT_Timer_ReadPeriod(void) 
+ 406:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** {
+ 292              		.loc 1 406 0
+ 293              		.cfi_startproc
+ 294              		@ args = 0, pretend = 0, frame = 0
+ 295              		@ frame_needed = 1, uses_anonymous_args = 0
+ 296              		@ link register save eliminated.
+ 297 0000 80B4     		push	{r7}
+ 298              		.cfi_def_cfa_offset 4
+ 299              		.cfi_offset 7, -4
+ 300 0002 00AF     		add	r7, sp, #0
+ 301              		.cfi_def_cfa_register 7
+ 407:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****    #if(IR_LEFT_Timer_UsingFixedFunction)
+ 408:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****        return ((uint16)CY_GET_REG16(IR_LEFT_Timer_PERIOD_LSB_PTR));
+ 409:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****    #else
+ 410:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****        return (CY_GET_REG16(IR_LEFT_Timer_PERIOD_LSB_PTR));
+ 302              		.loc 1 410 0
+ 303 0004 034B     		ldr	r3, .L22
+ 304 0006 1B88     		ldrh	r3, [r3]	@ movhi
+ 305 0008 9BB2     		uxth	r3, r3
+ 411:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****    #endif /* (IR_LEFT_Timer_UsingFixedFunction) */
+ 412:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** }
+ 306              		.loc 1 412 0
+ 307 000a 1846     		mov	r0, r3
+ 308 000c BD46     		mov	sp, r7
+ 309              		@ sp needed
+ 310 000e 5DF8047B 		ldr	r7, [sp], #4
+ 311 0012 7047     		bx	lr
+ 312              	.L23:
+ 313              		.align	2
+ 314              	.L22:
+ 315 0014 44680040 		.word	1073768516
+ 316              		.cfi_endproc
+ 317              	.LFE7:
+ 318              		.size	IR_LEFT_Timer_ReadPeriod, .-IR_LEFT_Timer_ReadPeriod
+ 319              		.section	.text.IR_LEFT_Timer_WritePeriod,"ax",%progbits
+ 320              		.align	2
+ 321              		.global	IR_LEFT_Timer_WritePeriod
+ 322              		.thumb
+ 323              		.thumb_func
+ 324              		.type	IR_LEFT_Timer_WritePeriod, %function
+ 325              	IR_LEFT_Timer_WritePeriod:
+ 326              	.LFB8:
+ 413:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 414:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 415:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 14
+
+
+ 416:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Function Name: IR_LEFT_Timer_WritePeriod
+ 417:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************
+ 418:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 419:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Summary:
+ 420:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  This function is used to change the period of the counter.  The new period
+ 421:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  will be loaded the next time terminal count is detected.
+ 422:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 423:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Parameters:
+ 424:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  period: This value may be between 1 and (2^Resolution)-1.  A value of 0 will
+ 425:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *          result in the counter remaining at zero.
+ 426:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 427:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Return:
+ 428:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 429:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 430:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *******************************************************************************/
+ 431:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** void IR_LEFT_Timer_WritePeriod(uint16 period) 
+ 432:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** {
+ 327              		.loc 1 432 0
+ 328              		.cfi_startproc
+ 329              		@ args = 0, pretend = 0, frame = 8
+ 330              		@ frame_needed = 1, uses_anonymous_args = 0
+ 331              		@ link register save eliminated.
+ 332 0000 80B4     		push	{r7}
+ 333              		.cfi_def_cfa_offset 4
+ 334              		.cfi_offset 7, -4
+ 335 0002 83B0     		sub	sp, sp, #12
+ 336              		.cfi_def_cfa_offset 16
+ 337 0004 00AF     		add	r7, sp, #0
+ 338              		.cfi_def_cfa_register 7
+ 339 0006 0346     		mov	r3, r0
+ 340 0008 FB80     		strh	r3, [r7, #6]	@ movhi
+ 433:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #if(IR_LEFT_Timer_UsingFixedFunction)
+ 434:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         uint16 period_temp = (uint16)period;
+ 435:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         CY_SET_REG16(IR_LEFT_Timer_PERIOD_LSB_PTR, period_temp);
+ 436:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #else
+ 437:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         CY_SET_REG16(IR_LEFT_Timer_PERIOD_LSB_PTR, period);
+ 341              		.loc 1 437 0
+ 342 000a 044B     		ldr	r3, .L25
+ 343 000c FA88     		ldrh	r2, [r7, #6]	@ movhi
+ 344 000e 1A80     		strh	r2, [r3]	@ movhi
+ 438:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #endif /*Write Period value with appropriate resolution suffix depending on UDB or fixed functi
+ 439:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** }
+ 345              		.loc 1 439 0
+ 346 0010 0C37     		adds	r7, r7, #12
+ 347 0012 BD46     		mov	sp, r7
+ 348              		@ sp needed
+ 349 0014 5DF8047B 		ldr	r7, [sp], #4
+ 350 0018 7047     		bx	lr
+ 351              	.L26:
+ 352 001a 00BF     		.align	2
+ 353              	.L25:
+ 354 001c 44680040 		.word	1073768516
+ 355              		.cfi_endproc
+ 356              	.LFE8:
+ 357              		.size	IR_LEFT_Timer_WritePeriod, .-IR_LEFT_Timer_WritePeriod
+ 358              		.section	.text.IR_LEFT_Timer_ReadCapture,"ax",%progbits
+ 359              		.align	2
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 15
+
+
+ 360              		.global	IR_LEFT_Timer_ReadCapture
+ 361              		.thumb
+ 362              		.thumb_func
+ 363              		.type	IR_LEFT_Timer_ReadCapture, %function
+ 364              	IR_LEFT_Timer_ReadCapture:
+ 365              	.LFB9:
+ 440:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 441:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 442:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+ 443:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Function Name: IR_LEFT_Timer_ReadCapture
+ 444:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************
+ 445:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 446:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Summary:
+ 447:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  This function returns the last value captured.
+ 448:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 449:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Parameters:
+ 450:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 451:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 452:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Return:
+ 453:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  Present Capture value.
+ 454:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 455:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *******************************************************************************/
+ 456:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** uint16 IR_LEFT_Timer_ReadCapture(void) 
+ 457:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** {
+ 366              		.loc 1 457 0
+ 367              		.cfi_startproc
+ 368              		@ args = 0, pretend = 0, frame = 0
+ 369              		@ frame_needed = 1, uses_anonymous_args = 0
+ 370              		@ link register save eliminated.
+ 371 0000 80B4     		push	{r7}
+ 372              		.cfi_def_cfa_offset 4
+ 373              		.cfi_offset 7, -4
+ 374 0002 00AF     		add	r7, sp, #0
+ 375              		.cfi_def_cfa_register 7
+ 458:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****    #if(IR_LEFT_Timer_UsingFixedFunction)
+ 459:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****        return ((uint16)CY_GET_REG16(IR_LEFT_Timer_CAPTURE_LSB_PTR));
+ 460:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****    #else
+ 461:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****        return (CY_GET_REG16(IR_LEFT_Timer_CAPTURE_LSB_PTR));
+ 376              		.loc 1 461 0
+ 377 0004 034B     		ldr	r3, .L29
+ 378 0006 1B88     		ldrh	r3, [r3]	@ movhi
+ 379 0008 9BB2     		uxth	r3, r3
+ 462:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****    #endif /* (IR_LEFT_Timer_UsingFixedFunction) */
+ 463:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** }
+ 380              		.loc 1 463 0
+ 381 000a 1846     		mov	r0, r3
+ 382 000c BD46     		mov	sp, r7
+ 383              		@ sp needed
+ 384 000e 5DF8047B 		ldr	r7, [sp], #4
+ 385 0012 7047     		bx	lr
+ 386              	.L30:
+ 387              		.align	2
+ 388              	.L29:
+ 389 0014 84680040 		.word	1073768580
+ 390              		.cfi_endproc
+ 391              	.LFE9:
+ 392              		.size	IR_LEFT_Timer_ReadCapture, .-IR_LEFT_Timer_ReadCapture
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 16
+
+
+ 393              		.section	.text.IR_LEFT_Timer_WriteCounter,"ax",%progbits
+ 394              		.align	2
+ 395              		.global	IR_LEFT_Timer_WriteCounter
+ 396              		.thumb
+ 397              		.thumb_func
+ 398              		.type	IR_LEFT_Timer_WriteCounter, %function
+ 399              	IR_LEFT_Timer_WriteCounter:
+ 400              	.LFB10:
+ 464:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 465:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 466:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+ 467:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Function Name: IR_LEFT_Timer_WriteCounter
+ 468:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************
+ 469:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 470:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Summary:
+ 471:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  This funtion is used to set the counter to a specific value
+ 472:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 473:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Parameters:
+ 474:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  counter:  New counter value.
+ 475:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 476:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Return:
+ 477:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 478:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 479:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *******************************************************************************/
+ 480:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** void IR_LEFT_Timer_WriteCounter(uint16 counter) 
+ 481:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** {
+ 401              		.loc 1 481 0
+ 402              		.cfi_startproc
+ 403              		@ args = 0, pretend = 0, frame = 8
+ 404              		@ frame_needed = 1, uses_anonymous_args = 0
+ 405              		@ link register save eliminated.
+ 406 0000 80B4     		push	{r7}
+ 407              		.cfi_def_cfa_offset 4
+ 408              		.cfi_offset 7, -4
+ 409 0002 83B0     		sub	sp, sp, #12
+ 410              		.cfi_def_cfa_offset 16
+ 411 0004 00AF     		add	r7, sp, #0
+ 412              		.cfi_def_cfa_register 7
+ 413 0006 0346     		mov	r3, r0
+ 414 0008 FB80     		strh	r3, [r7, #6]	@ movhi
+ 482:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****    #if(IR_LEFT_Timer_UsingFixedFunction)
+ 483:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         /* This functionality is removed until a FixedFunction HW update to
+ 484:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****          * allow this register to be written
+ 485:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****          */
+ 486:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         CY_SET_REG16(IR_LEFT_Timer_COUNTER_LSB_PTR, (uint16)counter);
+ 487:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         
+ 488:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #else
+ 489:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         CY_SET_REG16(IR_LEFT_Timer_COUNTER_LSB_PTR, counter);
+ 415              		.loc 1 489 0
+ 416 000a 044B     		ldr	r3, .L32
+ 417 000c FA88     		ldrh	r2, [r7, #6]	@ movhi
+ 418 000e 1A80     		strh	r2, [r3]	@ movhi
+ 490:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #endif /* Set Write Counter only for the UDB implementation (Write Counter not available in fix
+ 491:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** }
+ 419              		.loc 1 491 0
+ 420 0010 0C37     		adds	r7, r7, #12
+ 421 0012 BD46     		mov	sp, r7
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 17
+
+
+ 422              		@ sp needed
+ 423 0014 5DF8047B 		ldr	r7, [sp], #4
+ 424 0018 7047     		bx	lr
+ 425              	.L33:
+ 426 001a 00BF     		.align	2
+ 427              	.L32:
+ 428 001c 04680040 		.word	1073768452
+ 429              		.cfi_endproc
+ 430              	.LFE10:
+ 431              		.size	IR_LEFT_Timer_WriteCounter, .-IR_LEFT_Timer_WriteCounter
+ 432              		.section	.text.IR_LEFT_Timer_ReadCounter,"ax",%progbits
+ 433              		.align	2
+ 434              		.global	IR_LEFT_Timer_ReadCounter
+ 435              		.thumb
+ 436              		.thumb_func
+ 437              		.type	IR_LEFT_Timer_ReadCounter, %function
+ 438              	IR_LEFT_Timer_ReadCounter:
+ 439              	.LFB11:
+ 492:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 493:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 494:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+ 495:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Function Name: IR_LEFT_Timer_ReadCounter
+ 496:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************
+ 497:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 498:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Summary:
+ 499:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  This function returns the current counter value.
+ 500:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 501:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Parameters:
+ 502:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 503:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 504:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Return:
+ 505:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  Present compare value.
+ 506:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 507:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *******************************************************************************/
+ 508:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** uint16 IR_LEFT_Timer_ReadCounter(void) 
+ 509:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** {
+ 440              		.loc 1 509 0
+ 441              		.cfi_startproc
+ 442              		@ args = 0, pretend = 0, frame = 0
+ 443              		@ frame_needed = 1, uses_anonymous_args = 0
+ 444              		@ link register save eliminated.
+ 445 0000 80B4     		push	{r7}
+ 446              		.cfi_def_cfa_offset 4
+ 447              		.cfi_offset 7, -4
+ 448 0002 00AF     		add	r7, sp, #0
+ 449              		.cfi_def_cfa_register 7
+ 510:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     /* Force capture by reading Accumulator */
+ 511:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     /* Must first do a software capture to be able to read the counter */
+ 512:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     /* It is up to the user code to make sure there isn't already captured data in the FIFO */
+ 513:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #if(IR_LEFT_Timer_UsingFixedFunction)
+ 514:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         (void)CY_GET_REG16(IR_LEFT_Timer_COUNTER_LSB_PTR);
+ 515:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #else
+ 516:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         (void)CY_GET_REG8(IR_LEFT_Timer_COUNTER_LSB_PTR_8BIT);
+ 450              		.loc 1 516 0
+ 451 0004 044B     		ldr	r3, .L36
+ 452 0006 1B78     		ldrb	r3, [r3]
+ 517:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #endif/* (IR_LEFT_Timer_UsingFixedFunction) */
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 18
+
+
+ 518:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 519:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     /* Read the data from the FIFO (or capture register for Fixed Function)*/
+ 520:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #if(IR_LEFT_Timer_UsingFixedFunction)
+ 521:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         return ((uint16)CY_GET_REG16(IR_LEFT_Timer_CAPTURE_LSB_PTR));
+ 522:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #else
+ 523:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         return (CY_GET_REG16(IR_LEFT_Timer_CAPTURE_LSB_PTR));
+ 453              		.loc 1 523 0
+ 454 0008 044B     		ldr	r3, .L36+4
+ 455 000a 1B88     		ldrh	r3, [r3]	@ movhi
+ 456 000c 9BB2     		uxth	r3, r3
+ 524:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #endif /* (IR_LEFT_Timer_UsingFixedFunction) */
+ 525:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** }
+ 457              		.loc 1 525 0
+ 458 000e 1846     		mov	r0, r3
+ 459 0010 BD46     		mov	sp, r7
+ 460              		@ sp needed
+ 461 0012 5DF8047B 		ldr	r7, [sp], #4
+ 462 0016 7047     		bx	lr
+ 463              	.L37:
+ 464              		.align	2
+ 465              	.L36:
+ 466 0018 02640040 		.word	1073767426
+ 467 001c 84680040 		.word	1073768580
+ 468              		.cfi_endproc
+ 469              	.LFE11:
+ 470              		.size	IR_LEFT_Timer_ReadCounter, .-IR_LEFT_Timer_ReadCounter
+ 471              		.section	.text.IR_LEFT_Timer_ClearFIFO,"ax",%progbits
+ 472              		.align	2
+ 473              		.global	IR_LEFT_Timer_ClearFIFO
+ 474              		.thumb
+ 475              		.thumb_func
+ 476              		.type	IR_LEFT_Timer_ClearFIFO, %function
+ 477              	IR_LEFT_Timer_ClearFIFO:
+ 478              	.LFB12:
+ 526:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 527:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 528:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** #if(!IR_LEFT_Timer_UsingFixedFunction) /* UDB Specific Functions */
+ 529:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 530:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     
+ 531:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+ 532:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****  * The functions below this point are only available using the UDB
+ 533:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****  * implementation.  If a feature is selected, then the API is enabled.
+ 534:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****  ******************************************************************************/
+ 535:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 536:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 537:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** #if (IR_LEFT_Timer_SoftwareCaptureMode)
+ 538:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 539:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 540:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+ 541:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Function Name: IR_LEFT_Timer_SetCaptureMode
+ 542:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************
+ 543:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 544:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Summary:
+ 545:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  This function sets the capture mode to either rising or falling edge.
+ 546:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 547:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Parameters:
+ 548:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  captureMode: This parameter sets the capture mode of the UDB capture feature
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 19
+
+
+ 549:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  The parameter values are defined using the
+ 550:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  #define IR_LEFT_Timer__B_TIMER__CM_NONE 0
+ 551:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** #define IR_LEFT_Timer__B_TIMER__CM_RISINGEDGE 1
+ 552:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** #define IR_LEFT_Timer__B_TIMER__CM_FALLINGEDGE 2
+ 553:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** #define IR_LEFT_Timer__B_TIMER__CM_EITHEREDGE 3
+ 554:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** #define IR_LEFT_Timer__B_TIMER__CM_SOFTWARE 4
+ 555:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****  identifiers
+ 556:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  The following are the possible values of the parameter
+ 557:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  IR_LEFT_Timer__B_TIMER__CM_NONE        - Set Capture mode to None
+ 558:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  IR_LEFT_Timer__B_TIMER__CM_RISINGEDGE  - Rising edge of Capture input
+ 559:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  IR_LEFT_Timer__B_TIMER__CM_FALLINGEDGE - Falling edge of Capture input
+ 560:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  IR_LEFT_Timer__B_TIMER__CM_EITHEREDGE  - Either edge of Capture input
+ 561:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 562:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Return:
+ 563:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 564:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 565:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *******************************************************************************/
+ 566:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** void IR_LEFT_Timer_SetCaptureMode(uint8 captureMode) 
+ 567:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** {
+ 568:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     /* This must only set to two bits of the control register associated */
+ 569:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     captureMode = ((uint8)((uint8)captureMode << IR_LEFT_Timer_CTRL_CAP_MODE_SHIFT));
+ 570:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     captureMode &= (IR_LEFT_Timer_CTRL_CAP_MODE_MASK);
+ 571:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 572:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #if (!IR_LEFT_Timer_UDB_CONTROL_REG_REMOVED)
+ 573:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         /* Clear the Current Setting */
+ 574:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_CONTROL &= ((uint8)(~IR_LEFT_Timer_CTRL_CAP_MODE_MASK));
+ 575:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 576:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         /* Write The New Setting */
+ 577:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_CONTROL |= captureMode;
+ 578:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #endif /* (!IR_LEFT_Timer_UDB_CONTROL_REG_REMOVED) */
+ 579:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** }
+ 580:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** #endif /* Remove API if Capture Mode is not Software Controlled */
+ 581:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 582:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 583:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** #if (IR_LEFT_Timer_SoftwareTriggerMode)
+ 584:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 585:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 586:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+ 587:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Function Name: IR_LEFT_Timer_SetTriggerMode
+ 588:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************
+ 589:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 590:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Summary:
+ 591:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  This function sets the trigger input mode
+ 592:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 593:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Parameters:
+ 594:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  triggerMode: Pass one of the pre-defined Trigger Modes (except Software)
+ 595:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #define IR_LEFT_Timer__B_TIMER__TM_NONE 0x00u
+ 596:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #define IR_LEFT_Timer__B_TIMER__TM_RISINGEDGE 0x04u
+ 597:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #define IR_LEFT_Timer__B_TIMER__TM_FALLINGEDGE 0x08u
+ 598:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #define IR_LEFT_Timer__B_TIMER__TM_EITHEREDGE 0x0Cu
+ 599:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #define IR_LEFT_Timer__B_TIMER__TM_SOFTWARE 0x10u
+ 600:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 601:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Return:
+ 602:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 603:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 604:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *******************************************************************************/
+ 605:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** void IR_LEFT_Timer_SetTriggerMode(uint8 triggerMode) 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 20
+
+
+ 606:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** {
+ 607:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     /* This must only set to two bits of the control register associated */
+ 608:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     triggerMode &= IR_LEFT_Timer_CTRL_TRIG_MODE_MASK;
+ 609:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 610:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #if (!IR_LEFT_Timer_UDB_CONTROL_REG_REMOVED)   /* Remove assignment if control register is remo
+ 611:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     
+ 612:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         /* Clear the Current Setting */
+ 613:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_CONTROL &= ((uint8)(~IR_LEFT_Timer_CTRL_TRIG_MODE_MASK));
+ 614:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 615:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         /* Write The New Setting */
+ 616:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_CONTROL |= (triggerMode | IR_LEFT_Timer__B_TIMER__TM_SOFTWARE);
+ 617:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #endif /* Remove code section if control register is not used */
+ 618:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** }
+ 619:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** #endif /* Remove API if Trigger Mode is not Software Controlled */
+ 620:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 621:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** #if (IR_LEFT_Timer_EnableTriggerMode)
+ 622:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 623:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 624:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+ 625:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Function Name: IR_LEFT_Timer_EnableTrigger
+ 626:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************
+ 627:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 628:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Summary:
+ 629:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  Sets the control bit enabling Hardware Trigger mode
+ 630:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 631:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Parameters:
+ 632:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 633:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 634:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Return:
+ 635:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 636:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 637:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *******************************************************************************/
+ 638:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** void IR_LEFT_Timer_EnableTrigger(void) 
+ 639:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** {
+ 640:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #if (!IR_LEFT_Timer_UDB_CONTROL_REG_REMOVED)   /* Remove assignment if control register is remo
+ 641:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_CONTROL |= IR_LEFT_Timer_CTRL_TRIG_EN;
+ 642:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #endif /* Remove code section if control register is not used */
+ 643:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** }
+ 644:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 645:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 646:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+ 647:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Function Name: IR_LEFT_Timer_DisableTrigger
+ 648:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************
+ 649:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 650:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Summary:
+ 651:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  Clears the control bit enabling Hardware Trigger mode
+ 652:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 653:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Parameters:
+ 654:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 655:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 656:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Return:
+ 657:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 658:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 659:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *******************************************************************************/
+ 660:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** void IR_LEFT_Timer_DisableTrigger(void) 
+ 661:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** {
+ 662:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #if (!IR_LEFT_Timer_UDB_CONTROL_REG_REMOVED )   /* Remove assignment if control register is rem
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 21
+
+
+ 663:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_CONTROL &= ((uint8)(~IR_LEFT_Timer_CTRL_TRIG_EN));
+ 664:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #endif /* Remove code section if control register is not used */
+ 665:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** }
+ 666:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** #endif /* Remove API is Trigger Mode is set to None */
+ 667:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 668:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** #if(IR_LEFT_Timer_InterruptOnCaptureCount)
+ 669:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 670:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 671:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+ 672:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Function Name: IR_LEFT_Timer_SetInterruptCount
+ 673:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************
+ 674:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 675:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Summary:
+ 676:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  This function sets the capture count before an interrupt is triggered.
+ 677:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 678:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Parameters:
+ 679:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  interruptCount:  A value between 0 and 3 is valid.  If the value is 0, then
+ 680:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *                   an interrupt will occur each time a capture occurs.
+ 681:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *                   A value of 1 to 3 will cause the interrupt
+ 682:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *                   to delay by the same number of captures.
+ 683:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 684:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Return:
+ 685:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 686:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 687:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *******************************************************************************/
+ 688:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** void IR_LEFT_Timer_SetInterruptCount(uint8 interruptCount) 
+ 689:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** {
+ 690:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     /* This must only set to two bits of the control register associated */
+ 691:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     interruptCount &= IR_LEFT_Timer_CTRL_INTCNT_MASK;
+ 692:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 693:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #if (!IR_LEFT_Timer_UDB_CONTROL_REG_REMOVED)
+ 694:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         /* Clear the Current Setting */
+ 695:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_CONTROL &= ((uint8)(~IR_LEFT_Timer_CTRL_INTCNT_MASK));
+ 696:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         /* Write The New Setting */
+ 697:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         IR_LEFT_Timer_CONTROL |= interruptCount;
+ 698:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     #endif /* (!IR_LEFT_Timer_UDB_CONTROL_REG_REMOVED) */
+ 699:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** }
+ 700:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** #endif /* IR_LEFT_Timer_InterruptOnCaptureCount */
+ 701:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 702:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 703:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** #if (IR_LEFT_Timer_UsingHWCaptureCounter)
+ 704:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 705:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 706:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+ 707:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Function Name: IR_LEFT_Timer_SetCaptureCount
+ 708:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************
+ 709:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 710:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Summary:
+ 711:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  This function sets the capture count
+ 712:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 713:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Parameters:
+ 714:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  captureCount: A value between 2 and 127 inclusive is valid.  A value of 1
+ 715:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *                to 127 will cause the interrupt to delay by the same number of
+ 716:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *                captures.
+ 717:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 718:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Return:
+ 719:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 22
+
+
+ 720:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 721:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *******************************************************************************/
+ 722:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** void IR_LEFT_Timer_SetCaptureCount(uint8 captureCount) 
+ 723:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** {
+ 724:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     IR_LEFT_Timer_CAP_COUNT = captureCount;
+ 725:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** }
+ 726:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 727:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 728:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+ 729:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Function Name: IR_LEFT_Timer_ReadCaptureCount
+ 730:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************
+ 731:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 732:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Summary:
+ 733:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  This function reads the capture count setting
+ 734:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 735:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Parameters:
+ 736:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 737:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 738:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Return:
+ 739:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  Returns the Capture Count Setting
+ 740:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 741:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *******************************************************************************/
+ 742:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** uint8 IR_LEFT_Timer_ReadCaptureCount(void) 
+ 743:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** {
+ 744:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     return ((uint8)IR_LEFT_Timer_CAP_COUNT);
+ 745:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** }
+ 746:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** #endif /* IR_LEFT_Timer_UsingHWCaptureCounter */
+ 747:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 748:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** 
+ 749:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** /*******************************************************************************
+ 750:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Function Name: IR_LEFT_Timer_ClearFIFO
+ 751:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** ********************************************************************************
+ 752:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 753:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Summary:
+ 754:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  This function clears all capture data from the capture FIFO
+ 755:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 756:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Parameters:
+ 757:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 758:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 759:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** * Return:
+ 760:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *  void
+ 761:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *
+ 762:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** *******************************************************************************/
+ 763:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** void IR_LEFT_Timer_ClearFIFO(void) 
+ 764:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** {
+ 479              		.loc 1 764 0
+ 480              		.cfi_startproc
+ 481              		@ args = 0, pretend = 0, frame = 0
+ 482              		@ frame_needed = 1, uses_anonymous_args = 0
+ 483 0000 80B5     		push	{r7, lr}
+ 484              		.cfi_def_cfa_offset 8
+ 485              		.cfi_offset 7, -8
+ 486              		.cfi_offset 14, -4
+ 487 0002 00AF     		add	r7, sp, #0
+ 488              		.cfi_def_cfa_register 7
+ 765:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     while(0u != (IR_LEFT_Timer_ReadStatusRegister() & IR_LEFT_Timer_STATUS_FIFONEMP))
+ 489              		.loc 1 765 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 23
+
+
+ 490 0004 01E0     		b	.L39
+ 491              	.L40:
+ 766:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     {
+ 767:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****         (void)IR_LEFT_Timer_ReadCapture();
+ 492              		.loc 1 767 0
+ 493 0006 FFF7FEFF 		bl	IR_LEFT_Timer_ReadCapture
+ 494              	.L39:
+ 765:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     while(0u != (IR_LEFT_Timer_ReadStatusRegister() & IR_LEFT_Timer_STATUS_FIFONEMP))
+ 495              		.loc 1 765 0 discriminator 1
+ 496 000a FFF7FEFF 		bl	IR_LEFT_Timer_ReadStatusRegister
+ 497 000e 0346     		mov	r3, r0
+ 498 0010 03F00803 		and	r3, r3, #8
+ 499 0014 002B     		cmp	r3, #0
+ 500 0016 F6D1     		bne	.L40
+ 768:.\Generated_Source\PSoC5/IR_LEFT_Timer.c ****     }
+ 769:.\Generated_Source\PSoC5/IR_LEFT_Timer.c **** }
+ 501              		.loc 1 769 0
+ 502 0018 80BD     		pop	{r7, pc}
+ 503              		.cfi_endproc
+ 504              	.LFE12:
+ 505              		.size	IR_LEFT_Timer_ClearFIFO, .-IR_LEFT_Timer_ClearFIFO
+ 506 001a 00BF     		.text
+ 507              	.Letext0:
+ 508              		.file 2 ".\\Generated_Source\\PSoC5\\cytypes.h"
+ 509              		.section	.debug_info,"",%progbits
+ 510              	.Ldebug_info0:
+ 511 0000 12020000 		.4byte	0x212
+ 512 0004 0400     		.2byte	0x4
+ 513 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 514 000a 04       		.byte	0x4
+ 515 000b 01       		.uleb128 0x1
+ 516 000c EF010000 		.4byte	.LASF33
+ 517 0010 01       		.byte	0x1
+ 518 0011 75000000 		.4byte	.LASF34
+ 519 0015 53010000 		.4byte	.LASF35
+ 520 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 521 001d 00000000 		.4byte	0
+ 522 0021 00000000 		.4byte	.Ldebug_line0
+ 523 0025 02       		.uleb128 0x2
+ 524 0026 01       		.byte	0x1
+ 525 0027 06       		.byte	0x6
+ 526 0028 20030000 		.4byte	.LASF0
+ 527 002c 02       		.uleb128 0x2
+ 528 002d 01       		.byte	0x1
+ 529 002e 08       		.byte	0x8
+ 530 002f C3000000 		.4byte	.LASF1
+ 531 0033 02       		.uleb128 0x2
+ 532 0034 02       		.byte	0x2
+ 533 0035 05       		.byte	0x5
+ 534 0036 D4020000 		.4byte	.LASF2
+ 535 003a 02       		.uleb128 0x2
+ 536 003b 02       		.byte	0x2
+ 537 003c 07       		.byte	0x7
+ 538 003d 62000000 		.4byte	.LASF3
+ 539 0041 02       		.uleb128 0x2
+ 540 0042 04       		.byte	0x4
+ 541 0043 05       		.byte	0x5
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 24
+
+
+ 542 0044 DE020000 		.4byte	.LASF4
+ 543 0048 02       		.uleb128 0x2
+ 544 0049 04       		.byte	0x4
+ 545 004a 07       		.byte	0x7
+ 546 004b EA000000 		.4byte	.LASF5
+ 547 004f 02       		.uleb128 0x2
+ 548 0050 08       		.byte	0x8
+ 549 0051 05       		.byte	0x5
+ 550 0052 8D020000 		.4byte	.LASF6
+ 551 0056 02       		.uleb128 0x2
+ 552 0057 08       		.byte	0x8
+ 553 0058 07       		.byte	0x7
+ 554 0059 AC000000 		.4byte	.LASF7
+ 555 005d 03       		.uleb128 0x3
+ 556 005e 04       		.byte	0x4
+ 557 005f 05       		.byte	0x5
+ 558 0060 696E7400 		.ascii	"int\000"
+ 559 0064 02       		.uleb128 0x2
+ 560 0065 04       		.byte	0x4
+ 561 0066 07       		.byte	0x7
+ 562 0067 C4010000 		.4byte	.LASF8
+ 563 006b 04       		.uleb128 0x4
+ 564 006c FC000000 		.4byte	.LASF9
+ 565 0070 02       		.byte	0x2
+ 566 0071 B3       		.byte	0xb3
+ 567 0072 2C000000 		.4byte	0x2c
+ 568 0076 04       		.uleb128 0x4
+ 569 0077 BD010000 		.4byte	.LASF10
+ 570 007b 02       		.byte	0x2
+ 571 007c B4       		.byte	0xb4
+ 572 007d 3A000000 		.4byte	0x3a
+ 573 0081 02       		.uleb128 0x2
+ 574 0082 04       		.byte	0x4
+ 575 0083 04       		.byte	0x4
+ 576 0084 9E000000 		.4byte	.LASF11
+ 577 0088 02       		.uleb128 0x2
+ 578 0089 08       		.byte	0x8
+ 579 008a 04       		.byte	0x4
+ 580 008b 4C010000 		.4byte	.LASF12
+ 581 008f 02       		.uleb128 0x2
+ 582 0090 01       		.byte	0x1
+ 583 0091 08       		.byte	0x8
+ 584 0092 06000000 		.4byte	.LASF13
+ 585 0096 05       		.uleb128 0x5
+ 586 0097 D1000000 		.4byte	.LASF14
+ 587 009b 02       		.byte	0x2
+ 588 009c 5D01     		.2byte	0x15d
+ 589 009e A2000000 		.4byte	0xa2
+ 590 00a2 06       		.uleb128 0x6
+ 591 00a3 6B000000 		.4byte	0x6b
+ 592 00a7 05       		.uleb128 0x5
+ 593 00a8 00000000 		.4byte	.LASF15
+ 594 00ac 02       		.byte	0x2
+ 595 00ad 5E01     		.2byte	0x15e
+ 596 00af B3000000 		.4byte	0xb3
+ 597 00b3 06       		.uleb128 0x6
+ 598 00b4 76000000 		.4byte	0x76
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 25
+
+
+ 599 00b8 02       		.uleb128 0x2
+ 600 00b9 04       		.byte	0x4
+ 601 00ba 07       		.byte	0x7
+ 602 00bb 84020000 		.4byte	.LASF16
+ 603 00bf 07       		.uleb128 0x7
+ 604 00c0 02010000 		.4byte	.LASF20
+ 605 00c4 01       		.byte	0x1
+ 606 00c5 2B       		.byte	0x2b
+ 607 00c6 00000000 		.4byte	.LFB0
+ 608 00ca 4C000000 		.4byte	.LFE0-.LFB0
+ 609 00ce 01       		.uleb128 0x1
+ 610 00cf 9C       		.byte	0x9c
+ 611 00d0 E3000000 		.4byte	0xe3
+ 612 00d4 08       		.uleb128 0x8
+ 613 00d5 15010000 		.4byte	.LASF36
+ 614 00d9 01       		.byte	0x1
+ 615 00da 2F       		.byte	0x2f
+ 616 00db 6B000000 		.4byte	0x6b
+ 617 00df 02       		.uleb128 0x2
+ 618 00e0 91       		.byte	0x91
+ 619 00e1 77       		.sleb128 -9
+ 620 00e2 00       		.byte	0
+ 621 00e3 09       		.uleb128 0x9
+ 622 00e4 0B000000 		.4byte	.LASF17
+ 623 00e8 01       		.byte	0x1
+ 624 00e9 B4       		.byte	0xb4
+ 625 00ea 00000000 		.4byte	.LFB1
+ 626 00ee 0C000000 		.4byte	.LFE1-.LFB1
+ 627 00f2 01       		.uleb128 0x1
+ 628 00f3 9C       		.byte	0x9c
+ 629 00f4 0A       		.uleb128 0xa
+ 630 00f5 D6000000 		.4byte	.LASF18
+ 631 00f9 01       		.byte	0x1
+ 632 00fa D7       		.byte	0xd7
+ 633 00fb 00000000 		.4byte	.LFB2
+ 634 00ff 20000000 		.4byte	.LFE2-.LFB2
+ 635 0103 01       		.uleb128 0x1
+ 636 0104 9C       		.byte	0x9c
+ 637 0105 09       		.uleb128 0x9
+ 638 0106 A9020000 		.4byte	.LASF19
+ 639 010a 01       		.byte	0x1
+ 640 010b F7       		.byte	0xf7
+ 641 010c 00000000 		.4byte	.LFB3
+ 642 0110 0C000000 		.4byte	.LFE3-.LFB3
+ 643 0114 01       		.uleb128 0x1
+ 644 0115 9C       		.byte	0x9c
+ 645 0116 0B       		.uleb128 0xb
+ 646 0117 01030000 		.4byte	.LASF21
+ 647 011b 01       		.byte	0x1
+ 648 011c 1701     		.2byte	0x117
+ 649 011e 00000000 		.4byte	.LFB4
+ 650 0122 20000000 		.4byte	.LFE4-.LFB4
+ 651 0126 01       		.uleb128 0x1
+ 652 0127 9C       		.byte	0x9c
+ 653 0128 3C010000 		.4byte	0x13c
+ 654 012c 0C       		.uleb128 0xc
+ 655 012d 9B020000 		.4byte	.LASF26
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 26
+
+
+ 656 0131 01       		.byte	0x1
+ 657 0132 1701     		.2byte	0x117
+ 658 0134 6B000000 		.4byte	0x6b
+ 659 0138 02       		.uleb128 0x2
+ 660 0139 91       		.byte	0x91
+ 661 013a 77       		.sleb128 -9
+ 662 013b 00       		.byte	0
+ 663 013c 0D       		.uleb128 0xd
+ 664 013d D1010000 		.4byte	.LASF22
+ 665 0141 01       		.byte	0x1
+ 666 0142 2E01     		.2byte	0x12e
+ 667 0144 00000000 		.4byte	.LFB5
+ 668 0148 14000000 		.4byte	.LFE5-.LFB5
+ 669 014c 01       		.uleb128 0x1
+ 670 014d 9C       		.byte	0x9c
+ 671 014e 0E       		.uleb128 0xe
+ 672 014f 3A000000 		.4byte	.LASF23
+ 673 0153 01       		.byte	0x1
+ 674 0154 4D01     		.2byte	0x14d
+ 675 0156 6B000000 		.4byte	0x6b
+ 676 015a 00000000 		.4byte	.LFB6
+ 677 015e 18000000 		.4byte	.LFE6-.LFB6
+ 678 0162 01       		.uleb128 0x1
+ 679 0163 9C       		.byte	0x9c
+ 680 0164 0E       		.uleb128 0xe
+ 681 0165 6B020000 		.4byte	.LASF24
+ 682 0169 01       		.byte	0x1
+ 683 016a 9501     		.2byte	0x195
+ 684 016c 76000000 		.4byte	0x76
+ 685 0170 00000000 		.4byte	.LFB7
+ 686 0174 18000000 		.4byte	.LFE7-.LFB7
+ 687 0178 01       		.uleb128 0x1
+ 688 0179 9C       		.byte	0x9c
+ 689 017a 0B       		.uleb128 0xb
+ 690 017b 32010000 		.4byte	.LASF25
+ 691 017f 01       		.byte	0x1
+ 692 0180 AF01     		.2byte	0x1af
+ 693 0182 00000000 		.4byte	.LFB8
+ 694 0186 20000000 		.4byte	.LFE8-.LFB8
+ 695 018a 01       		.uleb128 0x1
+ 696 018b 9C       		.byte	0x9c
+ 697 018c A0010000 		.4byte	0x1a0
+ 698 0190 0C       		.uleb128 0xc
+ 699 0191 5B000000 		.4byte	.LASF27
+ 700 0195 01       		.byte	0x1
+ 701 0196 AF01     		.2byte	0x1af
+ 702 0198 76000000 		.4byte	0x76
+ 703 019c 02       		.uleb128 0x2
+ 704 019d 91       		.byte	0x91
+ 705 019e 76       		.sleb128 -10
+ 706 019f 00       		.byte	0
+ 707 01a0 0E       		.uleb128 0xe
+ 708 01a1 E7020000 		.4byte	.LASF28
+ 709 01a5 01       		.byte	0x1
+ 710 01a6 C801     		.2byte	0x1c8
+ 711 01a8 76000000 		.4byte	0x76
+ 712 01ac 00000000 		.4byte	.LFB9
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 27
+
+
+ 713 01b0 18000000 		.4byte	.LFE9-.LFB9
+ 714 01b4 01       		.uleb128 0x1
+ 715 01b5 9C       		.byte	0x9c
+ 716 01b6 0B       		.uleb128 0xb
+ 717 01b7 A2010000 		.4byte	.LASF29
+ 718 01bb 01       		.byte	0x1
+ 719 01bc E001     		.2byte	0x1e0
+ 720 01be 00000000 		.4byte	.LFB10
+ 721 01c2 20000000 		.4byte	.LFE10-.LFB10
+ 722 01c6 01       		.uleb128 0x1
+ 723 01c7 9C       		.byte	0x9c
+ 724 01c8 DC010000 		.4byte	0x1dc
+ 725 01cc 0C       		.uleb128 0xc
+ 726 01cd A4000000 		.4byte	.LASF30
+ 727 01d1 01       		.byte	0x1
+ 728 01d2 E001     		.2byte	0x1e0
+ 729 01d4 76000000 		.4byte	0x76
+ 730 01d8 02       		.uleb128 0x2
+ 731 01d9 91       		.byte	0x91
+ 732 01da 76       		.sleb128 -10
+ 733 01db 00       		.byte	0
+ 734 01dc 0E       		.uleb128 0xe
+ 735 01dd 20000000 		.4byte	.LASF31
+ 736 01e1 01       		.byte	0x1
+ 737 01e2 FC01     		.2byte	0x1fc
+ 738 01e4 76000000 		.4byte	0x76
+ 739 01e8 00000000 		.4byte	.LFB11
+ 740 01ec 20000000 		.4byte	.LFE11-.LFB11
+ 741 01f0 01       		.uleb128 0x1
+ 742 01f1 9C       		.byte	0x9c
+ 743 01f2 0F       		.uleb128 0xf
+ 744 01f3 BC020000 		.4byte	.LASF32
+ 745 01f7 01       		.byte	0x1
+ 746 01f8 FB02     		.2byte	0x2fb
+ 747 01fa 00000000 		.4byte	.LFB12
+ 748 01fe 1A000000 		.4byte	.LFE12-.LFB12
+ 749 0202 01       		.uleb128 0x1
+ 750 0203 9C       		.byte	0x9c
+ 751 0204 10       		.uleb128 0x10
+ 752 0205 2C030000 		.4byte	.LASF37
+ 753 0209 01       		.byte	0x1
+ 754 020a 1A       		.byte	0x1a
+ 755 020b 6B000000 		.4byte	0x6b
+ 756 020f 05       		.uleb128 0x5
+ 757 0210 03       		.byte	0x3
+ 758 0211 00000000 		.4byte	IR_LEFT_Timer_initVar
+ 759 0215 00       		.byte	0
+ 760              		.section	.debug_abbrev,"",%progbits
+ 761              	.Ldebug_abbrev0:
+ 762 0000 01       		.uleb128 0x1
+ 763 0001 11       		.uleb128 0x11
+ 764 0002 01       		.byte	0x1
+ 765 0003 25       		.uleb128 0x25
+ 766 0004 0E       		.uleb128 0xe
+ 767 0005 13       		.uleb128 0x13
+ 768 0006 0B       		.uleb128 0xb
+ 769 0007 03       		.uleb128 0x3
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 28
+
+
+ 770 0008 0E       		.uleb128 0xe
+ 771 0009 1B       		.uleb128 0x1b
+ 772 000a 0E       		.uleb128 0xe
+ 773 000b 55       		.uleb128 0x55
+ 774 000c 17       		.uleb128 0x17
+ 775 000d 11       		.uleb128 0x11
+ 776 000e 01       		.uleb128 0x1
+ 777 000f 10       		.uleb128 0x10
+ 778 0010 17       		.uleb128 0x17
+ 779 0011 00       		.byte	0
+ 780 0012 00       		.byte	0
+ 781 0013 02       		.uleb128 0x2
+ 782 0014 24       		.uleb128 0x24
+ 783 0015 00       		.byte	0
+ 784 0016 0B       		.uleb128 0xb
+ 785 0017 0B       		.uleb128 0xb
+ 786 0018 3E       		.uleb128 0x3e
+ 787 0019 0B       		.uleb128 0xb
+ 788 001a 03       		.uleb128 0x3
+ 789 001b 0E       		.uleb128 0xe
+ 790 001c 00       		.byte	0
+ 791 001d 00       		.byte	0
+ 792 001e 03       		.uleb128 0x3
+ 793 001f 24       		.uleb128 0x24
+ 794 0020 00       		.byte	0
+ 795 0021 0B       		.uleb128 0xb
+ 796 0022 0B       		.uleb128 0xb
+ 797 0023 3E       		.uleb128 0x3e
+ 798 0024 0B       		.uleb128 0xb
+ 799 0025 03       		.uleb128 0x3
+ 800 0026 08       		.uleb128 0x8
+ 801 0027 00       		.byte	0
+ 802 0028 00       		.byte	0
+ 803 0029 04       		.uleb128 0x4
+ 804 002a 16       		.uleb128 0x16
+ 805 002b 00       		.byte	0
+ 806 002c 03       		.uleb128 0x3
+ 807 002d 0E       		.uleb128 0xe
+ 808 002e 3A       		.uleb128 0x3a
+ 809 002f 0B       		.uleb128 0xb
+ 810 0030 3B       		.uleb128 0x3b
+ 811 0031 0B       		.uleb128 0xb
+ 812 0032 49       		.uleb128 0x49
+ 813 0033 13       		.uleb128 0x13
+ 814 0034 00       		.byte	0
+ 815 0035 00       		.byte	0
+ 816 0036 05       		.uleb128 0x5
+ 817 0037 16       		.uleb128 0x16
+ 818 0038 00       		.byte	0
+ 819 0039 03       		.uleb128 0x3
+ 820 003a 0E       		.uleb128 0xe
+ 821 003b 3A       		.uleb128 0x3a
+ 822 003c 0B       		.uleb128 0xb
+ 823 003d 3B       		.uleb128 0x3b
+ 824 003e 05       		.uleb128 0x5
+ 825 003f 49       		.uleb128 0x49
+ 826 0040 13       		.uleb128 0x13
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 29
+
+
+ 827 0041 00       		.byte	0
+ 828 0042 00       		.byte	0
+ 829 0043 06       		.uleb128 0x6
+ 830 0044 35       		.uleb128 0x35
+ 831 0045 00       		.byte	0
+ 832 0046 49       		.uleb128 0x49
+ 833 0047 13       		.uleb128 0x13
+ 834 0048 00       		.byte	0
+ 835 0049 00       		.byte	0
+ 836 004a 07       		.uleb128 0x7
+ 837 004b 2E       		.uleb128 0x2e
+ 838 004c 01       		.byte	0x1
+ 839 004d 3F       		.uleb128 0x3f
+ 840 004e 19       		.uleb128 0x19
+ 841 004f 03       		.uleb128 0x3
+ 842 0050 0E       		.uleb128 0xe
+ 843 0051 3A       		.uleb128 0x3a
+ 844 0052 0B       		.uleb128 0xb
+ 845 0053 3B       		.uleb128 0x3b
+ 846 0054 0B       		.uleb128 0xb
+ 847 0055 27       		.uleb128 0x27
+ 848 0056 19       		.uleb128 0x19
+ 849 0057 11       		.uleb128 0x11
+ 850 0058 01       		.uleb128 0x1
+ 851 0059 12       		.uleb128 0x12
+ 852 005a 06       		.uleb128 0x6
+ 853 005b 40       		.uleb128 0x40
+ 854 005c 18       		.uleb128 0x18
+ 855 005d 9642     		.uleb128 0x2116
+ 856 005f 19       		.uleb128 0x19
+ 857 0060 01       		.uleb128 0x1
+ 858 0061 13       		.uleb128 0x13
+ 859 0062 00       		.byte	0
+ 860 0063 00       		.byte	0
+ 861 0064 08       		.uleb128 0x8
+ 862 0065 34       		.uleb128 0x34
+ 863 0066 00       		.byte	0
+ 864 0067 03       		.uleb128 0x3
+ 865 0068 0E       		.uleb128 0xe
+ 866 0069 3A       		.uleb128 0x3a
+ 867 006a 0B       		.uleb128 0xb
+ 868 006b 3B       		.uleb128 0x3b
+ 869 006c 0B       		.uleb128 0xb
+ 870 006d 49       		.uleb128 0x49
+ 871 006e 13       		.uleb128 0x13
+ 872 006f 02       		.uleb128 0x2
+ 873 0070 18       		.uleb128 0x18
+ 874 0071 00       		.byte	0
+ 875 0072 00       		.byte	0
+ 876 0073 09       		.uleb128 0x9
+ 877 0074 2E       		.uleb128 0x2e
+ 878 0075 00       		.byte	0
+ 879 0076 3F       		.uleb128 0x3f
+ 880 0077 19       		.uleb128 0x19
+ 881 0078 03       		.uleb128 0x3
+ 882 0079 0E       		.uleb128 0xe
+ 883 007a 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 30
+
+
+ 884 007b 0B       		.uleb128 0xb
+ 885 007c 3B       		.uleb128 0x3b
+ 886 007d 0B       		.uleb128 0xb
+ 887 007e 27       		.uleb128 0x27
+ 888 007f 19       		.uleb128 0x19
+ 889 0080 11       		.uleb128 0x11
+ 890 0081 01       		.uleb128 0x1
+ 891 0082 12       		.uleb128 0x12
+ 892 0083 06       		.uleb128 0x6
+ 893 0084 40       		.uleb128 0x40
+ 894 0085 18       		.uleb128 0x18
+ 895 0086 9742     		.uleb128 0x2117
+ 896 0088 19       		.uleb128 0x19
+ 897 0089 00       		.byte	0
+ 898 008a 00       		.byte	0
+ 899 008b 0A       		.uleb128 0xa
+ 900 008c 2E       		.uleb128 0x2e
+ 901 008d 00       		.byte	0
+ 902 008e 3F       		.uleb128 0x3f
+ 903 008f 19       		.uleb128 0x19
+ 904 0090 03       		.uleb128 0x3
+ 905 0091 0E       		.uleb128 0xe
+ 906 0092 3A       		.uleb128 0x3a
+ 907 0093 0B       		.uleb128 0xb
+ 908 0094 3B       		.uleb128 0x3b
+ 909 0095 0B       		.uleb128 0xb
+ 910 0096 27       		.uleb128 0x27
+ 911 0097 19       		.uleb128 0x19
+ 912 0098 11       		.uleb128 0x11
+ 913 0099 01       		.uleb128 0x1
+ 914 009a 12       		.uleb128 0x12
+ 915 009b 06       		.uleb128 0x6
+ 916 009c 40       		.uleb128 0x40
+ 917 009d 18       		.uleb128 0x18
+ 918 009e 9642     		.uleb128 0x2116
+ 919 00a0 19       		.uleb128 0x19
+ 920 00a1 00       		.byte	0
+ 921 00a2 00       		.byte	0
+ 922 00a3 0B       		.uleb128 0xb
+ 923 00a4 2E       		.uleb128 0x2e
+ 924 00a5 01       		.byte	0x1
+ 925 00a6 3F       		.uleb128 0x3f
+ 926 00a7 19       		.uleb128 0x19
+ 927 00a8 03       		.uleb128 0x3
+ 928 00a9 0E       		.uleb128 0xe
+ 929 00aa 3A       		.uleb128 0x3a
+ 930 00ab 0B       		.uleb128 0xb
+ 931 00ac 3B       		.uleb128 0x3b
+ 932 00ad 05       		.uleb128 0x5
+ 933 00ae 27       		.uleb128 0x27
+ 934 00af 19       		.uleb128 0x19
+ 935 00b0 11       		.uleb128 0x11
+ 936 00b1 01       		.uleb128 0x1
+ 937 00b2 12       		.uleb128 0x12
+ 938 00b3 06       		.uleb128 0x6
+ 939 00b4 40       		.uleb128 0x40
+ 940 00b5 18       		.uleb128 0x18
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 31
+
+
+ 941 00b6 9742     		.uleb128 0x2117
+ 942 00b8 19       		.uleb128 0x19
+ 943 00b9 01       		.uleb128 0x1
+ 944 00ba 13       		.uleb128 0x13
+ 945 00bb 00       		.byte	0
+ 946 00bc 00       		.byte	0
+ 947 00bd 0C       		.uleb128 0xc
+ 948 00be 05       		.uleb128 0x5
+ 949 00bf 00       		.byte	0
+ 950 00c0 03       		.uleb128 0x3
+ 951 00c1 0E       		.uleb128 0xe
+ 952 00c2 3A       		.uleb128 0x3a
+ 953 00c3 0B       		.uleb128 0xb
+ 954 00c4 3B       		.uleb128 0x3b
+ 955 00c5 05       		.uleb128 0x5
+ 956 00c6 49       		.uleb128 0x49
+ 957 00c7 13       		.uleb128 0x13
+ 958 00c8 02       		.uleb128 0x2
+ 959 00c9 18       		.uleb128 0x18
+ 960 00ca 00       		.byte	0
+ 961 00cb 00       		.byte	0
+ 962 00cc 0D       		.uleb128 0xd
+ 963 00cd 2E       		.uleb128 0x2e
+ 964 00ce 00       		.byte	0
+ 965 00cf 3F       		.uleb128 0x3f
+ 966 00d0 19       		.uleb128 0x19
+ 967 00d1 03       		.uleb128 0x3
+ 968 00d2 0E       		.uleb128 0xe
+ 969 00d3 3A       		.uleb128 0x3a
+ 970 00d4 0B       		.uleb128 0xb
+ 971 00d5 3B       		.uleb128 0x3b
+ 972 00d6 05       		.uleb128 0x5
+ 973 00d7 27       		.uleb128 0x27
+ 974 00d8 19       		.uleb128 0x19
+ 975 00d9 11       		.uleb128 0x11
+ 976 00da 01       		.uleb128 0x1
+ 977 00db 12       		.uleb128 0x12
+ 978 00dc 06       		.uleb128 0x6
+ 979 00dd 40       		.uleb128 0x40
+ 980 00de 18       		.uleb128 0x18
+ 981 00df 9742     		.uleb128 0x2117
+ 982 00e1 19       		.uleb128 0x19
+ 983 00e2 00       		.byte	0
+ 984 00e3 00       		.byte	0
+ 985 00e4 0E       		.uleb128 0xe
+ 986 00e5 2E       		.uleb128 0x2e
+ 987 00e6 00       		.byte	0
+ 988 00e7 3F       		.uleb128 0x3f
+ 989 00e8 19       		.uleb128 0x19
+ 990 00e9 03       		.uleb128 0x3
+ 991 00ea 0E       		.uleb128 0xe
+ 992 00eb 3A       		.uleb128 0x3a
+ 993 00ec 0B       		.uleb128 0xb
+ 994 00ed 3B       		.uleb128 0x3b
+ 995 00ee 05       		.uleb128 0x5
+ 996 00ef 27       		.uleb128 0x27
+ 997 00f0 19       		.uleb128 0x19
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 32
+
+
+ 998 00f1 49       		.uleb128 0x49
+ 999 00f2 13       		.uleb128 0x13
+ 1000 00f3 11       		.uleb128 0x11
+ 1001 00f4 01       		.uleb128 0x1
+ 1002 00f5 12       		.uleb128 0x12
+ 1003 00f6 06       		.uleb128 0x6
+ 1004 00f7 40       		.uleb128 0x40
+ 1005 00f8 18       		.uleb128 0x18
+ 1006 00f9 9742     		.uleb128 0x2117
+ 1007 00fb 19       		.uleb128 0x19
+ 1008 00fc 00       		.byte	0
+ 1009 00fd 00       		.byte	0
+ 1010 00fe 0F       		.uleb128 0xf
+ 1011 00ff 2E       		.uleb128 0x2e
+ 1012 0100 00       		.byte	0
+ 1013 0101 3F       		.uleb128 0x3f
+ 1014 0102 19       		.uleb128 0x19
+ 1015 0103 03       		.uleb128 0x3
+ 1016 0104 0E       		.uleb128 0xe
+ 1017 0105 3A       		.uleb128 0x3a
+ 1018 0106 0B       		.uleb128 0xb
+ 1019 0107 3B       		.uleb128 0x3b
+ 1020 0108 05       		.uleb128 0x5
+ 1021 0109 27       		.uleb128 0x27
+ 1022 010a 19       		.uleb128 0x19
+ 1023 010b 11       		.uleb128 0x11
+ 1024 010c 01       		.uleb128 0x1
+ 1025 010d 12       		.uleb128 0x12
+ 1026 010e 06       		.uleb128 0x6
+ 1027 010f 40       		.uleb128 0x40
+ 1028 0110 18       		.uleb128 0x18
+ 1029 0111 9642     		.uleb128 0x2116
+ 1030 0113 19       		.uleb128 0x19
+ 1031 0114 00       		.byte	0
+ 1032 0115 00       		.byte	0
+ 1033 0116 10       		.uleb128 0x10
+ 1034 0117 34       		.uleb128 0x34
+ 1035 0118 00       		.byte	0
+ 1036 0119 03       		.uleb128 0x3
+ 1037 011a 0E       		.uleb128 0xe
+ 1038 011b 3A       		.uleb128 0x3a
+ 1039 011c 0B       		.uleb128 0xb
+ 1040 011d 3B       		.uleb128 0x3b
+ 1041 011e 0B       		.uleb128 0xb
+ 1042 011f 49       		.uleb128 0x49
+ 1043 0120 13       		.uleb128 0x13
+ 1044 0121 3F       		.uleb128 0x3f
+ 1045 0122 19       		.uleb128 0x19
+ 1046 0123 02       		.uleb128 0x2
+ 1047 0124 18       		.uleb128 0x18
+ 1048 0125 00       		.byte	0
+ 1049 0126 00       		.byte	0
+ 1050 0127 00       		.byte	0
+ 1051              		.section	.debug_aranges,"",%progbits
+ 1052 0000 7C000000 		.4byte	0x7c
+ 1053 0004 0200     		.2byte	0x2
+ 1054 0006 00000000 		.4byte	.Ldebug_info0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 33
+
+
+ 1055 000a 04       		.byte	0x4
+ 1056 000b 00       		.byte	0
+ 1057 000c 0000     		.2byte	0
+ 1058 000e 0000     		.2byte	0
+ 1059 0010 00000000 		.4byte	.LFB0
+ 1060 0014 4C000000 		.4byte	.LFE0-.LFB0
+ 1061 0018 00000000 		.4byte	.LFB1
+ 1062 001c 0C000000 		.4byte	.LFE1-.LFB1
+ 1063 0020 00000000 		.4byte	.LFB2
+ 1064 0024 20000000 		.4byte	.LFE2-.LFB2
+ 1065 0028 00000000 		.4byte	.LFB3
+ 1066 002c 0C000000 		.4byte	.LFE3-.LFB3
+ 1067 0030 00000000 		.4byte	.LFB4
+ 1068 0034 20000000 		.4byte	.LFE4-.LFB4
+ 1069 0038 00000000 		.4byte	.LFB5
+ 1070 003c 14000000 		.4byte	.LFE5-.LFB5
+ 1071 0040 00000000 		.4byte	.LFB6
+ 1072 0044 18000000 		.4byte	.LFE6-.LFB6
+ 1073 0048 00000000 		.4byte	.LFB7
+ 1074 004c 18000000 		.4byte	.LFE7-.LFB7
+ 1075 0050 00000000 		.4byte	.LFB8
+ 1076 0054 20000000 		.4byte	.LFE8-.LFB8
+ 1077 0058 00000000 		.4byte	.LFB9
+ 1078 005c 18000000 		.4byte	.LFE9-.LFB9
+ 1079 0060 00000000 		.4byte	.LFB10
+ 1080 0064 20000000 		.4byte	.LFE10-.LFB10
+ 1081 0068 00000000 		.4byte	.LFB11
+ 1082 006c 20000000 		.4byte	.LFE11-.LFB11
+ 1083 0070 00000000 		.4byte	.LFB12
+ 1084 0074 1A000000 		.4byte	.LFE12-.LFB12
+ 1085 0078 00000000 		.4byte	0
+ 1086 007c 00000000 		.4byte	0
+ 1087              		.section	.debug_ranges,"",%progbits
+ 1088              	.Ldebug_ranges0:
+ 1089 0000 00000000 		.4byte	.LFB0
+ 1090 0004 4C000000 		.4byte	.LFE0
+ 1091 0008 00000000 		.4byte	.LFB1
+ 1092 000c 0C000000 		.4byte	.LFE1
+ 1093 0010 00000000 		.4byte	.LFB2
+ 1094 0014 20000000 		.4byte	.LFE2
+ 1095 0018 00000000 		.4byte	.LFB3
+ 1096 001c 0C000000 		.4byte	.LFE3
+ 1097 0020 00000000 		.4byte	.LFB4
+ 1098 0024 20000000 		.4byte	.LFE4
+ 1099 0028 00000000 		.4byte	.LFB5
+ 1100 002c 14000000 		.4byte	.LFE5
+ 1101 0030 00000000 		.4byte	.LFB6
+ 1102 0034 18000000 		.4byte	.LFE6
+ 1103 0038 00000000 		.4byte	.LFB7
+ 1104 003c 18000000 		.4byte	.LFE7
+ 1105 0040 00000000 		.4byte	.LFB8
+ 1106 0044 20000000 		.4byte	.LFE8
+ 1107 0048 00000000 		.4byte	.LFB9
+ 1108 004c 18000000 		.4byte	.LFE9
+ 1109 0050 00000000 		.4byte	.LFB10
+ 1110 0054 20000000 		.4byte	.LFE10
+ 1111 0058 00000000 		.4byte	.LFB11
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 34
+
+
+ 1112 005c 20000000 		.4byte	.LFE11
+ 1113 0060 00000000 		.4byte	.LFB12
+ 1114 0064 1A000000 		.4byte	.LFE12
+ 1115 0068 00000000 		.4byte	0
+ 1116 006c 00000000 		.4byte	0
+ 1117              		.section	.debug_line,"",%progbits
+ 1118              	.Ldebug_line0:
+ 1119 0000 54010000 		.section	.debug_str,"MS",%progbits,1
+ 1119      02004C00 
+ 1119      00000201 
+ 1119      FB0E0D00 
+ 1119      01010101 
+ 1120              	.LASF15:
+ 1121 0000 72656731 		.ascii	"reg16\000"
+ 1121      3600
+ 1122              	.LASF13:
+ 1123 0006 63686172 		.ascii	"char\000"
+ 1123      00
+ 1124              	.LASF17:
+ 1125 000b 49525F4C 		.ascii	"IR_LEFT_Timer_Enable\000"
+ 1125      4546545F 
+ 1125      54696D65 
+ 1125      725F456E 
+ 1125      61626C65 
+ 1126              	.LASF31:
+ 1127 0020 49525F4C 		.ascii	"IR_LEFT_Timer_ReadCounter\000"
+ 1127      4546545F 
+ 1127      54696D65 
+ 1127      725F5265 
+ 1127      6164436F 
+ 1128              	.LASF23:
+ 1129 003a 49525F4C 		.ascii	"IR_LEFT_Timer_ReadStatusRegister\000"
+ 1129      4546545F 
+ 1129      54696D65 
+ 1129      725F5265 
+ 1129      61645374 
+ 1130              	.LASF27:
+ 1131 005b 70657269 		.ascii	"period\000"
+ 1131      6F6400
+ 1132              	.LASF3:
+ 1133 0062 73686F72 		.ascii	"short unsigned int\000"
+ 1133      7420756E 
+ 1133      7369676E 
+ 1133      65642069 
+ 1133      6E7400
+ 1134              	.LASF34:
+ 1135 0075 2E5C4765 		.ascii	".\\Generated_Source\\PSoC5\\IR_LEFT_Timer.c\000"
+ 1135      6E657261 
+ 1135      7465645F 
+ 1135      536F7572 
+ 1135      63655C50 
+ 1136              	.LASF11:
+ 1137 009e 666C6F61 		.ascii	"float\000"
+ 1137      7400
+ 1138              	.LASF30:
+ 1139 00a4 636F756E 		.ascii	"counter\000"
+ 1139      74657200 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 35
+
+
+ 1140              	.LASF7:
+ 1141 00ac 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1141      206C6F6E 
+ 1141      6720756E 
+ 1141      7369676E 
+ 1141      65642069 
+ 1142              	.LASF1:
+ 1143 00c3 756E7369 		.ascii	"unsigned char\000"
+ 1143      676E6564 
+ 1143      20636861 
+ 1143      7200
+ 1144              	.LASF14:
+ 1145 00d1 72656738 		.ascii	"reg8\000"
+ 1145      00
+ 1146              	.LASF18:
+ 1147 00d6 49525F4C 		.ascii	"IR_LEFT_Timer_Start\000"
+ 1147      4546545F 
+ 1147      54696D65 
+ 1147      725F5374 
+ 1147      61727400 
+ 1148              	.LASF5:
+ 1149 00ea 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1149      20756E73 
+ 1149      69676E65 
+ 1149      6420696E 
+ 1149      7400
+ 1150              	.LASF9:
+ 1151 00fc 75696E74 		.ascii	"uint8\000"
+ 1151      3800
+ 1152              	.LASF20:
+ 1153 0102 49525F4C 		.ascii	"IR_LEFT_Timer_Init\000"
+ 1153      4546545F 
+ 1153      54696D65 
+ 1153      725F496E 
+ 1153      697400
+ 1154              	.LASF36:
+ 1155 0115 49525F4C 		.ascii	"IR_LEFT_Timer_interruptState\000"
+ 1155      4546545F 
+ 1155      54696D65 
+ 1155      725F696E 
+ 1155      74657272 
+ 1156              	.LASF25:
+ 1157 0132 49525F4C 		.ascii	"IR_LEFT_Timer_WritePeriod\000"
+ 1157      4546545F 
+ 1157      54696D65 
+ 1157      725F5772 
+ 1157      69746550 
+ 1158              	.LASF12:
+ 1159 014c 646F7562 		.ascii	"double\000"
+ 1159      6C6500
+ 1160              	.LASF35:
+ 1161 0153 433A5C55 		.ascii	"C:\\Users\\xavieran\\Desktop\\ECE3091\\PSOCProjects"
+ 1161      73657273 
+ 1161      5C786176 
+ 1161      69657261 
+ 1161      6E5C4465 
+ 1162 0181 5C454E47 		.ascii	"\\ENG3091_MandM\\camera_test.cydsn\000"
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 36
+
+
+ 1162      33303931 
+ 1162      5F4D616E 
+ 1162      644D5C63 
+ 1162      616D6572 
+ 1163              	.LASF29:
+ 1164 01a2 49525F4C 		.ascii	"IR_LEFT_Timer_WriteCounter\000"
+ 1164      4546545F 
+ 1164      54696D65 
+ 1164      725F5772 
+ 1164      69746543 
+ 1165              	.LASF10:
+ 1166 01bd 75696E74 		.ascii	"uint16\000"
+ 1166      313600
+ 1167              	.LASF8:
+ 1168 01c4 756E7369 		.ascii	"unsigned int\000"
+ 1168      676E6564 
+ 1168      20696E74 
+ 1168      00
+ 1169              	.LASF22:
+ 1170 01d1 49525F4C 		.ascii	"IR_LEFT_Timer_SoftwareCapture\000"
+ 1170      4546545F 
+ 1170      54696D65 
+ 1170      725F536F 
+ 1170      66747761 
+ 1171              	.LASF33:
+ 1172 01ef 474E5520 		.ascii	"GNU C 4.8.4 20140526 (release) [ARM/embedded-4_8-br"
+ 1172      4320342E 
+ 1172      382E3420 
+ 1172      32303134 
+ 1172      30353236 
+ 1173 0222 616E6368 		.ascii	"anch revision 211358] -mcpu=cortex-m3 -mthumb -g -O"
+ 1173      20726576 
+ 1173      6973696F 
+ 1173      6E203231 
+ 1173      31333538 
+ 1174 0255 30202D66 		.ascii	"0 -ffunction-sections\000"
+ 1174      66756E63 
+ 1174      74696F6E 
+ 1174      2D736563 
+ 1174      74696F6E 
+ 1175              	.LASF24:
+ 1176 026b 49525F4C 		.ascii	"IR_LEFT_Timer_ReadPeriod\000"
+ 1176      4546545F 
+ 1176      54696D65 
+ 1176      725F5265 
+ 1176      61645065 
+ 1177              	.LASF16:
+ 1178 0284 73697A65 		.ascii	"sizetype\000"
+ 1178      74797065 
+ 1178      00
+ 1179              	.LASF6:
+ 1180 028d 6C6F6E67 		.ascii	"long long int\000"
+ 1180      206C6F6E 
+ 1180      6720696E 
+ 1180      7400
+ 1181              	.LASF26:
+ 1182 029b 696E7465 		.ascii	"interruptMode\000"
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccN6yOjc.s 			page 37
+
+
+ 1182      72727570 
+ 1182      744D6F64 
+ 1182      6500
+ 1183              	.LASF19:
+ 1184 02a9 49525F4C 		.ascii	"IR_LEFT_Timer_Stop\000"
+ 1184      4546545F 
+ 1184      54696D65 
+ 1184      725F5374 
+ 1184      6F7000
+ 1185              	.LASF32:
+ 1186 02bc 49525F4C 		.ascii	"IR_LEFT_Timer_ClearFIFO\000"
+ 1186      4546545F 
+ 1186      54696D65 
+ 1186      725F436C 
+ 1186      65617246 
+ 1187              	.LASF2:
+ 1188 02d4 73686F72 		.ascii	"short int\000"
+ 1188      7420696E 
+ 1188      7400
+ 1189              	.LASF4:
+ 1190 02de 6C6F6E67 		.ascii	"long int\000"
+ 1190      20696E74 
+ 1190      00
+ 1191              	.LASF28:
+ 1192 02e7 49525F4C 		.ascii	"IR_LEFT_Timer_ReadCapture\000"
+ 1192      4546545F 
+ 1192      54696D65 
+ 1192      725F5265 
+ 1192      61644361 
+ 1193              	.LASF21:
+ 1194 0301 49525F4C 		.ascii	"IR_LEFT_Timer_SetInterruptMode\000"
+ 1194      4546545F 
+ 1194      54696D65 
+ 1194      725F5365 
+ 1194      74496E74 
+ 1195              	.LASF0:
+ 1196 0320 7369676E 		.ascii	"signed char\000"
+ 1196      65642063 
+ 1196      68617200 
+ 1197              	.LASF37:
+ 1198 032c 49525F4C 		.ascii	"IR_LEFT_Timer_initVar\000"
+ 1198      4546545F 
+ 1198      54696D65 
+ 1198      725F696E 
+ 1198      69745661 
+ 1199              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.8.4 20140526 (release) [ARM/embedded-4_8-br

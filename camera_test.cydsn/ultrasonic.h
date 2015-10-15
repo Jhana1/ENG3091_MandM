@@ -15,6 +15,8 @@
     
     void start_ultrasonic(void);
     void stop_ultrasonic(void);
+    uint16 get_mean_ultra(void);
+    uint16 get_var_ultra();
 #endif
 
 /* [] END OF FILE */

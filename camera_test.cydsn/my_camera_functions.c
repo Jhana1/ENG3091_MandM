@@ -12,6 +12,7 @@
 #include <project.h>
 #include <my_camera_functions.h>
 #include <blob_stats.h>
+#include <arm.h>
 #include <stdio.h>
 
 uint8 RED_U= 122;//116;
@@ -124,7 +125,7 @@ void threshold_image()
 {
 	uint8 locals[8];
 	uint8 colours[4];
-	uint8 pixel;
+    int pixel;
     int y, x, i;
     
     
@@ -288,7 +289,32 @@ void threshold_black()
 	}
 }
 
+void read_instruction_routine()
+{
+    arm_set_level(0);
+    CyDelay(100);
+    stack[0] = instruction_read();
+    arm_set_level(1);
+    CyDelay(100);
+    stack[1] = instruction_read();
+    arm_set_level(2);
+    CyDelay(100);
+    stack[2] = instruction_read();
+    arm_set_level(3);
+    CyDelay(100);
+    stack[3] = instruction_read();
+    char RGB[] = {'K','R','G','B'};
+    char display[20];
+    sprintf(display,"1:%c 2:%c 3:%c 4:%c",RGB[stack[0]],RGB[stack[1]],RGB[stack[2]],RGB[stack[3]]);
+    LCD_ClearDisplay();
+    LCD_PosPrintString(0,0,display);
+}
 
+int instruction_read()
+{
+    capture_thresh_image();
+    return identify_colour_instructions(100);
+}
 void image_stuff4()
 {
     int x, i;

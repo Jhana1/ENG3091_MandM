@@ -1,10 +1,12 @@
 -- Project:   camera_test
--- Generated: 09/23/2015 02:52:12
+-- Generated: 10/14/2015 19:15:04
 -- PSoC Creator  3.2 SP1
 
 ENTITY camera_test IS
     PORT(
         ARM_PIN(0)_PAD : OUT std_ulogic;
+        BEAM_BREAK_IN(0)_PAD : IN std_ulogic;
+        BEAM_BREAK_OUT(0)_PAD : OUT std_ulogic;
         BLUE(0)_PAD : OUT std_ulogic;
         COMPASS_DRDY(0)_PAD : IN std_ulogic;
         D4(0)_PAD : OUT std_ulogic;
@@ -14,11 +16,11 @@ ENTITY camera_test IS
         E(0)_PAD : OUT std_ulogic;
         GRIPPER_PIN(0)_PAD : OUT std_ulogic;
         HC_ECHO(0)_PAD : IN std_ulogic;
-        HC_ECHO_2(0)_PAD : IN std_ulogic;
         HC_TRIG(0)_PAD : OUT std_ulogic;
-        HC_TRIG_2(0)_PAD : OUT std_ulogic;
         I2C_SCL(0)_PAD : INOUT std_ulogic;
         I2C_SDA(0)_PAD : INOUT std_ulogic;
+        IRin_front(0)_PAD : IN std_ulogic;
+        IRin_left(0)_PAD : IN std_ulogic;
         ISR_CHECKP(0)_PAD : OUT std_ulogic;
         MLEN(0)_PAD : OUT std_ulogic;
         MLIN1(0)_PAD : OUT std_ulogic;
@@ -29,10 +31,6 @@ ENTITY camera_test IS
         ORANGE(0)_PAD : OUT std_ulogic;
         RED(0)_PAD : OUT std_ulogic;
         RS(0)_PAD : OUT std_ulogic;
-        SCLK_A(0)_PAD : INOUT std_ulogic;
-        SCLK_B(0)_PAD : INOUT std_ulogic;
-        SDAT_A(0)_PAD : INOUT std_ulogic;
-        SDAT_B(0)_PAD : INOUT std_ulogic;
         V0(0)_PAD : OUT std_ulogic;
         WHITE(0)_PAD : OUT std_ulogic;
         \Button:Button(0)_PAD\ : INOUT std_ulogic;
@@ -63,6 +61,8 @@ END camera_test;
 
 ARCHITECTURE __DEFAULT__ OF camera_test IS
     SIGNAL ARM_PIN(0)__PA : bit;
+    SIGNAL BEAM_BREAK_IN(0)__PA : bit;
+    SIGNAL BEAM_BREAK_OUT(0)__PA : bit;
     SIGNAL BLUE(0)__PA : bit;
     SIGNAL COMPASS_DRDY(0)__PA : bit;
     SIGNAL ClockBlock_100k : bit;
@@ -84,11 +84,11 @@ ARCHITECTURE __DEFAULT__ OF camera_test IS
     SIGNAL E(0)__PA : bit;
     SIGNAL GRIPPER_PIN(0)__PA : bit;
     SIGNAL HC_ECHO(0)__PA : bit;
-    SIGNAL HC_ECHO_2(0)__PA : bit;
     SIGNAL HC_TRIG(0)__PA : bit;
-    SIGNAL HC_TRIG_2(0)__PA : bit;
     SIGNAL I2C_SCL(0)__PA : bit;
     SIGNAL I2C_SDA(0)__PA : bit;
+    SIGNAL IRin_front(0)__PA : bit;
+    SIGNAL IRin_left(0)__PA : bit;
     SIGNAL ISR_CHECKP(0)__PA : bit;
     SIGNAL MLEN(0)__PA : bit;
     SIGNAL MLIN1(0)__PA : bit;
@@ -100,36 +100,43 @@ ARCHITECTURE __DEFAULT__ OF camera_test IS
     ATTRIBUTE udbclken_assigned OF Net_1260 : SIGNAL IS "True";
     ATTRIBUTE global_signal OF Net_1260 : SIGNAL IS true;
     SIGNAL Net_1260_local : bit;
-    SIGNAL Net_1273 : bit;
     SIGNAL Net_1591 : bit;
     SIGNAL Net_1697 : bit;
-    SIGNAL Net_1872 : bit;
-    SIGNAL Net_2019 : bit;
     SIGNAL Net_2330 : bit;
     SIGNAL Net_254 : bit;
     ATTRIBUTE udbclken_assigned OF Net_254 : SIGNAL IS "True";
     ATTRIBUTE global_signal OF Net_254 : SIGNAL IS true;
     SIGNAL Net_254_local : bit;
-    SIGNAL Net_2847 : bit;
-    ATTRIBUTE udbclken_assigned OF Net_2847 : SIGNAL IS "True";
-    ATTRIBUTE global_signal OF Net_2847 : SIGNAL IS true;
-    SIGNAL Net_2847_local : bit;
-    SIGNAL Net_2849 : bit;
-    SIGNAL Net_2850 : bit;
-    SIGNAL Net_2861 : bit;
-    SIGNAL Net_2861_SYNCOUT : bit;
-    SIGNAL Net_325 : bit;
+    SIGNAL Net_3035 : bit;
+    SIGNAL Net_3035_SYNCOUT : bit;
+    SIGNAL Net_3038 : bit;
+    SIGNAL Net_3043 : bit;
+    ATTRIBUTE udbclken_assigned OF Net_3043 : SIGNAL IS "True";
+    ATTRIBUTE global_signal OF Net_3043 : SIGNAL IS true;
+    SIGNAL Net_3043_local : bit;
+    SIGNAL Net_3478 : bit;
+    SIGNAL Net_3493 : bit;
+    SIGNAL Net_3506 : bit;
+    SIGNAL Net_36 : bit;
     SIGNAL Net_410 : bit;
     ATTRIBUTE global_signal OF Net_410 : SIGNAL IS true;
     SIGNAL Net_410_local : bit;
-    SIGNAL Net_4386 : bit;
-    ATTRIBUTE udbclken_assigned OF Net_4386 : SIGNAL IS "True";
-    ATTRIBUTE global_signal OF Net_4386 : SIGNAL IS true;
-    SIGNAL Net_4386_local : bit;
+    SIGNAL Net_435 : bit;
+    SIGNAL Net_4596 : bit;
+    SIGNAL Net_4704 : bit;
+    ATTRIBUTE global_signal OF Net_4704 : SIGNAL IS true;
+    SIGNAL Net_4704_local : bit;
+    SIGNAL Net_4781 : bit;
+    ATTRIBUTE udbclken_assigned OF Net_4781 : SIGNAL IS "True";
+    ATTRIBUTE global_signal OF Net_4781 : SIGNAL IS true;
+    SIGNAL Net_4781_local : bit;
+    SIGNAL Net_4790 : bit;
+    SIGNAL Net_4790_SYNCOUT : bit;
+    SIGNAL Net_4797 : bit;
+    SIGNAL Net_4800 : bit;
     SIGNAL Net_52 : bit;
     ATTRIBUTE global_signal OF Net_52 : SIGNAL IS true;
     SIGNAL Net_52_local : bit;
-    SIGNAL Net_53 : bit;
     SIGNAL Net_54 : bit;
     SIGNAL Net_55 : bit;
     SIGNAL Net_814 : bit;
@@ -144,13 +151,11 @@ ARCHITECTURE __DEFAULT__ OF camera_test IS
     SIGNAL Net_905 : bit;
     SIGNAL Net_905_SYNCOUT : bit;
     SIGNAL Net_906 : bit;
+    SIGNAL Net_936 : bit;
+    SIGNAL Net_936_SYNCOUT : bit;
     SIGNAL ORANGE(0)__PA : bit;
     SIGNAL RED(0)__PA : bit;
     SIGNAL RS(0)__PA : bit;
-    SIGNAL SCLK_A(0)__PA : bit;
-    SIGNAL SCLK_B(0)__PA : bit;
-    SIGNAL SDAT_A(0)__PA : bit;
-    SIGNAL SDAT_B(0)__PA : bit;
     SIGNAL V0(0)__PA : bit;
     SIGNAL WHITE(0)__PA : bit;
     SIGNAL \Arm_PWM:PWMUDB:cmp1_less\ : bit;
@@ -164,11 +169,16 @@ ARCHITECTURE __DEFAULT__ OF camera_test IS
     SIGNAL \Arm_PWM:PWMUDB:control_7\ : bit;
     SIGNAL \Arm_PWM:PWMUDB:prevCompare1\ : bit;
     SIGNAL \Arm_PWM:PWMUDB:runmode_enable\ : bit;
-    SIGNAL \HC_PWM:PWMUDB:sP16:pwmdp:u0.ce0__sig\ : bit;
+    SIGNAL \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.ce0__sig\ : bit;
     SIGNAL \Arm_PWM:PWMUDB:status_0\ : bit;
     SIGNAL \Arm_PWM:PWMUDB:status_2\ : bit;
     SIGNAL \Arm_PWM:PWMUDB:status_3\ : bit;
     SIGNAL \Arm_PWM:PWMUDB:tc_i\ : bit;
+    SIGNAL \BEAM_BREAK_TIMER:TimerUDB:per_zero\ : bit;
+    SIGNAL \HC_PWM:PWMUDB:sP16:pwmdp:u0.ce0__sig\ : bit;
+    SIGNAL \BEAM_BREAK_TIMER:TimerUDB:status_2\ : bit;
+    SIGNAL \BEAM_BREAK_TIMER:TimerUDB:status_3\ : bit;
+    SIGNAL \BEAM_BREAK_TIMER:TimerUDB:status_tc\ : bit;
     SIGNAL \\\Button:Button(0)\\__PA\ : bit;
     SIGNAL \\\Button:Button(1)\\__PA\ : bit;
     SIGNAL \Button:Net_226\ : bit;
@@ -225,41 +235,17 @@ ARCHITECTURE __DEFAULT__ OF camera_test IS
     SIGNAL \HC_PWM:PWMUDB:prevCompare1\ : bit;
     SIGNAL \HC_PWM:PWMUDB:prevCompare2\ : bit;
     SIGNAL \HC_PWM:PWMUDB:runmode_enable\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.ce0__sig\ : bit;
+    SIGNAL \HC_Timer:TimerUDB:sT16:timerdp:u0.ce0__sig\ : bit;
     SIGNAL \HC_PWM:PWMUDB:status_0\ : bit;
     SIGNAL \HC_PWM:PWMUDB:status_1\ : bit;
     SIGNAL \HC_PWM:PWMUDB:status_2\ : bit;
     SIGNAL \HC_PWM:PWMUDB:status_3\ : bit;
     SIGNAL \HC_PWM:PWMUDB:tc_i\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:cmp1_less\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:cmp2_less\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:control_0\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:control_1\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:control_2\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:control_3\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:control_4\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:control_5\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:control_6\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:control_7\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:prevCompare1\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:prevCompare2\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:runmode_enable\ : bit;
-    SIGNAL \HC_Timer:TimerUDB:sT16:timerdp:u0.ce0__sig\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:status_0\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:status_1\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:status_2\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:status_3\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:tc_i\ : bit;
     SIGNAL \HC_Timer:TimerUDB:per_zero\ : bit;
-    SIGNAL \HC_Timer_2:TimerUDB:sT16:timerdp:u0.ce0__sig\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.ce0__sig\ : bit;
     SIGNAL \HC_Timer:TimerUDB:status_2\ : bit;
     SIGNAL \HC_Timer:TimerUDB:status_3\ : bit;
     SIGNAL \HC_Timer:TimerUDB:status_tc\ : bit;
-    SIGNAL \HC_Timer_2:TimerUDB:per_zero\ : bit;
-    SIGNAL \Timer:TimerUDB:sT24:timerdp:u0.ce0__sig\ : bit;
-    SIGNAL \HC_Timer_2:TimerUDB:status_2\ : bit;
-    SIGNAL \HC_Timer_2:TimerUDB:status_3\ : bit;
-    SIGNAL \HC_Timer_2:TimerUDB:status_tc\ : bit;
     SIGNAL \I2C:Net_1109_0\ : bit;
     SIGNAL \I2C:Net_1109_0_SYNCOUT\ : bit;
     SIGNAL \I2C:Net_1109_1\ : bit;
@@ -316,6 +302,57 @@ ARCHITECTURE __DEFAULT__ OF camera_test IS
     SIGNAL \I2C:bI2C_UDB:status_5\ : bit;
     SIGNAL \I2C:bI2C_UDB:tx_reg_empty\ : bit;
     SIGNAL \I2C:sda_x_wire\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:cmp1_less\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:cmp2_less\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:control_0\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:control_1\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:control_2\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:control_3\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:control_4\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:control_5\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:control_6\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:control_7\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:prevCompare1\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:prevCompare2\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:runmode_enable\ : bit;
+    SIGNAL \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.ce0__sig\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:status_0\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:status_1\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:status_2\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:status_3\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:tc_i\ : bit;
+    SIGNAL \IR_FRONT_Timer:TimerUDB:per_zero\ : bit;
+    SIGNAL \IR_FRONT_Timer:TimerUDB:run_mode\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.ce0__sig\ : bit;
+    SIGNAL \IR_FRONT_Timer:TimerUDB:status_2\ : bit;
+    SIGNAL \IR_FRONT_Timer:TimerUDB:status_3\ : bit;
+    SIGNAL \IR_FRONT_Timer:TimerUDB:status_tc\ : bit;
+    SIGNAL \IR_FRONT_Timer:TimerUDB:timer_enable\ : bit;
+    SIGNAL \IR_FRONT_Timer:TimerUDB:trig_disable\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:cmp1_less\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:cmp2_less\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:control_0\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:control_1\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:control_2\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:control_3\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:control_4\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:control_5\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:control_6\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:control_7\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:prevCompare1\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:prevCompare2\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:runmode_enable\ : bit;
+    SIGNAL \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.ce0__sig\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:status_0\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:status_1\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:status_2\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:status_3\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:tc_i\ : bit;
+    SIGNAL \IR_LEFT_Timer:TimerUDB:per_zero\ : bit;
+    SIGNAL \Timer:TimerUDB:sT24:timerdp:u0.ce0__sig\ : bit;
+    SIGNAL \IR_LEFT_Timer:TimerUDB:status_2\ : bit;
+    SIGNAL \IR_LEFT_Timer:TimerUDB:status_3\ : bit;
+    SIGNAL \IR_LEFT_Timer:TimerUDB:status_tc\ : bit;
     SIGNAL \LCD:Cntl_Port:control_6\ : bit;
     SIGNAL \LCD:Cntl_Port:control_7\ : bit;
     SIGNAL \MOTOR_L:Net_54\ : bit;
@@ -363,8 +400,8 @@ ARCHITECTURE __DEFAULT__ OF camera_test IS
     ATTRIBUTE POWER OF __ONE__ : SIGNAL IS true;
     SIGNAL __ZERO__ : bit;
     ATTRIBUTE GROUND OF __ZERO__ : SIGNAL IS true;
-    SIGNAL tmpOE__SCLK_B_net_0 : bit;
-    ATTRIBUTE POWER OF tmpOE__SCLK_B_net_0 : SIGNAL IS true;
+    SIGNAL one : bit;
+    ATTRIBUTE POWER OF one : SIGNAL IS true;
     SIGNAL zero : bit;
     ATTRIBUTE GROUND OF zero : SIGNAL IS true;
     SIGNAL \ClockBlock.clk_bus_glb_ff__sig\ : bit;
@@ -383,6 +420,18 @@ ARCHITECTURE __DEFAULT__ OF camera_test IS
     SIGNAL \Arm_PWM:PWMUDB:sP16:pwmdp:u0.cfbo__sig\ : bit;
     SIGNAL \Arm_PWM:PWMUDB:sP16:pwmdp:u1.sor__sig\ : bit;
     SIGNAL \Arm_PWM:PWMUDB:sP16:pwmdp:u1.cmsbo__sig\ : bit;
+    SIGNAL \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.cl0__sig\ : bit;
+    SIGNAL \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.z0__sig\ : bit;
+    SIGNAL \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.ff0__sig\ : bit;
+    SIGNAL \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.ce1__sig\ : bit;
+    SIGNAL \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.cl1__sig\ : bit;
+    SIGNAL \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.z1__sig\ : bit;
+    SIGNAL \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.ff1__sig\ : bit;
+    SIGNAL \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.co_msb__sig\ : bit;
+    SIGNAL \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.sol_msb__sig\ : bit;
+    SIGNAL \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.cfbo__sig\ : bit;
+    SIGNAL \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u1.sor__sig\ : bit;
+    SIGNAL \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u1.cmsbo__sig\ : bit;
     SIGNAL \HC_PWM:PWMUDB:sP16:pwmdp:u0.cl0__sig\ : bit;
     SIGNAL \HC_PWM:PWMUDB:sP16:pwmdp:u0.z0__sig\ : bit;
     SIGNAL \HC_PWM:PWMUDB:sP16:pwmdp:u0.ff0__sig\ : bit;
@@ -395,18 +444,6 @@ ARCHITECTURE __DEFAULT__ OF camera_test IS
     SIGNAL \HC_PWM:PWMUDB:sP16:pwmdp:u0.cfbo__sig\ : bit;
     SIGNAL \HC_PWM:PWMUDB:sP16:pwmdp:u1.sor__sig\ : bit;
     SIGNAL \HC_PWM:PWMUDB:sP16:pwmdp:u1.cmsbo__sig\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.cl0__sig\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.z0__sig\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.ff0__sig\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.ce1__sig\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.cl1__sig\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.z1__sig\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.ff1__sig\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.co_msb__sig\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.sol_msb__sig\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.cfbo__sig\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:sP16:pwmdp:u1.sor__sig\ : bit;
-    SIGNAL \HC_PWM_2:PWMUDB:sP16:pwmdp:u1.cmsbo__sig\ : bit;
     SIGNAL \HC_Timer:TimerUDB:sT16:timerdp:u0.cl0__sig\ : bit;
     SIGNAL \HC_Timer:TimerUDB:sT16:timerdp:u0.z0__sig\ : bit;
     SIGNAL \HC_Timer:TimerUDB:sT16:timerdp:u0.ff0__sig\ : bit;
@@ -419,18 +456,54 @@ ARCHITECTURE __DEFAULT__ OF camera_test IS
     SIGNAL \HC_Timer:TimerUDB:sT16:timerdp:u0.cfbo__sig\ : bit;
     SIGNAL \HC_Timer:TimerUDB:sT16:timerdp:u1.sor__sig\ : bit;
     SIGNAL \HC_Timer:TimerUDB:sT16:timerdp:u1.cmsbo__sig\ : bit;
-    SIGNAL \HC_Timer_2:TimerUDB:sT16:timerdp:u0.cl0__sig\ : bit;
-    SIGNAL \HC_Timer_2:TimerUDB:sT16:timerdp:u0.z0__sig\ : bit;
-    SIGNAL \HC_Timer_2:TimerUDB:sT16:timerdp:u0.ff0__sig\ : bit;
-    SIGNAL \HC_Timer_2:TimerUDB:sT16:timerdp:u0.ce1__sig\ : bit;
-    SIGNAL \HC_Timer_2:TimerUDB:sT16:timerdp:u0.cl1__sig\ : bit;
-    SIGNAL \HC_Timer_2:TimerUDB:sT16:timerdp:u0.z1__sig\ : bit;
-    SIGNAL \HC_Timer_2:TimerUDB:sT16:timerdp:u0.ff1__sig\ : bit;
-    SIGNAL \HC_Timer_2:TimerUDB:sT16:timerdp:u0.co_msb__sig\ : bit;
-    SIGNAL \HC_Timer_2:TimerUDB:sT16:timerdp:u0.sol_msb__sig\ : bit;
-    SIGNAL \HC_Timer_2:TimerUDB:sT16:timerdp:u0.cfbo__sig\ : bit;
-    SIGNAL \HC_Timer_2:TimerUDB:sT16:timerdp:u1.sor__sig\ : bit;
-    SIGNAL \HC_Timer_2:TimerUDB:sT16:timerdp:u1.cmsbo__sig\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.cl0__sig\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.z0__sig\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.ff0__sig\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.ce1__sig\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.cl1__sig\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.z1__sig\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.ff1__sig\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.co_msb__sig\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.sol_msb__sig\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.cfbo__sig\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u1.sor__sig\ : bit;
+    SIGNAL \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u1.cmsbo__sig\ : bit;
+    SIGNAL \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.cl0__sig\ : bit;
+    SIGNAL \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.z0__sig\ : bit;
+    SIGNAL \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.ff0__sig\ : bit;
+    SIGNAL \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.ce1__sig\ : bit;
+    SIGNAL \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.cl1__sig\ : bit;
+    SIGNAL \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.z1__sig\ : bit;
+    SIGNAL \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.ff1__sig\ : bit;
+    SIGNAL \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.co_msb__sig\ : bit;
+    SIGNAL \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.sol_msb__sig\ : bit;
+    SIGNAL \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.cfbo__sig\ : bit;
+    SIGNAL \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u1.sor__sig\ : bit;
+    SIGNAL \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u1.cmsbo__sig\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.cl0__sig\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.z0__sig\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.ff0__sig\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.ce1__sig\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.cl1__sig\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.z1__sig\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.ff1__sig\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.co_msb__sig\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.sol_msb__sig\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.cfbo__sig\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u1.sor__sig\ : bit;
+    SIGNAL \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u1.cmsbo__sig\ : bit;
+    SIGNAL \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.cl0__sig\ : bit;
+    SIGNAL \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.z0__sig\ : bit;
+    SIGNAL \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.ff0__sig\ : bit;
+    SIGNAL \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.ce1__sig\ : bit;
+    SIGNAL \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.cl1__sig\ : bit;
+    SIGNAL \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.z1__sig\ : bit;
+    SIGNAL \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.ff1__sig\ : bit;
+    SIGNAL \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.co_msb__sig\ : bit;
+    SIGNAL \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.sol_msb__sig\ : bit;
+    SIGNAL \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.cfbo__sig\ : bit;
+    SIGNAL \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u1.sor__sig\ : bit;
+    SIGNAL \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u1.cmsbo__sig\ : bit;
     SIGNAL \Timer:TimerUDB:sT24:timerdp:u0.cl0__sig\ : bit;
     SIGNAL \Timer:TimerUDB:sT24:timerdp:u0.z0__sig\ : bit;
     SIGNAL \Timer:TimerUDB:sT24:timerdp:u0.ff0__sig\ : bit;
@@ -457,194 +530,215 @@ ARCHITECTURE __DEFAULT__ OF camera_test IS
     SIGNAL \Timer:TimerUDB:sT24:timerdp:u2.cmsbo__sig\ : bit;
     ATTRIBUTE lib_model OF ARM_PIN(0) : LABEL IS "iocell1";
     ATTRIBUTE Location OF ARM_PIN(0) : LABEL IS "P0[4]";
-    ATTRIBUTE lib_model OF BLUE(0) : LABEL IS "iocell2";
+    ATTRIBUTE lib_model OF BEAM_BREAK_IN(0) : LABEL IS "iocell2";
+    ATTRIBUTE Location OF BEAM_BREAK_IN(0) : LABEL IS "P12[1]";
+    ATTRIBUTE lib_model OF BEAM_BREAK_OUT(0) : LABEL IS "iocell3";
+    ATTRIBUTE Location OF BEAM_BREAK_OUT(0) : LABEL IS "P12[0]";
+    ATTRIBUTE lib_model OF BLUE(0) : LABEL IS "iocell4";
     ATTRIBUTE Location OF BLUE(0) : LABEL IS "P5[5]";
-    ATTRIBUTE lib_model OF COMPASS_DRDY(0) : LABEL IS "iocell3";
+    ATTRIBUTE lib_model OF COMPASS_DRDY(0) : LABEL IS "iocell5";
     ATTRIBUTE Location OF COMPASS_DRDY(0) : LABEL IS "P12[6]";
-    ATTRIBUTE lib_model OF D4(0) : LABEL IS "iocell4";
+    ATTRIBUTE lib_model OF D4(0) : LABEL IS "iocell6";
     ATTRIBUTE Location OF D4(0) : LABEL IS "P4[0]";
-    ATTRIBUTE lib_model OF D5(0) : LABEL IS "iocell5";
+    ATTRIBUTE lib_model OF D5(0) : LABEL IS "iocell7";
     ATTRIBUTE Location OF D5(0) : LABEL IS "P4[1]";
-    ATTRIBUTE lib_model OF D6(0) : LABEL IS "iocell6";
+    ATTRIBUTE lib_model OF D6(0) : LABEL IS "iocell8";
     ATTRIBUTE Location OF D6(0) : LABEL IS "P0[6]";
-    ATTRIBUTE lib_model OF D7(0) : LABEL IS "iocell7";
+    ATTRIBUTE lib_model OF D7(0) : LABEL IS "iocell9";
     ATTRIBUTE Location OF D7(0) : LABEL IS "P0[7]";
-    ATTRIBUTE lib_model OF E(0) : LABEL IS "iocell8";
+    ATTRIBUTE lib_model OF E(0) : LABEL IS "iocell10";
     ATTRIBUTE Location OF E(0) : LABEL IS "P12[2]";
-    ATTRIBUTE lib_model OF GRIPPER_PIN(0) : LABEL IS "iocell9";
+    ATTRIBUTE lib_model OF GRIPPER_PIN(0) : LABEL IS "iocell11";
     ATTRIBUTE Location OF GRIPPER_PIN(0) : LABEL IS "P0[5]";
-    ATTRIBUTE lib_model OF HC_ECHO(0) : LABEL IS "iocell10";
+    ATTRIBUTE lib_model OF HC_ECHO(0) : LABEL IS "iocell12";
     ATTRIBUTE Location OF HC_ECHO(0) : LABEL IS "P3[2]";
-    ATTRIBUTE lib_model OF HC_ECHO_2(0) : LABEL IS "iocell11";
-    ATTRIBUTE Location OF HC_ECHO_2(0) : LABEL IS "P3[4]";
-    ATTRIBUTE lib_model OF HC_TRIG(0) : LABEL IS "iocell12";
+    ATTRIBUTE lib_model OF HC_TRIG(0) : LABEL IS "iocell13";
     ATTRIBUTE Location OF HC_TRIG(0) : LABEL IS "P3[3]";
-    ATTRIBUTE lib_model OF HC_TRIG_2(0) : LABEL IS "iocell13";
-    ATTRIBUTE Location OF HC_TRIG_2(0) : LABEL IS "P3[5]";
     ATTRIBUTE lib_model OF I2C_SCL(0) : LABEL IS "iocell14";
     ATTRIBUTE Location OF I2C_SCL(0) : LABEL IS "P1[7]";
     ATTRIBUTE lib_model OF I2C_SDA(0) : LABEL IS "iocell15";
     ATTRIBUTE Location OF I2C_SDA(0) : LABEL IS "P1[6]";
-    ATTRIBUTE lib_model OF ISR_CHECKP(0) : LABEL IS "iocell16";
+    ATTRIBUTE lib_model OF IRin_front(0) : LABEL IS "iocell16";
+    ATTRIBUTE Location OF IRin_front(0) : LABEL IS "P0[0]";
+    ATTRIBUTE lib_model OF IRin_left(0) : LABEL IS "iocell17";
+    ATTRIBUTE Location OF IRin_left(0) : LABEL IS "P0[1]";
+    ATTRIBUTE lib_model OF ISR_CHECKP(0) : LABEL IS "iocell18";
     ATTRIBUTE Location OF ISR_CHECKP(0) : LABEL IS "P0[2]";
-    ATTRIBUTE lib_model OF MLEN(0) : LABEL IS "iocell17";
+    ATTRIBUTE lib_model OF MLEN(0) : LABEL IS "iocell19";
     ATTRIBUTE Location OF MLEN(0) : LABEL IS "P12[5]";
-    ATTRIBUTE lib_model OF MLIN1(0) : LABEL IS "iocell18";
+    ATTRIBUTE lib_model OF MLIN1(0) : LABEL IS "iocell20";
     ATTRIBUTE Location OF MLIN1(0) : LABEL IS "P6[5]";
-    ATTRIBUTE lib_model OF MLIN2(0) : LABEL IS "iocell19";
+    ATTRIBUTE lib_model OF MLIN2(0) : LABEL IS "iocell21";
     ATTRIBUTE Location OF MLIN2(0) : LABEL IS "P6[6]";
-    ATTRIBUTE lib_model OF MREN(0) : LABEL IS "iocell20";
+    ATTRIBUTE lib_model OF MREN(0) : LABEL IS "iocell22";
     ATTRIBUTE Location OF MREN(0) : LABEL IS "P5[1]";
-    ATTRIBUTE lib_model OF MRIN1(0) : LABEL IS "iocell21";
+    ATTRIBUTE lib_model OF MRIN1(0) : LABEL IS "iocell23";
     ATTRIBUTE Location OF MRIN1(0) : LABEL IS "P6[7]";
-    ATTRIBUTE lib_model OF MRIN2(0) : LABEL IS "iocell22";
+    ATTRIBUTE lib_model OF MRIN2(0) : LABEL IS "iocell24";
     ATTRIBUTE Location OF MRIN2(0) : LABEL IS "P5[0]";
-    ATTRIBUTE lib_model OF Net_1273 : LABEL IS "macrocell1";
-    ATTRIBUTE lib_model OF Net_1697 : LABEL IS "macrocell2";
-    ATTRIBUTE lib_model OF Net_2330 : LABEL IS "macrocell3";
-    ATTRIBUTE lib_model OF Net_2849 : LABEL IS "macrocell4";
-    ATTRIBUTE lib_model OF Net_2850 : LABEL IS "macrocell5";
-    ATTRIBUTE lib_model OF Net_54 : LABEL IS "macrocell6";
-    ATTRIBUTE lib_model OF Net_55 : LABEL IS "macrocell7";
-    ATTRIBUTE lib_model OF Net_906 : LABEL IS "macrocell8";
-    ATTRIBUTE lib_model OF ORANGE(0) : LABEL IS "iocell23";
+    ATTRIBUTE lib_model OF Net_1697 : LABEL IS "macrocell1";
+    ATTRIBUTE lib_model OF Net_2330 : LABEL IS "macrocell2";
+    ATTRIBUTE lib_model OF Net_3038 : LABEL IS "macrocell3";
+    ATTRIBUTE lib_model OF Net_3478 : LABEL IS "macrocell4";
+    ATTRIBUTE lib_model OF Net_36 : LABEL IS "macrocell5";
+    ATTRIBUTE lib_model OF Net_435 : LABEL IS "macrocell6";
+    ATTRIBUTE lib_model OF Net_4596 : LABEL IS "macrocell7";
+    ATTRIBUTE lib_model OF Net_4797 : LABEL IS "macrocell8";
+    ATTRIBUTE lib_model OF Net_4800 : LABEL IS "macrocell9";
+    ATTRIBUTE lib_model OF Net_54 : LABEL IS "macrocell10";
+    ATTRIBUTE lib_model OF Net_55 : LABEL IS "macrocell11";
+    ATTRIBUTE lib_model OF Net_906 : LABEL IS "macrocell12";
+    ATTRIBUTE lib_model OF ORANGE(0) : LABEL IS "iocell25";
     ATTRIBUTE Location OF ORANGE(0) : LABEL IS "P5[6]";
-    ATTRIBUTE lib_model OF RED(0) : LABEL IS "iocell24";
+    ATTRIBUTE lib_model OF RED(0) : LABEL IS "iocell26";
     ATTRIBUTE Location OF RED(0) : LABEL IS "P12[7]";
-    ATTRIBUTE lib_model OF RS(0) : LABEL IS "iocell25";
+    ATTRIBUTE lib_model OF RS(0) : LABEL IS "iocell27";
     ATTRIBUTE Location OF RS(0) : LABEL IS "P15[3]";
-    ATTRIBUTE lib_model OF SCLK_A(0) : LABEL IS "iocell26";
-    ATTRIBUTE Location OF SCLK_A(0) : LABEL IS "P0[0]";
-    ATTRIBUTE lib_model OF SCLK_B(0) : LABEL IS "iocell27";
-    ATTRIBUTE Location OF SCLK_B(0) : LABEL IS "P12[0]";
-    ATTRIBUTE lib_model OF SDAT_A(0) : LABEL IS "iocell28";
-    ATTRIBUTE Location OF SDAT_A(0) : LABEL IS "P0[1]";
-    ATTRIBUTE lib_model OF SDAT_B(0) : LABEL IS "iocell29";
-    ATTRIBUTE Location OF SDAT_B(0) : LABEL IS "P12[1]";
-    ATTRIBUTE lib_model OF V0(0) : LABEL IS "iocell30";
+    ATTRIBUTE lib_model OF V0(0) : LABEL IS "iocell28";
     ATTRIBUTE Location OF V0(0) : LABEL IS "P12[3]";
-    ATTRIBUTE lib_model OF WHITE(0) : LABEL IS "iocell31";
+    ATTRIBUTE lib_model OF WHITE(0) : LABEL IS "iocell29";
     ATTRIBUTE Location OF WHITE(0) : LABEL IS "P5[4]";
     ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:genblk1:ctrlreg\ : LABEL IS "controlcell1";
     ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:genblk8:stsreg\ : LABEL IS "statusicell1";
-    ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:prevCompare1\ : LABEL IS "macrocell9";
-    ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:runmode_enable\ : LABEL IS "macrocell10";
+    ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:prevCompare1\ : LABEL IS "macrocell13";
+    ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:runmode_enable\ : LABEL IS "macrocell14";
     ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:sP16:pwmdp:u0\ : LABEL IS "datapathcell1";
     ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:sP16:pwmdp:u1\ : LABEL IS "datapathcell2";
-    ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:status_0\ : LABEL IS "macrocell11";
-    ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:status_2\ : LABEL IS "macrocell12";
-    ATTRIBUTE lib_model OF \Button:Button(0)\ : LABEL IS "iocell32";
+    ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:status_0\ : LABEL IS "macrocell15";
+    ATTRIBUTE lib_model OF \Arm_PWM:PWMUDB:status_2\ : LABEL IS "macrocell16";
+    ATTRIBUTE lib_model OF \BEAM_BREAK_TIMER:TimerUDB:rstSts:stsreg\ : LABEL IS "statusicell2";
+    ATTRIBUTE lib_model OF \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0\ : LABEL IS "datapathcell3";
+    ATTRIBUTE lib_model OF \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u1\ : LABEL IS "datapathcell4";
+    ATTRIBUTE lib_model OF \BEAM_BREAK_TIMER:TimerUDB:status_tc\ : LABEL IS "macrocell17";
+    ATTRIBUTE lib_model OF \Button:Button(0)\ : LABEL IS "iocell30";
     ATTRIBUTE Location OF \Button:Button(0)\ : LABEL IS "P5[7]";
-    ATTRIBUTE lib_model OF \Button:Button(1)\ : LABEL IS "iocell33";
+    ATTRIBUTE lib_model OF \Button:Button(1)\ : LABEL IS "iocell31";
     ATTRIBUTE Location OF \Button:Button(1)\ : LABEL IS "P6[4]";
-    ATTRIBUTE lib_model OF \Camera:D(0)\ : LABEL IS "iocell34";
+    ATTRIBUTE lib_model OF \Camera:D(0)\ : LABEL IS "iocell32";
     ATTRIBUTE Location OF \Camera:D(0)\ : LABEL IS "P4[7]";
-    ATTRIBUTE lib_model OF \Camera:D(1)\ : LABEL IS "iocell35";
+    ATTRIBUTE lib_model OF \Camera:D(1)\ : LABEL IS "iocell33";
     ATTRIBUTE Location OF \Camera:D(1)\ : LABEL IS "P4[5]";
-    ATTRIBUTE lib_model OF \Camera:D(2)\ : LABEL IS "iocell36";
+    ATTRIBUTE lib_model OF \Camera:D(2)\ : LABEL IS "iocell34";
     ATTRIBUTE Location OF \Camera:D(2)\ : LABEL IS "P4[4]";
-    ATTRIBUTE lib_model OF \Camera:D(3)\ : LABEL IS "iocell37";
+    ATTRIBUTE lib_model OF \Camera:D(3)\ : LABEL IS "iocell35";
     ATTRIBUTE Location OF \Camera:D(3)\ : LABEL IS "P4[6]";
-    ATTRIBUTE lib_model OF \Camera:D(4)\ : LABEL IS "iocell38";
+    ATTRIBUTE lib_model OF \Camera:D(4)\ : LABEL IS "iocell36";
     ATTRIBUTE Location OF \Camera:D(4)\ : LABEL IS "P6[0]";
-    ATTRIBUTE lib_model OF \Camera:D(5)\ : LABEL IS "iocell39";
+    ATTRIBUTE lib_model OF \Camera:D(5)\ : LABEL IS "iocell37";
     ATTRIBUTE Location OF \Camera:D(5)\ : LABEL IS "P6[2]";
-    ATTRIBUTE lib_model OF \Camera:D(6)\ : LABEL IS "iocell40";
+    ATTRIBUTE lib_model OF \Camera:D(6)\ : LABEL IS "iocell38";
     ATTRIBUTE Location OF \Camera:D(6)\ : LABEL IS "P6[3]";
-    ATTRIBUTE lib_model OF \Camera:D(7)\ : LABEL IS "iocell41";
+    ATTRIBUTE lib_model OF \Camera:D(7)\ : LABEL IS "iocell39";
     ATTRIBUTE Location OF \Camera:D(7)\ : LABEL IS "P15[5]";
     ATTRIBUTE lib_model OF \Camera:DMA\ : LABEL IS "drqcell1";
-    ATTRIBUTE lib_model OF \Camera:FIFO:dp\ : LABEL IS "datapathcell3";
-    ATTRIBUTE lib_model OF \Camera:HREF(0)\ : LABEL IS "iocell42";
+    ATTRIBUTE lib_model OF \Camera:FIFO:dp\ : LABEL IS "datapathcell5";
+    ATTRIBUTE lib_model OF \Camera:HREF(0)\ : LABEL IS "iocell40";
     ATTRIBUTE Location OF \Camera:HREF(0)\ : LABEL IS "P2[0]";
-    ATTRIBUTE lib_model OF \Camera:PCLK(0)\ : LABEL IS "iocell43";
+    ATTRIBUTE lib_model OF \Camera:PCLK(0)\ : LABEL IS "iocell41";
     ATTRIBUTE Location OF \Camera:PCLK(0)\ : LABEL IS "P6[1]";
-    ATTRIBUTE lib_model OF \Camera:SIOC(0)\ : LABEL IS "iocell44";
+    ATTRIBUTE lib_model OF \Camera:SIOC(0)\ : LABEL IS "iocell42";
     ATTRIBUTE Location OF \Camera:SIOC(0)\ : LABEL IS "P2[4]";
-    ATTRIBUTE lib_model OF \Camera:SIOD(0)\ : LABEL IS "iocell45";
+    ATTRIBUTE lib_model OF \Camera:SIOD(0)\ : LABEL IS "iocell43";
     ATTRIBUTE Location OF \Camera:SIOD(0)\ : LABEL IS "P2[5]";
-    ATTRIBUTE lib_model OF \Camera:VSYNC(0)\ : LABEL IS "iocell46";
+    ATTRIBUTE lib_model OF \Camera:VSYNC(0)\ : LABEL IS "iocell44";
     ATTRIBUTE Location OF \Camera:VSYNC(0)\ : LABEL IS "P2[2]";
-    ATTRIBUTE lib_model OF \Camera:XCLK(0)\ : LABEL IS "iocell47";
+    ATTRIBUTE lib_model OF \Camera:XCLK(0)\ : LABEL IS "iocell45";
     ATTRIBUTE Location OF \Camera:XCLK(0)\ : LABEL IS "P15[4]";
     ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:genblk1:ctrlreg\ : LABEL IS "controlcell2";
-    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:genblk8:stsreg\ : LABEL IS "statusicell2";
-    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:prevCompare1\ : LABEL IS "macrocell13";
-    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:prevCompare2\ : LABEL IS "macrocell14";
-    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:runmode_enable\ : LABEL IS "macrocell15";
-    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:sP16:pwmdp:u0\ : LABEL IS "datapathcell4";
-    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:sP16:pwmdp:u1\ : LABEL IS "datapathcell5";
-    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:status_0\ : LABEL IS "macrocell16";
-    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:status_1\ : LABEL IS "macrocell17";
-    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:status_2\ : LABEL IS "macrocell18";
-    ATTRIBUTE lib_model OF \HC_PWM_2:PWMUDB:genblk1:ctrlreg\ : LABEL IS "controlcell3";
-    ATTRIBUTE lib_model OF \HC_PWM_2:PWMUDB:genblk8:stsreg\ : LABEL IS "statusicell3";
-    ATTRIBUTE lib_model OF \HC_PWM_2:PWMUDB:prevCompare1\ : LABEL IS "macrocell19";
-    ATTRIBUTE lib_model OF \HC_PWM_2:PWMUDB:prevCompare2\ : LABEL IS "macrocell20";
-    ATTRIBUTE lib_model OF \HC_PWM_2:PWMUDB:runmode_enable\ : LABEL IS "macrocell21";
-    ATTRIBUTE lib_model OF \HC_PWM_2:PWMUDB:sP16:pwmdp:u0\ : LABEL IS "datapathcell6";
-    ATTRIBUTE lib_model OF \HC_PWM_2:PWMUDB:sP16:pwmdp:u1\ : LABEL IS "datapathcell7";
-    ATTRIBUTE lib_model OF \HC_PWM_2:PWMUDB:status_0\ : LABEL IS "macrocell22";
-    ATTRIBUTE lib_model OF \HC_PWM_2:PWMUDB:status_1\ : LABEL IS "macrocell23";
-    ATTRIBUTE lib_model OF \HC_PWM_2:PWMUDB:status_2\ : LABEL IS "macrocell24";
+    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:genblk8:stsreg\ : LABEL IS "statusicell3";
+    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:prevCompare1\ : LABEL IS "macrocell18";
+    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:prevCompare2\ : LABEL IS "macrocell19";
+    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:runmode_enable\ : LABEL IS "macrocell20";
+    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:sP16:pwmdp:u0\ : LABEL IS "datapathcell6";
+    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:sP16:pwmdp:u1\ : LABEL IS "datapathcell7";
+    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:status_0\ : LABEL IS "macrocell21";
+    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:status_1\ : LABEL IS "macrocell22";
+    ATTRIBUTE lib_model OF \HC_PWM:PWMUDB:status_2\ : LABEL IS "macrocell23";
     ATTRIBUTE lib_model OF \HC_Timer:TimerUDB:rstSts:stsreg\ : LABEL IS "statusicell4";
     ATTRIBUTE lib_model OF \HC_Timer:TimerUDB:sT16:timerdp:u0\ : LABEL IS "datapathcell8";
     ATTRIBUTE lib_model OF \HC_Timer:TimerUDB:sT16:timerdp:u1\ : LABEL IS "datapathcell9";
-    ATTRIBUTE lib_model OF \HC_Timer:TimerUDB:status_tc\ : LABEL IS "macrocell25";
-    ATTRIBUTE lib_model OF \HC_Timer_2:TimerUDB:rstSts:stsreg\ : LABEL IS "statusicell5";
-    ATTRIBUTE lib_model OF \HC_Timer_2:TimerUDB:sT16:timerdp:u0\ : LABEL IS "datapathcell10";
-    ATTRIBUTE lib_model OF \HC_Timer_2:TimerUDB:sT16:timerdp:u1\ : LABEL IS "datapathcell11";
-    ATTRIBUTE lib_model OF \HC_Timer_2:TimerUDB:status_tc\ : LABEL IS "macrocell26";
-    ATTRIBUTE lib_model OF \I2C:Net_643_3\ : LABEL IS "macrocell27";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:Master:ClkGen:u0\ : LABEL IS "datapathcell12";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:Shifter:u0\ : LABEL IS "datapathcell13";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:StsReg\ : LABEL IS "statusicell6";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:SyncCtl:CtrlReg\ : LABEL IS "controlcell4";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:bus_busy_reg\ : LABEL IS "macrocell28";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:clk_eq_reg\ : LABEL IS "macrocell29";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:clkgen_tc1_reg\ : LABEL IS "macrocell30";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:clkgen_tc2_reg\ : LABEL IS "macrocell31";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:cnt_reset\ : LABEL IS "macrocell32";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:cs_addr_clkgen_0\ : LABEL IS "macrocell33";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:cs_addr_clkgen_1\ : LABEL IS "macrocell34";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:cs_addr_shifter_0\ : LABEL IS "macrocell35";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:cs_addr_shifter_1\ : LABEL IS "macrocell36";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:lost_arb_reg\ : LABEL IS "macrocell37";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_reset\ : LABEL IS "macrocell38";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_0\ : LABEL IS "macrocell39";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_0_split\ : LABEL IS "macrocell40";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_1\ : LABEL IS "macrocell41";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_2\ : LABEL IS "macrocell42";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_2_split\ : LABEL IS "macrocell43";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_3\ : LABEL IS "macrocell44";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_4\ : LABEL IS "macrocell45";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_4_split\ : LABEL IS "macrocell46";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:scl_in_last2_reg\ : LABEL IS "macrocell47";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:scl_in_last_reg\ : LABEL IS "macrocell48";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:scl_in_reg\ : LABEL IS "macrocell49";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:sda_in_last2_reg\ : LABEL IS "macrocell50";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:sda_in_last_reg\ : LABEL IS "macrocell51";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:sda_in_reg\ : LABEL IS "macrocell52";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_0\ : LABEL IS "macrocell53";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_1\ : LABEL IS "macrocell54";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_2\ : LABEL IS "macrocell55";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_3\ : LABEL IS "macrocell56";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_4\ : LABEL IS "macrocell57";
-    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_5\ : LABEL IS "macrocell58";
-    ATTRIBUTE lib_model OF \I2C:sda_x_wire\ : LABEL IS "macrocell59";
-    ATTRIBUTE lib_model OF \LCD:Cntl_Port:Sync:ctrl_reg\ : LABEL IS "controlcell5";
-    ATTRIBUTE lib_model OF \Timer:TimerUDB:rstSts:stsreg\ : LABEL IS "statusicell7";
-    ATTRIBUTE lib_model OF \Timer:TimerUDB:sCTRLReg:SyncCtl:ctrlreg\ : LABEL IS "controlcell6";
-    ATTRIBUTE lib_model OF \Timer:TimerUDB:sT24:timerdp:u0\ : LABEL IS "datapathcell14";
-    ATTRIBUTE lib_model OF \Timer:TimerUDB:sT24:timerdp:u1\ : LABEL IS "datapathcell15";
-    ATTRIBUTE lib_model OF \Timer:TimerUDB:sT24:timerdp:u2\ : LABEL IS "datapathcell16";
-    ATTRIBUTE lib_model OF \Timer:TimerUDB:status_tc\ : LABEL IS "macrocell60";
-    ATTRIBUTE lib_model OF \USB:Dm(0)\ : LABEL IS "iocell48";
+    ATTRIBUTE lib_model OF \HC_Timer:TimerUDB:status_tc\ : LABEL IS "macrocell24";
+    ATTRIBUTE lib_model OF \I2C:Net_643_3\ : LABEL IS "macrocell25";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:Master:ClkGen:u0\ : LABEL IS "datapathcell10";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:Shifter:u0\ : LABEL IS "datapathcell11";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:StsReg\ : LABEL IS "statusicell5";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:SyncCtl:CtrlReg\ : LABEL IS "controlcell3";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:bus_busy_reg\ : LABEL IS "macrocell26";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:clk_eq_reg\ : LABEL IS "macrocell27";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:clkgen_tc1_reg\ : LABEL IS "macrocell28";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:clkgen_tc2_reg\ : LABEL IS "macrocell29";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:cnt_reset\ : LABEL IS "macrocell30";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:cs_addr_clkgen_0\ : LABEL IS "macrocell31";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:cs_addr_clkgen_1\ : LABEL IS "macrocell32";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:cs_addr_shifter_0\ : LABEL IS "macrocell33";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:cs_addr_shifter_1\ : LABEL IS "macrocell34";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:lost_arb_reg\ : LABEL IS "macrocell35";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_reset\ : LABEL IS "macrocell36";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_0\ : LABEL IS "macrocell37";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_0_split\ : LABEL IS "macrocell38";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_1\ : LABEL IS "macrocell39";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_2\ : LABEL IS "macrocell40";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_2_split\ : LABEL IS "macrocell41";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_3\ : LABEL IS "macrocell42";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_4\ : LABEL IS "macrocell43";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:m_state_4_split\ : LABEL IS "macrocell44";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:scl_in_last2_reg\ : LABEL IS "macrocell45";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:scl_in_last_reg\ : LABEL IS "macrocell46";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:scl_in_reg\ : LABEL IS "macrocell47";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:sda_in_last2_reg\ : LABEL IS "macrocell48";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:sda_in_last_reg\ : LABEL IS "macrocell49";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:sda_in_reg\ : LABEL IS "macrocell50";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_0\ : LABEL IS "macrocell51";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_1\ : LABEL IS "macrocell52";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_2\ : LABEL IS "macrocell53";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_3\ : LABEL IS "macrocell54";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_4\ : LABEL IS "macrocell55";
+    ATTRIBUTE lib_model OF \I2C:bI2C_UDB:status_5\ : LABEL IS "macrocell56";
+    ATTRIBUTE lib_model OF \I2C:sda_x_wire\ : LABEL IS "macrocell57";
+    ATTRIBUTE lib_model OF \IR_FRONT_PWM:PWMUDB:genblk1:ctrlreg\ : LABEL IS "controlcell4";
+    ATTRIBUTE lib_model OF \IR_FRONT_PWM:PWMUDB:genblk8:stsreg\ : LABEL IS "statusicell6";
+    ATTRIBUTE lib_model OF \IR_FRONT_PWM:PWMUDB:prevCompare1\ : LABEL IS "macrocell58";
+    ATTRIBUTE lib_model OF \IR_FRONT_PWM:PWMUDB:prevCompare2\ : LABEL IS "macrocell59";
+    ATTRIBUTE lib_model OF \IR_FRONT_PWM:PWMUDB:runmode_enable\ : LABEL IS "macrocell60";
+    ATTRIBUTE lib_model OF \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0\ : LABEL IS "datapathcell12";
+    ATTRIBUTE lib_model OF \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u1\ : LABEL IS "datapathcell13";
+    ATTRIBUTE lib_model OF \IR_FRONT_PWM:PWMUDB:status_0\ : LABEL IS "macrocell61";
+    ATTRIBUTE lib_model OF \IR_FRONT_PWM:PWMUDB:status_1\ : LABEL IS "macrocell62";
+    ATTRIBUTE lib_model OF \IR_FRONT_PWM:PWMUDB:status_2\ : LABEL IS "macrocell63";
+    ATTRIBUTE lib_model OF \IR_FRONT_Timer:TimerUDB:rstSts:stsreg\ : LABEL IS "statusicell7";
+    ATTRIBUTE lib_model OF \IR_FRONT_Timer:TimerUDB:run_mode\ : LABEL IS "macrocell64";
+    ATTRIBUTE lib_model OF \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0\ : LABEL IS "datapathcell14";
+    ATTRIBUTE lib_model OF \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u1\ : LABEL IS "datapathcell15";
+    ATTRIBUTE lib_model OF \IR_FRONT_Timer:TimerUDB:status_tc\ : LABEL IS "macrocell65";
+    ATTRIBUTE lib_model OF \IR_FRONT_Timer:TimerUDB:timer_enable\ : LABEL IS "macrocell66";
+    ATTRIBUTE lib_model OF \IR_FRONT_Timer:TimerUDB:trig_disable\ : LABEL IS "macrocell67";
+    ATTRIBUTE lib_model OF \IR_LEFT_PWM:PWMUDB:genblk1:ctrlreg\ : LABEL IS "controlcell5";
+    ATTRIBUTE lib_model OF \IR_LEFT_PWM:PWMUDB:genblk8:stsreg\ : LABEL IS "statusicell8";
+    ATTRIBUTE lib_model OF \IR_LEFT_PWM:PWMUDB:prevCompare1\ : LABEL IS "macrocell68";
+    ATTRIBUTE lib_model OF \IR_LEFT_PWM:PWMUDB:prevCompare2\ : LABEL IS "macrocell69";
+    ATTRIBUTE lib_model OF \IR_LEFT_PWM:PWMUDB:runmode_enable\ : LABEL IS "macrocell70";
+    ATTRIBUTE lib_model OF \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0\ : LABEL IS "datapathcell16";
+    ATTRIBUTE lib_model OF \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u1\ : LABEL IS "datapathcell17";
+    ATTRIBUTE lib_model OF \IR_LEFT_PWM:PWMUDB:status_0\ : LABEL IS "macrocell71";
+    ATTRIBUTE lib_model OF \IR_LEFT_PWM:PWMUDB:status_1\ : LABEL IS "macrocell72";
+    ATTRIBUTE lib_model OF \IR_LEFT_PWM:PWMUDB:status_2\ : LABEL IS "macrocell73";
+    ATTRIBUTE lib_model OF \IR_LEFT_Timer:TimerUDB:rstSts:stsreg\ : LABEL IS "statusicell9";
+    ATTRIBUTE lib_model OF \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0\ : LABEL IS "datapathcell18";
+    ATTRIBUTE lib_model OF \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u1\ : LABEL IS "datapathcell19";
+    ATTRIBUTE lib_model OF \IR_LEFT_Timer:TimerUDB:status_tc\ : LABEL IS "macrocell74";
+    ATTRIBUTE lib_model OF \LCD:Cntl_Port:Sync:ctrl_reg\ : LABEL IS "controlcell6";
+    ATTRIBUTE lib_model OF \Timer:TimerUDB:rstSts:stsreg\ : LABEL IS "statusicell10";
+    ATTRIBUTE lib_model OF \Timer:TimerUDB:sCTRLReg:SyncCtl:ctrlreg\ : LABEL IS "controlcell7";
+    ATTRIBUTE lib_model OF \Timer:TimerUDB:sT24:timerdp:u0\ : LABEL IS "datapathcell20";
+    ATTRIBUTE lib_model OF \Timer:TimerUDB:sT24:timerdp:u1\ : LABEL IS "datapathcell21";
+    ATTRIBUTE lib_model OF \Timer:TimerUDB:sT24:timerdp:u2\ : LABEL IS "datapathcell22";
+    ATTRIBUTE lib_model OF \Timer:TimerUDB:status_tc\ : LABEL IS "macrocell75";
+    ATTRIBUTE lib_model OF \USB:Dm(0)\ : LABEL IS "iocell46";
     ATTRIBUTE Location OF \USB:Dm(0)\ : LABEL IS "P15[7]";
-    ATTRIBUTE lib_model OF \USB:Dp(0)\ : LABEL IS "iocell49";
+    ATTRIBUTE lib_model OF \USB:Dp(0)\ : LABEL IS "iocell47";
     ATTRIBUTE Location OF \USB:Dp(0)\ : LABEL IS "P15[6]";
     ATTRIBUTE Location OF \USB:USB\ : LABEL IS "F(USB,0)";
-    ATTRIBUTE lib_model OF __ONE__ : LABEL IS "macrocell61";
+    ATTRIBUTE lib_model OF __ONE__ : LABEL IS "macrocell76";
     COMPONENT clockblockcell
         PORT (
             dclk_0 : OUT std_ulogic;
@@ -1094,7 +1188,7 @@ BEGIN
         PORT MAP(
             pa_out => ARM_PIN(0)__PA,
             oe => open,
-            pin_input => Net_1273,
+            pin_input => Net_3478,
             pad_out => ARM_PIN(0)_PAD,
             pad_in => ARM_PIN(0)_PAD,
             in_clock => open,
@@ -1104,9 +1198,200 @@ BEGIN
             out_clock_en => '1',
             out_reset => '0');
 
-    BLUE:logicalport
+    BEAM_BREAK_IN:logicalport
+        GENERIC MAP(
+            drive_mode => "001",
+            ibuf_enabled => "1",
+            id => "663c8a0b-c1ed-48fe-8682-ba934854b4d6",
+            init_dr_st => "0",
+            input_buffer_sel => "00",
+            input_clk_en => 0,
+            input_sync => "1",
+            input_sync_mode => "0",
+            intr_mode => "00",
+            invert_in_clock => 0,
+            invert_in_clock_en => 0,
+            invert_in_reset => 0,
+            invert_out_clock => 0,
+            invert_out_clock_en => 0,
+            invert_out_reset => 0,
+            io_voltage => "",
+            layout_mode => "CONTIGUOUS",
+            oe_conn => "0",
+            oe_reset => 0,
+            oe_sync => "0",
+            output_clk_en => 0,
+            output_clock_mode => "0",
+            output_conn => "0",
+            output_mode => "0",
+            output_reset => 0,
+            output_sync => "0",
+            ovt_hyst_trim => "0",
+            ovt_needed => "0",
+            ovt_slew_control => "00",
+            pa_in_clock => -1,
+            pa_in_clock_en => -1,
+            pa_in_reset => -1,
+            pa_out_clock => -1,
+            pa_out_clock_en => -1,
+            pa_out_reset => -1,
+            pin_aliases => "",
+            pin_mode => "I",
+            por_state => 4,
+            port_alias_group => "",
+            port_alias_required => 0,
+            sio_group_cnt => 0,
+            sio_hifreq => "",
+            sio_hyst => "1",
+            sio_ibuf => "00000000",
+            sio_info => "00",
+            sio_obuf => "00000000",
+            sio_refsel => "00000000",
+            sio_vtrip => "00000000",
+            slew_rate => "0",
+            spanning => 0,
+            sw_only => 0,
+            use_annotation => "0",
+            vtrip => "00",
+            width => 1,
+            in_clk_inv => 0,
+            in_clken_inv => 0,
+            in_clken_mode => 1,
+            in_rst_inv => 0,
+            out_clk_inv => 0,
+            out_clken_inv => 0,
+            out_clken_mode => 1,
+            out_rst_inv => 0)
+        PORT MAP(
+            in_clock_en => open,
+            in_reset => open,
+            out_clock_en => open,
+            out_reset => open,
+            in_clock => open);
+
+    BEAM_BREAK_IN(0):iocell
+        GENERIC MAP(
+            in_sync_mode => 0,
+            out_sync_mode => 0,
+            oe_sync_mode => 0,
+            logicalport => "BEAM_BREAK_IN",
+            logicalport_pin_id => 0,
+            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000101")
+        PORT MAP(
+            pa_out => BEAM_BREAK_IN(0)__PA,
+            oe => open,
+            fb => Net_4790,
+            pad_in => BEAM_BREAK_IN(0)_PAD,
+            in_clock => ClockBlock_BUS_CLK,
+            in_clock_en => '1',
+            in_reset => '0',
+            out_clock => open,
+            out_clock_en => '1',
+            out_reset => '0');
+
+    BEAM_BREAK_IN(0)_SYNC:synccell
+        GENERIC MAP(
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            in => Net_4790,
+            out => Net_4790_SYNCOUT,
+            clock => ClockBlock_BUS_CLK);
+
+    BEAM_BREAK_OUT:logicalport
         GENERIC MAP(
             drive_mode => "110",
+            ibuf_enabled => "1",
+            id => "fad5202b-5885-400c-96f0-2dd5f2b402c9",
+            init_dr_st => "0",
+            input_buffer_sel => "00",
+            input_clk_en => 0,
+            input_sync => "1",
+            input_sync_mode => "0",
+            intr_mode => "00",
+            invert_in_clock => 0,
+            invert_in_clock_en => 0,
+            invert_in_reset => 0,
+            invert_out_clock => 0,
+            invert_out_clock_en => 0,
+            invert_out_reset => 0,
+            io_voltage => "",
+            layout_mode => "CONTIGUOUS",
+            oe_conn => "0",
+            oe_reset => 0,
+            oe_sync => "0",
+            output_clk_en => 0,
+            output_clock_mode => "0",
+            output_conn => "1",
+            output_mode => "0",
+            output_reset => 0,
+            output_sync => "0",
+            ovt_hyst_trim => "0",
+            ovt_needed => "0",
+            ovt_slew_control => "00",
+            pa_in_clock => -1,
+            pa_in_clock_en => -1,
+            pa_in_reset => -1,
+            pa_out_clock => -1,
+            pa_out_clock_en => -1,
+            pa_out_reset => -1,
+            pin_aliases => "",
+            pin_mode => "O",
+            por_state => 4,
+            port_alias_group => "",
+            port_alias_required => 0,
+            sio_group_cnt => 0,
+            sio_hifreq => "",
+            sio_hyst => "1",
+            sio_ibuf => "00000000",
+            sio_info => "00",
+            sio_obuf => "00000000",
+            sio_refsel => "00000000",
+            sio_vtrip => "00000000",
+            slew_rate => "0",
+            spanning => 0,
+            sw_only => 0,
+            use_annotation => "0",
+            vtrip => "10",
+            width => 1,
+            in_clk_inv => 0,
+            in_clken_inv => 0,
+            in_clken_mode => 1,
+            in_rst_inv => 0,
+            out_clk_inv => 0,
+            out_clken_inv => 0,
+            out_clken_mode => 1,
+            out_rst_inv => 0)
+        PORT MAP(
+            in_clock_en => open,
+            in_reset => open,
+            out_clock_en => open,
+            out_reset => open);
+
+    BEAM_BREAK_OUT(0):iocell
+        GENERIC MAP(
+            in_sync_mode => 0,
+            out_sync_mode => 0,
+            oe_sync_mode => 0,
+            logicalport => "BEAM_BREAK_OUT",
+            logicalport_pin_id => 0,
+            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000101")
+        PORT MAP(
+            pa_out => BEAM_BREAK_OUT(0)__PA,
+            oe => open,
+            pin_input => Net_4704_local,
+            pad_out => BEAM_BREAK_OUT(0)_PAD,
+            pad_in => BEAM_BREAK_OUT(0)_PAD,
+            in_clock => open,
+            in_clock_en => '1',
+            in_reset => '0',
+            out_clock => open,
+            out_clock_en => '1',
+            out_reset => '0');
+
+    BLUE:logicalport
+        GENERIC MAP(
+            drive_mode => "101",
             ibuf_enabled => "1",
             id => "88647080-273f-449d-a822-575ecc584b1d",
             init_dr_st => "0",
@@ -1314,14 +1599,16 @@ BEGIN
             dclk_1 => Net_52_local,
             dclk_glb_2 => \I2C:Net_970\,
             dclk_2 => \I2C:Net_970_local\,
-            dclk_glb_3 => Net_4386,
-            dclk_3 => Net_4386_local,
-            dclk_glb_4 => Net_2847,
-            dclk_4 => Net_2847_local,
+            dclk_glb_3 => Net_4781,
+            dclk_3 => Net_4781_local,
+            dclk_glb_4 => Net_3043,
+            dclk_4 => Net_3043_local,
             dclk_glb_5 => Net_1260,
             dclk_5 => Net_1260_local,
-            dclk_glb_6 => Net_254,
-            dclk_6 => Net_254_local,
+            dclk_glb_6 => Net_4704,
+            dclk_6 => Net_4704_local,
+            dclk_glb_7 => Net_254,
+            dclk_7 => Net_254_local,
             clk_bus_glb_ff => \ClockBlock.clk_bus_glb_ff__sig\,
             dclk_glb_ff_1 => \ClockBlock.dclk_glb_ff_1__sig\,
             dclk_glb_ff_5 => \ClockBlock.dclk_glb_ff_5__sig\);
@@ -1979,118 +2266,11 @@ BEGIN
             out => Net_885_SYNCOUT,
             clock => ClockBlock_BUS_CLK);
 
-    HC_ECHO_2:logicalport
-        GENERIC MAP(
-            drive_mode => "001",
-            ibuf_enabled => "1",
-            id => "ceb2a5b7-5300-4451-8bde-bbcf676fc47a",
-            init_dr_st => "0",
-            input_buffer_sel => "00",
-            input_clk_en => 0,
-            input_sync => "1",
-            input_sync_mode => "0",
-            intr_mode => "00",
-            invert_in_clock => 0,
-            invert_in_clock_en => 0,
-            invert_in_reset => 0,
-            invert_out_clock => 0,
-            invert_out_clock_en => 0,
-            invert_out_reset => 0,
-            io_voltage => "",
-            layout_mode => "CONTIGUOUS",
-            oe_conn => "0",
-            oe_reset => 0,
-            oe_sync => "0",
-            output_clk_en => 0,
-            output_clock_mode => "0",
-            output_conn => "0",
-            output_mode => "0",
-            output_reset => 0,
-            output_sync => "0",
-            ovt_hyst_trim => "0",
-            ovt_needed => "0",
-            ovt_slew_control => "00",
-            pa_in_clock => -1,
-            pa_in_clock_en => -1,
-            pa_in_reset => -1,
-            pa_out_clock => -1,
-            pa_out_clock_en => -1,
-            pa_out_reset => -1,
-            pin_aliases => "",
-            pin_mode => "I",
-            por_state => 4,
-            port_alias_group => "",
-            port_alias_required => 0,
-            sio_group_cnt => 0,
-            sio_hifreq => "",
-            sio_hyst => "1",
-            sio_ibuf => "00000000",
-            sio_info => "00",
-            sio_obuf => "00000000",
-            sio_refsel => "00000000",
-            sio_vtrip => "00000000",
-            slew_rate => "0",
-            spanning => 0,
-            sw_only => 0,
-            use_annotation => "0",
-            vtrip => "00",
-            width => 1,
-            in_clk_inv => 0,
-            in_clken_inv => 0,
-            in_clken_mode => 1,
-            in_rst_inv => 0,
-            out_clk_inv => 0,
-            out_clken_inv => 0,
-            out_clken_mode => 1,
-            out_rst_inv => 0)
-        PORT MAP(
-            in_clock_en => open,
-            in_reset => open,
-            out_clock_en => open,
-            out_reset => open,
-            in_clock => open);
-
-    HC_ECHO_2(0):iocell
-        GENERIC MAP(
-            in_sync_mode => 0,
-            out_sync_mode => 0,
-            oe_sync_mode => 0,
-            logicalport => "HC_ECHO_2",
-            logicalport_pin_id => 0,
-            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000101")
-        PORT MAP(
-            pa_out => HC_ECHO_2(0)__PA,
-            oe => open,
-            fb => Net_2861,
-            pad_in => HC_ECHO_2(0)_PAD,
-            in_clock => ClockBlock_BUS_CLK,
-            in_clock_en => '1',
-            in_reset => '0',
-            out_clock => open,
-            out_clock_en => '1',
-            out_reset => '0');
-
-    HC_ECHO_2(0)_SYNC:synccell
-        GENERIC MAP(
-            clk_inv => '0',
-            clken_mode => 1)
-        PORT MAP(
-            in => Net_2861,
-            out => Net_2861_SYNCOUT,
-            clock => ClockBlock_BUS_CLK);
-
     HC_ISR:interrupt
         GENERIC MAP(
             int_type => "00")
         PORT MAP(
             interrupt => Net_2330,
-            clock => ClockBlock_BUS_CLK);
-
-    HC_ISR_2:interrupt
-        GENERIC MAP(
-            int_type => "00")
-        PORT MAP(
-            interrupt => Net_2850,
             clock => ClockBlock_BUS_CLK);
 
     HC_TRIG:logicalport
@@ -2177,97 +2357,6 @@ BEGIN
             pin_input => Net_1697,
             pad_out => HC_TRIG(0)_PAD,
             pad_in => HC_TRIG(0)_PAD,
-            in_clock => open,
-            in_clock_en => '1',
-            in_reset => '0',
-            out_clock => open,
-            out_clock_en => '1',
-            out_reset => '0');
-
-    HC_TRIG_2:logicalport
-        GENERIC MAP(
-            drive_mode => "110",
-            ibuf_enabled => "1",
-            id => "d5c1095b-9c8a-4290-b57c-010742ed0667",
-            init_dr_st => "1",
-            input_buffer_sel => "00",
-            input_clk_en => 0,
-            input_sync => "1",
-            input_sync_mode => "0",
-            intr_mode => "00",
-            invert_in_clock => 0,
-            invert_in_clock_en => 0,
-            invert_in_reset => 0,
-            invert_out_clock => 0,
-            invert_out_clock_en => 0,
-            invert_out_reset => 0,
-            io_voltage => "",
-            layout_mode => "CONTIGUOUS",
-            oe_conn => "0",
-            oe_reset => 0,
-            oe_sync => "0",
-            output_clk_en => 0,
-            output_clock_mode => "0",
-            output_conn => "1",
-            output_mode => "0",
-            output_reset => 0,
-            output_sync => "0",
-            ovt_hyst_trim => "0",
-            ovt_needed => "0",
-            ovt_slew_control => "00",
-            pa_in_clock => -1,
-            pa_in_clock_en => -1,
-            pa_in_reset => -1,
-            pa_out_clock => -1,
-            pa_out_clock_en => -1,
-            pa_out_reset => -1,
-            pin_aliases => "",
-            pin_mode => "O",
-            por_state => 4,
-            port_alias_group => "",
-            port_alias_required => 0,
-            sio_group_cnt => 0,
-            sio_hifreq => "",
-            sio_hyst => "1",
-            sio_ibuf => "00000000",
-            sio_info => "00",
-            sio_obuf => "00000000",
-            sio_refsel => "00000000",
-            sio_vtrip => "00000000",
-            slew_rate => "0",
-            spanning => 0,
-            sw_only => 0,
-            use_annotation => "0",
-            vtrip => "10",
-            width => 1,
-            in_clk_inv => 0,
-            in_clken_inv => 0,
-            in_clken_mode => 1,
-            in_rst_inv => 0,
-            out_clk_inv => 0,
-            out_clken_inv => 0,
-            out_clken_mode => 1,
-            out_rst_inv => 0)
-        PORT MAP(
-            in_clock_en => open,
-            in_reset => open,
-            out_clock_en => open,
-            out_reset => open);
-
-    HC_TRIG_2(0):iocell
-        GENERIC MAP(
-            in_sync_mode => 0,
-            out_sync_mode => 0,
-            oe_sync_mode => 0,
-            logicalport => "HC_TRIG_2",
-            logicalport_pin_id => 0,
-            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000101")
-        PORT MAP(
-            pa_out => HC_TRIG_2(0)__PA,
-            oe => open,
-            pin_input => Net_2849,
-            pad_out => HC_TRIG_2(0)_PAD,
-            pad_in => HC_TRIG_2(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
             in_reset => '0',
@@ -2479,6 +2568,220 @@ BEGIN
             out => \I2C:Net_1109_1_SYNCOUT\,
             clock => ClockBlock_BUS_CLK);
 
+    IR_FRONT_DONE:interrupt
+        GENERIC MAP(
+            int_type => "00")
+        PORT MAP(
+            interrupt => Net_4596,
+            clock => ClockBlock_BUS_CLK);
+
+    IR_LEFT_DONE:interrupt
+        GENERIC MAP(
+            int_type => "10")
+        PORT MAP(
+            interrupt => Net_4800,
+            clock => ClockBlock_BUS_CLK);
+
+    IRin_front:logicalport
+        GENERIC MAP(
+            drive_mode => "001",
+            ibuf_enabled => "1",
+            id => "244650b6-f482-424b-93d3-cf627463f3f0",
+            init_dr_st => "0",
+            input_buffer_sel => "00",
+            input_clk_en => 0,
+            input_sync => "1",
+            input_sync_mode => "0",
+            intr_mode => "00",
+            invert_in_clock => 0,
+            invert_in_clock_en => 0,
+            invert_in_reset => 0,
+            invert_out_clock => 0,
+            invert_out_clock_en => 0,
+            invert_out_reset => 0,
+            io_voltage => "",
+            layout_mode => "CONTIGUOUS",
+            oe_conn => "0",
+            oe_reset => 0,
+            oe_sync => "0",
+            output_clk_en => 0,
+            output_clock_mode => "0",
+            output_conn => "0",
+            output_mode => "0",
+            output_reset => 0,
+            output_sync => "0",
+            ovt_hyst_trim => "0",
+            ovt_needed => "0",
+            ovt_slew_control => "00",
+            pa_in_clock => -1,
+            pa_in_clock_en => -1,
+            pa_in_reset => -1,
+            pa_out_clock => -1,
+            pa_out_clock_en => -1,
+            pa_out_reset => -1,
+            pin_aliases => "",
+            pin_mode => "I",
+            por_state => 4,
+            port_alias_group => "",
+            port_alias_required => 0,
+            sio_group_cnt => 0,
+            sio_hifreq => "",
+            sio_hyst => "1",
+            sio_ibuf => "00000000",
+            sio_info => "00",
+            sio_obuf => "00000000",
+            sio_refsel => "00000000",
+            sio_vtrip => "00000000",
+            slew_rate => "0",
+            spanning => 0,
+            sw_only => 0,
+            use_annotation => "0",
+            vtrip => "00",
+            width => 1,
+            in_clk_inv => 0,
+            in_clken_inv => 0,
+            in_clken_mode => 1,
+            in_rst_inv => 0,
+            out_clk_inv => 0,
+            out_clken_inv => 0,
+            out_clken_mode => 1,
+            out_rst_inv => 0)
+        PORT MAP(
+            in_clock_en => open,
+            in_reset => open,
+            out_clock_en => open,
+            out_reset => open,
+            in_clock => open);
+
+    IRin_front(0):iocell
+        GENERIC MAP(
+            in_sync_mode => 0,
+            out_sync_mode => 0,
+            oe_sync_mode => 0,
+            logicalport => "IRin_front",
+            logicalport_pin_id => 0,
+            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000101")
+        PORT MAP(
+            pa_out => IRin_front(0)__PA,
+            oe => open,
+            fb => Net_936,
+            pad_in => IRin_front(0)_PAD,
+            in_clock => ClockBlock_BUS_CLK,
+            in_clock_en => '1',
+            in_reset => '0',
+            out_clock => open,
+            out_clock_en => '1',
+            out_reset => '0');
+
+    IRin_front(0)_SYNC:synccell
+        GENERIC MAP(
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            in => Net_936,
+            out => Net_936_SYNCOUT,
+            clock => ClockBlock_BUS_CLK);
+
+    IRin_left:logicalport
+        GENERIC MAP(
+            drive_mode => "001",
+            ibuf_enabled => "1",
+            id => "05de4341-1be6-4712-b988-0ffe4d03da41",
+            init_dr_st => "0",
+            input_buffer_sel => "00",
+            input_clk_en => 0,
+            input_sync => "1",
+            input_sync_mode => "0",
+            intr_mode => "00",
+            invert_in_clock => 0,
+            invert_in_clock_en => 0,
+            invert_in_reset => 0,
+            invert_out_clock => 0,
+            invert_out_clock_en => 0,
+            invert_out_reset => 0,
+            io_voltage => "",
+            layout_mode => "CONTIGUOUS",
+            oe_conn => "0",
+            oe_reset => 0,
+            oe_sync => "0",
+            output_clk_en => 0,
+            output_clock_mode => "0",
+            output_conn => "0",
+            output_mode => "0",
+            output_reset => 0,
+            output_sync => "0",
+            ovt_hyst_trim => "0",
+            ovt_needed => "0",
+            ovt_slew_control => "00",
+            pa_in_clock => -1,
+            pa_in_clock_en => -1,
+            pa_in_reset => -1,
+            pa_out_clock => -1,
+            pa_out_clock_en => -1,
+            pa_out_reset => -1,
+            pin_aliases => "",
+            pin_mode => "I",
+            por_state => 4,
+            port_alias_group => "",
+            port_alias_required => 0,
+            sio_group_cnt => 0,
+            sio_hifreq => "",
+            sio_hyst => "1",
+            sio_ibuf => "00000000",
+            sio_info => "00",
+            sio_obuf => "00000000",
+            sio_refsel => "00000000",
+            sio_vtrip => "00000000",
+            slew_rate => "0",
+            spanning => 0,
+            sw_only => 0,
+            use_annotation => "0",
+            vtrip => "00",
+            width => 1,
+            in_clk_inv => 0,
+            in_clken_inv => 0,
+            in_clken_mode => 1,
+            in_rst_inv => 0,
+            out_clk_inv => 0,
+            out_clken_inv => 0,
+            out_clken_mode => 1,
+            out_rst_inv => 0)
+        PORT MAP(
+            in_clock_en => open,
+            in_reset => open,
+            out_clock_en => open,
+            out_reset => open,
+            in_clock => open);
+
+    IRin_left(0):iocell
+        GENERIC MAP(
+            in_sync_mode => 0,
+            out_sync_mode => 0,
+            oe_sync_mode => 0,
+            logicalport => "IRin_left",
+            logicalport_pin_id => 0,
+            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000101")
+        PORT MAP(
+            pa_out => IRin_left(0)__PA,
+            oe => open,
+            fb => Net_3035,
+            pad_in => IRin_left(0)_PAD,
+            in_clock => ClockBlock_BUS_CLK,
+            in_clock_en => '1',
+            in_reset => '0',
+            out_clock => open,
+            out_clock_en => '1',
+            out_reset => '0');
+
+    IRin_left(0)_SYNC:synccell
+        GENERIC MAP(
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            in => Net_3035,
+            out => Net_3035_SYNCOUT,
+            clock => ClockBlock_BUS_CLK);
+
     ISR_CHECKP:logicalport
         GENERIC MAP(
             drive_mode => "110",
@@ -2649,7 +2952,7 @@ BEGIN
         PORT MAP(
             pa_out => MLEN(0)__PA,
             oe => open,
-            pin_input => Net_1872,
+            pin_input => Net_3506,
             pad_out => MLEN(0)_PAD,
             pad_in => MLEN(0)_PAD,
             in_clock => open,
@@ -2918,7 +3221,7 @@ BEGIN
         PORT MAP(
             pa_out => MREN(0)__PA,
             oe => open,
-            pin_input => Net_2019,
+            pin_input => Net_3493,
             pad_out => MREN(0)_PAD,
             pad_in => MREN(0)_PAD,
             in_clock => open,
@@ -3106,17 +3409,6 @@ BEGIN
             out_clock_en => '1',
             out_reset => '0');
 
-    Net_1273:macrocell
-        GENERIC MAP(
-            eqn_main => "(main_0 * main_1)",
-            clk_inv => '0',
-            clken_mode => 1)
-        PORT MAP(
-            q => Net_1273,
-            clock_0 => Net_1260,
-            main_0 => \Arm_PWM:PWMUDB:runmode_enable\,
-            main_1 => \Arm_PWM:PWMUDB:cmp1_less\);
-
     Net_1697:macrocell
         GENERIC MAP(
             eqn_main => "(main_0 * !main_1)",
@@ -3124,7 +3416,7 @@ BEGIN
             clken_mode => 1)
         PORT MAP(
             q => Net_1697,
-            clock_0 => Net_4386,
+            clock_0 => Net_4781,
             main_0 => \HC_PWM:PWMUDB:runmode_enable\,
             main_1 => \HC_PWM:PWMUDB:cmp1_less\);
 
@@ -3135,31 +3427,80 @@ BEGIN
             clken_mode => 1)
         PORT MAP(
             q => Net_2330,
-            clock_0 => Net_4386,
+            clock_0 => Net_4781,
             main_0 => \HC_PWM:PWMUDB:runmode_enable\,
             main_1 => \HC_PWM:PWMUDB:cmp2_less\);
 
-    Net_2849:macrocell
+    Net_3038:macrocell
         GENERIC MAP(
-            eqn_main => "(main_0 * !main_1)",
-            clk_inv => '0',
+            eqn_main => "(!main_0)",
             clken_mode => 1)
         PORT MAP(
-            q => Net_2849,
-            clock_0 => Net_2847,
-            main_0 => \HC_PWM_2:PWMUDB:runmode_enable\,
-            main_1 => \HC_PWM_2:PWMUDB:cmp1_less\);
+            q => Net_3038,
+            main_0 => Net_3035_SYNCOUT);
 
-    Net_2850:macrocell
+    Net_3478:macrocell
         GENERIC MAP(
             eqn_main => "(main_0 * main_1)",
             clk_inv => '0',
             clken_mode => 1)
         PORT MAP(
-            q => Net_2850,
-            clock_0 => Net_2847,
-            main_0 => \HC_PWM_2:PWMUDB:runmode_enable\,
-            main_1 => \HC_PWM_2:PWMUDB:cmp2_less\);
+            q => Net_3478,
+            clock_0 => Net_1260,
+            main_0 => \Arm_PWM:PWMUDB:runmode_enable\,
+            main_1 => \Arm_PWM:PWMUDB:cmp1_less\);
+
+    Net_36:macrocell
+        GENERIC MAP(
+            eqn_main => "(!main_0)",
+            clken_mode => 1)
+        PORT MAP(
+            q => Net_36,
+            main_0 => Net_936_SYNCOUT);
+
+    Net_435:macrocell
+        GENERIC MAP(
+            eqn_main => "(main_0 * main_1)",
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            q => Net_435,
+            clock_0 => Net_3043,
+            main_0 => \IR_FRONT_PWM:PWMUDB:runmode_enable\,
+            main_1 => \IR_FRONT_PWM:PWMUDB:cmp1_less\);
+
+    Net_4596:macrocell
+        GENERIC MAP(
+            eqn_main => "(main_0 * main_1)",
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            q => Net_4596,
+            clock_0 => Net_3043,
+            main_0 => \IR_FRONT_PWM:PWMUDB:runmode_enable\,
+            main_1 => \IR_FRONT_PWM:PWMUDB:cmp2_less\);
+
+    Net_4797:macrocell
+        GENERIC MAP(
+            eqn_main => "(main_0 * main_1)",
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            q => Net_4797,
+            clock_0 => Net_3043,
+            main_0 => \IR_LEFT_PWM:PWMUDB:runmode_enable\,
+            main_1 => \IR_LEFT_PWM:PWMUDB:cmp1_less\);
+
+    Net_4800:macrocell
+        GENERIC MAP(
+            eqn_main => "(main_0 * main_1)",
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            q => Net_4800,
+            clock_0 => Net_3043,
+            main_0 => \IR_LEFT_PWM:PWMUDB:runmode_enable\,
+            main_1 => \IR_LEFT_PWM:PWMUDB:cmp2_less\);
 
     Net_54:macrocell
         GENERIC MAP(
@@ -3454,368 +3795,6 @@ BEGIN
             pad_out => RS(0)_PAD,
             pad_in => RS(0)_PAD,
             in_clock => open,
-            in_clock_en => '1',
-            in_reset => '0',
-            out_clock => open,
-            out_clock_en => '1',
-            out_reset => '0');
-
-    SCLK_A:logicalport
-        GENERIC MAP(
-            drive_mode => "100",
-            ibuf_enabled => "1",
-            id => "264be2d3-9481-494b-8d9c-c1905a45e9cc",
-            init_dr_st => "1",
-            input_buffer_sel => "00",
-            input_clk_en => 0,
-            input_sync => "1",
-            input_sync_mode => "0",
-            intr_mode => "10",
-            invert_in_clock => 0,
-            invert_in_clock_en => 0,
-            invert_in_reset => 0,
-            invert_out_clock => 0,
-            invert_out_clock_en => 0,
-            invert_out_reset => 0,
-            io_voltage => "",
-            layout_mode => "CONTIGUOUS",
-            oe_conn => "0",
-            oe_reset => 0,
-            oe_sync => "0",
-            output_clk_en => 0,
-            output_clock_mode => "0",
-            output_conn => "0",
-            output_mode => "0",
-            output_reset => 0,
-            output_sync => "0",
-            ovt_hyst_trim => "0",
-            ovt_needed => "0",
-            ovt_slew_control => "00",
-            pa_in_clock => -1,
-            pa_in_clock_en => -1,
-            pa_in_reset => -1,
-            pa_out_clock => -1,
-            pa_out_clock_en => -1,
-            pa_out_reset => -1,
-            pin_aliases => "",
-            pin_mode => "B",
-            por_state => 4,
-            port_alias_group => "",
-            port_alias_required => 0,
-            sio_group_cnt => 0,
-            sio_hifreq => "",
-            sio_hyst => "1",
-            sio_ibuf => "00000000",
-            sio_info => "00",
-            sio_obuf => "00000000",
-            sio_refsel => "00000000",
-            sio_vtrip => "00000000",
-            slew_rate => "0",
-            spanning => 0,
-            sw_only => 0,
-            use_annotation => "0",
-            vtrip => "00",
-            width => 1,
-            in_clk_inv => 0,
-            in_clken_inv => 0,
-            in_clken_mode => 1,
-            in_rst_inv => 0,
-            out_clk_inv => 0,
-            out_clken_inv => 0,
-            out_clken_mode => 1,
-            out_rst_inv => 0)
-        PORT MAP(
-            in_clock_en => open,
-            in_reset => open,
-            out_clock_en => open,
-            out_reset => open,
-            interrupt => Net_53,
-            in_clock => open);
-
-    SCLK_A(0):iocell
-        GENERIC MAP(
-            in_sync_mode => 2,
-            out_sync_mode => 0,
-            oe_sync_mode => 0,
-            logicalport => "SCLK_A",
-            logicalport_pin_id => 0,
-            io_capabilities => "0000000000000000000000000001000000000000000000000000000000000101")
-        PORT MAP(
-            pa_out => SCLK_A(0)__PA,
-            oe => open,
-            pad_in => SCLK_A(0)_PAD,
-            in_clock => ClockBlock_BUS_CLK,
-            in_clock_en => '1',
-            in_reset => '0',
-            out_clock => open,
-            out_clock_en => '1',
-            out_reset => '0');
-
-    SCLK_B:logicalport
-        GENERIC MAP(
-            drive_mode => "100",
-            ibuf_enabled => "1",
-            id => "2765169e-244f-4d10-a6de-5c5cd01f50d3",
-            init_dr_st => "1",
-            input_buffer_sel => "00",
-            input_clk_en => 0,
-            input_sync => "1",
-            input_sync_mode => "0",
-            intr_mode => "10",
-            invert_in_clock => 0,
-            invert_in_clock_en => 0,
-            invert_in_reset => 0,
-            invert_out_clock => 0,
-            invert_out_clock_en => 0,
-            invert_out_reset => 0,
-            io_voltage => "",
-            layout_mode => "CONTIGUOUS",
-            oe_conn => "0",
-            oe_reset => 0,
-            oe_sync => "0",
-            output_clk_en => 0,
-            output_clock_mode => "0",
-            output_conn => "0",
-            output_mode => "0",
-            output_reset => 0,
-            output_sync => "0",
-            ovt_hyst_trim => "0",
-            ovt_needed => "0",
-            ovt_slew_control => "00",
-            pa_in_clock => -1,
-            pa_in_clock_en => -1,
-            pa_in_reset => -1,
-            pa_out_clock => -1,
-            pa_out_clock_en => -1,
-            pa_out_reset => -1,
-            pin_aliases => "",
-            pin_mode => "B",
-            por_state => 4,
-            port_alias_group => "",
-            port_alias_required => 0,
-            sio_group_cnt => 0,
-            sio_hifreq => "",
-            sio_hyst => "1",
-            sio_ibuf => "00000000",
-            sio_info => "00",
-            sio_obuf => "00000000",
-            sio_refsel => "00000000",
-            sio_vtrip => "00000000",
-            slew_rate => "0",
-            spanning => 0,
-            sw_only => 0,
-            use_annotation => "0",
-            vtrip => "00",
-            width => 1,
-            in_clk_inv => 0,
-            in_clken_inv => 0,
-            in_clken_mode => 1,
-            in_rst_inv => 0,
-            out_clk_inv => 0,
-            out_clken_inv => 0,
-            out_clken_mode => 1,
-            out_rst_inv => 0)
-        PORT MAP(
-            in_clock_en => open,
-            in_reset => open,
-            out_clock_en => open,
-            out_reset => open,
-            interrupt => Net_325,
-            in_clock => open);
-
-    SCLK_B(0):iocell
-        GENERIC MAP(
-            in_sync_mode => 2,
-            out_sync_mode => 0,
-            oe_sync_mode => 0,
-            logicalport => "SCLK_B",
-            logicalport_pin_id => 0,
-            io_capabilities => "0000000000000000000000000001000000000000000000000000000000000101")
-        PORT MAP(
-            pa_out => SCLK_B(0)__PA,
-            oe => open,
-            pad_in => SCLK_B(0)_PAD,
-            in_clock => ClockBlock_BUS_CLK,
-            in_clock_en => '1',
-            in_reset => '0',
-            out_clock => open,
-            out_clock_en => '1',
-            out_reset => '0');
-
-    SDAT_A:logicalport
-        GENERIC MAP(
-            drive_mode => "100",
-            ibuf_enabled => "1",
-            id => "b689c5af-152d-499b-892e-8c2eb0d25c0c",
-            init_dr_st => "1",
-            input_buffer_sel => "00",
-            input_clk_en => 0,
-            input_sync => "1",
-            input_sync_mode => "0",
-            intr_mode => "00",
-            invert_in_clock => 0,
-            invert_in_clock_en => 0,
-            invert_in_reset => 0,
-            invert_out_clock => 0,
-            invert_out_clock_en => 0,
-            invert_out_reset => 0,
-            io_voltage => "",
-            layout_mode => "CONTIGUOUS",
-            oe_conn => "0",
-            oe_reset => 0,
-            oe_sync => "0",
-            output_clk_en => 0,
-            output_clock_mode => "0",
-            output_conn => "0",
-            output_mode => "0",
-            output_reset => 0,
-            output_sync => "0",
-            ovt_hyst_trim => "0",
-            ovt_needed => "0",
-            ovt_slew_control => "00",
-            pa_in_clock => -1,
-            pa_in_clock_en => -1,
-            pa_in_reset => -1,
-            pa_out_clock => -1,
-            pa_out_clock_en => -1,
-            pa_out_reset => -1,
-            pin_aliases => "",
-            pin_mode => "B",
-            por_state => 4,
-            port_alias_group => "",
-            port_alias_required => 0,
-            sio_group_cnt => 0,
-            sio_hifreq => "",
-            sio_hyst => "1",
-            sio_ibuf => "00000000",
-            sio_info => "00",
-            sio_obuf => "00000000",
-            sio_refsel => "00000000",
-            sio_vtrip => "00000000",
-            slew_rate => "0",
-            spanning => 0,
-            sw_only => 0,
-            use_annotation => "0",
-            vtrip => "00",
-            width => 1,
-            in_clk_inv => 0,
-            in_clken_inv => 0,
-            in_clken_mode => 1,
-            in_rst_inv => 0,
-            out_clk_inv => 0,
-            out_clken_inv => 0,
-            out_clken_mode => 1,
-            out_rst_inv => 0)
-        PORT MAP(
-            in_clock_en => open,
-            in_reset => open,
-            out_clock_en => open,
-            out_reset => open,
-            in_clock => open);
-
-    SDAT_A(0):iocell
-        GENERIC MAP(
-            in_sync_mode => 2,
-            out_sync_mode => 0,
-            oe_sync_mode => 0,
-            logicalport => "SDAT_A",
-            logicalport_pin_id => 0,
-            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000101")
-        PORT MAP(
-            pa_out => SDAT_A(0)__PA,
-            oe => open,
-            pad_in => SDAT_A(0)_PAD,
-            in_clock => ClockBlock_BUS_CLK,
-            in_clock_en => '1',
-            in_reset => '0',
-            out_clock => open,
-            out_clock_en => '1',
-            out_reset => '0');
-
-    SDAT_B:logicalport
-        GENERIC MAP(
-            drive_mode => "100",
-            ibuf_enabled => "1",
-            id => "c7e4110d-1a42-45ae-9330-9bb0986d4778",
-            init_dr_st => "1",
-            input_buffer_sel => "00",
-            input_clk_en => 0,
-            input_sync => "1",
-            input_sync_mode => "0",
-            intr_mode => "00",
-            invert_in_clock => 0,
-            invert_in_clock_en => 0,
-            invert_in_reset => 0,
-            invert_out_clock => 0,
-            invert_out_clock_en => 0,
-            invert_out_reset => 0,
-            io_voltage => "",
-            layout_mode => "CONTIGUOUS",
-            oe_conn => "0",
-            oe_reset => 0,
-            oe_sync => "0",
-            output_clk_en => 0,
-            output_clock_mode => "0",
-            output_conn => "0",
-            output_mode => "0",
-            output_reset => 0,
-            output_sync => "0",
-            ovt_hyst_trim => "0",
-            ovt_needed => "0",
-            ovt_slew_control => "00",
-            pa_in_clock => -1,
-            pa_in_clock_en => -1,
-            pa_in_reset => -1,
-            pa_out_clock => -1,
-            pa_out_clock_en => -1,
-            pa_out_reset => -1,
-            pin_aliases => "",
-            pin_mode => "B",
-            por_state => 4,
-            port_alias_group => "",
-            port_alias_required => 0,
-            sio_group_cnt => 0,
-            sio_hifreq => "",
-            sio_hyst => "1",
-            sio_ibuf => "00000000",
-            sio_info => "00",
-            sio_obuf => "00000000",
-            sio_refsel => "00000000",
-            sio_vtrip => "00000000",
-            slew_rate => "0",
-            spanning => 0,
-            sw_only => 0,
-            use_annotation => "0",
-            vtrip => "00",
-            width => 1,
-            in_clk_inv => 0,
-            in_clken_inv => 0,
-            in_clken_mode => 1,
-            in_rst_inv => 0,
-            out_clk_inv => 0,
-            out_clken_inv => 0,
-            out_clken_mode => 1,
-            out_rst_inv => 0)
-        PORT MAP(
-            in_clock_en => open,
-            in_reset => open,
-            out_clock_en => open,
-            out_reset => open,
-            in_clock => open);
-
-    SDAT_B(0):iocell
-        GENERIC MAP(
-            in_sync_mode => 2,
-            out_sync_mode => 0,
-            oe_sync_mode => 0,
-            logicalport => "SDAT_B",
-            logicalport_pin_id => 0,
-            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000101")
-        PORT MAP(
-            pa_out => SDAT_B(0)__PA,
-            oe => open,
-            pad_in => SDAT_B(0)_PAD,
-            in_clock => ClockBlock_BUS_CLK,
             in_clock_en => '1',
             in_reset => '0',
             out_clock => open,
@@ -4174,6 +4153,127 @@ BEGIN
             q => \Arm_PWM:PWMUDB:status_2\,
             main_0 => \Arm_PWM:PWMUDB:runmode_enable\,
             main_1 => \Arm_PWM:PWMUDB:tc_i\);
+
+    \BEAM_BREAK_TIMER:TimerUDB:rstSts:stsreg\:statusicell
+        GENERIC MAP(
+            cy_force_order => 1,
+            cy_int_mask => "1111111",
+            cy_md_select => "0000011",
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            clock => Net_3043,
+            status_6 => open,
+            status_5 => open,
+            status_4 => open,
+            status_3 => \BEAM_BREAK_TIMER:TimerUDB:status_3\,
+            status_2 => \BEAM_BREAK_TIMER:TimerUDB:status_2\,
+            status_1 => open,
+            status_0 => \BEAM_BREAK_TIMER:TimerUDB:status_tc\);
+
+    \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0\:datapathcell
+        GENERIC MAP(
+            a0_init => "00000000",
+            a1_init => "00000000",
+            ce0_sync => 1,
+            ce1_sync => 1,
+            cl0_sync => 1,
+            cl1_sync => 1,
+            cmsb_sync => 1,
+            co_msb_sync => 1,
+            cy_dpconfig => "0000000001000000000000000100000001000000010000000000000010000000000000001000000000000000100000000000000010000000000000001000000011111111000000001111111111111111000000000000000000000001000000000000000000011000",
+            d0_init => "00000000",
+            d1_init => "00000000",
+            f0_blk_sync => 1,
+            f0_bus_sync => 1,
+            f1_blk_sync => 1,
+            f1_bus_sync => 1,
+            ff0_sync => 1,
+            ff1_sync => 1,
+            ov_msb_sync => 1,
+            so_sync => 1,
+            z0_sync => 1,
+            z1_sync => 1,
+            uses_p_in => '0',
+            uses_p_out => '0',
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            clock => Net_3043,
+            cs_addr_1 => Net_4790_SYNCOUT,
+            cs_addr_0 => \BEAM_BREAK_TIMER:TimerUDB:per_zero\,
+            busclk => ClockBlock_BUS_CLK,
+            ce0 => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.ce0__sig\,
+            cl0 => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.cl0__sig\,
+            z0 => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.z0__sig\,
+            ff0 => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.ff0__sig\,
+            ce1 => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.ce1__sig\,
+            cl1 => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.cl1__sig\,
+            z1 => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.z1__sig\,
+            ff1 => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.ff1__sig\,
+            co_msb => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.co_msb__sig\,
+            sol_msb => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.sol_msb__sig\,
+            cfbo => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.cfbo__sig\,
+            sil => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u1.sor__sig\,
+            cmsbi => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u1.cmsbo__sig\);
+
+    \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u1\:datapathcell
+        GENERIC MAP(
+            a0_init => "00000000",
+            a1_init => "00000000",
+            ce0_sync => 1,
+            ce1_sync => 1,
+            cl0_sync => 1,
+            cl1_sync => 1,
+            cmsb_sync => 1,
+            co_msb_sync => 1,
+            cy_dpconfig => "0000000001000000000000000100000001000000010000000000000010000000000000001000000000000000100000000000000010000000000000001000000011111111000000001111111111111111100000110000000000000001000000110000000000011000",
+            d0_init => "00000000",
+            d1_init => "00000000",
+            f0_blk_sync => 1,
+            f0_bus_sync => 1,
+            f1_blk_sync => 1,
+            f1_bus_sync => 1,
+            ff0_sync => 1,
+            ff1_sync => 1,
+            ov_msb_sync => 1,
+            so_sync => 1,
+            z0_sync => 1,
+            z1_sync => 1,
+            uses_p_in => '0',
+            uses_p_out => '0',
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            clock => Net_3043,
+            cs_addr_1 => Net_4790_SYNCOUT,
+            cs_addr_0 => \BEAM_BREAK_TIMER:TimerUDB:per_zero\,
+            z0_comb => \BEAM_BREAK_TIMER:TimerUDB:per_zero\,
+            f0_bus_stat_comb => \BEAM_BREAK_TIMER:TimerUDB:status_3\,
+            f0_blk_stat_comb => \BEAM_BREAK_TIMER:TimerUDB:status_2\,
+            busclk => ClockBlock_BUS_CLK,
+            ce0i => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.ce0__sig\,
+            cl0i => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.cl0__sig\,
+            z0i => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.z0__sig\,
+            ff0i => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.ff0__sig\,
+            ce1i => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.ce1__sig\,
+            cl1i => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.cl1__sig\,
+            z1i => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.z1__sig\,
+            ff1i => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.ff1__sig\,
+            ci => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.co_msb__sig\,
+            sir => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.sol_msb__sig\,
+            cfbi => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u0.cfbo__sig\,
+            sor => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u1.sor__sig\,
+            cmsbo => \BEAM_BREAK_TIMER:TimerUDB:sT16:timerdp:u1.cmsbo__sig\);
+
+    \BEAM_BREAK_TIMER:TimerUDB:status_tc\:macrocell
+        GENERIC MAP(
+            eqn_main => "(main_0 * main_1)",
+            clken_mode => 1)
+        PORT MAP(
+            q => \BEAM_BREAK_TIMER:TimerUDB:status_tc\,
+            main_0 => \BEAM_BREAK_TIMER:TimerUDB:per_zero\,
+            main_1 => Net_4790_SYNCOUT);
 
     \Button:Button(0)\:iocell
         GENERIC MAP(
@@ -5189,7 +5289,7 @@ BEGIN
             clk_inv => '0',
             clken_mode => 1)
         PORT MAP(
-            clock => Net_4386,
+            clock => Net_4781,
             control_7 => \HC_PWM:PWMUDB:control_7\,
             control_6 => \HC_PWM:PWMUDB:control_6\,
             control_5 => \HC_PWM:PWMUDB:control_5\,
@@ -5208,7 +5308,7 @@ BEGIN
             clk_inv => '0',
             clken_mode => 1)
         PORT MAP(
-            clock => Net_4386,
+            clock => Net_4781,
             status_6 => open,
             status_5 => open,
             status_4 => open,
@@ -5224,7 +5324,7 @@ BEGIN
             clken_mode => 1)
         PORT MAP(
             q => \HC_PWM:PWMUDB:prevCompare1\,
-            clock_0 => Net_4386,
+            clock_0 => Net_4781,
             main_0 => \HC_PWM:PWMUDB:cmp1_less\);
 
     \HC_PWM:PWMUDB:prevCompare2\:macrocell
@@ -5234,7 +5334,7 @@ BEGIN
             clken_mode => 1)
         PORT MAP(
             q => \HC_PWM:PWMUDB:prevCompare2\,
-            clock_0 => Net_4386,
+            clock_0 => Net_4781,
             main_0 => \HC_PWM:PWMUDB:cmp2_less\);
 
     \HC_PWM:PWMUDB:runmode_enable\:macrocell
@@ -5244,7 +5344,7 @@ BEGIN
             clken_mode => 1)
         PORT MAP(
             q => \HC_PWM:PWMUDB:runmode_enable\,
-            clock_0 => Net_4386,
+            clock_0 => Net_4781,
             main_0 => \HC_PWM:PWMUDB:control_7\);
 
     \HC_PWM:PWMUDB:sP16:pwmdp:u0\:datapathcell
@@ -5275,7 +5375,7 @@ BEGIN
             clk_inv => '0',
             clken_mode => 1)
         PORT MAP(
-            clock => Net_4386,
+            clock => Net_4781,
             cs_addr_2 => \HC_PWM:PWMUDB:tc_i\,
             cs_addr_1 => \HC_PWM:PWMUDB:runmode_enable\,
             busclk => ClockBlock_BUS_CLK,
@@ -5321,7 +5421,7 @@ BEGIN
             clk_inv => '0',
             clken_mode => 1)
         PORT MAP(
-            clock => Net_4386,
+            clock => Net_4781,
             cs_addr_2 => \HC_PWM:PWMUDB:tc_i\,
             cs_addr_1 => \HC_PWM:PWMUDB:runmode_enable\,
             cl0_comb => \HC_PWM:PWMUDB:cmp1_less\,
@@ -5350,7 +5450,7 @@ BEGIN
             clken_mode => 1)
         PORT MAP(
             q => \HC_PWM:PWMUDB:status_0\,
-            clock_0 => Net_4386,
+            clock_0 => Net_4781,
             main_0 => \HC_PWM:PWMUDB:prevCompare1\,
             main_1 => \HC_PWM:PWMUDB:cmp1_less\);
 
@@ -5361,7 +5461,7 @@ BEGIN
             clken_mode => 1)
         PORT MAP(
             q => \HC_PWM:PWMUDB:status_1\,
-            clock_0 => Net_4386,
+            clock_0 => Net_4781,
             main_0 => \HC_PWM:PWMUDB:prevCompare2\,
             main_1 => \HC_PWM:PWMUDB:cmp2_less\);
 
@@ -5374,201 +5474,6 @@ BEGIN
             main_0 => \HC_PWM:PWMUDB:runmode_enable\,
             main_1 => \HC_PWM:PWMUDB:tc_i\);
 
-    \HC_PWM_2:PWMUDB:genblk1:ctrlreg\:controlcell
-        GENERIC MAP(
-            cy_ctrl_mode_0 => "11111111",
-            cy_ctrl_mode_1 => "00000000",
-            cy_ext_reset => 0,
-            cy_force_order => 1,
-            cy_init_value => "00000000",
-            clk_inv => '0',
-            clken_mode => 1)
-        PORT MAP(
-            clock => Net_2847,
-            control_7 => \HC_PWM_2:PWMUDB:control_7\,
-            control_6 => \HC_PWM_2:PWMUDB:control_6\,
-            control_5 => \HC_PWM_2:PWMUDB:control_5\,
-            control_4 => \HC_PWM_2:PWMUDB:control_4\,
-            control_3 => \HC_PWM_2:PWMUDB:control_3\,
-            control_2 => \HC_PWM_2:PWMUDB:control_2\,
-            control_1 => \HC_PWM_2:PWMUDB:control_1\,
-            control_0 => \HC_PWM_2:PWMUDB:control_0\,
-            busclk => ClockBlock_BUS_CLK);
-
-    \HC_PWM_2:PWMUDB:genblk8:stsreg\:statusicell
-        GENERIC MAP(
-            cy_force_order => 1,
-            cy_int_mask => "1111111",
-            cy_md_select => "0100111",
-            clk_inv => '0',
-            clken_mode => 1)
-        PORT MAP(
-            clock => Net_2847,
-            status_6 => open,
-            status_5 => open,
-            status_4 => open,
-            status_3 => \HC_PWM_2:PWMUDB:status_3\,
-            status_2 => \HC_PWM_2:PWMUDB:status_2\,
-            status_1 => \HC_PWM_2:PWMUDB:status_1\,
-            status_0 => \HC_PWM_2:PWMUDB:status_0\);
-
-    \HC_PWM_2:PWMUDB:prevCompare1\:macrocell
-        GENERIC MAP(
-            eqn_main => "(!main_0)",
-            clk_inv => '0',
-            clken_mode => 1)
-        PORT MAP(
-            q => \HC_PWM_2:PWMUDB:prevCompare1\,
-            clock_0 => Net_2847,
-            main_0 => \HC_PWM_2:PWMUDB:cmp1_less\);
-
-    \HC_PWM_2:PWMUDB:prevCompare2\:macrocell
-        GENERIC MAP(
-            eqn_main => "(main_0)",
-            clk_inv => '0',
-            clken_mode => 1)
-        PORT MAP(
-            q => \HC_PWM_2:PWMUDB:prevCompare2\,
-            clock_0 => Net_2847,
-            main_0 => \HC_PWM_2:PWMUDB:cmp2_less\);
-
-    \HC_PWM_2:PWMUDB:runmode_enable\:macrocell
-        GENERIC MAP(
-            eqn_main => "(main_0)",
-            clk_inv => '0',
-            clken_mode => 1)
-        PORT MAP(
-            q => \HC_PWM_2:PWMUDB:runmode_enable\,
-            clock_0 => Net_2847,
-            main_0 => \HC_PWM_2:PWMUDB:control_7\);
-
-    \HC_PWM_2:PWMUDB:sP16:pwmdp:u0\:datapathcell
-        GENERIC MAP(
-            a0_init => "00000000",
-            a1_init => "00000000",
-            ce0_sync => 1,
-            ce1_sync => 1,
-            cl0_sync => 1,
-            cl1_sync => 1,
-            cmsb_sync => 1,
-            co_msb_sync => 1,
-            cy_dpconfig => "0000000001000000000000001100000001000000010000000000000011000000000000001100000000000000110000000000000011000000000000001100000011111111000000001111111111111111101000000000000000000100000000000000000000011000",
-            d0_init => "00000000",
-            d1_init => "00000000",
-            f0_blk_sync => 1,
-            f0_bus_sync => 1,
-            f1_blk_sync => 1,
-            f1_bus_sync => 1,
-            ff0_sync => 1,
-            ff1_sync => 1,
-            ov_msb_sync => 1,
-            so_sync => 1,
-            z0_sync => 1,
-            z1_sync => 1,
-            uses_p_in => '0',
-            uses_p_out => '0',
-            clk_inv => '0',
-            clken_mode => 1)
-        PORT MAP(
-            clock => Net_2847,
-            cs_addr_2 => \HC_PWM_2:PWMUDB:tc_i\,
-            cs_addr_1 => \HC_PWM_2:PWMUDB:runmode_enable\,
-            busclk => ClockBlock_BUS_CLK,
-            ce0 => \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.ce0__sig\,
-            cl0 => \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.cl0__sig\,
-            z0 => \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.z0__sig\,
-            ff0 => \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.ff0__sig\,
-            ce1 => \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.ce1__sig\,
-            cl1 => \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.cl1__sig\,
-            z1 => \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.z1__sig\,
-            ff1 => \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.ff1__sig\,
-            co_msb => \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.co_msb__sig\,
-            sol_msb => \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.sol_msb__sig\,
-            cfbo => \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.cfbo__sig\,
-            sil => \HC_PWM_2:PWMUDB:sP16:pwmdp:u1.sor__sig\,
-            cmsbi => \HC_PWM_2:PWMUDB:sP16:pwmdp:u1.cmsbo__sig\);
-
-    \HC_PWM_2:PWMUDB:sP16:pwmdp:u1\:datapathcell
-        GENERIC MAP(
-            a0_init => "00000000",
-            a1_init => "00000000",
-            ce0_sync => 1,
-            ce1_sync => 1,
-            cl0_sync => 1,
-            cl1_sync => 1,
-            cmsb_sync => 1,
-            co_msb_sync => 1,
-            cy_dpconfig => "0000000001000000000000001100000001000000010000000000000011000000000000001100000000000000110000000000000011000000000000001100000011111111000000001111111111111111101011110000000000000100000011110000000000011000",
-            d0_init => "00000000",
-            d1_init => "00000000",
-            f0_blk_sync => 1,
-            f0_bus_sync => 1,
-            f1_blk_sync => 1,
-            f1_bus_sync => 1,
-            ff0_sync => 1,
-            ff1_sync => 1,
-            ov_msb_sync => 1,
-            so_sync => 1,
-            z0_sync => 1,
-            z1_sync => 1,
-            uses_p_in => '0',
-            uses_p_out => '0',
-            clk_inv => '0',
-            clken_mode => 1)
-        PORT MAP(
-            clock => Net_2847,
-            cs_addr_2 => \HC_PWM_2:PWMUDB:tc_i\,
-            cs_addr_1 => \HC_PWM_2:PWMUDB:runmode_enable\,
-            cl0_comb => \HC_PWM_2:PWMUDB:cmp1_less\,
-            z0_comb => \HC_PWM_2:PWMUDB:tc_i\,
-            cl1_comb => \HC_PWM_2:PWMUDB:cmp2_less\,
-            f1_blk_stat_comb => \HC_PWM_2:PWMUDB:status_3\,
-            busclk => ClockBlock_BUS_CLK,
-            ce0i => \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.ce0__sig\,
-            cl0i => \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.cl0__sig\,
-            z0i => \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.z0__sig\,
-            ff0i => \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.ff0__sig\,
-            ce1i => \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.ce1__sig\,
-            cl1i => \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.cl1__sig\,
-            z1i => \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.z1__sig\,
-            ff1i => \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.ff1__sig\,
-            ci => \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.co_msb__sig\,
-            sir => \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.sol_msb__sig\,
-            cfbi => \HC_PWM_2:PWMUDB:sP16:pwmdp:u0.cfbo__sig\,
-            sor => \HC_PWM_2:PWMUDB:sP16:pwmdp:u1.sor__sig\,
-            cmsbo => \HC_PWM_2:PWMUDB:sP16:pwmdp:u1.cmsbo__sig\);
-
-    \HC_PWM_2:PWMUDB:status_0\:macrocell
-        GENERIC MAP(
-            eqn_main => "(!main_0 * !main_1)",
-            clk_inv => '0',
-            clken_mode => 1)
-        PORT MAP(
-            q => \HC_PWM_2:PWMUDB:status_0\,
-            clock_0 => Net_2847,
-            main_0 => \HC_PWM_2:PWMUDB:prevCompare1\,
-            main_1 => \HC_PWM_2:PWMUDB:cmp1_less\);
-
-    \HC_PWM_2:PWMUDB:status_1\:macrocell
-        GENERIC MAP(
-            eqn_main => "(!main_0 * main_1)",
-            clk_inv => '0',
-            clken_mode => 1)
-        PORT MAP(
-            q => \HC_PWM_2:PWMUDB:status_1\,
-            clock_0 => Net_2847,
-            main_0 => \HC_PWM_2:PWMUDB:prevCompare2\,
-            main_1 => \HC_PWM_2:PWMUDB:cmp2_less\);
-
-    \HC_PWM_2:PWMUDB:status_2\:macrocell
-        GENERIC MAP(
-            eqn_main => "(main_0 * main_1)",
-            clken_mode => 1)
-        PORT MAP(
-            q => \HC_PWM_2:PWMUDB:status_2\,
-            main_0 => \HC_PWM_2:PWMUDB:runmode_enable\,
-            main_1 => \HC_PWM_2:PWMUDB:tc_i\);
-
     \HC_Timer:TimerUDB:rstSts:stsreg\:statusicell
         GENERIC MAP(
             cy_force_order => 1,
@@ -5579,7 +5484,7 @@ BEGIN
             reset_inv => '0')
         PORT MAP(
             reset => Net_1697,
-            clock => Net_4386,
+            clock => Net_4781,
             status_6 => open,
             status_5 => open,
             status_4 => open,
@@ -5616,7 +5521,7 @@ BEGIN
             clk_inv => '0',
             clken_mode => 1)
         PORT MAP(
-            clock => Net_4386,
+            clock => Net_4781,
             cs_addr_2 => Net_1697,
             cs_addr_1 => Net_885_SYNCOUT,
             cs_addr_0 => \HC_Timer:TimerUDB:per_zero\,
@@ -5663,7 +5568,7 @@ BEGIN
             clk_inv => '0',
             clken_mode => 1)
         PORT MAP(
-            clock => Net_4386,
+            clock => Net_4781,
             cs_addr_2 => Net_1697,
             cs_addr_1 => Net_885_SYNCOUT,
             cs_addr_0 => \HC_Timer:TimerUDB:per_zero\,
@@ -5693,131 +5598,6 @@ BEGIN
             q => \HC_Timer:TimerUDB:status_tc\,
             main_0 => \HC_Timer:TimerUDB:per_zero\,
             main_1 => Net_885_SYNCOUT);
-
-    \HC_Timer_2:TimerUDB:rstSts:stsreg\:statusicell
-        GENERIC MAP(
-            cy_force_order => 1,
-            cy_int_mask => "1111111",
-            cy_md_select => "0000011",
-            clk_inv => '0',
-            clken_mode => 1,
-            reset_inv => '0')
-        PORT MAP(
-            reset => Net_2849,
-            clock => Net_2847,
-            status_6 => open,
-            status_5 => open,
-            status_4 => open,
-            status_3 => \HC_Timer_2:TimerUDB:status_3\,
-            status_2 => \HC_Timer_2:TimerUDB:status_2\,
-            status_1 => open,
-            status_0 => \HC_Timer_2:TimerUDB:status_tc\);
-
-    \HC_Timer_2:TimerUDB:sT16:timerdp:u0\:datapathcell
-        GENERIC MAP(
-            a0_init => "00000000",
-            a1_init => "00000000",
-            ce0_sync => 1,
-            ce1_sync => 1,
-            cl0_sync => 1,
-            cl1_sync => 1,
-            cmsb_sync => 1,
-            co_msb_sync => 1,
-            cy_dpconfig => "0000000001000000000000000100000001000000010000000000000010000000000000001000000000000000100000000000000010000000000000001000000011111111000000001111111111111111000000000000000000000001000000000000000000011000",
-            d0_init => "00000000",
-            d1_init => "00000000",
-            f0_blk_sync => 1,
-            f0_bus_sync => 1,
-            f1_blk_sync => 1,
-            f1_bus_sync => 1,
-            ff0_sync => 1,
-            ff1_sync => 1,
-            ov_msb_sync => 1,
-            so_sync => 1,
-            z0_sync => 1,
-            z1_sync => 1,
-            uses_p_in => '0',
-            uses_p_out => '0',
-            clk_inv => '0',
-            clken_mode => 1)
-        PORT MAP(
-            clock => Net_2847,
-            cs_addr_2 => Net_2849,
-            cs_addr_1 => Net_2861_SYNCOUT,
-            cs_addr_0 => \HC_Timer_2:TimerUDB:per_zero\,
-            busclk => ClockBlock_BUS_CLK,
-            ce0 => \HC_Timer_2:TimerUDB:sT16:timerdp:u0.ce0__sig\,
-            cl0 => \HC_Timer_2:TimerUDB:sT16:timerdp:u0.cl0__sig\,
-            z0 => \HC_Timer_2:TimerUDB:sT16:timerdp:u0.z0__sig\,
-            ff0 => \HC_Timer_2:TimerUDB:sT16:timerdp:u0.ff0__sig\,
-            ce1 => \HC_Timer_2:TimerUDB:sT16:timerdp:u0.ce1__sig\,
-            cl1 => \HC_Timer_2:TimerUDB:sT16:timerdp:u0.cl1__sig\,
-            z1 => \HC_Timer_2:TimerUDB:sT16:timerdp:u0.z1__sig\,
-            ff1 => \HC_Timer_2:TimerUDB:sT16:timerdp:u0.ff1__sig\,
-            co_msb => \HC_Timer_2:TimerUDB:sT16:timerdp:u0.co_msb__sig\,
-            sol_msb => \HC_Timer_2:TimerUDB:sT16:timerdp:u0.sol_msb__sig\,
-            cfbo => \HC_Timer_2:TimerUDB:sT16:timerdp:u0.cfbo__sig\,
-            sil => \HC_Timer_2:TimerUDB:sT16:timerdp:u1.sor__sig\,
-            cmsbi => \HC_Timer_2:TimerUDB:sT16:timerdp:u1.cmsbo__sig\);
-
-    \HC_Timer_2:TimerUDB:sT16:timerdp:u1\:datapathcell
-        GENERIC MAP(
-            a0_init => "00000000",
-            a1_init => "00000000",
-            ce0_sync => 1,
-            ce1_sync => 1,
-            cl0_sync => 1,
-            cl1_sync => 1,
-            cmsb_sync => 1,
-            co_msb_sync => 1,
-            cy_dpconfig => "0000000001000000000000000100000001000000010000000000000010000000000000001000000000000000100000000000000010000000000000001000000011111111000000001111111111111111100000110000000000000001000000110000000000011000",
-            d0_init => "00000000",
-            d1_init => "00000000",
-            f0_blk_sync => 1,
-            f0_bus_sync => 1,
-            f1_blk_sync => 1,
-            f1_bus_sync => 1,
-            ff0_sync => 1,
-            ff1_sync => 1,
-            ov_msb_sync => 1,
-            so_sync => 1,
-            z0_sync => 1,
-            z1_sync => 1,
-            uses_p_in => '0',
-            uses_p_out => '0',
-            clk_inv => '0',
-            clken_mode => 1)
-        PORT MAP(
-            clock => Net_2847,
-            cs_addr_2 => Net_2849,
-            cs_addr_1 => Net_2861_SYNCOUT,
-            cs_addr_0 => \HC_Timer_2:TimerUDB:per_zero\,
-            z0_comb => \HC_Timer_2:TimerUDB:per_zero\,
-            f0_bus_stat_comb => \HC_Timer_2:TimerUDB:status_3\,
-            f0_blk_stat_comb => \HC_Timer_2:TimerUDB:status_2\,
-            busclk => ClockBlock_BUS_CLK,
-            ce0i => \HC_Timer_2:TimerUDB:sT16:timerdp:u0.ce0__sig\,
-            cl0i => \HC_Timer_2:TimerUDB:sT16:timerdp:u0.cl0__sig\,
-            z0i => \HC_Timer_2:TimerUDB:sT16:timerdp:u0.z0__sig\,
-            ff0i => \HC_Timer_2:TimerUDB:sT16:timerdp:u0.ff0__sig\,
-            ce1i => \HC_Timer_2:TimerUDB:sT16:timerdp:u0.ce1__sig\,
-            cl1i => \HC_Timer_2:TimerUDB:sT16:timerdp:u0.cl1__sig\,
-            z1i => \HC_Timer_2:TimerUDB:sT16:timerdp:u0.z1__sig\,
-            ff1i => \HC_Timer_2:TimerUDB:sT16:timerdp:u0.ff1__sig\,
-            ci => \HC_Timer_2:TimerUDB:sT16:timerdp:u0.co_msb__sig\,
-            sir => \HC_Timer_2:TimerUDB:sT16:timerdp:u0.sol_msb__sig\,
-            cfbi => \HC_Timer_2:TimerUDB:sT16:timerdp:u0.cfbo__sig\,
-            sor => \HC_Timer_2:TimerUDB:sT16:timerdp:u1.sor__sig\,
-            cmsbo => \HC_Timer_2:TimerUDB:sT16:timerdp:u1.cmsbo__sig\);
-
-    \HC_Timer_2:TimerUDB:status_tc\:macrocell
-        GENERIC MAP(
-            eqn_main => "(main_0 * main_1)",
-            clken_mode => 1)
-        PORT MAP(
-            q => \HC_Timer_2:TimerUDB:status_tc\,
-            main_0 => \HC_Timer_2:TimerUDB:per_zero\,
-            main_1 => Net_2861_SYNCOUT);
 
     \I2C:I2C_IRQ\:interrupt
         GENERIC MAP(
@@ -6407,6 +6187,699 @@ BEGIN
             main_9 => \I2C:bI2C_UDB:lost_arb_reg\,
             main_10 => \I2C:bI2C_UDB:clkgen_tc2_reg\);
 
+    \IR_FRONT_PWM:PWMUDB:genblk1:ctrlreg\:controlcell
+        GENERIC MAP(
+            cy_ctrl_mode_0 => "11111111",
+            cy_ctrl_mode_1 => "00000000",
+            cy_ext_reset => 0,
+            cy_force_order => 1,
+            cy_init_value => "00000000",
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            clock => Net_3043,
+            control_7 => \IR_FRONT_PWM:PWMUDB:control_7\,
+            control_6 => \IR_FRONT_PWM:PWMUDB:control_6\,
+            control_5 => \IR_FRONT_PWM:PWMUDB:control_5\,
+            control_4 => \IR_FRONT_PWM:PWMUDB:control_4\,
+            control_3 => \IR_FRONT_PWM:PWMUDB:control_3\,
+            control_2 => \IR_FRONT_PWM:PWMUDB:control_2\,
+            control_1 => \IR_FRONT_PWM:PWMUDB:control_1\,
+            control_0 => \IR_FRONT_PWM:PWMUDB:control_0\,
+            busclk => ClockBlock_BUS_CLK);
+
+    \IR_FRONT_PWM:PWMUDB:genblk8:stsreg\:statusicell
+        GENERIC MAP(
+            cy_force_order => 1,
+            cy_int_mask => "1111111",
+            cy_md_select => "0100111",
+            clk_inv => '0',
+            clken_mode => 1,
+            reset_inv => '1')
+        PORT MAP(
+            reset => Net_936_SYNCOUT,
+            clock => Net_3043,
+            status_6 => open,
+            status_5 => open,
+            status_4 => open,
+            status_3 => \IR_FRONT_PWM:PWMUDB:status_3\,
+            status_2 => \IR_FRONT_PWM:PWMUDB:status_2\,
+            status_1 => \IR_FRONT_PWM:PWMUDB:status_1\,
+            status_0 => \IR_FRONT_PWM:PWMUDB:status_0\);
+
+    \IR_FRONT_PWM:PWMUDB:prevCompare1\:macrocell
+        GENERIC MAP(
+            eqn_main => "(main_0)",
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            q => \IR_FRONT_PWM:PWMUDB:prevCompare1\,
+            clock_0 => Net_3043,
+            main_0 => \IR_FRONT_PWM:PWMUDB:cmp1_less\);
+
+    \IR_FRONT_PWM:PWMUDB:prevCompare2\:macrocell
+        GENERIC MAP(
+            eqn_main => "(main_0)",
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            q => \IR_FRONT_PWM:PWMUDB:prevCompare2\,
+            clock_0 => Net_3043,
+            main_0 => \IR_FRONT_PWM:PWMUDB:cmp2_less\);
+
+    \IR_FRONT_PWM:PWMUDB:runmode_enable\:macrocell
+        GENERIC MAP(
+            eqn_main => "(main_0)",
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            q => \IR_FRONT_PWM:PWMUDB:runmode_enable\,
+            clock_0 => Net_3043,
+            ar_0 => Net_936,
+            main_0 => \IR_FRONT_PWM:PWMUDB:control_7\);
+
+    \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0\:datapathcell
+        GENERIC MAP(
+            a0_init => "00000000",
+            a1_init => "00000000",
+            ce0_sync => 1,
+            ce1_sync => 1,
+            cl0_sync => 1,
+            cl1_sync => 1,
+            cmsb_sync => 1,
+            co_msb_sync => 1,
+            cy_dpconfig => "0000000001000000000000001100000001000000010000000000000011000000000000001100000000000000110000000000000011000000000000001100000011111111000000001111111111111111101000000000000000000100000000000000000000011000",
+            d0_init => "00000000",
+            d1_init => "00000000",
+            f0_blk_sync => 1,
+            f0_bus_sync => 1,
+            f1_blk_sync => 1,
+            f1_bus_sync => 1,
+            ff0_sync => 1,
+            ff1_sync => 1,
+            ov_msb_sync => 1,
+            so_sync => 1,
+            z0_sync => 1,
+            z1_sync => 1,
+            uses_p_in => '0',
+            uses_p_out => '0',
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            clock => Net_3043,
+            cs_addr_2 => \IR_FRONT_PWM:PWMUDB:tc_i\,
+            cs_addr_1 => \IR_FRONT_PWM:PWMUDB:runmode_enable\,
+            cs_addr_0 => Net_36,
+            busclk => ClockBlock_BUS_CLK,
+            ce0 => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.ce0__sig\,
+            cl0 => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.cl0__sig\,
+            z0 => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.z0__sig\,
+            ff0 => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.ff0__sig\,
+            ce1 => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.ce1__sig\,
+            cl1 => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.cl1__sig\,
+            z1 => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.z1__sig\,
+            ff1 => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.ff1__sig\,
+            co_msb => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.co_msb__sig\,
+            sol_msb => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.sol_msb__sig\,
+            cfbo => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.cfbo__sig\,
+            sil => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u1.sor__sig\,
+            cmsbi => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u1.cmsbo__sig\);
+
+    \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u1\:datapathcell
+        GENERIC MAP(
+            a0_init => "00000000",
+            a1_init => "00000000",
+            ce0_sync => 1,
+            ce1_sync => 1,
+            cl0_sync => 1,
+            cl1_sync => 1,
+            cmsb_sync => 1,
+            co_msb_sync => 1,
+            cy_dpconfig => "0000000001000000000000001100000001000000010000000000000011000000000000001100000000000000110000000000000011000000000000001100000011111111000000001111111111111111101011110000000000000100000011110000000000011000",
+            d0_init => "00000000",
+            d1_init => "00000000",
+            f0_blk_sync => 1,
+            f0_bus_sync => 1,
+            f1_blk_sync => 1,
+            f1_bus_sync => 1,
+            ff0_sync => 1,
+            ff1_sync => 1,
+            ov_msb_sync => 1,
+            so_sync => 1,
+            z0_sync => 1,
+            z1_sync => 1,
+            uses_p_in => '0',
+            uses_p_out => '0',
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            clock => Net_3043,
+            cs_addr_2 => \IR_FRONT_PWM:PWMUDB:tc_i\,
+            cs_addr_1 => \IR_FRONT_PWM:PWMUDB:runmode_enable\,
+            cs_addr_0 => Net_36,
+            cl0_comb => \IR_FRONT_PWM:PWMUDB:cmp1_less\,
+            z0_comb => \IR_FRONT_PWM:PWMUDB:tc_i\,
+            cl1_comb => \IR_FRONT_PWM:PWMUDB:cmp2_less\,
+            f1_blk_stat_comb => \IR_FRONT_PWM:PWMUDB:status_3\,
+            busclk => ClockBlock_BUS_CLK,
+            ce0i => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.ce0__sig\,
+            cl0i => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.cl0__sig\,
+            z0i => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.z0__sig\,
+            ff0i => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.ff0__sig\,
+            ce1i => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.ce1__sig\,
+            cl1i => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.cl1__sig\,
+            z1i => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.z1__sig\,
+            ff1i => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.ff1__sig\,
+            ci => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.co_msb__sig\,
+            sir => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.sol_msb__sig\,
+            cfbi => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u0.cfbo__sig\,
+            sor => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u1.sor__sig\,
+            cmsbo => \IR_FRONT_PWM:PWMUDB:sP16:pwmdp:u1.cmsbo__sig\);
+
+    \IR_FRONT_PWM:PWMUDB:status_0\:macrocell
+        GENERIC MAP(
+            eqn_main => "(!main_0 * main_1)",
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            q => \IR_FRONT_PWM:PWMUDB:status_0\,
+            clock_0 => Net_3043,
+            ar_0 => Net_936,
+            main_0 => \IR_FRONT_PWM:PWMUDB:prevCompare1\,
+            main_1 => \IR_FRONT_PWM:PWMUDB:cmp1_less\);
+
+    \IR_FRONT_PWM:PWMUDB:status_1\:macrocell
+        GENERIC MAP(
+            eqn_main => "(!main_0 * main_1)",
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            q => \IR_FRONT_PWM:PWMUDB:status_1\,
+            clock_0 => Net_3043,
+            ar_0 => Net_936,
+            main_0 => \IR_FRONT_PWM:PWMUDB:prevCompare2\,
+            main_1 => \IR_FRONT_PWM:PWMUDB:cmp2_less\);
+
+    \IR_FRONT_PWM:PWMUDB:status_2\:macrocell
+        GENERIC MAP(
+            eqn_main => "(main_0 * main_1)",
+            clken_mode => 1)
+        PORT MAP(
+            q => \IR_FRONT_PWM:PWMUDB:status_2\,
+            main_0 => \IR_FRONT_PWM:PWMUDB:runmode_enable\,
+            main_1 => \IR_FRONT_PWM:PWMUDB:tc_i\);
+
+    \IR_FRONT_Timer:TimerUDB:rstSts:stsreg\:statusicell
+        GENERIC MAP(
+            cy_force_order => 1,
+            cy_int_mask => "1111111",
+            cy_md_select => "0000011",
+            clk_inv => '0',
+            clken_mode => 1,
+            reset_inv => '0')
+        PORT MAP(
+            reset => Net_435,
+            clock => Net_3043,
+            status_6 => open,
+            status_5 => open,
+            status_4 => open,
+            status_3 => \IR_FRONT_Timer:TimerUDB:status_3\,
+            status_2 => \IR_FRONT_Timer:TimerUDB:status_2\,
+            status_1 => open,
+            status_0 => \IR_FRONT_Timer:TimerUDB:status_tc\);
+
+    \IR_FRONT_Timer:TimerUDB:run_mode\:macrocell
+        GENERIC MAP(
+            eqn_main => "(!main_0)",
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            q => \IR_FRONT_Timer:TimerUDB:run_mode\,
+            clock_0 => Net_3043,
+            main_0 => Net_936_SYNCOUT);
+
+    \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0\:datapathcell
+        GENERIC MAP(
+            a0_init => "00000000",
+            a1_init => "00000000",
+            ce0_sync => 1,
+            ce1_sync => 1,
+            cl0_sync => 1,
+            cl1_sync => 1,
+            cmsb_sync => 1,
+            co_msb_sync => 1,
+            cy_dpconfig => "0000000001000000000000000100000001000000010000000000000010000000000000001000000000000000100000000000000010000000000000001000000011111111000000001111111111111111000000000000000000000001000000000000000000011000",
+            d0_init => "00000000",
+            d1_init => "00000000",
+            f0_blk_sync => 1,
+            f0_bus_sync => 1,
+            f1_blk_sync => 1,
+            f1_bus_sync => 1,
+            ff0_sync => 1,
+            ff1_sync => 1,
+            ov_msb_sync => 1,
+            so_sync => 1,
+            z0_sync => 1,
+            z1_sync => 1,
+            uses_p_in => '0',
+            uses_p_out => '0',
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            clock => Net_3043,
+            cs_addr_2 => Net_435,
+            cs_addr_1 => \IR_FRONT_Timer:TimerUDB:timer_enable\,
+            cs_addr_0 => \IR_FRONT_Timer:TimerUDB:per_zero\,
+            busclk => ClockBlock_BUS_CLK,
+            ce0 => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.ce0__sig\,
+            cl0 => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.cl0__sig\,
+            z0 => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.z0__sig\,
+            ff0 => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.ff0__sig\,
+            ce1 => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.ce1__sig\,
+            cl1 => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.cl1__sig\,
+            z1 => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.z1__sig\,
+            ff1 => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.ff1__sig\,
+            co_msb => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.co_msb__sig\,
+            sol_msb => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.sol_msb__sig\,
+            cfbo => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.cfbo__sig\,
+            sil => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u1.sor__sig\,
+            cmsbi => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u1.cmsbo__sig\);
+
+    \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u1\:datapathcell
+        GENERIC MAP(
+            a0_init => "00000000",
+            a1_init => "00000000",
+            ce0_sync => 1,
+            ce1_sync => 1,
+            cl0_sync => 1,
+            cl1_sync => 1,
+            cmsb_sync => 1,
+            co_msb_sync => 1,
+            cy_dpconfig => "0000000001000000000000000100000001000000010000000000000010000000000000001000000000000000100000000000000010000000000000001000000011111111000000001111111111111111100000110000000000000001000000110000000000011000",
+            d0_init => "00000000",
+            d1_init => "00000000",
+            f0_blk_sync => 1,
+            f0_bus_sync => 1,
+            f1_blk_sync => 1,
+            f1_bus_sync => 1,
+            ff0_sync => 1,
+            ff1_sync => 1,
+            ov_msb_sync => 1,
+            so_sync => 1,
+            z0_sync => 1,
+            z1_sync => 1,
+            uses_p_in => '0',
+            uses_p_out => '0',
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            clock => Net_3043,
+            cs_addr_2 => Net_435,
+            cs_addr_1 => \IR_FRONT_Timer:TimerUDB:timer_enable\,
+            cs_addr_0 => \IR_FRONT_Timer:TimerUDB:per_zero\,
+            z0_comb => \IR_FRONT_Timer:TimerUDB:per_zero\,
+            f0_bus_stat_comb => \IR_FRONT_Timer:TimerUDB:status_3\,
+            f0_blk_stat_comb => \IR_FRONT_Timer:TimerUDB:status_2\,
+            busclk => ClockBlock_BUS_CLK,
+            ce0i => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.ce0__sig\,
+            cl0i => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.cl0__sig\,
+            z0i => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.z0__sig\,
+            ff0i => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.ff0__sig\,
+            ce1i => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.ce1__sig\,
+            cl1i => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.cl1__sig\,
+            z1i => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.z1__sig\,
+            ff1i => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.ff1__sig\,
+            ci => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.co_msb__sig\,
+            sir => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.sol_msb__sig\,
+            cfbi => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u0.cfbo__sig\,
+            sor => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u1.sor__sig\,
+            cmsbo => \IR_FRONT_Timer:TimerUDB:sT16:timerdp:u1.cmsbo__sig\);
+
+    \IR_FRONT_Timer:TimerUDB:status_tc\:macrocell
+        GENERIC MAP(
+            eqn_main => "(main_0 * main_1)",
+            clken_mode => 1)
+        PORT MAP(
+            q => \IR_FRONT_Timer:TimerUDB:status_tc\,
+            main_0 => \IR_FRONT_Timer:TimerUDB:run_mode\,
+            main_1 => \IR_FRONT_Timer:TimerUDB:per_zero\);
+
+    \IR_FRONT_Timer:TimerUDB:timer_enable\:macrocell
+        GENERIC MAP(
+            eqn_main => "(!main_0 * !main_1 * !main_4 * !main_5) + (!main_0 * !main_2 * !main_4 * !main_5) + (!main_0 * !main_3 * !main_4 * !main_5)",
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            q => \IR_FRONT_Timer:TimerUDB:timer_enable\,
+            clock_0 => Net_3043,
+            main_0 => Net_435,
+            main_1 => \IR_FRONT_Timer:TimerUDB:timer_enable\,
+            main_2 => \IR_FRONT_Timer:TimerUDB:run_mode\,
+            main_3 => \IR_FRONT_Timer:TimerUDB:per_zero\,
+            main_4 => \IR_FRONT_Timer:TimerUDB:trig_disable\,
+            main_5 => Net_936_SYNCOUT);
+
+    \IR_FRONT_Timer:TimerUDB:trig_disable\:macrocell
+        GENERIC MAP(
+            eqn_main => "(!main_0 * main_1 * main_2 * main_3) + (!main_0 * main_4)",
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            q => \IR_FRONT_Timer:TimerUDB:trig_disable\,
+            clock_0 => Net_3043,
+            main_0 => Net_435,
+            main_1 => \IR_FRONT_Timer:TimerUDB:timer_enable\,
+            main_2 => \IR_FRONT_Timer:TimerUDB:run_mode\,
+            main_3 => \IR_FRONT_Timer:TimerUDB:per_zero\,
+            main_4 => \IR_FRONT_Timer:TimerUDB:trig_disable\);
+
+    \IR_LEFT_PWM:PWMUDB:genblk1:ctrlreg\:controlcell
+        GENERIC MAP(
+            cy_ctrl_mode_0 => "11111111",
+            cy_ctrl_mode_1 => "00000000",
+            cy_ext_reset => 0,
+            cy_force_order => 1,
+            cy_init_value => "00000000",
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            clock => Net_3043,
+            control_7 => \IR_LEFT_PWM:PWMUDB:control_7\,
+            control_6 => \IR_LEFT_PWM:PWMUDB:control_6\,
+            control_5 => \IR_LEFT_PWM:PWMUDB:control_5\,
+            control_4 => \IR_LEFT_PWM:PWMUDB:control_4\,
+            control_3 => \IR_LEFT_PWM:PWMUDB:control_3\,
+            control_2 => \IR_LEFT_PWM:PWMUDB:control_2\,
+            control_1 => \IR_LEFT_PWM:PWMUDB:control_1\,
+            control_0 => \IR_LEFT_PWM:PWMUDB:control_0\,
+            busclk => ClockBlock_BUS_CLK);
+
+    \IR_LEFT_PWM:PWMUDB:genblk8:stsreg\:statusicell
+        GENERIC MAP(
+            cy_force_order => 1,
+            cy_int_mask => "1111111",
+            cy_md_select => "0100111",
+            clk_inv => '0',
+            clken_mode => 1,
+            reset_inv => '1')
+        PORT MAP(
+            reset => Net_3035_SYNCOUT,
+            clock => Net_3043,
+            status_6 => open,
+            status_5 => open,
+            status_4 => open,
+            status_3 => \IR_LEFT_PWM:PWMUDB:status_3\,
+            status_2 => \IR_LEFT_PWM:PWMUDB:status_2\,
+            status_1 => \IR_LEFT_PWM:PWMUDB:status_1\,
+            status_0 => \IR_LEFT_PWM:PWMUDB:status_0\);
+
+    \IR_LEFT_PWM:PWMUDB:prevCompare1\:macrocell
+        GENERIC MAP(
+            eqn_main => "(main_0)",
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            q => \IR_LEFT_PWM:PWMUDB:prevCompare1\,
+            clock_0 => Net_3043,
+            main_0 => \IR_LEFT_PWM:PWMUDB:cmp1_less\);
+
+    \IR_LEFT_PWM:PWMUDB:prevCompare2\:macrocell
+        GENERIC MAP(
+            eqn_main => "(main_0)",
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            q => \IR_LEFT_PWM:PWMUDB:prevCompare2\,
+            clock_0 => Net_3043,
+            main_0 => \IR_LEFT_PWM:PWMUDB:cmp2_less\);
+
+    \IR_LEFT_PWM:PWMUDB:runmode_enable\:macrocell
+        GENERIC MAP(
+            eqn_main => "(main_0)",
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            q => \IR_LEFT_PWM:PWMUDB:runmode_enable\,
+            clock_0 => Net_3043,
+            ar_0 => Net_3035,
+            main_0 => \IR_LEFT_PWM:PWMUDB:control_7\);
+
+    \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0\:datapathcell
+        GENERIC MAP(
+            a0_init => "00000000",
+            a1_init => "00000000",
+            ce0_sync => 1,
+            ce1_sync => 1,
+            cl0_sync => 1,
+            cl1_sync => 1,
+            cmsb_sync => 1,
+            co_msb_sync => 1,
+            cy_dpconfig => "0000000001000000000000001100000001000000010000000000000011000000000000001100000000000000110000000000000011000000000000001100000011111111000000001111111111111111101000000000000000000100000000000000000000011000",
+            d0_init => "00000000",
+            d1_init => "00000000",
+            f0_blk_sync => 1,
+            f0_bus_sync => 1,
+            f1_blk_sync => 1,
+            f1_bus_sync => 1,
+            ff0_sync => 1,
+            ff1_sync => 1,
+            ov_msb_sync => 1,
+            so_sync => 1,
+            z0_sync => 1,
+            z1_sync => 1,
+            uses_p_in => '0',
+            uses_p_out => '0',
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            clock => Net_3043,
+            cs_addr_2 => \IR_LEFT_PWM:PWMUDB:tc_i\,
+            cs_addr_1 => \IR_LEFT_PWM:PWMUDB:runmode_enable\,
+            cs_addr_0 => Net_3038,
+            busclk => ClockBlock_BUS_CLK,
+            ce0 => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.ce0__sig\,
+            cl0 => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.cl0__sig\,
+            z0 => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.z0__sig\,
+            ff0 => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.ff0__sig\,
+            ce1 => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.ce1__sig\,
+            cl1 => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.cl1__sig\,
+            z1 => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.z1__sig\,
+            ff1 => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.ff1__sig\,
+            co_msb => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.co_msb__sig\,
+            sol_msb => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.sol_msb__sig\,
+            cfbo => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.cfbo__sig\,
+            sil => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u1.sor__sig\,
+            cmsbi => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u1.cmsbo__sig\);
+
+    \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u1\:datapathcell
+        GENERIC MAP(
+            a0_init => "00000000",
+            a1_init => "00000000",
+            ce0_sync => 1,
+            ce1_sync => 1,
+            cl0_sync => 1,
+            cl1_sync => 1,
+            cmsb_sync => 1,
+            co_msb_sync => 1,
+            cy_dpconfig => "0000000001000000000000001100000001000000010000000000000011000000000000001100000000000000110000000000000011000000000000001100000011111111000000001111111111111111101011110000000000000100000011110000000000011000",
+            d0_init => "00000000",
+            d1_init => "00000000",
+            f0_blk_sync => 1,
+            f0_bus_sync => 1,
+            f1_blk_sync => 1,
+            f1_bus_sync => 1,
+            ff0_sync => 1,
+            ff1_sync => 1,
+            ov_msb_sync => 1,
+            so_sync => 1,
+            z0_sync => 1,
+            z1_sync => 1,
+            uses_p_in => '0',
+            uses_p_out => '0',
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            clock => Net_3043,
+            cs_addr_2 => \IR_LEFT_PWM:PWMUDB:tc_i\,
+            cs_addr_1 => \IR_LEFT_PWM:PWMUDB:runmode_enable\,
+            cs_addr_0 => Net_3038,
+            cl0_comb => \IR_LEFT_PWM:PWMUDB:cmp1_less\,
+            z0_comb => \IR_LEFT_PWM:PWMUDB:tc_i\,
+            cl1_comb => \IR_LEFT_PWM:PWMUDB:cmp2_less\,
+            f1_blk_stat_comb => \IR_LEFT_PWM:PWMUDB:status_3\,
+            busclk => ClockBlock_BUS_CLK,
+            ce0i => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.ce0__sig\,
+            cl0i => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.cl0__sig\,
+            z0i => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.z0__sig\,
+            ff0i => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.ff0__sig\,
+            ce1i => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.ce1__sig\,
+            cl1i => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.cl1__sig\,
+            z1i => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.z1__sig\,
+            ff1i => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.ff1__sig\,
+            ci => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.co_msb__sig\,
+            sir => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.sol_msb__sig\,
+            cfbi => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u0.cfbo__sig\,
+            sor => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u1.sor__sig\,
+            cmsbo => \IR_LEFT_PWM:PWMUDB:sP16:pwmdp:u1.cmsbo__sig\);
+
+    \IR_LEFT_PWM:PWMUDB:status_0\:macrocell
+        GENERIC MAP(
+            eqn_main => "(!main_0 * main_1)",
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            q => \IR_LEFT_PWM:PWMUDB:status_0\,
+            clock_0 => Net_3043,
+            ar_0 => Net_3035,
+            main_0 => \IR_LEFT_PWM:PWMUDB:prevCompare1\,
+            main_1 => \IR_LEFT_PWM:PWMUDB:cmp1_less\);
+
+    \IR_LEFT_PWM:PWMUDB:status_1\:macrocell
+        GENERIC MAP(
+            eqn_main => "(!main_0 * main_1)",
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            q => \IR_LEFT_PWM:PWMUDB:status_1\,
+            clock_0 => Net_3043,
+            ar_0 => Net_3035,
+            main_0 => \IR_LEFT_PWM:PWMUDB:prevCompare2\,
+            main_1 => \IR_LEFT_PWM:PWMUDB:cmp2_less\);
+
+    \IR_LEFT_PWM:PWMUDB:status_2\:macrocell
+        GENERIC MAP(
+            eqn_main => "(main_0 * main_1)",
+            clken_mode => 1)
+        PORT MAP(
+            q => \IR_LEFT_PWM:PWMUDB:status_2\,
+            main_0 => \IR_LEFT_PWM:PWMUDB:runmode_enable\,
+            main_1 => \IR_LEFT_PWM:PWMUDB:tc_i\);
+
+    \IR_LEFT_Timer:TimerUDB:rstSts:stsreg\:statusicell
+        GENERIC MAP(
+            cy_force_order => 1,
+            cy_int_mask => "1111111",
+            cy_md_select => "0000011",
+            clk_inv => '0',
+            clken_mode => 1,
+            reset_inv => '0')
+        PORT MAP(
+            reset => Net_4797,
+            clock => Net_3043,
+            status_6 => open,
+            status_5 => open,
+            status_4 => open,
+            status_3 => \IR_LEFT_Timer:TimerUDB:status_3\,
+            status_2 => \IR_LEFT_Timer:TimerUDB:status_2\,
+            status_1 => open,
+            status_0 => \IR_LEFT_Timer:TimerUDB:status_tc\);
+
+    \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0\:datapathcell
+        GENERIC MAP(
+            a0_init => "00000000",
+            a1_init => "00000000",
+            ce0_sync => 1,
+            ce1_sync => 1,
+            cl0_sync => 1,
+            cl1_sync => 1,
+            cmsb_sync => 1,
+            co_msb_sync => 1,
+            cy_dpconfig => "0000000001000000000000000100000001000000010000000000000010000000000000001000000000000000100000000000000010000000000000001000000011111111000000001111111111111111000000000000000000000001000000000000000000011000",
+            d0_init => "00000000",
+            d1_init => "00000000",
+            f0_blk_sync => 1,
+            f0_bus_sync => 1,
+            f1_blk_sync => 1,
+            f1_bus_sync => 1,
+            ff0_sync => 1,
+            ff1_sync => 1,
+            ov_msb_sync => 1,
+            so_sync => 1,
+            z0_sync => 1,
+            z1_sync => 1,
+            uses_p_in => '0',
+            uses_p_out => '0',
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            clock => Net_3043,
+            cs_addr_2 => Net_4797,
+            cs_addr_1 => Net_3038,
+            cs_addr_0 => \IR_LEFT_Timer:TimerUDB:per_zero\,
+            busclk => ClockBlock_BUS_CLK,
+            ce0 => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.ce0__sig\,
+            cl0 => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.cl0__sig\,
+            z0 => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.z0__sig\,
+            ff0 => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.ff0__sig\,
+            ce1 => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.ce1__sig\,
+            cl1 => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.cl1__sig\,
+            z1 => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.z1__sig\,
+            ff1 => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.ff1__sig\,
+            co_msb => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.co_msb__sig\,
+            sol_msb => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.sol_msb__sig\,
+            cfbo => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.cfbo__sig\,
+            sil => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u1.sor__sig\,
+            cmsbi => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u1.cmsbo__sig\);
+
+    \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u1\:datapathcell
+        GENERIC MAP(
+            a0_init => "00000000",
+            a1_init => "00000000",
+            ce0_sync => 1,
+            ce1_sync => 1,
+            cl0_sync => 1,
+            cl1_sync => 1,
+            cmsb_sync => 1,
+            co_msb_sync => 1,
+            cy_dpconfig => "0000000001000000000000000100000001000000010000000000000010000000000000001000000000000000100000000000000010000000000000001000000011111111000000001111111111111111100000110000000000000001000000110000000000011000",
+            d0_init => "00000000",
+            d1_init => "00000000",
+            f0_blk_sync => 1,
+            f0_bus_sync => 1,
+            f1_blk_sync => 1,
+            f1_bus_sync => 1,
+            ff0_sync => 1,
+            ff1_sync => 1,
+            ov_msb_sync => 1,
+            so_sync => 1,
+            z0_sync => 1,
+            z1_sync => 1,
+            uses_p_in => '0',
+            uses_p_out => '0',
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            clock => Net_3043,
+            cs_addr_2 => Net_4797,
+            cs_addr_1 => Net_3038,
+            cs_addr_0 => \IR_LEFT_Timer:TimerUDB:per_zero\,
+            z0_comb => \IR_LEFT_Timer:TimerUDB:per_zero\,
+            f0_bus_stat_comb => \IR_LEFT_Timer:TimerUDB:status_3\,
+            f0_blk_stat_comb => \IR_LEFT_Timer:TimerUDB:status_2\,
+            busclk => ClockBlock_BUS_CLK,
+            ce0i => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.ce0__sig\,
+            cl0i => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.cl0__sig\,
+            z0i => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.z0__sig\,
+            ff0i => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.ff0__sig\,
+            ce1i => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.ce1__sig\,
+            cl1i => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.cl1__sig\,
+            z1i => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.z1__sig\,
+            ff1i => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.ff1__sig\,
+            ci => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.co_msb__sig\,
+            sir => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.sol_msb__sig\,
+            cfbi => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u0.cfbo__sig\,
+            sor => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u1.sor__sig\,
+            cmsbo => \IR_LEFT_Timer:TimerUDB:sT16:timerdp:u1.cmsbo__sig\);
+
+    \IR_LEFT_Timer:TimerUDB:status_tc\:macrocell
+        GENERIC MAP(
+            eqn_main => "(main_0 * !main_1)",
+            clken_mode => 1)
+        PORT MAP(
+            q => \IR_LEFT_Timer:TimerUDB:status_tc\,
+            main_0 => \IR_LEFT_Timer:TimerUDB:per_zero\,
+            main_1 => Net_3035_SYNCOUT);
+
     \LCD:Cntl_Port:Sync:ctrl_reg\:controlcell
         GENERIC MAP(
             cy_ctrl_mode_0 => "00000000",
@@ -6436,7 +6909,7 @@ BEGIN
             capture => open,
             timer_reset => open,
             tc => \MOTOR_L:Net_63\,
-            cmp => Net_1872,
+            cmp => Net_3506,
             irq => \MOTOR_L:Net_54\);
 
     \MOTOR_R:PWMHW\:timercell
@@ -6449,7 +6922,7 @@ BEGIN
             capture => open,
             timer_reset => open,
             tc => \MOTOR_R:Net_63\,
-            cmp => Net_2019,
+            cmp => Net_3493,
             irq => \MOTOR_R:Net_54\);
 
     \Timer:TimerUDB:rstSts:stsreg\:statusicell
@@ -6933,20 +7406,6 @@ BEGIN
             int_type => "10")
         PORT MAP(
             interrupt => Net_55,
-            clock => ClockBlock_BUS_CLK);
-
-    sclk_a_isr:interrupt
-        GENERIC MAP(
-            int_type => "10")
-        PORT MAP(
-            interrupt => Net_53,
-            clock => ClockBlock_BUS_CLK);
-
-    sclk_b_isr:interrupt
-        GENERIC MAP(
-            int_type => "10")
-        PORT MAP(
-            interrupt => Net_325,
             clock => ClockBlock_BUS_CLK);
 
 END __DEFAULT__;

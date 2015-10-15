@@ -27,7 +27,8 @@
     int PixelLuminence(int x, int y);
     int identify_colour_instructions(int size);
     int identify_colour_gripper();
-   
+    int instruction_read();
+    int stack[4];
     enum
     {
         NONE=0,

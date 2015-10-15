@@ -31,7 +31,7 @@ int nth_blob_colour(int n)
 void blob_detect()
 {
 	int labels[88];
-	int x,y,keep,drop,colour,current_available_label = 0;
+	int x,y,keep,drop,current_available_label = 0;
     int i;
 	memset(blobs,0,sizeof(blobs));
 	memset(labels,-1,sizeof(labels));
@@ -85,7 +85,7 @@ void blob_detect()
 				blobs[labels[x]].colour = PixelColour(x,y);
 				blobs[labels[x]].size++;
 				blobs[labels[x]].x_sum += x;
-				blobs[labels[y]].y_sum += (y^2);
+				blobs[labels[y]].y_sum += y;
 			}
 		}
 	}

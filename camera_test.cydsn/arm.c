@@ -33,11 +33,8 @@
 /* EXTRA CONSTANTS */
 #define PAUSE 50
  
-uint8 arm_levels[6] = {22, 30, 35, 40, 45, 50};
-
-int PWM_VAL = 25;
-char outString[40];
-
+//uint8 arm_levels[6] = {22, 30, 35, 40, 45, 50};
+uint8 arm_levels[6] = {50, 58, 63, 68, 73, 78};
 
 void arm_set_level(int level){
     Arm_PWM_WriteCompare(arm_levels[level]);

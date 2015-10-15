@@ -11,17 +11,16 @@
 */
 
 #include <math.h>
+#include <stdio.h>
 
 #include <project.h>
 #include <motor.h>
-#include <navigation.h>
 #include <compass.h>
-
-#include <mouse_b.h>
+#include <ultrasonic.h>
 
 int32 desired_distance;
 int16 desired_heading;
-
+extern volatile uint8 compass_ready;
 //The position before executing a move to order
 int32 start_x;
 int32 start_y;
@@ -43,11 +42,8 @@ uint8 isDriving(){
 
 // From compass.c
 extern int16 compass_heading;
-// From mouse_b.c
-extern volatile int32 loc_y_b;
 // From navigation.c
 extern volatile struct Position location;
-extern int32 delta_y_distance; 
 
 void rotate_left(int speed);
 void rotate_right(int speed);
@@ -68,120 +64,75 @@ uint8 clip(int lower, int var, int upper){
  * It will 
  */
 
-int control_motors(){
+int control_heading(){
     /* 
      * Step 1. Correct the heading 
      */
-    update_position();
+    while (!compass_ready){;}
     compass_read();
     int motor_end_state = 0;
     int heading_error = desired_heading - compass_heading;
-    //If the error is greater than 180, there is a shorter way around the unit 
-    //this correc tthat
+    // If the error is greater than 180, there is a shorter way around the unit 
+    // circle, this corrects that
     if (abs(heading_error) > 180){ 
         heading_error = -(desired_heading - (360 - compass_heading));
     }
     // We need to correct the heading if the error is greater than 
     if (abs(heading_error) > HEADING_ERROR_LIMIT){ 
         currently_rotating = 1;
-        
         // the actual heading is greater than the desired heading
         if (heading_error < 0){ 
-            rotate_left(clip(STALL_SPEED, abs(heading_error)*2, MAX_SPEED));
-            WHITE_Write(1);
-            ORANGE_Write(0);
-        } else {
             rotate_right(clip(STALL_SPEED, abs(heading_error)*2, MAX_SPEED));
-            WHITE_Write(0);
-            ORANGE_Write(1);
+        } else {
+            rotate_left(clip(STALL_SPEED, abs(heading_error)*2, MAX_SPEED));
         }
+        
         return MEND_S_ROTATING;
     }
-    
     setCoast(MBOTH);
-    currently_rotating = 0;
     
-    int distance_error;
-    
-    switch (motor_state){
-        case MOTOR_S_STOPPED:
-            break; //Do nothing
-        case MOTOR_S_FORWARD:
-            currently_driving = 1;
-            distance_error = desired_distance - delta_y_distance;
-            if (abs2(distance_error) > MOTOR_FORWARD_ERROR_LIMIT && distance_error > 0){
-                // WHAT HAPPENS IF WE OVERSHOOT? WILL IT GET FASTER AND FASTER GOING AWAY FROM THE CORRECT POSITION?
-          //if (abs2(distance_error) > MOTOR_FORWARD_ERROR_LIMIT && distance_error > 1)     
-                setSpeed(MBOTH, clip(STALL_SPEED, abs(delta_y_distance - desired_distance)/2, 255));
-                setForward(MBOTH);
-                currently_rotating = 0;
-                motor_end_state = MEND_S_DRIVING;
-            } else {
-                setSpeed(MBOTH, 0);
-                setCoast(MBOTH);
-                motor_state = MOTOR_S_STOPPED;
-                motor_end_state = MEND_S_STOPPED;
-                currently_driving = 0;
-            }
-            break;
-        case MOTOR_S_BACKWARD: 
-            currently_driving = 1;
-            distance_error = desired_distance - delta_y_distance;
-            if (abs2(distance_error) > MOTOR_FORWARD_ERROR_LIMIT && distance_error < 0){
-                // WHAT HAPPENS IF OVERSHOOT?
-                setSpeed(MBOTH, clip(STALL_SPEED, abs(delta_y_distance - desired_distance)/2, 255));
-                setReverse(MBOTH);
-                currently_rotating = 0;
-                motor_end_state = MEND_S_DRIVING;
-            } else {
-                setSpeed(MBOTH, 0);
-                setCoast(MBOTH);
-                currently_driving = 0;
-                motor_state = MOTOR_S_STOPPED;
-                motor_end_state = MEND_S_STOPPED;
-            }
-            break;
-    }
-    return motor_end_state;
+    return MEND_S_STOPPED;
 }
-
-void stop_driving(){
-    delta_y_distance = desired_distance;
-}
-
-/*
- * Makes the robot drive from current location to the specified x, y position
- */
-void goto_position(int32 x, int32 y){
-    start_x = location.x;
-    start_y = location.y;
-    end_x = x;
-    end_y = y;
-    //Calculate the angle of the line we need to run along
-    int32 dx = end_x - start_x;
-    int32 dy = end_y - start_y;
-    setHeading(atan2((double) dy, (double) dx) * 180.0/M_PI + 180.0);
-    int32 d = sqrt(dx*dx + dy*dy);
-    go_forward(d);
-}
-
 
 /* 
- * Makes the robot drive forward *distance* centimeters
+ * Makes the robot drive forward *time* seconds BLOCKING
  */
-void go_forward(int32 distance){
-    reset_delta_y_distance();
-    desired_distance = distance;
-    motor_state = MOTOR_S_FORWARD;
+void go_forward(uint32 time, uint8 speed){
+    time = time * 10;
+    uint32 start_time = Timer_ReadCounter(); // each tick is 100us
+    while (start_time - Timer_ReadCounter() < time){
+        setForward(MBOTH);
+        setSpeed(MBOTH, speed);
+        control_heading();
+        CyDelay(25);
+    }
+    setCoast(MBOTH);
 }
 
 /*
  * Makes the robot drive backward *distance* centimeters
  */
-void go_backward(int32 distance){
-    reset_delta_y_distance();
-    desired_distance = distance;
-    motor_state = MOTOR_S_BACKWARD;
+void go_backward(uint32 time, uint8 speed){
+    time = time * 10;
+    uint32 start_time = Timer_ReadCounter(); // each tick is 100us
+    while (start_time - Timer_ReadCounter() < time){
+        setReverse(MBOTH);
+        setSpeed(MBOTH, speed);
+        control_heading();
+        CyDelay(25);
+    }
+    setCoast(MBOTH);
+}
+
+
+void go_backward_ultra(uint16 ultra_dist, uint8 speed){
+    while (get_mean_ultra() < ultra_dist){
+        setReverse(MBOTH);
+        setSpeed(MBOTH, speed);
+        control_heading();
+        CyDelay(25);
+    }
+    setCoast(MBOTH);
 }
 
 /*
@@ -195,15 +146,15 @@ void rotate_degrees(int16 angle){
     } else if (desired_heading < 0){
         desired_heading += 360;
     }
+    while (control_heading() != MEND_S_STOPPED){;}
 }
 
 /* 
  * Sets the robots heading to *new_heading*
  */
-void setHeading(int16 new_heading){
+void set_heading(int16 new_heading){
     desired_heading = new_heading;
 }
-
 
 /* 
  * Sets the motors to rotate the robot left
@@ -249,12 +200,11 @@ void setSpeed(uint8 motor, uint8 speed){
     /* Set bit 1 of motor to select motor 1 
      * Set bit 2 of motor to select motor 2
      */
-    if (motor & MLEFT){ //Slow down the left motor because it tends to be faster
-        MOTOR_L_WriteCompare(speed - LEFT_MOTOR_SPEED_CORRECTION);
-    }
-    
     if (motor & MRIGHT){
         MOTOR_R_WriteCompare(speed);
+    }
+    if (motor & MLEFT){ //Slow down the left motor because it tends to be faster
+        MOTOR_L_WriteCompare(speed - LEFT_MOTOR_SPEED_CORRECTION);
     }
 }
 
@@ -304,10 +254,4 @@ void setReverse(uint8 motor){
         MRIN2_Write(1);
     }
 }
-
-int16 abs2(int16 val)
-{
-    return (val > 0) ? val : -val;
-}
-
 /* [] END OF FILE */
