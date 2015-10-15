@@ -1,0 +1,1477 @@
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"USB_pm.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.comm	Camera_framebuffer,50688,4
+  19              		.bss
+  20              		.align	2
+  21              	USB_backup:
+  22 0000 0000     		.space	2
+  23 0002 0000     		.section	.text.USB_DP_ISR,"ax",%progbits
+  24              		.align	2
+  25              		.global	USB_DP_ISR
+  26              		.thumb
+  27              		.thumb_func
+  28              		.type	USB_DP_ISR, %function
+  29              	USB_DP_ISR:
+  30              	.LFB63:
+  31              		.file 1 ".\\Generated_Source\\PSoC5\\USB_pm.c"
+   1:.\Generated_Source\PSoC5/USB_pm.c **** /*******************************************************************************
+   2:.\Generated_Source\PSoC5/USB_pm.c **** * File Name: USB_pm.c
+   3:.\Generated_Source\PSoC5/USB_pm.c **** * Version 2.80
+   4:.\Generated_Source\PSoC5/USB_pm.c **** *
+   5:.\Generated_Source\PSoC5/USB_pm.c **** * Description:
+   6:.\Generated_Source\PSoC5/USB_pm.c **** *  This file provides Suspend/Resume APIs functionality.
+   7:.\Generated_Source\PSoC5/USB_pm.c **** *
+   8:.\Generated_Source\PSoC5/USB_pm.c **** * Note:
+   9:.\Generated_Source\PSoC5/USB_pm.c **** *
+  10:.\Generated_Source\PSoC5/USB_pm.c **** ********************************************************************************
+  11:.\Generated_Source\PSoC5/USB_pm.c **** * Copyright 2008-2014, Cypress Semiconductor Corporation.  All rights reserved.
+  12:.\Generated_Source\PSoC5/USB_pm.c **** * You may use this file only in accordance with the license, terms, conditions,
+  13:.\Generated_Source\PSoC5/USB_pm.c **** * disclaimers, and limitations in the end user license agreement accompanying
+  14:.\Generated_Source\PSoC5/USB_pm.c **** * the software package with which this file was provided.
+  15:.\Generated_Source\PSoC5/USB_pm.c **** *******************************************************************************/
+  16:.\Generated_Source\PSoC5/USB_pm.c **** 
+  17:.\Generated_Source\PSoC5/USB_pm.c **** #include "project.h"
+  18:.\Generated_Source\PSoC5/USB_pm.c **** #include "USB.h"
+  19:.\Generated_Source\PSoC5/USB_pm.c **** #include "USB_pvt.h"
+  20:.\Generated_Source\PSoC5/USB_pm.c **** 
+  21:.\Generated_Source\PSoC5/USB_pm.c **** 
+  22:.\Generated_Source\PSoC5/USB_pm.c **** /***************************************
+  23:.\Generated_Source\PSoC5/USB_pm.c **** * Custom Declarations
+  24:.\Generated_Source\PSoC5/USB_pm.c **** ***************************************/
+  25:.\Generated_Source\PSoC5/USB_pm.c **** /* `#START PM_CUSTOM_DECLARATIONS` Place your declaration here */
+  26:.\Generated_Source\PSoC5/USB_pm.c **** 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 2
+
+
+  27:.\Generated_Source\PSoC5/USB_pm.c **** /* `#END` */
+  28:.\Generated_Source\PSoC5/USB_pm.c **** 
+  29:.\Generated_Source\PSoC5/USB_pm.c **** 
+  30:.\Generated_Source\PSoC5/USB_pm.c **** /***************************************
+  31:.\Generated_Source\PSoC5/USB_pm.c **** * Local data allocation
+  32:.\Generated_Source\PSoC5/USB_pm.c **** ***************************************/
+  33:.\Generated_Source\PSoC5/USB_pm.c **** 
+  34:.\Generated_Source\PSoC5/USB_pm.c **** static USB_BACKUP_STRUCT  USB_backup;
+  35:.\Generated_Source\PSoC5/USB_pm.c **** 
+  36:.\Generated_Source\PSoC5/USB_pm.c **** 
+  37:.\Generated_Source\PSoC5/USB_pm.c **** #if(USB_DP_ISR_REMOVE == 0u)
+  38:.\Generated_Source\PSoC5/USB_pm.c **** 
+  39:.\Generated_Source\PSoC5/USB_pm.c ****     /*******************************************************************************
+  40:.\Generated_Source\PSoC5/USB_pm.c ****     * Function Name: USB_DP_Interrupt
+  41:.\Generated_Source\PSoC5/USB_pm.c ****     ********************************************************************************
+  42:.\Generated_Source\PSoC5/USB_pm.c ****     *
+  43:.\Generated_Source\PSoC5/USB_pm.c ****     * Summary:
+  44:.\Generated_Source\PSoC5/USB_pm.c ****     *  This Interrupt Service Routine handles DP pin changes for wake-up from
+  45:.\Generated_Source\PSoC5/USB_pm.c ****     *  the sleep mode.
+  46:.\Generated_Source\PSoC5/USB_pm.c ****     *
+  47:.\Generated_Source\PSoC5/USB_pm.c ****     * Parameters:
+  48:.\Generated_Source\PSoC5/USB_pm.c ****     *  None.
+  49:.\Generated_Source\PSoC5/USB_pm.c ****     *
+  50:.\Generated_Source\PSoC5/USB_pm.c ****     * Return:
+  51:.\Generated_Source\PSoC5/USB_pm.c ****     *  None.
+  52:.\Generated_Source\PSoC5/USB_pm.c ****     *
+  53:.\Generated_Source\PSoC5/USB_pm.c ****     *******************************************************************************/
+  54:.\Generated_Source\PSoC5/USB_pm.c ****     CY_ISR(USB_DP_ISR)
+  55:.\Generated_Source\PSoC5/USB_pm.c ****     {
+  32              		.loc 1 55 0
+  33              		.cfi_startproc
+  34              		@ args = 0, pretend = 0, frame = 0
+  35              		@ frame_needed = 1, uses_anonymous_args = 0
+  36              		@ link register save eliminated.
+  37 0000 80B4     		push	{r7}
+  38              		.cfi_def_cfa_offset 4
+  39              		.cfi_offset 7, -4
+  40 0002 00AF     		add	r7, sp, #0
+  41              		.cfi_def_cfa_register 7
+  56:.\Generated_Source\PSoC5/USB_pm.c ****         /* `#START DP_USER_CODE` Place your code here */
+  57:.\Generated_Source\PSoC5/USB_pm.c **** 
+  58:.\Generated_Source\PSoC5/USB_pm.c ****         /* `#END` */
+  59:.\Generated_Source\PSoC5/USB_pm.c **** 
+  60:.\Generated_Source\PSoC5/USB_pm.c ****         /* Clears active interrupt */
+  61:.\Generated_Source\PSoC5/USB_pm.c ****         CY_GET_REG8(USB_DP_INTSTAT_PTR);
+  42              		.loc 1 61 0
+  43 0004 024B     		ldr	r3, .L2
+  44 0006 1B78     		ldrb	r3, [r3]
+  62:.\Generated_Source\PSoC5/USB_pm.c ****     }
+  45              		.loc 1 62 0
+  46 0008 BD46     		mov	sp, r7
+  47              		@ sp needed
+  48 000a 5DF8047B 		ldr	r7, [sp], #4
+  49 000e 7047     		bx	lr
+  50              	.L3:
+  51              		.align	2
+  52              	.L2:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 3
+
+
+  53 0010 8F450040 		.word	1073759631
+  54              		.cfi_endproc
+  55              	.LFE63:
+  56              		.size	USB_DP_ISR, .-USB_DP_ISR
+  57              		.section	.text.USB_SaveConfig,"ax",%progbits
+  58              		.align	2
+  59              		.global	USB_SaveConfig
+  60              		.thumb
+  61              		.thumb_func
+  62              		.type	USB_SaveConfig, %function
+  63              	USB_SaveConfig:
+  64              	.LFB64:
+  63:.\Generated_Source\PSoC5/USB_pm.c **** 
+  64:.\Generated_Source\PSoC5/USB_pm.c **** #endif /* (USB_DP_ISR_REMOVE == 0u) */
+  65:.\Generated_Source\PSoC5/USB_pm.c **** 
+  66:.\Generated_Source\PSoC5/USB_pm.c **** 
+  67:.\Generated_Source\PSoC5/USB_pm.c **** /*******************************************************************************
+  68:.\Generated_Source\PSoC5/USB_pm.c **** * Function Name: USB_SaveConfig
+  69:.\Generated_Source\PSoC5/USB_pm.c **** ********************************************************************************
+  70:.\Generated_Source\PSoC5/USB_pm.c **** *
+  71:.\Generated_Source\PSoC5/USB_pm.c **** * Summary:
+  72:.\Generated_Source\PSoC5/USB_pm.c **** *  Saves the current user configuration.
+  73:.\Generated_Source\PSoC5/USB_pm.c **** *
+  74:.\Generated_Source\PSoC5/USB_pm.c **** * Parameters:
+  75:.\Generated_Source\PSoC5/USB_pm.c **** *  None.
+  76:.\Generated_Source\PSoC5/USB_pm.c **** *
+  77:.\Generated_Source\PSoC5/USB_pm.c **** * Return:
+  78:.\Generated_Source\PSoC5/USB_pm.c **** *  None.
+  79:.\Generated_Source\PSoC5/USB_pm.c **** *
+  80:.\Generated_Source\PSoC5/USB_pm.c **** * Reentrant:
+  81:.\Generated_Source\PSoC5/USB_pm.c **** *  No.
+  82:.\Generated_Source\PSoC5/USB_pm.c **** *
+  83:.\Generated_Source\PSoC5/USB_pm.c **** *******************************************************************************/
+  84:.\Generated_Source\PSoC5/USB_pm.c **** void USB_SaveConfig(void) 
+  85:.\Generated_Source\PSoC5/USB_pm.c **** {
+  65              		.loc 1 85 0
+  66              		.cfi_startproc
+  67              		@ args = 0, pretend = 0, frame = 0
+  68              		@ frame_needed = 1, uses_anonymous_args = 0
+  69              		@ link register save eliminated.
+  70 0000 80B4     		push	{r7}
+  71              		.cfi_def_cfa_offset 4
+  72              		.cfi_offset 7, -4
+  73 0002 00AF     		add	r7, sp, #0
+  74              		.cfi_def_cfa_register 7
+  86:.\Generated_Source\PSoC5/USB_pm.c **** 
+  87:.\Generated_Source\PSoC5/USB_pm.c **** }
+  75              		.loc 1 87 0
+  76 0004 BD46     		mov	sp, r7
+  77              		@ sp needed
+  78 0006 5DF8047B 		ldr	r7, [sp], #4
+  79 000a 7047     		bx	lr
+  80              		.cfi_endproc
+  81              	.LFE64:
+  82              		.size	USB_SaveConfig, .-USB_SaveConfig
+  83              		.section	.text.USB_RestoreConfig,"ax",%progbits
+  84              		.align	2
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 4
+
+
+  85              		.global	USB_RestoreConfig
+  86              		.thumb
+  87              		.thumb_func
+  88              		.type	USB_RestoreConfig, %function
+  89              	USB_RestoreConfig:
+  90              	.LFB65:
+  88:.\Generated_Source\PSoC5/USB_pm.c **** 
+  89:.\Generated_Source\PSoC5/USB_pm.c **** 
+  90:.\Generated_Source\PSoC5/USB_pm.c **** /*******************************************************************************
+  91:.\Generated_Source\PSoC5/USB_pm.c **** * Function Name: USB_RestoreConfig
+  92:.\Generated_Source\PSoC5/USB_pm.c **** ********************************************************************************
+  93:.\Generated_Source\PSoC5/USB_pm.c **** *
+  94:.\Generated_Source\PSoC5/USB_pm.c **** * Summary:
+  95:.\Generated_Source\PSoC5/USB_pm.c **** *  Restores the current user configuration.
+  96:.\Generated_Source\PSoC5/USB_pm.c **** *
+  97:.\Generated_Source\PSoC5/USB_pm.c **** * Parameters:
+  98:.\Generated_Source\PSoC5/USB_pm.c **** *  None.
+  99:.\Generated_Source\PSoC5/USB_pm.c **** *
+ 100:.\Generated_Source\PSoC5/USB_pm.c **** * Return:
+ 101:.\Generated_Source\PSoC5/USB_pm.c **** *  None.
+ 102:.\Generated_Source\PSoC5/USB_pm.c **** *
+ 103:.\Generated_Source\PSoC5/USB_pm.c **** * Reentrant:
+ 104:.\Generated_Source\PSoC5/USB_pm.c **** *  No.
+ 105:.\Generated_Source\PSoC5/USB_pm.c **** *
+ 106:.\Generated_Source\PSoC5/USB_pm.c **** *******************************************************************************/
+ 107:.\Generated_Source\PSoC5/USB_pm.c **** void USB_RestoreConfig(void) 
+ 108:.\Generated_Source\PSoC5/USB_pm.c **** {
+  91              		.loc 1 108 0
+  92              		.cfi_startproc
+  93              		@ args = 0, pretend = 0, frame = 0
+  94              		@ frame_needed = 1, uses_anonymous_args = 0
+  95 0000 80B5     		push	{r7, lr}
+  96              		.cfi_def_cfa_offset 8
+  97              		.cfi_offset 7, -8
+  98              		.cfi_offset 14, -4
+  99 0002 00AF     		add	r7, sp, #0
+ 100              		.cfi_def_cfa_register 7
+ 109:.\Generated_Source\PSoC5/USB_pm.c ****     if(USB_configuration != 0u)
+ 101              		.loc 1 109 0
+ 102 0004 034B     		ldr	r3, .L7
+ 103 0006 1B78     		ldrb	r3, [r3]
+ 104 0008 DBB2     		uxtb	r3, r3
+ 105 000a 002B     		cmp	r3, #0
+ 106 000c 01D0     		beq	.L5
+ 110:.\Generated_Source\PSoC5/USB_pm.c ****     {
+ 111:.\Generated_Source\PSoC5/USB_pm.c ****         USB_ConfigReg();
+ 107              		.loc 1 111 0
+ 108 000e FFF7FEFF 		bl	USB_ConfigReg
+ 109              	.L5:
+ 112:.\Generated_Source\PSoC5/USB_pm.c ****     }
+ 113:.\Generated_Source\PSoC5/USB_pm.c **** }
+ 110              		.loc 1 113 0
+ 111 0012 80BD     		pop	{r7, pc}
+ 112              	.L8:
+ 113              		.align	2
+ 114              	.L7:
+ 115 0014 00000000 		.word	USB_configuration
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 5
+
+
+ 116              		.cfi_endproc
+ 117              	.LFE65:
+ 118              		.size	USB_RestoreConfig, .-USB_RestoreConfig
+ 119              		.section	.text.USB_Suspend,"ax",%progbits
+ 120              		.align	2
+ 121              		.global	USB_Suspend
+ 122              		.thumb
+ 123              		.thumb_func
+ 124              		.type	USB_Suspend, %function
+ 125              	USB_Suspend:
+ 126              	.LFB66:
+ 114:.\Generated_Source\PSoC5/USB_pm.c **** 
+ 115:.\Generated_Source\PSoC5/USB_pm.c **** 
+ 116:.\Generated_Source\PSoC5/USB_pm.c **** /*******************************************************************************
+ 117:.\Generated_Source\PSoC5/USB_pm.c **** * Function Name: USB_Suspend
+ 118:.\Generated_Source\PSoC5/USB_pm.c **** ********************************************************************************
+ 119:.\Generated_Source\PSoC5/USB_pm.c **** *
+ 120:.\Generated_Source\PSoC5/USB_pm.c **** * Summary:
+ 121:.\Generated_Source\PSoC5/USB_pm.c **** *  This function disables the USBFS block and prepares for power down mode.
+ 122:.\Generated_Source\PSoC5/USB_pm.c **** *
+ 123:.\Generated_Source\PSoC5/USB_pm.c **** * Parameters:
+ 124:.\Generated_Source\PSoC5/USB_pm.c **** *  None.
+ 125:.\Generated_Source\PSoC5/USB_pm.c **** *
+ 126:.\Generated_Source\PSoC5/USB_pm.c **** * Return:
+ 127:.\Generated_Source\PSoC5/USB_pm.c **** *   None.
+ 128:.\Generated_Source\PSoC5/USB_pm.c **** *
+ 129:.\Generated_Source\PSoC5/USB_pm.c **** * Global variables:
+ 130:.\Generated_Source\PSoC5/USB_pm.c **** *  USB_backup.enable:  modified.
+ 131:.\Generated_Source\PSoC5/USB_pm.c **** *
+ 132:.\Generated_Source\PSoC5/USB_pm.c **** * Reentrant:
+ 133:.\Generated_Source\PSoC5/USB_pm.c **** *  No.
+ 134:.\Generated_Source\PSoC5/USB_pm.c **** *
+ 135:.\Generated_Source\PSoC5/USB_pm.c **** *******************************************************************************/
+ 136:.\Generated_Source\PSoC5/USB_pm.c **** void USB_Suspend(void) 
+ 137:.\Generated_Source\PSoC5/USB_pm.c **** {
+ 127              		.loc 1 137 0
+ 128              		.cfi_startproc
+ 129              		@ args = 0, pretend = 0, frame = 8
+ 130              		@ frame_needed = 1, uses_anonymous_args = 0
+ 131 0000 80B5     		push	{r7, lr}
+ 132              		.cfi_def_cfa_offset 8
+ 133              		.cfi_offset 7, -8
+ 134              		.cfi_offset 14, -4
+ 135 0002 82B0     		sub	sp, sp, #8
+ 136              		.cfi_def_cfa_offset 16
+ 137 0004 00AF     		add	r7, sp, #0
+ 138              		.cfi_def_cfa_register 7
+ 138:.\Generated_Source\PSoC5/USB_pm.c ****     uint8 enableInterrupts;
+ 139:.\Generated_Source\PSoC5/USB_pm.c ****     enableInterrupts = CyEnterCriticalSection();
+ 139              		.loc 1 139 0
+ 140 0006 FFF7FEFF 		bl	CyEnterCriticalSection
+ 141 000a 0346     		mov	r3, r0
+ 142 000c FB71     		strb	r3, [r7, #7]
+ 140:.\Generated_Source\PSoC5/USB_pm.c **** 
+ 141:.\Generated_Source\PSoC5/USB_pm.c ****     if((CY_GET_REG8(USB_CR0_PTR) & USB_CR0_ENABLE) != 0u)
+ 143              		.loc 1 141 0
+ 144 000e 3C4B     		ldr	r3, .L12
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 6
+
+
+ 145 0010 1B78     		ldrb	r3, [r3]
+ 146 0012 DBB2     		uxtb	r3, r3
+ 147 0014 DBB2     		uxtb	r3, r3
+ 148 0016 5BB2     		sxtb	r3, r3
+ 149 0018 002B     		cmp	r3, #0
+ 150 001a 57DA     		bge	.L10
+ 142:.\Generated_Source\PSoC5/USB_pm.c ****     {   /* USB block is enabled */
+ 143:.\Generated_Source\PSoC5/USB_pm.c ****         USB_backup.enableState = 1u;
+ 151              		.loc 1 143 0
+ 152 001c 394B     		ldr	r3, .L12+4
+ 153 001e 0122     		movs	r2, #1
+ 154 0020 1A70     		strb	r2, [r3]
+ 144:.\Generated_Source\PSoC5/USB_pm.c **** 
+ 145:.\Generated_Source\PSoC5/USB_pm.c ****         #if(USB_EP_MM != USB__EP_MANUAL)
+ 146:.\Generated_Source\PSoC5/USB_pm.c ****             USB_Stop_DMA(USB_MAX_EP);     /* Stop all DMAs */
+ 147:.\Generated_Source\PSoC5/USB_pm.c ****         #endif   /*  USB_EP_MM != USB__EP_MANUAL */
+ 148:.\Generated_Source\PSoC5/USB_pm.c **** 
+ 149:.\Generated_Source\PSoC5/USB_pm.c ****         /* Ensure USB transmit enable is low (USB_USBIO_CR0.ten). - Manual Transmission - Disabled 
+ 150:.\Generated_Source\PSoC5/USB_pm.c ****         USB_USBIO_CR0_REG &= (uint8)~USB_USBIO_CR0_TEN;
+ 155              		.loc 1 150 0
+ 156 0022 394B     		ldr	r3, .L12+8
+ 157 0024 384A     		ldr	r2, .L12+8
+ 158 0026 1278     		ldrb	r2, [r2]
+ 159 0028 D2B2     		uxtb	r2, r2
+ 160 002a 02F07F02 		and	r2, r2, #127
+ 161 002e D2B2     		uxtb	r2, r2
+ 162 0030 1A70     		strb	r2, [r3]
+ 151:.\Generated_Source\PSoC5/USB_pm.c ****         CyDelayUs(0u);  /*~50ns delay */
+ 163              		.loc 1 151 0
+ 164 0032 0020     		movs	r0, #0
+ 165 0034 FFF7FEFF 		bl	CyDelayUs
+ 152:.\Generated_Source\PSoC5/USB_pm.c **** 
+ 153:.\Generated_Source\PSoC5/USB_pm.c ****         /* Disable the USBIO by asserting PM.USB_CR0.fsusbio_pd_n(Inverted) and pd_pullup_hv(Invert
+ 154:.\Generated_Source\PSoC5/USB_pm.c ****         USB_PM_USB_CR0_REG &=
+ 166              		.loc 1 154 0
+ 167 0038 344B     		ldr	r3, .L12+12
+ 168 003a 344A     		ldr	r2, .L12+12
+ 169 003c 1278     		ldrb	r2, [r2]
+ 170 003e D2B2     		uxtb	r2, r2
+ 171 0040 22F00602 		bic	r2, r2, #6
+ 172 0044 D2B2     		uxtb	r2, r2
+ 173 0046 1A70     		strb	r2, [r3]
+ 155:.\Generated_Source\PSoC5/USB_pm.c ****                                 (uint8)~(USB_PM_USB_CR0_PD_N | USB_PM_USB_CR0_PD_PULLUP_N);
+ 156:.\Generated_Source\PSoC5/USB_pm.c **** 
+ 157:.\Generated_Source\PSoC5/USB_pm.c ****         /* Disable the SIE */
+ 158:.\Generated_Source\PSoC5/USB_pm.c ****         USB_CR0_REG &= (uint8)~USB_CR0_ENABLE;
+ 174              		.loc 1 158 0
+ 175 0048 2D4B     		ldr	r3, .L12
+ 176 004a 2D4A     		ldr	r2, .L12
+ 177 004c 1278     		ldrb	r2, [r2]
+ 178 004e D2B2     		uxtb	r2, r2
+ 179 0050 02F07F02 		and	r2, r2, #127
+ 180 0054 D2B2     		uxtb	r2, r2
+ 181 0056 1A70     		strb	r2, [r3]
+ 159:.\Generated_Source\PSoC5/USB_pm.c **** 
+ 160:.\Generated_Source\PSoC5/USB_pm.c ****         CyDelayUs(0u);  /* ~50ns delay */
+ 182              		.loc 1 160 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 7
+
+
+ 183 0058 0020     		movs	r0, #0
+ 184 005a FFF7FEFF 		bl	CyDelayUs
+ 161:.\Generated_Source\PSoC5/USB_pm.c ****         /* Store mode and Disable VRegulator*/
+ 162:.\Generated_Source\PSoC5/USB_pm.c ****         USB_backup.mode = USB_CR1_REG & USB_CR1_REG_ENABLE;
+ 185              		.loc 1 162 0
+ 186 005e 2C4B     		ldr	r3, .L12+16
+ 187 0060 1B78     		ldrb	r3, [r3]
+ 188 0062 DBB2     		uxtb	r3, r3
+ 189 0064 03F00103 		and	r3, r3, #1
+ 190 0068 DAB2     		uxtb	r2, r3
+ 191 006a 264B     		ldr	r3, .L12+4
+ 192 006c 5A70     		strb	r2, [r3, #1]
+ 163:.\Generated_Source\PSoC5/USB_pm.c ****         USB_CR1_REG &= (uint8)~USB_CR1_REG_ENABLE;
+ 193              		.loc 1 163 0
+ 194 006e 284B     		ldr	r3, .L12+16
+ 195 0070 274A     		ldr	r2, .L12+16
+ 196 0072 1278     		ldrb	r2, [r2]
+ 197 0074 D2B2     		uxtb	r2, r2
+ 198 0076 22F00102 		bic	r2, r2, #1
+ 199 007a D2B2     		uxtb	r2, r2
+ 200 007c 1A70     		strb	r2, [r3]
+ 164:.\Generated_Source\PSoC5/USB_pm.c **** 
+ 165:.\Generated_Source\PSoC5/USB_pm.c ****         CyDelayUs(1u);  /* 0.5 us min delay */
+ 201              		.loc 1 165 0
+ 202 007e 0120     		movs	r0, #1
+ 203 0080 FFF7FEFF 		bl	CyDelayUs
+ 166:.\Generated_Source\PSoC5/USB_pm.c ****         /* Disable the USBIO reference by setting PM.USB_CR0.fsusbio_ref_en.*/
+ 167:.\Generated_Source\PSoC5/USB_pm.c ****         USB_PM_USB_CR0_REG &= (uint8)~USB_PM_USB_CR0_REF_EN;
+ 204              		.loc 1 167 0
+ 205 0084 214B     		ldr	r3, .L12+12
+ 206 0086 214A     		ldr	r2, .L12+12
+ 207 0088 1278     		ldrb	r2, [r2]
+ 208 008a D2B2     		uxtb	r2, r2
+ 209 008c 22F00102 		bic	r2, r2, #1
+ 210 0090 D2B2     		uxtb	r2, r2
+ 211 0092 1A70     		strb	r2, [r3]
+ 168:.\Generated_Source\PSoC5/USB_pm.c **** 
+ 169:.\Generated_Source\PSoC5/USB_pm.c ****         /* Switch DP and DM terminals to GPIO mode and disconnect 1.5k pullup*/
+ 170:.\Generated_Source\PSoC5/USB_pm.c ****         USB_USBIO_CR1_REG |= USB_USBIO_CR1_IOMODE;
+ 212              		.loc 1 170 0
+ 213 0094 1F4B     		ldr	r3, .L12+20
+ 214 0096 1F4A     		ldr	r2, .L12+20
+ 215 0098 1278     		ldrb	r2, [r2]
+ 216 009a D2B2     		uxtb	r2, r2
+ 217 009c 42F02002 		orr	r2, r2, #32
+ 218 00a0 D2B2     		uxtb	r2, r2
+ 219 00a2 1A70     		strb	r2, [r3]
+ 171:.\Generated_Source\PSoC5/USB_pm.c **** 
+ 172:.\Generated_Source\PSoC5/USB_pm.c ****         /* Disable USB in ACT PM */
+ 173:.\Generated_Source\PSoC5/USB_pm.c ****         USB_PM_ACT_CFG_REG &= (uint8)~USB_PM_ACT_EN_FSUSB;
+ 220              		.loc 1 173 0
+ 221 00a4 1C4B     		ldr	r3, .L12+24
+ 222 00a6 1C4A     		ldr	r2, .L12+24
+ 223 00a8 1278     		ldrb	r2, [r2]
+ 224 00aa D2B2     		uxtb	r2, r2
+ 225 00ac 22F00102 		bic	r2, r2, #1
+ 226 00b0 D2B2     		uxtb	r2, r2
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 8
+
+
+ 227 00b2 1A70     		strb	r2, [r3]
+ 174:.\Generated_Source\PSoC5/USB_pm.c ****         /* Disable USB block for Standby Power Mode */
+ 175:.\Generated_Source\PSoC5/USB_pm.c ****         USB_PM_STBY_CFG_REG &= (uint8)~USB_PM_STBY_EN_FSUSB;
+ 228              		.loc 1 175 0
+ 229 00b4 194B     		ldr	r3, .L12+28
+ 230 00b6 194A     		ldr	r2, .L12+28
+ 231 00b8 1278     		ldrb	r2, [r2]
+ 232 00ba D2B2     		uxtb	r2, r2
+ 233 00bc 22F00102 		bic	r2, r2, #1
+ 234 00c0 D2B2     		uxtb	r2, r2
+ 235 00c2 1A70     		strb	r2, [r3]
+ 176:.\Generated_Source\PSoC5/USB_pm.c ****         CyDelayUs(1u); /* min  0.5us delay required */
+ 236              		.loc 1 176 0
+ 237 00c4 0120     		movs	r0, #1
+ 238 00c6 FFF7FEFF 		bl	CyDelayUs
+ 239 00ca 02E0     		b	.L11
+ 240              	.L10:
+ 177:.\Generated_Source\PSoC5/USB_pm.c **** 
+ 178:.\Generated_Source\PSoC5/USB_pm.c ****     }
+ 179:.\Generated_Source\PSoC5/USB_pm.c ****     else
+ 180:.\Generated_Source\PSoC5/USB_pm.c ****     {
+ 181:.\Generated_Source\PSoC5/USB_pm.c ****         USB_backup.enableState = 0u;
+ 241              		.loc 1 181 0
+ 242 00cc 0D4B     		ldr	r3, .L12+4
+ 243 00ce 0022     		movs	r2, #0
+ 244 00d0 1A70     		strb	r2, [r3]
+ 245              	.L11:
+ 182:.\Generated_Source\PSoC5/USB_pm.c ****     }
+ 183:.\Generated_Source\PSoC5/USB_pm.c **** 
+ 184:.\Generated_Source\PSoC5/USB_pm.c ****     CyExitCriticalSection(enableInterrupts);
+ 246              		.loc 1 184 0
+ 247 00d2 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 248 00d4 1846     		mov	r0, r3
+ 249 00d6 FFF7FEFF 		bl	CyExitCriticalSection
+ 185:.\Generated_Source\PSoC5/USB_pm.c **** 
+ 186:.\Generated_Source\PSoC5/USB_pm.c ****     /* Set the DP Interrupt for wake-up from sleep mode. */
+ 187:.\Generated_Source\PSoC5/USB_pm.c ****     #if(USB_DP_ISR_REMOVE == 0u)
+ 188:.\Generated_Source\PSoC5/USB_pm.c ****         (void) CyIntSetVector(USB_DP_INTC_VECT_NUM, &USB_DP_ISR);
+ 250              		.loc 1 188 0
+ 251 00da 0C20     		movs	r0, #12
+ 252 00dc 1049     		ldr	r1, .L12+32
+ 253 00de FFF7FEFF 		bl	CyIntSetVector
+ 189:.\Generated_Source\PSoC5/USB_pm.c ****         CyIntSetPriority(USB_DP_INTC_VECT_NUM, USB_DP_INTC_PRIOR);
+ 254              		.loc 1 189 0
+ 255 00e2 0C20     		movs	r0, #12
+ 256 00e4 0721     		movs	r1, #7
+ 257 00e6 FFF7FEFF 		bl	CyIntSetPriority
+ 190:.\Generated_Source\PSoC5/USB_pm.c ****         CyIntClearPending(USB_DP_INTC_VECT_NUM);
+ 258              		.loc 1 190 0
+ 259 00ea 0E4B     		ldr	r3, .L12+36
+ 260 00ec 4FF48052 		mov	r2, #4096
+ 261 00f0 1A60     		str	r2, [r3]
+ 191:.\Generated_Source\PSoC5/USB_pm.c ****         CyIntEnable(USB_DP_INTC_VECT_NUM);
+ 262              		.loc 1 191 0
+ 263 00f2 0D4B     		ldr	r3, .L12+40
+ 264 00f4 4FF48052 		mov	r2, #4096
+ 265 00f8 1A60     		str	r2, [r3]
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 9
+
+
+ 192:.\Generated_Source\PSoC5/USB_pm.c ****     #endif /* (USB_DP_ISR_REMOVE == 0u) */
+ 193:.\Generated_Source\PSoC5/USB_pm.c **** }
+ 266              		.loc 1 193 0
+ 267 00fa 0837     		adds	r7, r7, #8
+ 268 00fc BD46     		mov	sp, r7
+ 269              		@ sp needed
+ 270 00fe 80BD     		pop	{r7, pc}
+ 271              	.L13:
+ 272              		.align	2
+ 273              	.L12:
+ 274 0100 08600040 		.word	1073766408
+ 275 0104 00000000 		.word	USB_backup
+ 276 0108 10600040 		.word	1073766416
+ 277 010c 94430040 		.word	1073759124
+ 278 0110 09600040 		.word	1073766409
+ 279 0114 12600040 		.word	1073766418
+ 280 0118 A5430040 		.word	1073759141
+ 281 011c B5430040 		.word	1073759157
+ 282 0120 00000000 		.word	USB_DP_ISR
+ 283 0124 80E200E0 		.word	-536812928
+ 284 0128 00E100E0 		.word	-536813312
+ 285              		.cfi_endproc
+ 286              	.LFE66:
+ 287              		.size	USB_Suspend, .-USB_Suspend
+ 288              		.section	.text.USB_Resume,"ax",%progbits
+ 289              		.align	2
+ 290              		.global	USB_Resume
+ 291              		.thumb
+ 292              		.thumb_func
+ 293              		.type	USB_Resume, %function
+ 294              	USB_Resume:
+ 295              	.LFB67:
+ 194:.\Generated_Source\PSoC5/USB_pm.c **** 
+ 195:.\Generated_Source\PSoC5/USB_pm.c **** 
+ 196:.\Generated_Source\PSoC5/USB_pm.c **** /*******************************************************************************
+ 197:.\Generated_Source\PSoC5/USB_pm.c **** * Function Name: USB_Resume
+ 198:.\Generated_Source\PSoC5/USB_pm.c **** ********************************************************************************
+ 199:.\Generated_Source\PSoC5/USB_pm.c **** *
+ 200:.\Generated_Source\PSoC5/USB_pm.c **** * Summary:
+ 201:.\Generated_Source\PSoC5/USB_pm.c **** *  This function enables the USBFS block after power down mode.
+ 202:.\Generated_Source\PSoC5/USB_pm.c **** *
+ 203:.\Generated_Source\PSoC5/USB_pm.c **** * Parameters:
+ 204:.\Generated_Source\PSoC5/USB_pm.c **** *  None.
+ 205:.\Generated_Source\PSoC5/USB_pm.c **** *
+ 206:.\Generated_Source\PSoC5/USB_pm.c **** * Return:
+ 207:.\Generated_Source\PSoC5/USB_pm.c **** *  None.
+ 208:.\Generated_Source\PSoC5/USB_pm.c **** *
+ 209:.\Generated_Source\PSoC5/USB_pm.c **** * Global variables:
+ 210:.\Generated_Source\PSoC5/USB_pm.c **** *  USB_backup - checked.
+ 211:.\Generated_Source\PSoC5/USB_pm.c **** *
+ 212:.\Generated_Source\PSoC5/USB_pm.c **** * Reentrant:
+ 213:.\Generated_Source\PSoC5/USB_pm.c **** *  No.
+ 214:.\Generated_Source\PSoC5/USB_pm.c **** *
+ 215:.\Generated_Source\PSoC5/USB_pm.c **** *******************************************************************************/
+ 216:.\Generated_Source\PSoC5/USB_pm.c **** void USB_Resume(void) 
+ 217:.\Generated_Source\PSoC5/USB_pm.c **** {
+ 296              		.loc 1 217 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 10
+
+
+ 297              		.cfi_startproc
+ 298              		@ args = 0, pretend = 0, frame = 8
+ 299              		@ frame_needed = 1, uses_anonymous_args = 0
+ 300 0000 80B5     		push	{r7, lr}
+ 301              		.cfi_def_cfa_offset 8
+ 302              		.cfi_offset 7, -8
+ 303              		.cfi_offset 14, -4
+ 304 0002 82B0     		sub	sp, sp, #8
+ 305              		.cfi_def_cfa_offset 16
+ 306 0004 00AF     		add	r7, sp, #0
+ 307              		.cfi_def_cfa_register 7
+ 218:.\Generated_Source\PSoC5/USB_pm.c ****     uint8 enableInterrupts;
+ 219:.\Generated_Source\PSoC5/USB_pm.c ****     enableInterrupts = CyEnterCriticalSection();
+ 308              		.loc 1 219 0
+ 309 0006 FFF7FEFF 		bl	CyEnterCriticalSection
+ 310 000a 0346     		mov	r3, r0
+ 311 000c FB71     		strb	r3, [r7, #7]
+ 220:.\Generated_Source\PSoC5/USB_pm.c **** 
+ 221:.\Generated_Source\PSoC5/USB_pm.c ****     if(USB_backup.enableState != 0u)
+ 312              		.loc 1 221 0
+ 313 000e 324B     		ldr	r3, .L16
+ 314 0010 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 315 0012 002B     		cmp	r3, #0
+ 316 0014 58D0     		beq	.L15
+ 222:.\Generated_Source\PSoC5/USB_pm.c ****     {
+ 223:.\Generated_Source\PSoC5/USB_pm.c ****         #if(USB_DP_ISR_REMOVE == 0u)
+ 224:.\Generated_Source\PSoC5/USB_pm.c ****             CyIntDisable(USB_DP_INTC_VECT_NUM);
+ 317              		.loc 1 224 0
+ 318 0016 314B     		ldr	r3, .L16+4
+ 319 0018 4FF48052 		mov	r2, #4096
+ 320 001c 1A60     		str	r2, [r3]
+ 225:.\Generated_Source\PSoC5/USB_pm.c ****         #endif /*  USB_DP_ISR_REMOVE */
+ 226:.\Generated_Source\PSoC5/USB_pm.c **** 
+ 227:.\Generated_Source\PSoC5/USB_pm.c ****         /* Enable USB block */
+ 228:.\Generated_Source\PSoC5/USB_pm.c ****         USB_PM_ACT_CFG_REG |= USB_PM_ACT_EN_FSUSB;
+ 321              		.loc 1 228 0
+ 322 001e 304B     		ldr	r3, .L16+8
+ 323 0020 2F4A     		ldr	r2, .L16+8
+ 324 0022 1278     		ldrb	r2, [r2]
+ 325 0024 D2B2     		uxtb	r2, r2
+ 326 0026 42F00102 		orr	r2, r2, #1
+ 327 002a D2B2     		uxtb	r2, r2
+ 328 002c 1A70     		strb	r2, [r3]
+ 229:.\Generated_Source\PSoC5/USB_pm.c ****         /* Enable USB block for Standby Power Mode */
+ 230:.\Generated_Source\PSoC5/USB_pm.c ****         USB_PM_STBY_CFG_REG |= USB_PM_STBY_EN_FSUSB;
+ 329              		.loc 1 230 0
+ 330 002e 2D4B     		ldr	r3, .L16+12
+ 331 0030 2C4A     		ldr	r2, .L16+12
+ 332 0032 1278     		ldrb	r2, [r2]
+ 333 0034 D2B2     		uxtb	r2, r2
+ 334 0036 42F00102 		orr	r2, r2, #1
+ 335 003a D2B2     		uxtb	r2, r2
+ 336 003c 1A70     		strb	r2, [r3]
+ 231:.\Generated_Source\PSoC5/USB_pm.c ****         /* Enable core clock */
+ 232:.\Generated_Source\PSoC5/USB_pm.c ****         USB_USB_CLK_EN_REG |= USB_USB_CLK_ENABLE;
+ 337              		.loc 1 232 0
+ 338 003e 2A4B     		ldr	r3, .L16+16
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 11
+
+
+ 339 0040 294A     		ldr	r2, .L16+16
+ 340 0042 1278     		ldrb	r2, [r2]
+ 341 0044 D2B2     		uxtb	r2, r2
+ 342 0046 42F00102 		orr	r2, r2, #1
+ 343 004a D2B2     		uxtb	r2, r2
+ 344 004c 1A70     		strb	r2, [r3]
+ 233:.\Generated_Source\PSoC5/USB_pm.c **** 
+ 234:.\Generated_Source\PSoC5/USB_pm.c ****         /* Enable the USBIO reference by setting PM.USB_CR0.fsusbio_ref_en.*/
+ 235:.\Generated_Source\PSoC5/USB_pm.c ****         USB_PM_USB_CR0_REG |= USB_PM_USB_CR0_REF_EN;
+ 345              		.loc 1 235 0
+ 346 004e 274B     		ldr	r3, .L16+20
+ 347 0050 264A     		ldr	r2, .L16+20
+ 348 0052 1278     		ldrb	r2, [r2]
+ 349 0054 D2B2     		uxtb	r2, r2
+ 350 0056 42F00102 		orr	r2, r2, #1
+ 351 005a D2B2     		uxtb	r2, r2
+ 352 005c 1A70     		strb	r2, [r3]
+ 236:.\Generated_Source\PSoC5/USB_pm.c ****         /* The reference will be available ~40us after power restored */
+ 237:.\Generated_Source\PSoC5/USB_pm.c ****         CyDelayUs(40u);
+ 353              		.loc 1 237 0
+ 354 005e 2820     		movs	r0, #40
+ 355 0060 FFF7FEFF 		bl	CyDelayUs
+ 238:.\Generated_Source\PSoC5/USB_pm.c ****         /* Return VRegulator*/
+ 239:.\Generated_Source\PSoC5/USB_pm.c ****         USB_CR1_REG |= USB_backup.mode;
+ 356              		.loc 1 239 0
+ 357 0064 224B     		ldr	r3, .L16+24
+ 358 0066 224A     		ldr	r2, .L16+24
+ 359 0068 1278     		ldrb	r2, [r2]
+ 360 006a D1B2     		uxtb	r1, r2
+ 361 006c 1A4A     		ldr	r2, .L16
+ 362 006e 5278     		ldrb	r2, [r2, #1]	@ zero_extendqisi2
+ 363 0070 0A43     		orrs	r2, r2, r1
+ 364 0072 D2B2     		uxtb	r2, r2
+ 365 0074 1A70     		strb	r2, [r3]
+ 240:.\Generated_Source\PSoC5/USB_pm.c ****         CyDelayUs(0u);  /*~50ns delay */
+ 366              		.loc 1 240 0
+ 367 0076 0020     		movs	r0, #0
+ 368 0078 FFF7FEFF 		bl	CyDelayUs
+ 241:.\Generated_Source\PSoC5/USB_pm.c ****         /* Enable USBIO */
+ 242:.\Generated_Source\PSoC5/USB_pm.c ****         USB_PM_USB_CR0_REG |= USB_PM_USB_CR0_PD_N;
+ 369              		.loc 1 242 0
+ 370 007c 1B4B     		ldr	r3, .L16+20
+ 371 007e 1B4A     		ldr	r2, .L16+20
+ 372 0080 1278     		ldrb	r2, [r2]
+ 373 0082 D2B2     		uxtb	r2, r2
+ 374 0084 42F00202 		orr	r2, r2, #2
+ 375 0088 D2B2     		uxtb	r2, r2
+ 376 008a 1A70     		strb	r2, [r3]
+ 243:.\Generated_Source\PSoC5/USB_pm.c ****         CyDelayUs(2u);
+ 377              		.loc 1 243 0
+ 378 008c 0220     		movs	r0, #2
+ 379 008e FFF7FEFF 		bl	CyDelayUs
+ 244:.\Generated_Source\PSoC5/USB_pm.c ****         /* Set the USBIO pull-up enable */
+ 245:.\Generated_Source\PSoC5/USB_pm.c ****         USB_PM_USB_CR0_REG |= USB_PM_USB_CR0_PD_PULLUP_N;
+ 380              		.loc 1 245 0
+ 381 0092 164B     		ldr	r3, .L16+20
+ 382 0094 154A     		ldr	r2, .L16+20
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 12
+
+
+ 383 0096 1278     		ldrb	r2, [r2]
+ 384 0098 D2B2     		uxtb	r2, r2
+ 385 009a 42F00402 		orr	r2, r2, #4
+ 386 009e D2B2     		uxtb	r2, r2
+ 387 00a0 1A70     		strb	r2, [r3]
+ 246:.\Generated_Source\PSoC5/USB_pm.c **** 
+ 247:.\Generated_Source\PSoC5/USB_pm.c ****         /* Re-init Arbiter configuration for DMA transfers */
+ 248:.\Generated_Source\PSoC5/USB_pm.c ****         #if(USB_EP_MM != USB__EP_MANUAL)
+ 249:.\Generated_Source\PSoC5/USB_pm.c ****             /* Usb arb interrupt enable */
+ 250:.\Generated_Source\PSoC5/USB_pm.c ****             USB_ARB_INT_EN_REG = USB_ARB_INT_MASK;
+ 251:.\Generated_Source\PSoC5/USB_pm.c ****             #if(USB_EP_MM == USB__EP_DMAMANUAL)
+ 252:.\Generated_Source\PSoC5/USB_pm.c ****                 USB_ARB_CFG_REG = USB_ARB_CFG_MANUAL_DMA;
+ 253:.\Generated_Source\PSoC5/USB_pm.c ****             #endif   /*  USB_EP_MM == USB__EP_DMAMANUAL */
+ 254:.\Generated_Source\PSoC5/USB_pm.c ****             #if(USB_EP_MM == USB__EP_DMAAUTO)
+ 255:.\Generated_Source\PSoC5/USB_pm.c ****                 /*Set cfg cmplt this rises DMA request when the full configuration is done */
+ 256:.\Generated_Source\PSoC5/USB_pm.c ****                 USB_ARB_CFG_REG = USB_ARB_CFG_AUTO_DMA | USB_ARB_CFG_AUTO_MEM;
+ 257:.\Generated_Source\PSoC5/USB_pm.c ****             #endif   /*  USB_EP_MM == USB__EP_DMAAUTO */
+ 258:.\Generated_Source\PSoC5/USB_pm.c ****         #endif   /*  USB_EP_MM != USB__EP_MANUAL */
+ 259:.\Generated_Source\PSoC5/USB_pm.c **** 
+ 260:.\Generated_Source\PSoC5/USB_pm.c ****         /* STALL_IN_OUT */
+ 261:.\Generated_Source\PSoC5/USB_pm.c ****         CY_SET_REG8(USB_EP0_CR_PTR, USB_MODE_STALL_IN_OUT);
+ 388              		.loc 1 261 0
+ 389 00a2 144B     		ldr	r3, .L16+28
+ 390 00a4 0322     		movs	r2, #3
+ 391 00a6 1A70     		strb	r2, [r3]
+ 262:.\Generated_Source\PSoC5/USB_pm.c ****         /* Enable the SIE with a last address */
+ 263:.\Generated_Source\PSoC5/USB_pm.c ****         USB_CR0_REG |= USB_CR0_ENABLE;
+ 392              		.loc 1 263 0
+ 393 00a8 134B     		ldr	r3, .L16+32
+ 394 00aa 134A     		ldr	r2, .L16+32
+ 395 00ac 1278     		ldrb	r2, [r2]
+ 396 00ae D2B2     		uxtb	r2, r2
+ 397 00b0 62F07F02 		orn	r2, r2, #127
+ 398 00b4 D2B2     		uxtb	r2, r2
+ 399 00b6 1A70     		strb	r2, [r3]
+ 264:.\Generated_Source\PSoC5/USB_pm.c ****         CyDelayCycles(1u);
+ 400              		.loc 1 264 0
+ 401 00b8 0120     		movs	r0, #1
+ 402 00ba FFF7FEFF 		bl	CyDelayCycles
+ 265:.\Generated_Source\PSoC5/USB_pm.c ****         /* Finally, Enable d+ pullup and select iomode to USB mode*/
+ 266:.\Generated_Source\PSoC5/USB_pm.c ****         CY_SET_REG8(USB_USBIO_CR1_PTR, USB_USBIO_CR1_USBPUEN);
+ 403              		.loc 1 266 0
+ 404 00be 0F4B     		ldr	r3, .L16+36
+ 405 00c0 0422     		movs	r2, #4
+ 406 00c2 1A70     		strb	r2, [r3]
+ 267:.\Generated_Source\PSoC5/USB_pm.c **** 
+ 268:.\Generated_Source\PSoC5/USB_pm.c ****         /* Restore USB register settings */
+ 269:.\Generated_Source\PSoC5/USB_pm.c ****         USB_RestoreConfig();
+ 407              		.loc 1 269 0
+ 408 00c4 FFF7FEFF 		bl	USB_RestoreConfig
+ 409              	.L15:
+ 270:.\Generated_Source\PSoC5/USB_pm.c ****     }
+ 271:.\Generated_Source\PSoC5/USB_pm.c **** 
+ 272:.\Generated_Source\PSoC5/USB_pm.c ****     CyExitCriticalSection(enableInterrupts);
+ 410              		.loc 1 272 0
+ 411 00c8 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 412 00ca 1846     		mov	r0, r3
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 13
+
+
+ 413 00cc FFF7FEFF 		bl	CyExitCriticalSection
+ 273:.\Generated_Source\PSoC5/USB_pm.c **** }
+ 414              		.loc 1 273 0
+ 415 00d0 0837     		adds	r7, r7, #8
+ 416 00d2 BD46     		mov	sp, r7
+ 417              		@ sp needed
+ 418 00d4 80BD     		pop	{r7, pc}
+ 419              	.L17:
+ 420 00d6 00BF     		.align	2
+ 421              	.L16:
+ 422 00d8 00000000 		.word	USB_backup
+ 423 00dc 80E100E0 		.word	-536813184
+ 424 00e0 A5430040 		.word	1073759141
+ 425 00e4 B5430040 		.word	1073759157
+ 426 00e8 9D600040 		.word	1073766557
+ 427 00ec 94430040 		.word	1073759124
+ 428 00f0 09600040 		.word	1073766409
+ 429 00f4 28600040 		.word	1073766440
+ 430 00f8 08600040 		.word	1073766408
+ 431 00fc 12600040 		.word	1073766418
+ 432              		.cfi_endproc
+ 433              	.LFE67:
+ 434              		.size	USB_Resume, .-USB_Resume
+ 435              		.text
+ 436              	.Letext0:
+ 437              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 438              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 439              		.file 4 ".\\Generated_Source\\PSoC5\\cytypes.h"
+ 440              		.file 5 "Generated_Source\\PSoC5/USB.h"
+ 441              		.file 6 "Generated_Source\\PSoC5/core_cm3.h"
+ 442              		.file 7 ".\\Generated_Source\\PSoC5\\Camera.h"
+ 443              		.section	.debug_info,"",%progbits
+ 444              	.Ldebug_info0:
+ 445 0000 D4010000 		.4byte	0x1d4
+ 446 0004 0400     		.2byte	0x4
+ 447 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 448 000a 04       		.byte	0x4
+ 449 000b 01       		.uleb128 0x1
+ 450 000c 85010000 		.4byte	.LASF32
+ 451 0010 01       		.byte	0x1
+ 452 0011 92000000 		.4byte	.LASF33
+ 453 0015 FD000000 		.4byte	.LASF34
+ 454 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 455 001d 00000000 		.4byte	0
+ 456 0021 00000000 		.4byte	.Ldebug_line0
+ 457 0025 02       		.uleb128 0x2
+ 458 0026 01       		.byte	0x1
+ 459 0027 06       		.byte	0x6
+ 460 0028 5C020000 		.4byte	.LASF0
+ 461 002c 02       		.uleb128 0x2
+ 462 002d 01       		.byte	0x1
+ 463 002e 08       		.byte	0x8
+ 464 002f 5A000000 		.4byte	.LASF1
+ 465 0033 02       		.uleb128 0x2
+ 466 0034 02       		.byte	0x2
+ 467 0035 05       		.byte	0x5
+ 468 0036 37020000 		.4byte	.LASF2
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 14
+
+
+ 469 003a 02       		.uleb128 0x2
+ 470 003b 02       		.byte	0x2
+ 471 003c 07       		.byte	0x7
+ 472 003d 7F000000 		.4byte	.LASF3
+ 473 0041 03       		.uleb128 0x3
+ 474 0042 18000000 		.4byte	.LASF9
+ 475 0046 02       		.byte	0x2
+ 476 0047 37       		.byte	0x37
+ 477 0048 4C000000 		.4byte	0x4c
+ 478 004c 02       		.uleb128 0x2
+ 479 004d 04       		.byte	0x4
+ 480 004e 05       		.byte	0x5
+ 481 004f 47020000 		.4byte	.LASF4
+ 482 0053 02       		.uleb128 0x2
+ 483 0054 04       		.byte	0x4
+ 484 0055 07       		.byte	0x7
+ 485 0056 6D000000 		.4byte	.LASF5
+ 486 005a 02       		.uleb128 0x2
+ 487 005b 08       		.byte	0x8
+ 488 005c 05       		.byte	0x5
+ 489 005d 24020000 		.4byte	.LASF6
+ 490 0061 02       		.uleb128 0x2
+ 491 0062 08       		.byte	0x8
+ 492 0063 07       		.byte	0x7
+ 493 0064 5E010000 		.4byte	.LASF7
+ 494 0068 04       		.uleb128 0x4
+ 495 0069 04       		.byte	0x4
+ 496 006a 05       		.byte	0x5
+ 497 006b 696E7400 		.ascii	"int\000"
+ 498 006f 02       		.uleb128 0x2
+ 499 0070 04       		.byte	0x4
+ 500 0071 07       		.byte	0x7
+ 501 0072 51010000 		.4byte	.LASF8
+ 502 0076 03       		.uleb128 0x3
+ 503 0077 4C000000 		.4byte	.LASF10
+ 504 007b 03       		.byte	0x3
+ 505 007c 41       		.byte	0x41
+ 506 007d 41000000 		.4byte	0x41
+ 507 0081 03       		.uleb128 0x3
+ 508 0082 41020000 		.4byte	.LASF11
+ 509 0086 04       		.byte	0x4
+ 510 0087 B3       		.byte	0xb3
+ 511 0088 2C000000 		.4byte	0x2c
+ 512 008c 03       		.uleb128 0x3
+ 513 008d 4A010000 		.4byte	.LASF12
+ 514 0091 04       		.byte	0x4
+ 515 0092 B5       		.byte	0xb5
+ 516 0093 53000000 		.4byte	0x53
+ 517 0097 02       		.uleb128 0x2
+ 518 0098 04       		.byte	0x4
+ 519 0099 04       		.byte	0x4
+ 520 009a 54000000 		.4byte	.LASF13
+ 521 009e 02       		.uleb128 0x2
+ 522 009f 08       		.byte	0x8
+ 523 00a0 04       		.byte	0x4
+ 524 00a1 E4000000 		.4byte	.LASF14
+ 525 00a5 02       		.uleb128 0x2
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 15
+
+
+ 526 00a6 01       		.byte	0x1
+ 527 00a7 08       		.byte	0x8
+ 528 00a8 32020000 		.4byte	.LASF15
+ 529 00ac 05       		.uleb128 0x5
+ 530 00ad 68000000 		.4byte	.LASF16
+ 531 00b1 04       		.byte	0x4
+ 532 00b2 5D01     		.2byte	0x15d
+ 533 00b4 B8000000 		.4byte	0xb8
+ 534 00b8 06       		.uleb128 0x6
+ 535 00b9 81000000 		.4byte	0x81
+ 536 00bd 05       		.uleb128 0x5
+ 537 00be 12000000 		.4byte	.LASF17
+ 538 00c2 04       		.byte	0x4
+ 539 00c3 5F01     		.2byte	0x15f
+ 540 00c5 C9000000 		.4byte	0xc9
+ 541 00c9 06       		.uleb128 0x6
+ 542 00ca 8C000000 		.4byte	0x8c
+ 543 00ce 02       		.uleb128 0x2
+ 544 00cf 04       		.byte	0x4
+ 545 00d0 07       		.byte	0x7
+ 546 00d1 1B020000 		.4byte	.LASF18
+ 547 00d5 07       		.uleb128 0x7
+ 548 00d6 02       		.byte	0x2
+ 549 00d7 05       		.byte	0x5
+ 550 00d8 A6       		.byte	0xa6
+ 551 00d9 F6000000 		.4byte	0xf6
+ 552 00dd 08       		.uleb128 0x8
+ 553 00de 50020000 		.4byte	.LASF19
+ 554 00e2 05       		.byte	0x5
+ 555 00e3 A8       		.byte	0xa8
+ 556 00e4 81000000 		.4byte	0x81
+ 557 00e8 00       		.byte	0
+ 558 00e9 08       		.uleb128 0x8
+ 559 00ea 75010000 		.4byte	.LASF20
+ 560 00ee 05       		.byte	0x5
+ 561 00ef A9       		.byte	0xa9
+ 562 00f0 81000000 		.4byte	0x81
+ 563 00f4 01       		.byte	0x1
+ 564 00f5 00       		.byte	0
+ 565 00f6 03       		.uleb128 0x3
+ 566 00f7 D2000000 		.4byte	.LASF21
+ 567 00fb 05       		.byte	0x5
+ 568 00fc AA       		.byte	0xaa
+ 569 00fd D5000000 		.4byte	0xd5
+ 570 0101 09       		.uleb128 0x9
+ 571 0102 10020000 		.4byte	.LASF22
+ 572 0106 01       		.byte	0x1
+ 573 0107 36       		.byte	0x36
+ 574 0108 00000000 		.4byte	.LFB63
+ 575 010c 14000000 		.4byte	.LFE63-.LFB63
+ 576 0110 01       		.uleb128 0x1
+ 577 0111 9C       		.byte	0x9c
+ 578 0112 09       		.uleb128 0x9
+ 579 0113 01020000 		.4byte	.LASF23
+ 580 0117 01       		.byte	0x1
+ 581 0118 54       		.byte	0x54
+ 582 0119 00000000 		.4byte	.LFB64
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 16
+
+
+ 583 011d 0C000000 		.4byte	.LFE64-.LFB64
+ 584 0121 01       		.uleb128 0x1
+ 585 0122 9C       		.byte	0x9c
+ 586 0123 0A       		.uleb128 0xa
+ 587 0124 EB000000 		.4byte	.LASF24
+ 588 0128 01       		.byte	0x1
+ 589 0129 6B       		.byte	0x6b
+ 590 012a 00000000 		.4byte	.LFB65
+ 591 012e 18000000 		.4byte	.LFE65-.LFB65
+ 592 0132 01       		.uleb128 0x1
+ 593 0133 9C       		.byte	0x9c
+ 594 0134 0B       		.uleb128 0xb
+ 595 0135 22000000 		.4byte	.LASF25
+ 596 0139 01       		.byte	0x1
+ 597 013a 88       		.byte	0x88
+ 598 013b 00000000 		.4byte	.LFB66
+ 599 013f 2C010000 		.4byte	.LFE66-.LFB66
+ 600 0143 01       		.uleb128 0x1
+ 601 0144 9C       		.byte	0x9c
+ 602 0145 58010000 		.4byte	0x158
+ 603 0149 0C       		.uleb128 0xc
+ 604 014a C1000000 		.4byte	.LASF27
+ 605 014e 01       		.byte	0x1
+ 606 014f 8A       		.byte	0x8a
+ 607 0150 81000000 		.4byte	0x81
+ 608 0154 02       		.uleb128 0x2
+ 609 0155 91       		.byte	0x91
+ 610 0156 77       		.sleb128 -9
+ 611 0157 00       		.byte	0
+ 612 0158 0B       		.uleb128 0xb
+ 613 0159 7A010000 		.4byte	.LASF26
+ 614 015d 01       		.byte	0x1
+ 615 015e D8       		.byte	0xd8
+ 616 015f 00000000 		.4byte	.LFB67
+ 617 0163 00010000 		.4byte	.LFE67-.LFB67
+ 618 0167 01       		.uleb128 0x1
+ 619 0168 9C       		.byte	0x9c
+ 620 0169 7C010000 		.4byte	0x17c
+ 621 016d 0C       		.uleb128 0xc
+ 622 016e C1000000 		.4byte	.LASF27
+ 623 0172 01       		.byte	0x1
+ 624 0173 DA       		.byte	0xda
+ 625 0174 81000000 		.4byte	0x81
+ 626 0178 02       		.uleb128 0x2
+ 627 0179 91       		.byte	0x91
+ 628 017a 77       		.sleb128 -9
+ 629 017b 00       		.byte	0
+ 630 017c 0C       		.uleb128 0xc
+ 631 017d 2E000000 		.4byte	.LASF28
+ 632 0181 01       		.byte	0x1
+ 633 0182 22       		.byte	0x22
+ 634 0183 F6000000 		.4byte	0xf6
+ 635 0187 05       		.uleb128 0x5
+ 636 0188 03       		.byte	0x3
+ 637 0189 00000000 		.4byte	USB_backup
+ 638 018d 0D       		.uleb128 0xd
+ 639 018e 00000000 		.4byte	.LASF29
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 17
+
+
+ 640 0192 05       		.byte	0x5
+ 641 0193 4E02     		.2byte	0x24e
+ 642 0195 B8000000 		.4byte	0xb8
+ 643 0199 0D       		.uleb128 0xd
+ 644 019a B4000000 		.4byte	.LASF30
+ 645 019e 06       		.byte	0x6
+ 646 019f 2A06     		.2byte	0x62a
+ 647 01a1 A5010000 		.4byte	0x1a5
+ 648 01a5 06       		.uleb128 0x6
+ 649 01a6 76000000 		.4byte	0x76
+ 650 01aa 0E       		.uleb128 0xe
+ 651 01ab 81000000 		.4byte	0x81
+ 652 01af C6010000 		.4byte	0x1c6
+ 653 01b3 0F       		.uleb128 0xf
+ 654 01b4 CE000000 		.4byte	0xce
+ 655 01b8 8F       		.byte	0x8f
+ 656 01b9 0F       		.uleb128 0xf
+ 657 01ba CE000000 		.4byte	0xce
+ 658 01be 57       		.byte	0x57
+ 659 01bf 0F       		.uleb128 0xf
+ 660 01c0 CE000000 		.4byte	0xce
+ 661 01c4 03       		.byte	0x3
+ 662 01c5 00       		.byte	0
+ 663 01c6 10       		.uleb128 0x10
+ 664 01c7 39000000 		.4byte	.LASF31
+ 665 01cb 07       		.byte	0x7
+ 666 01cc 08       		.byte	0x8
+ 667 01cd AA010000 		.4byte	0x1aa
+ 668 01d1 05       		.uleb128 0x5
+ 669 01d2 03       		.byte	0x3
+ 670 01d3 00000000 		.4byte	Camera_framebuffer
+ 671 01d7 00       		.byte	0
+ 672              		.section	.debug_abbrev,"",%progbits
+ 673              	.Ldebug_abbrev0:
+ 674 0000 01       		.uleb128 0x1
+ 675 0001 11       		.uleb128 0x11
+ 676 0002 01       		.byte	0x1
+ 677 0003 25       		.uleb128 0x25
+ 678 0004 0E       		.uleb128 0xe
+ 679 0005 13       		.uleb128 0x13
+ 680 0006 0B       		.uleb128 0xb
+ 681 0007 03       		.uleb128 0x3
+ 682 0008 0E       		.uleb128 0xe
+ 683 0009 1B       		.uleb128 0x1b
+ 684 000a 0E       		.uleb128 0xe
+ 685 000b 55       		.uleb128 0x55
+ 686 000c 17       		.uleb128 0x17
+ 687 000d 11       		.uleb128 0x11
+ 688 000e 01       		.uleb128 0x1
+ 689 000f 10       		.uleb128 0x10
+ 690 0010 17       		.uleb128 0x17
+ 691 0011 00       		.byte	0
+ 692 0012 00       		.byte	0
+ 693 0013 02       		.uleb128 0x2
+ 694 0014 24       		.uleb128 0x24
+ 695 0015 00       		.byte	0
+ 696 0016 0B       		.uleb128 0xb
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 18
+
+
+ 697 0017 0B       		.uleb128 0xb
+ 698 0018 3E       		.uleb128 0x3e
+ 699 0019 0B       		.uleb128 0xb
+ 700 001a 03       		.uleb128 0x3
+ 701 001b 0E       		.uleb128 0xe
+ 702 001c 00       		.byte	0
+ 703 001d 00       		.byte	0
+ 704 001e 03       		.uleb128 0x3
+ 705 001f 16       		.uleb128 0x16
+ 706 0020 00       		.byte	0
+ 707 0021 03       		.uleb128 0x3
+ 708 0022 0E       		.uleb128 0xe
+ 709 0023 3A       		.uleb128 0x3a
+ 710 0024 0B       		.uleb128 0xb
+ 711 0025 3B       		.uleb128 0x3b
+ 712 0026 0B       		.uleb128 0xb
+ 713 0027 49       		.uleb128 0x49
+ 714 0028 13       		.uleb128 0x13
+ 715 0029 00       		.byte	0
+ 716 002a 00       		.byte	0
+ 717 002b 04       		.uleb128 0x4
+ 718 002c 24       		.uleb128 0x24
+ 719 002d 00       		.byte	0
+ 720 002e 0B       		.uleb128 0xb
+ 721 002f 0B       		.uleb128 0xb
+ 722 0030 3E       		.uleb128 0x3e
+ 723 0031 0B       		.uleb128 0xb
+ 724 0032 03       		.uleb128 0x3
+ 725 0033 08       		.uleb128 0x8
+ 726 0034 00       		.byte	0
+ 727 0035 00       		.byte	0
+ 728 0036 05       		.uleb128 0x5
+ 729 0037 16       		.uleb128 0x16
+ 730 0038 00       		.byte	0
+ 731 0039 03       		.uleb128 0x3
+ 732 003a 0E       		.uleb128 0xe
+ 733 003b 3A       		.uleb128 0x3a
+ 734 003c 0B       		.uleb128 0xb
+ 735 003d 3B       		.uleb128 0x3b
+ 736 003e 05       		.uleb128 0x5
+ 737 003f 49       		.uleb128 0x49
+ 738 0040 13       		.uleb128 0x13
+ 739 0041 00       		.byte	0
+ 740 0042 00       		.byte	0
+ 741 0043 06       		.uleb128 0x6
+ 742 0044 35       		.uleb128 0x35
+ 743 0045 00       		.byte	0
+ 744 0046 49       		.uleb128 0x49
+ 745 0047 13       		.uleb128 0x13
+ 746 0048 00       		.byte	0
+ 747 0049 00       		.byte	0
+ 748 004a 07       		.uleb128 0x7
+ 749 004b 13       		.uleb128 0x13
+ 750 004c 01       		.byte	0x1
+ 751 004d 0B       		.uleb128 0xb
+ 752 004e 0B       		.uleb128 0xb
+ 753 004f 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 19
+
+
+ 754 0050 0B       		.uleb128 0xb
+ 755 0051 3B       		.uleb128 0x3b
+ 756 0052 0B       		.uleb128 0xb
+ 757 0053 01       		.uleb128 0x1
+ 758 0054 13       		.uleb128 0x13
+ 759 0055 00       		.byte	0
+ 760 0056 00       		.byte	0
+ 761 0057 08       		.uleb128 0x8
+ 762 0058 0D       		.uleb128 0xd
+ 763 0059 00       		.byte	0
+ 764 005a 03       		.uleb128 0x3
+ 765 005b 0E       		.uleb128 0xe
+ 766 005c 3A       		.uleb128 0x3a
+ 767 005d 0B       		.uleb128 0xb
+ 768 005e 3B       		.uleb128 0x3b
+ 769 005f 0B       		.uleb128 0xb
+ 770 0060 49       		.uleb128 0x49
+ 771 0061 13       		.uleb128 0x13
+ 772 0062 38       		.uleb128 0x38
+ 773 0063 0B       		.uleb128 0xb
+ 774 0064 00       		.byte	0
+ 775 0065 00       		.byte	0
+ 776 0066 09       		.uleb128 0x9
+ 777 0067 2E       		.uleb128 0x2e
+ 778 0068 00       		.byte	0
+ 779 0069 3F       		.uleb128 0x3f
+ 780 006a 19       		.uleb128 0x19
+ 781 006b 03       		.uleb128 0x3
+ 782 006c 0E       		.uleb128 0xe
+ 783 006d 3A       		.uleb128 0x3a
+ 784 006e 0B       		.uleb128 0xb
+ 785 006f 3B       		.uleb128 0x3b
+ 786 0070 0B       		.uleb128 0xb
+ 787 0071 27       		.uleb128 0x27
+ 788 0072 19       		.uleb128 0x19
+ 789 0073 11       		.uleb128 0x11
+ 790 0074 01       		.uleb128 0x1
+ 791 0075 12       		.uleb128 0x12
+ 792 0076 06       		.uleb128 0x6
+ 793 0077 40       		.uleb128 0x40
+ 794 0078 18       		.uleb128 0x18
+ 795 0079 9742     		.uleb128 0x2117
+ 796 007b 19       		.uleb128 0x19
+ 797 007c 00       		.byte	0
+ 798 007d 00       		.byte	0
+ 799 007e 0A       		.uleb128 0xa
+ 800 007f 2E       		.uleb128 0x2e
+ 801 0080 00       		.byte	0
+ 802 0081 3F       		.uleb128 0x3f
+ 803 0082 19       		.uleb128 0x19
+ 804 0083 03       		.uleb128 0x3
+ 805 0084 0E       		.uleb128 0xe
+ 806 0085 3A       		.uleb128 0x3a
+ 807 0086 0B       		.uleb128 0xb
+ 808 0087 3B       		.uleb128 0x3b
+ 809 0088 0B       		.uleb128 0xb
+ 810 0089 27       		.uleb128 0x27
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 20
+
+
+ 811 008a 19       		.uleb128 0x19
+ 812 008b 11       		.uleb128 0x11
+ 813 008c 01       		.uleb128 0x1
+ 814 008d 12       		.uleb128 0x12
+ 815 008e 06       		.uleb128 0x6
+ 816 008f 40       		.uleb128 0x40
+ 817 0090 18       		.uleb128 0x18
+ 818 0091 9642     		.uleb128 0x2116
+ 819 0093 19       		.uleb128 0x19
+ 820 0094 00       		.byte	0
+ 821 0095 00       		.byte	0
+ 822 0096 0B       		.uleb128 0xb
+ 823 0097 2E       		.uleb128 0x2e
+ 824 0098 01       		.byte	0x1
+ 825 0099 3F       		.uleb128 0x3f
+ 826 009a 19       		.uleb128 0x19
+ 827 009b 03       		.uleb128 0x3
+ 828 009c 0E       		.uleb128 0xe
+ 829 009d 3A       		.uleb128 0x3a
+ 830 009e 0B       		.uleb128 0xb
+ 831 009f 3B       		.uleb128 0x3b
+ 832 00a0 0B       		.uleb128 0xb
+ 833 00a1 27       		.uleb128 0x27
+ 834 00a2 19       		.uleb128 0x19
+ 835 00a3 11       		.uleb128 0x11
+ 836 00a4 01       		.uleb128 0x1
+ 837 00a5 12       		.uleb128 0x12
+ 838 00a6 06       		.uleb128 0x6
+ 839 00a7 40       		.uleb128 0x40
+ 840 00a8 18       		.uleb128 0x18
+ 841 00a9 9642     		.uleb128 0x2116
+ 842 00ab 19       		.uleb128 0x19
+ 843 00ac 01       		.uleb128 0x1
+ 844 00ad 13       		.uleb128 0x13
+ 845 00ae 00       		.byte	0
+ 846 00af 00       		.byte	0
+ 847 00b0 0C       		.uleb128 0xc
+ 848 00b1 34       		.uleb128 0x34
+ 849 00b2 00       		.byte	0
+ 850 00b3 03       		.uleb128 0x3
+ 851 00b4 0E       		.uleb128 0xe
+ 852 00b5 3A       		.uleb128 0x3a
+ 853 00b6 0B       		.uleb128 0xb
+ 854 00b7 3B       		.uleb128 0x3b
+ 855 00b8 0B       		.uleb128 0xb
+ 856 00b9 49       		.uleb128 0x49
+ 857 00ba 13       		.uleb128 0x13
+ 858 00bb 02       		.uleb128 0x2
+ 859 00bc 18       		.uleb128 0x18
+ 860 00bd 00       		.byte	0
+ 861 00be 00       		.byte	0
+ 862 00bf 0D       		.uleb128 0xd
+ 863 00c0 34       		.uleb128 0x34
+ 864 00c1 00       		.byte	0
+ 865 00c2 03       		.uleb128 0x3
+ 866 00c3 0E       		.uleb128 0xe
+ 867 00c4 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 21
+
+
+ 868 00c5 0B       		.uleb128 0xb
+ 869 00c6 3B       		.uleb128 0x3b
+ 870 00c7 05       		.uleb128 0x5
+ 871 00c8 49       		.uleb128 0x49
+ 872 00c9 13       		.uleb128 0x13
+ 873 00ca 3F       		.uleb128 0x3f
+ 874 00cb 19       		.uleb128 0x19
+ 875 00cc 3C       		.uleb128 0x3c
+ 876 00cd 19       		.uleb128 0x19
+ 877 00ce 00       		.byte	0
+ 878 00cf 00       		.byte	0
+ 879 00d0 0E       		.uleb128 0xe
+ 880 00d1 01       		.uleb128 0x1
+ 881 00d2 01       		.byte	0x1
+ 882 00d3 49       		.uleb128 0x49
+ 883 00d4 13       		.uleb128 0x13
+ 884 00d5 01       		.uleb128 0x1
+ 885 00d6 13       		.uleb128 0x13
+ 886 00d7 00       		.byte	0
+ 887 00d8 00       		.byte	0
+ 888 00d9 0F       		.uleb128 0xf
+ 889 00da 21       		.uleb128 0x21
+ 890 00db 00       		.byte	0
+ 891 00dc 49       		.uleb128 0x49
+ 892 00dd 13       		.uleb128 0x13
+ 893 00de 2F       		.uleb128 0x2f
+ 894 00df 0B       		.uleb128 0xb
+ 895 00e0 00       		.byte	0
+ 896 00e1 00       		.byte	0
+ 897 00e2 10       		.uleb128 0x10
+ 898 00e3 34       		.uleb128 0x34
+ 899 00e4 00       		.byte	0
+ 900 00e5 03       		.uleb128 0x3
+ 901 00e6 0E       		.uleb128 0xe
+ 902 00e7 3A       		.uleb128 0x3a
+ 903 00e8 0B       		.uleb128 0xb
+ 904 00e9 3B       		.uleb128 0x3b
+ 905 00ea 0B       		.uleb128 0xb
+ 906 00eb 49       		.uleb128 0x49
+ 907 00ec 13       		.uleb128 0x13
+ 908 00ed 3F       		.uleb128 0x3f
+ 909 00ee 19       		.uleb128 0x19
+ 910 00ef 02       		.uleb128 0x2
+ 911 00f0 18       		.uleb128 0x18
+ 912 00f1 00       		.byte	0
+ 913 00f2 00       		.byte	0
+ 914 00f3 00       		.byte	0
+ 915              		.section	.debug_aranges,"",%progbits
+ 916 0000 3C000000 		.4byte	0x3c
+ 917 0004 0200     		.2byte	0x2
+ 918 0006 00000000 		.4byte	.Ldebug_info0
+ 919 000a 04       		.byte	0x4
+ 920 000b 00       		.byte	0
+ 921 000c 0000     		.2byte	0
+ 922 000e 0000     		.2byte	0
+ 923 0010 00000000 		.4byte	.LFB63
+ 924 0014 14000000 		.4byte	.LFE63-.LFB63
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 22
+
+
+ 925 0018 00000000 		.4byte	.LFB64
+ 926 001c 0C000000 		.4byte	.LFE64-.LFB64
+ 927 0020 00000000 		.4byte	.LFB65
+ 928 0024 18000000 		.4byte	.LFE65-.LFB65
+ 929 0028 00000000 		.4byte	.LFB66
+ 930 002c 2C010000 		.4byte	.LFE66-.LFB66
+ 931 0030 00000000 		.4byte	.LFB67
+ 932 0034 00010000 		.4byte	.LFE67-.LFB67
+ 933 0038 00000000 		.4byte	0
+ 934 003c 00000000 		.4byte	0
+ 935              		.section	.debug_ranges,"",%progbits
+ 936              	.Ldebug_ranges0:
+ 937 0000 00000000 		.4byte	.LFB63
+ 938 0004 14000000 		.4byte	.LFE63
+ 939 0008 00000000 		.4byte	.LFB64
+ 940 000c 0C000000 		.4byte	.LFE64
+ 941 0010 00000000 		.4byte	.LFB65
+ 942 0014 18000000 		.4byte	.LFE65
+ 943 0018 00000000 		.4byte	.LFB66
+ 944 001c 2C010000 		.4byte	.LFE66
+ 945 0020 00000000 		.4byte	.LFB67
+ 946 0024 00010000 		.4byte	.LFE67
+ 947 0028 00000000 		.4byte	0
+ 948 002c 00000000 		.4byte	0
+ 949              		.section	.debug_line,"",%progbits
+ 950              	.Ldebug_line0:
+ 951 0000 FF010000 		.section	.debug_str,"MS",%progbits,1
+ 951      02007701 
+ 951      00000201 
+ 951      FB0E0D00 
+ 951      01010101 
+ 952              	.LASF29:
+ 953 0000 5553425F 		.ascii	"USB_configuration\000"
+ 953      636F6E66 
+ 953      69677572 
+ 953      6174696F 
+ 953      6E00
+ 954              	.LASF17:
+ 955 0012 72656733 		.ascii	"reg32\000"
+ 955      3200
+ 956              	.LASF9:
+ 957 0018 5F5F696E 		.ascii	"__int32_t\000"
+ 957      7433325F 
+ 957      7400
+ 958              	.LASF25:
+ 959 0022 5553425F 		.ascii	"USB_Suspend\000"
+ 959      53757370 
+ 959      656E6400 
+ 960              	.LASF28:
+ 961 002e 5553425F 		.ascii	"USB_backup\000"
+ 961      6261636B 
+ 961      757000
+ 962              	.LASF31:
+ 963 0039 43616D65 		.ascii	"Camera_framebuffer\000"
+ 963      72615F66 
+ 963      72616D65 
+ 963      62756666 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 23
+
+
+ 963      657200
+ 964              	.LASF10:
+ 965 004c 696E7433 		.ascii	"int32_t\000"
+ 965      325F7400 
+ 966              	.LASF13:
+ 967 0054 666C6F61 		.ascii	"float\000"
+ 967      7400
+ 968              	.LASF1:
+ 969 005a 756E7369 		.ascii	"unsigned char\000"
+ 969      676E6564 
+ 969      20636861 
+ 969      7200
+ 970              	.LASF16:
+ 971 0068 72656738 		.ascii	"reg8\000"
+ 971      00
+ 972              	.LASF5:
+ 973 006d 6C6F6E67 		.ascii	"long unsigned int\000"
+ 973      20756E73 
+ 973      69676E65 
+ 973      6420696E 
+ 973      7400
+ 974              	.LASF3:
+ 975 007f 73686F72 		.ascii	"short unsigned int\000"
+ 975      7420756E 
+ 975      7369676E 
+ 975      65642069 
+ 975      6E7400
+ 976              	.LASF33:
+ 977 0092 2E5C4765 		.ascii	".\\Generated_Source\\PSoC5\\USB_pm.c\000"
+ 977      6E657261 
+ 977      7465645F 
+ 977      536F7572 
+ 977      63655C50 
+ 978              	.LASF30:
+ 979 00b4 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 979      52784275 
+ 979      66666572 
+ 979      00
+ 980              	.LASF27:
+ 981 00c1 656E6162 		.ascii	"enableInterrupts\000"
+ 981      6C65496E 
+ 981      74657272 
+ 981      75707473 
+ 981      00
+ 982              	.LASF21:
+ 983 00d2 5553425F 		.ascii	"USB_BACKUP_STRUCT\000"
+ 983      4241434B 
+ 983      55505F53 
+ 983      54525543 
+ 983      5400
+ 984              	.LASF14:
+ 985 00e4 646F7562 		.ascii	"double\000"
+ 985      6C6500
+ 986              	.LASF24:
+ 987 00eb 5553425F 		.ascii	"USB_RestoreConfig\000"
+ 987      52657374 
+ 987      6F726543 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 24
+
+
+ 987      6F6E6669 
+ 987      6700
+ 988              	.LASF34:
+ 989 00fd 433A5C55 		.ascii	"C:\\Users\\xavieran\\Desktop\\ECE3091\\WorkingCamer"
+ 989      73657273 
+ 989      5C786176 
+ 989      69657261 
+ 989      6E5C4465 
+ 990 012b 615C4361 		.ascii	"a\\Camera_vis\\camera_test.cydsn\000"
+ 990      6D657261 
+ 990      5F766973 
+ 990      5C63616D 
+ 990      6572615F 
+ 991              	.LASF12:
+ 992 014a 75696E74 		.ascii	"uint32\000"
+ 992      333200
+ 993              	.LASF8:
+ 994 0151 756E7369 		.ascii	"unsigned int\000"
+ 994      676E6564 
+ 994      20696E74 
+ 994      00
+ 995              	.LASF7:
+ 996 015e 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 996      206C6F6E 
+ 996      6720756E 
+ 996      7369676E 
+ 996      65642069 
+ 997              	.LASF20:
+ 998 0175 6D6F6465 		.ascii	"mode\000"
+ 998      00
+ 999              	.LASF26:
+ 1000 017a 5553425F 		.ascii	"USB_Resume\000"
+ 1000      52657375 
+ 1000      6D6500
+ 1001              	.LASF32:
+ 1002 0185 474E5520 		.ascii	"GNU C 4.8.4 20140526 (release) [ARM/embedded-4_8-br"
+ 1002      4320342E 
+ 1002      382E3420 
+ 1002      32303134 
+ 1002      30353236 
+ 1003 01b8 616E6368 		.ascii	"anch revision 211358] -mcpu=cortex-m3 -mthumb -g -O"
+ 1003      20726576 
+ 1003      6973696F 
+ 1003      6E203231 
+ 1003      31333538 
+ 1004 01eb 30202D66 		.ascii	"0 -ffunction-sections\000"
+ 1004      66756E63 
+ 1004      74696F6E 
+ 1004      2D736563 
+ 1004      74696F6E 
+ 1005              	.LASF23:
+ 1006 0201 5553425F 		.ascii	"USB_SaveConfig\000"
+ 1006      53617665 
+ 1006      436F6E66 
+ 1006      696700
+ 1007              	.LASF22:
+ 1008 0210 5553425F 		.ascii	"USB_DP_ISR\000"
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccIEnLJC.s 			page 25
+
+
+ 1008      44505F49 
+ 1008      535200
+ 1009              	.LASF18:
+ 1010 021b 73697A65 		.ascii	"sizetype\000"
+ 1010      74797065 
+ 1010      00
+ 1011              	.LASF6:
+ 1012 0224 6C6F6E67 		.ascii	"long long int\000"
+ 1012      206C6F6E 
+ 1012      6720696E 
+ 1012      7400
+ 1013              	.LASF15:
+ 1014 0232 63686172 		.ascii	"char\000"
+ 1014      00
+ 1015              	.LASF2:
+ 1016 0237 73686F72 		.ascii	"short int\000"
+ 1016      7420696E 
+ 1016      7400
+ 1017              	.LASF11:
+ 1018 0241 75696E74 		.ascii	"uint8\000"
+ 1018      3800
+ 1019              	.LASF4:
+ 1020 0247 6C6F6E67 		.ascii	"long int\000"
+ 1020      20696E74 
+ 1020      00
+ 1021              	.LASF19:
+ 1022 0250 656E6162 		.ascii	"enableState\000"
+ 1022      6C655374 
+ 1022      61746500 
+ 1023              	.LASF0:
+ 1024 025c 7369676E 		.ascii	"signed char\000"
+ 1024      65642063 
+ 1024      68617200 
+ 1025              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.8.4 20140526 (release) [ARM/embedded-4_8-br

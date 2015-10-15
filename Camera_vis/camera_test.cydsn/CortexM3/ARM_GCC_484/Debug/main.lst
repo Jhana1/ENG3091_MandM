@@ -1,0 +1,3966 @@
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"main.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.comm	Camera_framebuffer,50688,4
+  19              		.comm	display,40,4
+  20              		.global	RGB
+  21              		.data
+  22              		.align	2
+  23              		.type	RGB, %object
+  24              		.size	RGB, 5
+  25              	RGB:
+  26 0000 4B524742 		.ascii	"KRGB\000"
+  26      00
+  27              		.global	disp
+  28              		.bss
+  29              		.align	1
+  30              		.type	disp, %object
+  31              		.size	disp, 2
+  32              	disp:
+  33 0000 0000     		.space	2
+  34              		.global	m
+  35              		.align	1
+  36              		.type	m, %object
+  37              		.size	m, 2
+  38              	m:
+  39 0002 0000     		.space	2
+  40              		.global	c
+  41              		.align	1
+  42              		.type	c, %object
+  43              		.size	c, 2
+  44              	c:
+  45 0004 0000     		.space	2
+  46              		.global	current_display
+  47              		.data
+  48 0005 000000   		.align	2
+  49              		.type	current_display, %object
+  50              		.size	current_display, 4
+  51              	current_display:
+  52 0008 FFFFFFFF 		.word	-1
+  53              		.global	centre_pixel
+  54              		.align	2
+  55              		.type	centre_pixel, %object
+  56              		.size	centre_pixel, 4
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 2
+
+
+  57              	centre_pixel:
+  58 000c 2C000000 		.word	44
+  59              		.comm	exposure,1,1
+  60              		.comm	gain,1,1
+  61              		.comm	bgain,1,1
+  62              		.comm	rgain,1,1
+  63              		.comm	blobn,2,2
+  64              		.comm	dis,12,4
+  65              		.comm	stack,12,4
+  66              		.global	PWM_Val
+  67              		.align	2
+  68              		.type	PWM_Val, %object
+  69              		.size	PWM_Val, 4
+  70              	PWM_Val:
+  71 0010 18000000 		.word	24
+  72              		.section	.text.menu,"ax",%progbits
+  73              		.align	2
+  74              		.global	menu
+  75              		.thumb
+  76              		.thumb_func
+  77              		.type	menu, %function
+  78              	menu:
+  79              	.LFB63:
+  80              		.file 1 ".\\main.c"
+   1:.\main.c      **** #include <project.h>
+   2:.\main.c      **** #include <stdio.h>
+   3:.\main.c      **** #include <stdlib.h>
+   4:.\main.c      **** #include <my_camera_functions.h>
+   5:.\main.c      **** #include <blob_stats.h>
+   6:.\main.c      **** #include <ultrasonic.h>
+   7:.\main.c      **** 
+   8:.\main.c      **** char display[2][20];
+   9:.\main.c      **** char RGB[] = "KRGB";
+  10:.\main.c      **** int16 disp = 0, m = 0, c = 0;
+  11:.\main.c      **** extern blob blobs[255];
+  12:.\main.c      **** extern uint8 RED_U; //116;
+  13:.\main.c      **** extern uint8 RED_V;//140;//162;
+  14:.\main.c      **** extern uint8 GREEN_U;//128;
+  15:.\main.c      **** extern uint8 GREEN_V;//102;
+  16:.\main.c      **** extern uint8 BLUE_U;//115 //138;//162;
+  17:.\main.c      **** extern uint8 BLUE_V;//124;//116;
+  18:.\main.c      **** void button_handle();
+  19:.\main.c      **** 
+  20:.\main.c      **** void image_stuff();
+  21:.\main.c      **** void image_stuff2();
+  22:.\main.c      **** void image_stuff3();
+  23:.\main.c      **** void image_stuff4();
+  24:.\main.c      **** 
+  25:.\main.c      **** int current_display = -1;
+  26:.\main.c      **** int centre_pixel = 44;
+  27:.\main.c      **** 
+  28:.\main.c      **** void handle_menus();
+  29:.\main.c      **** void button_handle2();
+  30:.\main.c      **** 
+  31:.\main.c      **** extern volatile uint16 ultra_distance;
+  32:.\main.c      **** extern int connected;
+  33:.\main.c      **** 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 3
+
+
+  34:.\main.c      **** uint8 exposure, gain, bgain, rgain;
+  35:.\main.c      **** uint16 blobn;
+  36:.\main.c      **** int dis[3], stack[3];
+  37:.\main.c      **** 
+  38:.\main.c      **** int PWM_Val = 24;
+  39:.\main.c      **** // Exposure, White Balance, Gain, Gamma
+  40:.\main.c      **** CY_ISR(menu)
+  41:.\main.c      **** {
+  81              		.loc 1 41 0
+  82              		.cfi_startproc
+  83              		@ args = 0, pretend = 0, frame = 0
+  84              		@ frame_needed = 1, uses_anonymous_args = 0
+  85 0000 80B5     		push	{r7, lr}
+  86              		.cfi_def_cfa_offset 8
+  87              		.cfi_offset 7, -8
+  88              		.cfi_offset 14, -4
+  89 0002 00AF     		add	r7, sp, #0
+  90              		.cfi_def_cfa_register 7
+  42:.\main.c      ****     button_handle2();
+  91              		.loc 1 42 0
+  92 0004 FFF7FEFF 		bl	button_handle2
+  43:.\main.c      ****     
+  44:.\main.c      ****     but0_ClearPending();
+  93              		.loc 1 44 0
+  94 0008 FFF7FEFF 		bl	but0_ClearPending
+  45:.\main.c      **** }
+  95              		.loc 1 45 0
+  96 000c 80BD     		pop	{r7, pc}
+  97              		.cfi_endproc
+  98              	.LFE63:
+  99              		.size	menu, .-menu
+ 100 000e 00BF     		.section	.text.change,"ax",%progbits
+ 101              		.align	2
+ 102              		.global	change
+ 103              		.thumb
+ 104              		.thumb_func
+ 105              		.type	change, %function
+ 106              	change:
+ 107              	.LFB64:
+  46:.\main.c      **** CY_ISR(change)
+  47:.\main.c      **** {
+ 108              		.loc 1 47 0
+ 109              		.cfi_startproc
+ 110              		@ args = 0, pretend = 0, frame = 0
+ 111              		@ frame_needed = 1, uses_anonymous_args = 0
+ 112 0000 80B5     		push	{r7, lr}
+ 113              		.cfi_def_cfa_offset 8
+ 114              		.cfi_offset 7, -8
+ 115              		.cfi_offset 14, -4
+ 116 0002 00AF     		add	r7, sp, #0
+ 117              		.cfi_def_cfa_register 7
+  48:.\main.c      ****     handle_menus();
+ 118              		.loc 1 48 0
+ 119 0004 FFF7FEFF 		bl	handle_menus
+  49:.\main.c      ****     but1_ClearPending();
+ 120              		.loc 1 49 0
+ 121 0008 FFF7FEFF 		bl	but1_ClearPending
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 4
+
+
+  50:.\main.c      **** }
+ 122              		.loc 1 50 0
+ 123 000c 80BD     		pop	{r7, pc}
+ 124              		.cfi_endproc
+ 125              	.LFE64:
+ 126              		.size	change, .-change
+ 127 000e 00BF     		.section	.rodata
+ 128              		.align	2
+ 129              	.LC1:
+ 130 0000 74727920 		.ascii	"try camera\000"
+ 130      63616D65 
+ 130      726100
+ 131 000b 00       		.align	2
+ 132              	.LC2:
+ 133 000c 43616D65 		.ascii	"Camera Started\000"
+ 133      72612053 
+ 133      74617274 
+ 133      656400
+ 134 001b 00       		.align	2
+ 135              	.LC3:
+ 136 001c 783A2575 		.ascii	"x:%u xc:%lu\000"
+ 136      2078633A 
+ 136      256C7500 
+ 137              		.align	2
+ 138              	.LC4:
+ 139 0028 793A2575 		.ascii	"y:%u yc:%lu\000"
+ 139      2079633A 
+ 139      256C7500 
+ 140              		.section	.text.main,"ax",%progbits
+ 141              		.align	2
+ 142              		.global	main
+ 143              		.thumb
+ 144              		.thumb_func
+ 145              		.type	main, %function
+ 146              	main:
+ 147              	.LFB65:
+  51:.\main.c      **** 
+  52:.\main.c      **** int main()
+  53:.\main.c      **** {
+ 148              		.loc 1 53 0
+ 149              		.cfi_startproc
+ 150              		@ args = 0, pretend = 0, frame = 8
+ 151              		@ frame_needed = 1, uses_anonymous_args = 0
+ 152 0000 80B5     		push	{r7, lr}
+ 153              		.cfi_def_cfa_offset 8
+ 154              		.cfi_offset 7, -8
+ 155              		.cfi_offset 14, -4
+ 156 0002 82B0     		sub	sp, sp, #8
+ 157              		.cfi_def_cfa_offset 16
+ 158 0004 00AF     		add	r7, sp, #0
+ 159              		.cfi_def_cfa_register 7
+  54:.\main.c      ****     CyDelay(3000);
+ 160              		.loc 1 54 0
+ 161 0006 40F6B830 		movw	r0, #3000
+ 162 000a FFF7FEFF 		bl	CyDelay
+  55:.\main.c      ****     m = 1;
+ 163              		.loc 1 55 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 5
+
+
+ 164 000e 384B     		ldr	r3, .L9
+ 165 0010 0122     		movs	r2, #1
+ 166 0012 1A80     		strh	r2, [r3]	@ movhi
+  56:.\main.c      ****     int i = 0;
+ 167              		.loc 1 56 0
+ 168 0014 0023     		movs	r3, #0
+ 169 0016 7B60     		str	r3, [r7, #4]
+  57:.\main.c      ****     LCD_Start();
+ 170              		.loc 1 57 0
+ 171 0018 FFF7FEFF 		bl	LCD_Start
+  58:.\main.c      ****     BLUE_Write(1);
+ 172              		.loc 1 58 0
+ 173 001c 0120     		movs	r0, #1
+ 174 001e FFF7FEFF 		bl	BLUE_Write
+  59:.\main.c      ****     //Arm_Start();
+  60:.\main.c      ****     //Arm_WriteCompare(40);
+  61:.\main.c      ****     //CyDelay(4000);
+  62:.\main.c      ****     //Arm_WriteCompare(20);
+  63:.\main.c      ****     CyGlobalIntEnable;
+ 175              		.loc 1 63 0
+ 176              	@ 63 ".\main.c" 1
+ 177 0022 62B6     		CPSIE   i
+ 178              	@ 0 "" 2
+  64:.\main.c      ****     Button_Start();
+ 179              		.loc 1 64 0
+ 180              		.thumb
+ 181 0024 FFF7FEFF 		bl	Button_PWM_Start
+  65:.\main.c      ****     but0_StartEx(menu);
+ 182              		.loc 1 65 0
+ 183 0028 3248     		ldr	r0, .L9+4
+ 184 002a FFF7FEFF 		bl	but0_StartEx
+  66:.\main.c      ****     but1_StartEx(change);
+ 185              		.loc 1 66 0
+ 186 002e 3248     		ldr	r0, .L9+8
+ 187 0030 FFF7FEFF 		bl	but1_StartEx
+  67:.\main.c      ****     
+  68:.\main.c      **** //    Arm_WriteCompare(18);
+  69:.\main.c      **** //    LCD_PosPrintString(0,0,"Bottom");
+  70:.\main.c      **** //    CyDelay(5000);
+  71:.\main.c      **** //    LCD_ClearDisplay();
+  72:.\main.c      **** //    Arm_WriteCompare(150);
+  73:.\main.c      **** //    LCD_PosPrintString(0,0,"Top");
+  74:.\main.c      **** //    CyDelay(5000);
+  75:.\main.c      **** //    Arm_WriteCompare(PWM_Val);
+  76:.\main.c      ****     
+  77:.\main.c      ****     LCD_PosPrintString(0,0,"try camera");
+ 188              		.loc 1 77 0
+ 189 0034 0020     		movs	r0, #0
+ 190 0036 0021     		movs	r1, #0
+ 191 0038 FFF7FEFF 		bl	LCD_Position
+ 192 003c 2F48     		ldr	r0, .L9+12
+ 193 003e FFF7FEFF 		bl	LCD_PrintString
+  78:.\main.c      ****     init_camera();
+ 194              		.loc 1 78 0
+ 195 0042 FFF7FEFF 		bl	init_camera
+  79:.\main.c      ****     LCD_PosPrintString(0,0,"Camera Started");
+ 196              		.loc 1 79 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 6
+
+
+ 197 0046 0020     		movs	r0, #0
+ 198 0048 0021     		movs	r1, #0
+ 199 004a FFF7FEFF 		bl	LCD_Position
+ 200 004e 2C48     		ldr	r0, .L9+16
+ 201 0050 FFF7FEFF 		bl	LCD_PrintString
+  80:.\main.c      ****     set_gain_exposure(2);
+ 202              		.loc 1 80 0
+ 203 0054 0220     		movs	r0, #2
+ 204 0056 FFF7FEFF 		bl	set_gain_exposure
+  81:.\main.c      ****     
+  82:.\main.c      ****     
+  83:.\main.c      ****     //image_stuff3();
+  84:.\main.c      ****     //CyDelay(20000);
+  85:.\main.c      ****     USB_Start(0,USB_DWR_VDDD_OPERATION);
+ 205              		.loc 1 85 0
+ 206 005a 0020     		movs	r0, #0
+ 207 005c 0221     		movs	r1, #2
+ 208 005e FFF7FEFF 		bl	USB_Start
+  86:.\main.c      ****     while(!USB_GetConfiguration());
+ 209              		.loc 1 86 0
+ 210 0062 00BF     		nop
+ 211              	.L4:
+ 212              		.loc 1 86 0 is_stmt 0 discriminator 1
+ 213 0064 FFF7FEFF 		bl	USB_GetConfiguration
+ 214 0068 0346     		mov	r3, r0
+ 215 006a 002B     		cmp	r3, #0
+ 216 006c FAD0     		beq	.L4
+  87:.\main.c      ****     USB_CDC_Init(); //enable receiving data from USB host
+ 217              		.loc 1 87 0 is_stmt 1
+ 218 006e FFF7FEFF 		bl	USB_CDC_Init
+  88:.\main.c      ****     while(!USB_DataIsReady()); //wait until data is received on USB for synchronisation
+ 219              		.loc 1 88 0
+ 220 0072 00BF     		nop
+ 221              	.L5:
+ 222              		.loc 1 88 0 is_stmt 0 discriminator 1
+ 223 0074 FFF7FEFF 		bl	USB_DataIsReady
+ 224 0078 0346     		mov	r3, r0
+ 225 007a 002B     		cmp	r3, #0
+ 226 007c FAD0     		beq	.L5
+ 227              	.L8:
+  89:.\main.c      ****     for(;;)
+  90:.\main.c      ****     {
+  91:.\main.c      ****         image_stuff();
+ 228              		.loc 1 91 0 is_stmt 1
+ 229 007e FFF7FEFF 		bl	image_stuff
+  92:.\main.c      ****        
+  93:.\main.c      ****         if(disp == 8)
+ 230              		.loc 1 93 0
+ 231 0082 204B     		ldr	r3, .L9+20
+ 232 0084 1B88     		ldrh	r3, [r3]
+ 233 0086 1BB2     		sxth	r3, r3
+ 234 0088 082B     		cmp	r3, #8
+ 235 008a 01D1     		bne	.L6
+  94:.\main.c      ****         {
+  95:.\main.c      ****             image_stuff4();
+ 236              		.loc 1 95 0
+ 237 008c FFF7FEFF 		bl	image_stuff4
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 7
+
+
+ 238              	.L6:
+  96:.\main.c      **** //            char l[] = {'N','C','L','R'};
+  97:.\main.c      **** //            LCD_ClearDisplay();
+  98:.\main.c      **** //            sprintf(display[0],"#:%d R:%c G:%c B:%c",blobn,l[dis[0]+1],l[dis[1]+1],l[dis[2]+1]);
+  99:.\main.c      **** //            LCD_PosPrintString(0,0,display[0]);
+ 100:.\main.c      **** //            for(i = 0; i < 16; i++)
+ 101:.\main.c      **** //            {
+ 102:.\main.c      **** //                if(blobs[i].size >= 50);
+ 103:.\main.c      **** //                    LCD_PosPutChar(1,i,RGB[blobs[i].colour]);
+ 104:.\main.c      **** //            }
+ 105:.\main.c      ****         }
+ 106:.\main.c      ****         if(disp == 9)
+ 239              		.loc 1 106 0
+ 240 0090 1C4B     		ldr	r3, .L9+20
+ 241 0092 1B88     		ldrh	r3, [r3]
+ 242 0094 1BB2     		sxth	r3, r3
+ 243 0096 092B     		cmp	r3, #9
+ 244 0098 29D1     		bne	.L7
+ 107:.\main.c      ****         {
+ 108:.\main.c      ****             LCD_ClearDisplay();
+ 245              		.loc 1 108 0
+ 246 009a 0120     		movs	r0, #1
+ 247 009c FFF7FEFF 		bl	LCD_WriteControl
+ 109:.\main.c      ****             sprintf(display[0],"x:%u xc:%lu",blobs[0].x_sum,blobs[0].x_sum/blobs[0].size);
+ 248              		.loc 1 109 0
+ 249 00a0 194B     		ldr	r3, .L9+24
+ 250 00a2 9A68     		ldr	r2, [r3, #8]
+ 251 00a4 184B     		ldr	r3, .L9+24
+ 252 00a6 9968     		ldr	r1, [r3, #8]
+ 253 00a8 174B     		ldr	r3, .L9+24
+ 254 00aa 5B68     		ldr	r3, [r3, #4]
+ 255 00ac B1FBF3F3 		udiv	r3, r1, r3
+ 256 00b0 1648     		ldr	r0, .L9+28
+ 257 00b2 1749     		ldr	r1, .L9+32
+ 258 00b4 FFF7FEFF 		bl	sprintf
+ 110:.\main.c      ****             sprintf(display[1],"y:%u yc:%lu",blobs[0].y_sum,blobs[0].y_sum/blobs[0].size);
+ 259              		.loc 1 110 0
+ 260 00b8 134B     		ldr	r3, .L9+24
+ 261 00ba DA68     		ldr	r2, [r3, #12]
+ 262 00bc 124B     		ldr	r3, .L9+24
+ 263 00be D968     		ldr	r1, [r3, #12]
+ 264 00c0 114B     		ldr	r3, .L9+24
+ 265 00c2 5B68     		ldr	r3, [r3, #4]
+ 266 00c4 B1FBF3F3 		udiv	r3, r1, r3
+ 267 00c8 1248     		ldr	r0, .L9+36
+ 268 00ca 1349     		ldr	r1, .L9+40
+ 269 00cc FFF7FEFF 		bl	sprintf
+ 111:.\main.c      ****             LCD_PosPrintString(0,0,display[0]);
+ 270              		.loc 1 111 0
+ 271 00d0 0020     		movs	r0, #0
+ 272 00d2 0021     		movs	r1, #0
+ 273 00d4 FFF7FEFF 		bl	LCD_Position
+ 274 00d8 0C48     		ldr	r0, .L9+28
+ 275 00da FFF7FEFF 		bl	LCD_PrintString
+ 112:.\main.c      ****             LCD_PosPrintString(1,0,display[1]);
+ 276              		.loc 1 112 0
+ 277 00de 0120     		movs	r0, #1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 8
+
+
+ 278 00e0 0021     		movs	r1, #0
+ 279 00e2 FFF7FEFF 		bl	LCD_Position
+ 280 00e6 0B48     		ldr	r0, .L9+36
+ 281 00e8 FFF7FEFF 		bl	LCD_PrintString
+ 113:.\main.c      ****         }
+ 114:.\main.c      ****     }
+ 282              		.loc 1 114 0
+ 283 00ec C7E7     		b	.L8
+ 284              	.L7:
+ 285 00ee C6E7     		b	.L8
+ 286              	.L10:
+ 287              		.align	2
+ 288              	.L9:
+ 289 00f0 00000000 		.word	m
+ 290 00f4 00000000 		.word	menu
+ 291 00f8 00000000 		.word	change
+ 292 00fc 00000000 		.word	.LC1
+ 293 0100 0C000000 		.word	.LC2
+ 294 0104 00000000 		.word	disp
+ 295 0108 00000000 		.word	blobs
+ 296 010c 00000000 		.word	display
+ 297 0110 1C000000 		.word	.LC3
+ 298 0114 14000000 		.word	display+20
+ 299 0118 28000000 		.word	.LC4
+ 300              		.cfi_endproc
+ 301              	.LFE65:
+ 302              		.size	main, .-main
+ 303              		.section	.rodata
+ 304              		.align	2
+ 305              	.LC5:
+ 306 0034 4578706F 		.ascii	"Exposure: %d\000"
+ 306      73757265 
+ 306      3A202564 
+ 306      00
+ 307 0041 000000   		.align	2
+ 308              	.LC6:
+ 309 0044 4761696E 		.ascii	"Gain+B: %d\000"
+ 309      2B423A20 
+ 309      256400
+ 310              		.section	.text.button_handle,"ax",%progbits
+ 311              		.align	2
+ 312              		.global	button_handle
+ 313              		.thumb
+ 314              		.thumb_func
+ 315              		.type	button_handle, %function
+ 316              	button_handle:
+ 317              	.LFB66:
+ 115:.\main.c      **** }
+ 116:.\main.c      **** 
+ 117:.\main.c      **** void button_handle()
+ 118:.\main.c      **** {
+ 318              		.loc 1 118 0
+ 319              		.cfi_startproc
+ 320              		@ args = 0, pretend = 0, frame = 0
+ 321              		@ frame_needed = 1, uses_anonymous_args = 0
+ 322 0000 80B5     		push	{r7, lr}
+ 323              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 9
+
+
+ 324              		.cfi_offset 7, -8
+ 325              		.cfi_offset 14, -4
+ 326 0002 00AF     		add	r7, sp, #0
+ 327              		.cfi_def_cfa_register 7
+ 119:.\main.c      ****     // Display Major Values, Resets Auto...
+ 120:.\main.c      ****     //Camera_WriteReg(0x13,0b11100000); // Enable Auto Gain etc...
+ 121:.\main.c      ****     switch(disp)
+ 328              		.loc 1 121 0
+ 329 0004 474B     		ldr	r3, .L18
+ 330 0006 1B88     		ldrh	r3, [r3]
+ 331 0008 1BB2     		sxth	r3, r3
+ 332 000a 032B     		cmp	r3, #3
+ 333 000c 78D8     		bhi	.L12
+ 334 000e 01A2     		adr	r2, .L14
+ 335 0010 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 336              		.p2align 2
+ 337              	.L14:
+ 338 0014 25000000 		.word	.L13+1
+ 339 0018 55000000 		.word	.L15+1
+ 340 001c 93000000 		.word	.L16+1
+ 341 0020 C3000000 		.word	.L17+1
+ 342              		.p2align 1
+ 343              	.L13:
+ 122:.\main.c      ****     {
+ 123:.\main.c      ****         case(0) :
+ 124:.\main.c      ****         //Exposure Increment
+ 125:.\main.c      ****             exposure = Camera_ReadReg(0x10);
+ 344              		.loc 1 125 0
+ 345 0024 1020     		movs	r0, #16
+ 346 0026 FFF7FEFF 		bl	Camera_ReadReg
+ 347 002a 0346     		mov	r3, r0
+ 348 002c 1A46     		mov	r2, r3
+ 349 002e 3E4B     		ldr	r3, .L18+4
+ 350 0030 1A70     		strb	r2, [r3]
+ 126:.\main.c      ****             Camera_WriteReg(0x10,exposure+5); 
+ 351              		.loc 1 126 0
+ 352 0032 3D4B     		ldr	r3, .L18+4
+ 353 0034 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 354 0036 0533     		adds	r3, r3, #5
+ 355 0038 DBB2     		uxtb	r3, r3
+ 356 003a 1020     		movs	r0, #16
+ 357 003c 1946     		mov	r1, r3
+ 358 003e FFF7FEFF 		bl	Camera_WriteReg
+ 127:.\main.c      ****             sprintf(display[0],"Exposure: %d",exposure + 5);
+ 359              		.loc 1 127 0
+ 360 0042 394B     		ldr	r3, .L18+4
+ 361 0044 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 362 0046 0533     		adds	r3, r3, #5
+ 363 0048 3848     		ldr	r0, .L18+8
+ 364 004a 3949     		ldr	r1, .L18+12
+ 365 004c 1A46     		mov	r2, r3
+ 366 004e FFF7FEFF 		bl	sprintf
+ 128:.\main.c      ****         break;
+ 367              		.loc 1 128 0
+ 368 0052 55E0     		b	.L12
+ 369              	.L15:
+ 129:.\main.c      ****         case(1) :
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 10
+
+
+ 130:.\main.c      ****         //Gain
+ 131:.\main.c      ****         //Gain
+ 132:.\main.c      ****             gain = Camera_ReadReg(0x00);
+ 370              		.loc 1 132 0
+ 371 0054 0020     		movs	r0, #0
+ 372 0056 FFF7FEFF 		bl	Camera_ReadReg
+ 373 005a 0346     		mov	r3, r0
+ 374 005c 1A46     		mov	r2, r3
+ 375 005e 354B     		ldr	r3, .L18+16
+ 376 0060 1A70     		strb	r2, [r3]
+ 133:.\main.c      ****             Camera_WriteReg(0x00,gain+5);
+ 377              		.loc 1 133 0
+ 378 0062 344B     		ldr	r3, .L18+16
+ 379 0064 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 380 0066 0533     		adds	r3, r3, #5
+ 381 0068 DBB2     		uxtb	r3, r3
+ 382 006a 0020     		movs	r0, #0
+ 383 006c 1946     		mov	r1, r3
+ 384 006e FFF7FEFF 		bl	Camera_WriteReg
+ 134:.\main.c      ****             bgain = Camera_ReadReg(0x01);
+ 385              		.loc 1 134 0
+ 386 0072 0120     		movs	r0, #1
+ 387 0074 FFF7FEFF 		bl	Camera_ReadReg
+ 388 0078 0346     		mov	r3, r0
+ 389 007a 1A46     		mov	r2, r3
+ 390 007c 2E4B     		ldr	r3, .L18+20
+ 391 007e 1A70     		strb	r2, [r3]
+ 135:.\main.c      ****             //Camera_WriteReg(0x01,bgain+5);
+ 136:.\main.c      ****             sprintf(display[1],"Gain+B: %d",gain+5);
+ 392              		.loc 1 136 0
+ 393 0080 2C4B     		ldr	r3, .L18+16
+ 394 0082 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 395 0084 0533     		adds	r3, r3, #5
+ 396 0086 2D48     		ldr	r0, .L18+24
+ 397 0088 2D49     		ldr	r1, .L18+28
+ 398 008a 1A46     		mov	r2, r3
+ 399 008c FFF7FEFF 		bl	sprintf
+ 137:.\main.c      ****         break;
+ 400              		.loc 1 137 0
+ 401 0090 36E0     		b	.L12
+ 402              	.L16:
+ 138:.\main.c      ****         case(2) :
+ 139:.\main.c      ****         // Exposure Decrement
+ 140:.\main.c      ****             exposure = Camera_ReadReg(0x10);
+ 403              		.loc 1 140 0
+ 404 0092 1020     		movs	r0, #16
+ 405 0094 FFF7FEFF 		bl	Camera_ReadReg
+ 406 0098 0346     		mov	r3, r0
+ 407 009a 1A46     		mov	r2, r3
+ 408 009c 224B     		ldr	r3, .L18+4
+ 409 009e 1A70     		strb	r2, [r3]
+ 141:.\main.c      ****             Camera_WriteReg(0x10,exposure-1); 
+ 410              		.loc 1 141 0
+ 411 00a0 214B     		ldr	r3, .L18+4
+ 412 00a2 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 413 00a4 013B     		subs	r3, r3, #1
+ 414 00a6 DBB2     		uxtb	r3, r3
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 11
+
+
+ 415 00a8 1020     		movs	r0, #16
+ 416 00aa 1946     		mov	r1, r3
+ 417 00ac FFF7FEFF 		bl	Camera_WriteReg
+ 142:.\main.c      ****             sprintf(display[0],"Exposure: %d",exposure - 1);
+ 418              		.loc 1 142 0
+ 419 00b0 1D4B     		ldr	r3, .L18+4
+ 420 00b2 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 421 00b4 013B     		subs	r3, r3, #1
+ 422 00b6 1D48     		ldr	r0, .L18+8
+ 423 00b8 1D49     		ldr	r1, .L18+12
+ 424 00ba 1A46     		mov	r2, r3
+ 425 00bc FFF7FEFF 		bl	sprintf
+ 143:.\main.c      ****         break;
+ 426              		.loc 1 143 0
+ 427 00c0 1EE0     		b	.L12
+ 428              	.L17:
+ 144:.\main.c      ****         case(3) :
+ 145:.\main.c      ****         //Gain Decrement
+ 146:.\main.c      ****             gain = Camera_ReadReg(0x00);
+ 429              		.loc 1 146 0
+ 430 00c2 0020     		movs	r0, #0
+ 431 00c4 FFF7FEFF 		bl	Camera_ReadReg
+ 432 00c8 0346     		mov	r3, r0
+ 433 00ca 1A46     		mov	r2, r3
+ 434 00cc 194B     		ldr	r3, .L18+16
+ 435 00ce 1A70     		strb	r2, [r3]
+ 147:.\main.c      ****             Camera_WriteReg(0x00,gain-1);
+ 436              		.loc 1 147 0
+ 437 00d0 184B     		ldr	r3, .L18+16
+ 438 00d2 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 439 00d4 013B     		subs	r3, r3, #1
+ 440 00d6 DBB2     		uxtb	r3, r3
+ 441 00d8 0020     		movs	r0, #0
+ 442 00da 1946     		mov	r1, r3
+ 443 00dc FFF7FEFF 		bl	Camera_WriteReg
+ 148:.\main.c      ****             bgain = Camera_ReadReg(0x01);
+ 444              		.loc 1 148 0
+ 445 00e0 0120     		movs	r0, #1
+ 446 00e2 FFF7FEFF 		bl	Camera_ReadReg
+ 447 00e6 0346     		mov	r3, r0
+ 448 00e8 1A46     		mov	r2, r3
+ 449 00ea 134B     		ldr	r3, .L18+20
+ 450 00ec 1A70     		strb	r2, [r3]
+ 149:.\main.c      ****             //Camera_WriteReg(0x01,bgain+5);
+ 150:.\main.c      ****             sprintf(display[1],"Gain+B: %d",gain-1);
+ 451              		.loc 1 150 0
+ 452 00ee 114B     		ldr	r3, .L18+16
+ 453 00f0 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 454 00f2 013B     		subs	r3, r3, #1
+ 455 00f4 1148     		ldr	r0, .L18+24
+ 456 00f6 1249     		ldr	r1, .L18+28
+ 457 00f8 1A46     		mov	r2, r3
+ 458 00fa FFF7FEFF 		bl	sprintf
+ 151:.\main.c      ****         break;
+ 459              		.loc 1 151 0
+ 460 00fe 00BF     		nop
+ 461              	.L12:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 12
+
+
+ 152:.\main.c      ****     } 
+ 153:.\main.c      ****     LCD_ClearDisplay();
+ 462              		.loc 1 153 0
+ 463 0100 0120     		movs	r0, #1
+ 464 0102 FFF7FEFF 		bl	LCD_WriteControl
+ 154:.\main.c      ****     LCD_PosPrintString(0,0,display[0]);
+ 465              		.loc 1 154 0
+ 466 0106 0020     		movs	r0, #0
+ 467 0108 0021     		movs	r1, #0
+ 468 010a FFF7FEFF 		bl	LCD_Position
+ 469 010e 0748     		ldr	r0, .L18+8
+ 470 0110 FFF7FEFF 		bl	LCD_PrintString
+ 155:.\main.c      ****     LCD_PosPrintString(1,0,display[1]);
+ 471              		.loc 1 155 0
+ 472 0114 0120     		movs	r0, #1
+ 473 0116 0021     		movs	r1, #0
+ 474 0118 FFF7FEFF 		bl	LCD_Position
+ 475 011c 0748     		ldr	r0, .L18+24
+ 476 011e FFF7FEFF 		bl	LCD_PrintString
+ 156:.\main.c      **** }
+ 477              		.loc 1 156 0
+ 478 0122 80BD     		pop	{r7, pc}
+ 479              	.L19:
+ 480              		.align	2
+ 481              	.L18:
+ 482 0124 00000000 		.word	disp
+ 483 0128 00000000 		.word	exposure
+ 484 012c 00000000 		.word	display
+ 485 0130 34000000 		.word	.LC5
+ 486 0134 00000000 		.word	gain
+ 487 0138 00000000 		.word	bgain
+ 488 013c 14000000 		.word	display+20
+ 489 0140 44000000 		.word	.LC6
+ 490              		.cfi_endproc
+ 491              	.LFE66:
+ 492              		.size	button_handle, .-button_handle
+ 493              		.section	.text.image_stuff,"ax",%progbits
+ 494              		.align	2
+ 495              		.global	image_stuff
+ 496              		.thumb
+ 497              		.thumb_func
+ 498              		.type	image_stuff, %function
+ 499              	image_stuff:
+ 500              	.LFB67:
+ 157:.\main.c      **** 
+ 158:.\main.c      **** void image_stuff()
+ 159:.\main.c      **** {
+ 501              		.loc 1 159 0
+ 502              		.cfi_startproc
+ 503              		@ args = 0, pretend = 0, frame = 8
+ 504              		@ frame_needed = 1, uses_anonymous_args = 0
+ 505 0000 80B5     		push	{r7, lr}
+ 506              		.cfi_def_cfa_offset 8
+ 507              		.cfi_offset 7, -8
+ 508              		.cfi_offset 14, -4
+ 509 0002 82B0     		sub	sp, sp, #8
+ 510              		.cfi_def_cfa_offset 16
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 13
+
+
+ 511 0004 00AF     		add	r7, sp, #0
+ 512              		.cfi_def_cfa_register 7
+ 160:.\main.c      ****     int i;
+ 161:.\main.c      ****     capture_image();
+ 513              		.loc 1 161 0
+ 514 0006 FFF7FEFF 		bl	capture_image
+ 162:.\main.c      ****     //LCD_ClearDisplay();
+ 163:.\main.c      ****     //LCD_PosPrintString(0,0,"Sending......");
+ 164:.\main.c      ****     for(i=0;i<sizeof Camera_framebuffer;i+=64)
+ 515              		.loc 1 164 0
+ 516 000a 0023     		movs	r3, #0
+ 517 000c 7B60     		str	r3, [r7, #4]
+ 518 000e 0FE0     		b	.L21
+ 519              	.L23:
+ 165:.\main.c      ****     {
+ 166:.\main.c      ****         while(!USB_CDCIsReady()); //wait until USB is ready
+ 520              		.loc 1 166 0
+ 521 0010 00BF     		nop
+ 522              	.L22:
+ 523              		.loc 1 166 0 is_stmt 0 discriminator 1
+ 524 0012 FFF7FEFF 		bl	USB_CDCIsReady
+ 525 0016 0346     		mov	r3, r0
+ 526 0018 002B     		cmp	r3, #0
+ 527 001a FAD0     		beq	.L22
+ 167:.\main.c      ****         USB_PutData((uint8*)Camera_framebuffer+i,64); //send next 64 byte packet (maximum size)
+ 528              		.loc 1 167 0 is_stmt 1
+ 529 001c 7A68     		ldr	r2, [r7, #4]
+ 530 001e 2A4B     		ldr	r3, .L27
+ 531 0020 1344     		add	r3, r3, r2
+ 532 0022 1846     		mov	r0, r3
+ 533 0024 4021     		movs	r1, #64
+ 534 0026 FFF7FEFF 		bl	USB_PutData
+ 164:.\main.c      ****     for(i=0;i<sizeof Camera_framebuffer;i+=64)
+ 535              		.loc 1 164 0
+ 536 002a 7B68     		ldr	r3, [r7, #4]
+ 537 002c 4033     		adds	r3, r3, #64
+ 538 002e 7B60     		str	r3, [r7, #4]
+ 539              	.L21:
+ 164:.\main.c      ****     for(i=0;i<sizeof Camera_framebuffer;i+=64)
+ 540              		.loc 1 164 0 is_stmt 0 discriminator 1
+ 541 0030 7B68     		ldr	r3, [r7, #4]
+ 542 0032 B3F5464F 		cmp	r3, #50688
+ 543 0036 EBD3     		bcc	.L23
+ 168:.\main.c      ****     }
+ 169:.\main.c      ****     //LCD_PosPrintString(0,0,"Sent....");
+ 170:.\main.c      ****         threshold_image();
+ 544              		.loc 1 170 0 is_stmt 1
+ 545 0038 FFF7FEFF 		bl	threshold_image
+ 171:.\main.c      ****         clean_frame(RED,0.3,144/3);
+ 546              		.loc 1 171 0
+ 547 003c 0120     		movs	r0, #1
+ 548 003e 2349     		ldr	r1, .L27+4
+ 549 0040 3022     		movs	r2, #48
+ 550 0042 FFF7FEFF 		bl	clean_frame
+ 172:.\main.c      ****         blob_detect();
+ 551              		.loc 1 172 0
+ 552 0046 FFF7FEFF 		bl	blob_detect
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 14
+
+
+ 173:.\main.c      ****         dis[0] = to_nearest_blob(RED,50,10,centre_pixel);
+ 553              		.loc 1 173 0
+ 554 004a 214B     		ldr	r3, .L27+8
+ 555 004c 1B68     		ldr	r3, [r3]
+ 556 004e 0120     		movs	r0, #1
+ 557 0050 3221     		movs	r1, #50
+ 558 0052 0A22     		movs	r2, #10
+ 559 0054 FFF7FEFF 		bl	to_nearest_blob
+ 560 0058 0246     		mov	r2, r0
+ 561 005a 1E4B     		ldr	r3, .L27+12
+ 562 005c 1A60     		str	r2, [r3]
+ 174:.\main.c      ****         dis[1] = to_nearest_blob(GREEN,50,10,centre_pixel);
+ 563              		.loc 1 174 0
+ 564 005e 1C4B     		ldr	r3, .L27+8
+ 565 0060 1B68     		ldr	r3, [r3]
+ 566 0062 0220     		movs	r0, #2
+ 567 0064 3221     		movs	r1, #50
+ 568 0066 0A22     		movs	r2, #10
+ 569 0068 FFF7FEFF 		bl	to_nearest_blob
+ 570 006c 0246     		mov	r2, r0
+ 571 006e 194B     		ldr	r3, .L27+12
+ 572 0070 5A60     		str	r2, [r3, #4]
+ 175:.\main.c      ****         dis[2] = to_nearest_blob(BLUE,50,10,centre_pixel);
+ 573              		.loc 1 175 0
+ 574 0072 174B     		ldr	r3, .L27+8
+ 575 0074 1B68     		ldr	r3, [r3]
+ 576 0076 0320     		movs	r0, #3
+ 577 0078 3221     		movs	r1, #50
+ 578 007a 0A22     		movs	r2, #10
+ 579 007c FFF7FEFF 		bl	to_nearest_blob
+ 580 0080 0246     		mov	r2, r0
+ 581 0082 144B     		ldr	r3, .L27+12
+ 582 0084 9A60     		str	r2, [r3, #8]
+ 176:.\main.c      ****         blobn = blob_count(50);
+ 583              		.loc 1 176 0
+ 584 0086 3220     		movs	r0, #50
+ 585 0088 FFF7FEFF 		bl	blob_count
+ 586 008c 0346     		mov	r3, r0
+ 587 008e 1A46     		mov	r2, r3
+ 588 0090 114B     		ldr	r3, .L27+16
+ 589 0092 1A80     		strh	r2, [r3]	@ movhi
+ 177:.\main.c      ****         for(i=0;i<sizeof Camera_framebuffer;i+=64)
+ 590              		.loc 1 177 0
+ 591 0094 0023     		movs	r3, #0
+ 592 0096 7B60     		str	r3, [r7, #4]
+ 593 0098 0FE0     		b	.L24
+ 594              	.L26:
+ 178:.\main.c      ****         {
+ 179:.\main.c      ****             while(!USB_CDCIsReady()); //wait until USB is ready
+ 595              		.loc 1 179 0
+ 596 009a 00BF     		nop
+ 597              	.L25:
+ 598              		.loc 1 179 0 is_stmt 0 discriminator 1
+ 599 009c FFF7FEFF 		bl	USB_CDCIsReady
+ 600 00a0 0346     		mov	r3, r0
+ 601 00a2 002B     		cmp	r3, #0
+ 602 00a4 FAD0     		beq	.L25
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 15
+
+
+ 180:.\main.c      ****             USB_PutData((uint8*)Camera_framebuffer+i,64); //send next 64 byte packet (maximum size)
+ 603              		.loc 1 180 0 is_stmt 1
+ 604 00a6 7A68     		ldr	r2, [r7, #4]
+ 605 00a8 074B     		ldr	r3, .L27
+ 606 00aa 1344     		add	r3, r3, r2
+ 607 00ac 1846     		mov	r0, r3
+ 608 00ae 4021     		movs	r1, #64
+ 609 00b0 FFF7FEFF 		bl	USB_PutData
+ 177:.\main.c      ****         for(i=0;i<sizeof Camera_framebuffer;i+=64)
+ 610              		.loc 1 177 0
+ 611 00b4 7B68     		ldr	r3, [r7, #4]
+ 612 00b6 4033     		adds	r3, r3, #64
+ 613 00b8 7B60     		str	r3, [r7, #4]
+ 614              	.L24:
+ 177:.\main.c      ****         for(i=0;i<sizeof Camera_framebuffer;i+=64)
+ 615              		.loc 1 177 0 is_stmt 0 discriminator 1
+ 616 00ba 7B68     		ldr	r3, [r7, #4]
+ 617 00bc B3F5464F 		cmp	r3, #50688
+ 618 00c0 EBD3     		bcc	.L26
+ 181:.\main.c      ****         }
+ 182:.\main.c      ****         //LCD_PosPutChar(1,15,RGB[identify_colour_instructions()]);
+ 183:.\main.c      **** }
+ 619              		.loc 1 183 0 is_stmt 1
+ 620 00c2 0837     		adds	r7, r7, #8
+ 621 00c4 BD46     		mov	sp, r7
+ 622              		@ sp needed
+ 623 00c6 80BD     		pop	{r7, pc}
+ 624              	.L28:
+ 625              		.align	2
+ 626              	.L27:
+ 627 00c8 00000000 		.word	Camera_framebuffer
+ 628 00cc 9A99993E 		.word	1050253722
+ 629 00d0 00000000 		.word	centre_pixel
+ 630 00d4 00000000 		.word	dis
+ 631 00d8 00000000 		.word	blobn
+ 632              		.cfi_endproc
+ 633              	.LFE67:
+ 634              		.size	image_stuff, .-image_stuff
+ 635              		.section	.rodata
+ 636 004f 00       		.align	2
+ 637              	.LC7:
+ 638 0050 20202020 		.ascii	"                \000"
+ 638      20202020 
+ 638      20202020 
+ 638      20202020 
+ 638      00
+ 639 0061 000000   		.align	2
+ 640              	.LC8:
+ 641 0064 47657474 		.ascii	"Getting Image\000"
+ 641      696E6720 
+ 641      496D6167 
+ 641      6500
+ 642 0072 0000     		.align	2
+ 643              	.LC9:
+ 644 0074 53756363 		.ascii	"Success!!!      \000"
+ 644      65737321 
+ 644      21212020 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 16
+
+
+ 644      20202020 
+ 644      00
+ 645 0085 000000   		.align	2
+ 646              	.LC10:
+ 647 0088 436F6C6F 		.ascii	"Colour: %d\000"
+ 647      75723A20 
+ 647      256400
+ 648 0093 00       		.align	2
+ 649              	.LC0:
+ 650 0094 4B       		.byte	75
+ 651 0095 52       		.byte	82
+ 652 0096 47       		.byte	71
+ 653 0097 42       		.byte	66
+ 654              		.section	.text.image_stuff2,"ax",%progbits
+ 655              		.align	2
+ 656              		.global	image_stuff2
+ 657              		.thumb
+ 658              		.thumb_func
+ 659              		.type	image_stuff2, %function
+ 660              	image_stuff2:
+ 661              	.LFB68:
+ 184:.\main.c      **** 
+ 185:.\main.c      **** void image_stuff2()
+ 186:.\main.c      **** {
+ 662              		.loc 1 186 0
+ 663              		.cfi_startproc
+ 664              		@ args = 0, pretend = 0, frame = 8
+ 665              		@ frame_needed = 1, uses_anonymous_args = 0
+ 666 0000 80B5     		push	{r7, lr}
+ 667              		.cfi_def_cfa_offset 8
+ 668              		.cfi_offset 7, -8
+ 669              		.cfi_offset 14, -4
+ 670 0002 82B0     		sub	sp, sp, #8
+ 671              		.cfi_def_cfa_offset 16
+ 672 0004 00AF     		add	r7, sp, #0
+ 673              		.cfi_def_cfa_register 7
+ 187:.\main.c      ****     LCD_PosPrintString(0,0,"                ");
+ 674              		.loc 1 187 0
+ 675 0006 0020     		movs	r0, #0
+ 676 0008 0021     		movs	r1, #0
+ 677 000a FFF7FEFF 		bl	LCD_Position
+ 678 000e 1548     		ldr	r0, .L30
+ 679 0010 FFF7FEFF 		bl	LCD_PrintString
+ 188:.\main.c      ****     LCD_PosPrintString(0,0,"Getting Image");
+ 680              		.loc 1 188 0
+ 681 0014 0020     		movs	r0, #0
+ 682 0016 0021     		movs	r1, #0
+ 683 0018 FFF7FEFF 		bl	LCD_Position
+ 684 001c 1248     		ldr	r0, .L30+4
+ 685 001e FFF7FEFF 		bl	LCD_PrintString
+ 189:.\main.c      ****     capture_thresh_image();   
+ 686              		.loc 1 189 0
+ 687 0022 FFF7FEFF 		bl	capture_thresh_image
+ 190:.\main.c      ****     LCD_PosPrintString(0,0,"Success!!!      ");
+ 688              		.loc 1 190 0
+ 689 0026 0020     		movs	r0, #0
+ 690 0028 0021     		movs	r1, #0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 17
+
+
+ 691 002a FFF7FEFF 		bl	LCD_Position
+ 692 002e 0F48     		ldr	r0, .L30+8
+ 693 0030 FFF7FEFF 		bl	LCD_PrintString
+ 191:.\main.c      ****     char RGB[] = {'K', 'R', 'G', 'B'};
+ 694              		.loc 1 191 0
+ 695 0034 0E4A     		ldr	r2, .L30+12
+ 696 0036 3B46     		mov	r3, r7
+ 697 0038 1068     		ldr	r0, [r2]	@ unaligned
+ 698 003a 1860     		str	r0, [r3]	@ unaligned
+ 192:.\main.c      ****     int x = identify_colour_instructions(50);
+ 699              		.loc 1 192 0
+ 700 003c 3220     		movs	r0, #50
+ 701 003e FFF7FEFF 		bl	identify_colour_instructions
+ 702 0042 7860     		str	r0, [r7, #4]
+ 193:.\main.c      ****     sprintf(display[1],"Colour: %d",x);
+ 703              		.loc 1 193 0
+ 704 0044 0B48     		ldr	r0, .L30+16
+ 705 0046 0C49     		ldr	r1, .L30+20
+ 706 0048 7A68     		ldr	r2, [r7, #4]
+ 707 004a FFF7FEFF 		bl	sprintf
+ 194:.\main.c      ****     LCD_PosPrintString(1,0,display[1]);
+ 708              		.loc 1 194 0
+ 709 004e 0120     		movs	r0, #1
+ 710 0050 0021     		movs	r1, #0
+ 711 0052 FFF7FEFF 		bl	LCD_Position
+ 712 0056 0748     		ldr	r0, .L30+16
+ 713 0058 FFF7FEFF 		bl	LCD_PrintString
+ 195:.\main.c      **** }
+ 714              		.loc 1 195 0
+ 715 005c 0837     		adds	r7, r7, #8
+ 716 005e BD46     		mov	sp, r7
+ 717              		@ sp needed
+ 718 0060 80BD     		pop	{r7, pc}
+ 719              	.L31:
+ 720 0062 00BF     		.align	2
+ 721              	.L30:
+ 722 0064 50000000 		.word	.LC7
+ 723 0068 64000000 		.word	.LC8
+ 724 006c 74000000 		.word	.LC9
+ 725 0070 94000000 		.word	.LC0
+ 726 0074 14000000 		.word	display+20
+ 727 0078 88000000 		.word	.LC10
+ 728              		.cfi_endproc
+ 729              	.LFE68:
+ 730              		.size	image_stuff2, .-image_stuff2
+ 731              		.section	.rodata
+ 732              		.align	2
+ 733              	.LC11:
+ 734 0098 41726D3A 		.ascii	"Arm:%d, C:%d\000"
+ 734      25642C20 
+ 734      433A2564 
+ 734      00
+ 735 00a5 000000   		.align	2
+ 736              	.LC12:
+ 737 00a8 313A2564 		.ascii	"1:%d 2:%d 3:%d\000"
+ 737      20323A25 
+ 737      6420333A 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 18
+
+
+ 737      256400
+ 738              		.section	.text.image_stuff3,"ax",%progbits
+ 739              		.align	2
+ 740              		.global	image_stuff3
+ 741              		.thumb
+ 742              		.thumb_func
+ 743              		.type	image_stuff3, %function
+ 744              	image_stuff3:
+ 745              	.LFB69:
+ 196:.\main.c      **** void image_stuff3()
+ 197:.\main.c      **** {
+ 746              		.loc 1 197 0
+ 747              		.cfi_startproc
+ 748              		@ args = 0, pretend = 0, frame = 0
+ 749              		@ frame_needed = 1, uses_anonymous_args = 0
+ 750 0000 90B5     		push	{r4, r7, lr}
+ 751              		.cfi_def_cfa_offset 12
+ 752              		.cfi_offset 4, -12
+ 753              		.cfi_offset 7, -8
+ 754              		.cfi_offset 14, -4
+ 755 0002 83B0     		sub	sp, sp, #12
+ 756              		.cfi_def_cfa_offset 24
+ 757 0004 02AF     		add	r7, sp, #8
+ 758              		.cfi_def_cfa 7, 16
+ 198:.\main.c      ****     capture_thresh_image();
+ 759              		.loc 1 198 0
+ 760 0006 FFF7FEFF 		bl	capture_thresh_image
+ 199:.\main.c      ****     while(identify_colour_instructions(100) == 0)
+ 761              		.loc 1 199 0
+ 762 000a 29E0     		b	.L33
+ 763              	.L36:
+ 764              	.LBB2:
+ 200:.\main.c      ****     {
+ 201:.\main.c      ****         Arm_WriteCompare(++PWM_Val);
+ 765              		.loc 1 201 0
+ 766 000c 3C4B     		ldr	r3, .L37
+ 767 000e 1B68     		ldr	r3, [r3]
+ 768 0010 5A1C     		adds	r2, r3, #1
+ 769 0012 3B4B     		ldr	r3, .L37
+ 770 0014 1A60     		str	r2, [r3]
+ 771 0016 3A4B     		ldr	r3, .L37
+ 772 0018 1B68     		ldr	r3, [r3]
+ 773 001a 1846     		mov	r0, r3
+ 774 001c FFF7FEFF 		bl	Arm_WriteCompare
+ 202:.\main.c      ****         CyDelay(1000);
+ 775              		.loc 1 202 0
+ 776 0020 4FF47A70 		mov	r0, #1000
+ 777 0024 FFF7FEFF 		bl	CyDelay
+ 203:.\main.c      ****         if(PWM_Val >= 50)
+ 778              		.loc 1 203 0
+ 779 0028 354B     		ldr	r3, .L37
+ 780 002a 1B68     		ldr	r3, [r3]
+ 781 002c 312B     		cmp	r3, #49
+ 782 002e 00DD     		ble	.L34
+ 204:.\main.c      ****         {
+ 205:.\main.c      ****             return;
+ 783              		.loc 1 205 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 19
+
+
+ 784 0030 63E0     		b	.L32
+ 785              	.L34:
+ 206:.\main.c      ****         }
+ 207:.\main.c      ****         sprintf(display[0],"Arm:%d, C:%d",PWM_Val,identify_colour_instructions(100));
+ 786              		.loc 1 207 0
+ 787 0032 334B     		ldr	r3, .L37
+ 788 0034 1C68     		ldr	r4, [r3]
+ 789 0036 6420     		movs	r0, #100
+ 790 0038 FFF7FEFF 		bl	identify_colour_instructions
+ 791 003c 0346     		mov	r3, r0
+ 792 003e 3148     		ldr	r0, .L37+4
+ 793 0040 3149     		ldr	r1, .L37+8
+ 794 0042 2246     		mov	r2, r4
+ 795 0044 FFF7FEFF 		bl	sprintf
+ 208:.\main.c      ****         LCD_ClearDisplay();
+ 796              		.loc 1 208 0
+ 797 0048 0120     		movs	r0, #1
+ 798 004a FFF7FEFF 		bl	LCD_WriteControl
+ 209:.\main.c      ****         LCD_PosPrintString(0,0,display[0]);
+ 799              		.loc 1 209 0
+ 800 004e 0020     		movs	r0, #0
+ 801 0050 0021     		movs	r1, #0
+ 802 0052 FFF7FEFF 		bl	LCD_Position
+ 803 0056 2B48     		ldr	r0, .L37+4
+ 804 0058 FFF7FEFF 		bl	LCD_PrintString
+ 210:.\main.c      ****         capture_thresh_image();
+ 805              		.loc 1 210 0
+ 806 005c FFF7FEFF 		bl	capture_thresh_image
+ 807              	.L33:
+ 808              	.LBE2:
+ 199:.\main.c      ****     while(identify_colour_instructions(100) == 0)
+ 809              		.loc 1 199 0 discriminator 1
+ 810 0060 6420     		movs	r0, #100
+ 811 0062 FFF7FEFF 		bl	identify_colour_instructions
+ 812 0066 0346     		mov	r3, r0
+ 813 0068 002B     		cmp	r3, #0
+ 814 006a CFD0     		beq	.L36
+ 211:.\main.c      ****     }
+ 212:.\main.c      ****     stack[0] = identify_colour_instructions(100);
+ 815              		.loc 1 212 0
+ 816 006c 6420     		movs	r0, #100
+ 817 006e FFF7FEFF 		bl	identify_colour_instructions
+ 818 0072 0246     		mov	r2, r0
+ 819 0074 254B     		ldr	r3, .L37+12
+ 820 0076 1A60     		str	r2, [r3]
+ 213:.\main.c      ****     PWM_Val += 5;
+ 821              		.loc 1 213 0
+ 822 0078 214B     		ldr	r3, .L37
+ 823 007a 1B68     		ldr	r3, [r3]
+ 824 007c 5A1D     		adds	r2, r3, #5
+ 825 007e 204B     		ldr	r3, .L37
+ 826 0080 1A60     		str	r2, [r3]
+ 214:.\main.c      ****     Arm_WriteCompare(PWM_Val);
+ 827              		.loc 1 214 0
+ 828 0082 1F4B     		ldr	r3, .L37
+ 829 0084 1B68     		ldr	r3, [r3]
+ 830 0086 1846     		mov	r0, r3
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 20
+
+
+ 831 0088 FFF7FEFF 		bl	Arm_WriteCompare
+ 215:.\main.c      ****     CyDelay(5000);
+ 832              		.loc 1 215 0
+ 833 008c 41F28830 		movw	r0, #5000
+ 834 0090 FFF7FEFF 		bl	CyDelay
+ 216:.\main.c      ****     capture_thresh_image();
+ 835              		.loc 1 216 0
+ 836 0094 FFF7FEFF 		bl	capture_thresh_image
+ 217:.\main.c      ****     stack[1] = identify_colour_instructions(100);
+ 837              		.loc 1 217 0
+ 838 0098 6420     		movs	r0, #100
+ 839 009a FFF7FEFF 		bl	identify_colour_instructions
+ 840 009e 0246     		mov	r2, r0
+ 841 00a0 1A4B     		ldr	r3, .L37+12
+ 842 00a2 5A60     		str	r2, [r3, #4]
+ 218:.\main.c      ****     PWM_Val += 5;
+ 843              		.loc 1 218 0
+ 844 00a4 164B     		ldr	r3, .L37
+ 845 00a6 1B68     		ldr	r3, [r3]
+ 846 00a8 5A1D     		adds	r2, r3, #5
+ 847 00aa 154B     		ldr	r3, .L37
+ 848 00ac 1A60     		str	r2, [r3]
+ 219:.\main.c      ****     Arm_WriteCompare(PWM_Val);
+ 849              		.loc 1 219 0
+ 850 00ae 144B     		ldr	r3, .L37
+ 851 00b0 1B68     		ldr	r3, [r3]
+ 852 00b2 1846     		mov	r0, r3
+ 853 00b4 FFF7FEFF 		bl	Arm_WriteCompare
+ 220:.\main.c      ****     CyDelay(5000);
+ 854              		.loc 1 220 0
+ 855 00b8 41F28830 		movw	r0, #5000
+ 856 00bc FFF7FEFF 		bl	CyDelay
+ 221:.\main.c      ****     capture_thresh_image();
+ 857              		.loc 1 221 0
+ 858 00c0 FFF7FEFF 		bl	capture_thresh_image
+ 222:.\main.c      ****     stack[2] = identify_colour_instructions(100);
+ 859              		.loc 1 222 0
+ 860 00c4 6420     		movs	r0, #100
+ 861 00c6 FFF7FEFF 		bl	identify_colour_instructions
+ 862 00ca 0246     		mov	r2, r0
+ 863 00cc 0F4B     		ldr	r3, .L37+12
+ 864 00ce 9A60     		str	r2, [r3, #8]
+ 223:.\main.c      ****     sprintf(display[0],"1:%d 2:%d 3:%d",stack[0],stack[1],stack[2]);
+ 865              		.loc 1 223 0
+ 866 00d0 0E4B     		ldr	r3, .L37+12
+ 867 00d2 1A68     		ldr	r2, [r3]
+ 868 00d4 0D4B     		ldr	r3, .L37+12
+ 869 00d6 5B68     		ldr	r3, [r3, #4]
+ 870 00d8 0C49     		ldr	r1, .L37+12
+ 871 00da 8968     		ldr	r1, [r1, #8]
+ 872 00dc 0091     		str	r1, [sp]
+ 873 00de 0948     		ldr	r0, .L37+4
+ 874 00e0 0B49     		ldr	r1, .L37+16
+ 875 00e2 FFF7FEFF 		bl	sprintf
+ 224:.\main.c      ****     LCD_ClearDisplay();
+ 876              		.loc 1 224 0
+ 877 00e6 0120     		movs	r0, #1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 21
+
+
+ 878 00e8 FFF7FEFF 		bl	LCD_WriteControl
+ 225:.\main.c      ****     LCD_PosPrintString(1,0,display[0]);
+ 879              		.loc 1 225 0
+ 880 00ec 0120     		movs	r0, #1
+ 881 00ee 0021     		movs	r1, #0
+ 882 00f0 FFF7FEFF 		bl	LCD_Position
+ 883 00f4 0348     		ldr	r0, .L37+4
+ 884 00f6 FFF7FEFF 		bl	LCD_PrintString
+ 885              	.L32:
+ 226:.\main.c      ****     //LCD_PosPrintString(1,0,"Done... Really.");
+ 227:.\main.c      **** }
+ 886              		.loc 1 227 0
+ 887 00fa 0437     		adds	r7, r7, #4
+ 888 00fc BD46     		mov	sp, r7
+ 889              		@ sp needed
+ 890 00fe 90BD     		pop	{r4, r7, pc}
+ 891              	.L38:
+ 892              		.align	2
+ 893              	.L37:
+ 894 0100 00000000 		.word	PWM_Val
+ 895 0104 00000000 		.word	display
+ 896 0108 98000000 		.word	.LC11
+ 897 010c 00000000 		.word	stack
+ 898 0110 A8000000 		.word	.LC12
+ 899              		.cfi_endproc
+ 900              	.LFE69:
+ 901              		.size	image_stuff3, .-image_stuff3
+ 902              		.section	.rodata
+ 903 00b7 00       		.align	2
+ 904              	.LC13:
+ 905 00b8 52656420 		.ascii	"Red U: %d\000"
+ 905      553A2025 
+ 905      6400
+ 906 00c2 0000     		.align	2
+ 907              	.LC14:
+ 908 00c4 52656420 		.ascii	"Red V: %d\000"
+ 908      563A2025 
+ 908      6400
+ 909 00ce 0000     		.align	2
+ 910              	.LC15:
+ 911 00d0 47726565 		.ascii	"Green U: %d\000"
+ 911      6E20553A 
+ 911      20256400 
+ 912              		.align	2
+ 913              	.LC16:
+ 914 00dc 47726565 		.ascii	"Green V: %d\000"
+ 914      6E20563A 
+ 914      20256400 
+ 915              		.align	2
+ 916              	.LC17:
+ 917 00e8 426C7565 		.ascii	"Blue U: %d\000"
+ 917      20553A20 
+ 917      256400
+ 918 00f3 00       		.align	2
+ 919              	.LC18:
+ 920 00f4 426C7565 		.ascii	"Blue V: %d\000"
+ 920      20563A20 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 22
+
+
+ 920      256400
+ 921 00ff 00       		.align	2
+ 922              	.LC19:
+ 923 0100 4761696E 		.ascii	"Gain: %d\000"
+ 923      3A202564 
+ 923      00
+ 924 0109 000000   		.align	2
+ 925              	.LC20:
+ 926 010c 42476169 		.ascii	"BGain: %d\000"
+ 926      6E3A2025 
+ 926      6400
+ 927 0116 0000     		.align	2
+ 928              	.LC21:
+ 929 0118 52476169 		.ascii	"RGain: %d\000"
+ 929      6E3A2025 
+ 929      6400
+ 930 0122 0000     		.align	2
+ 931              	.LC22:
+ 932 0124 436F6E6E 		.ascii	"Connect: %d\000"
+ 932      6563743A 
+ 932      20256400 
+ 933              		.align	2
+ 934              	.LC23:
+ 935 0130 43656E74 		.ascii	"Centre Pixel: %d\000"
+ 935      72652050 
+ 935      6978656C 
+ 935      3A202564 
+ 935      00
+ 936              		.section	.text.button_handle2,"ax",%progbits
+ 937              		.align	2
+ 938              		.global	button_handle2
+ 939              		.thumb
+ 940              		.thumb_func
+ 941              		.type	button_handle2, %function
+ 942              	button_handle2:
+ 943              	.LFB70:
+ 228:.\main.c      **** 
+ 229:.\main.c      **** void button_handle2()
+ 230:.\main.c      **** {
+ 944              		.loc 1 230 0
+ 945              		.cfi_startproc
+ 946              		@ args = 0, pretend = 0, frame = 0
+ 947              		@ frame_needed = 1, uses_anonymous_args = 0
+ 948 0000 80B5     		push	{r7, lr}
+ 949              		.cfi_def_cfa_offset 8
+ 950              		.cfi_offset 7, -8
+ 951              		.cfi_offset 14, -4
+ 952 0002 00AF     		add	r7, sp, #0
+ 953              		.cfi_def_cfa_register 7
+ 231:.\main.c      ****     switch(current_display)
+ 954              		.loc 1 231 0
+ 955 0004 984B     		ldr	r3, .L66
+ 956 0006 1B68     		ldr	r3, [r3]
+ 957 0008 172B     		cmp	r3, #23
+ 958 000a 00F20A82 		bhi	.L40
+ 959 000e 01A2     		adr	r2, .L42
+ 960 0010 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 23
+
+
+ 961              		.p2align 2
+ 962              	.L42:
+ 963 0014 75000000 		.word	.L41+1
+ 964 0018 91000000 		.word	.L43+1
+ 965 001c AD000000 		.word	.L44+1
+ 966 0020 C9000000 		.word	.L45+1
+ 967 0024 E5000000 		.word	.L46+1
+ 968 0028 01010000 		.word	.L47+1
+ 969 002c 1D010000 		.word	.L48+1
+ 970 0030 39010000 		.word	.L49+1
+ 971 0034 55010000 		.word	.L50+1
+ 972 0038 71010000 		.word	.L51+1
+ 973 003c 8D010000 		.word	.L52+1
+ 974 0040 A9010000 		.word	.L53+1
+ 975 0044 C5010000 		.word	.L54+1
+ 976 0048 FB010000 		.word	.L55+1
+ 977 004c 31020000 		.word	.L56+1
+ 978 0050 AD020000 		.word	.L57+1
+ 979 0054 E3020000 		.word	.L58+1
+ 980 0058 19030000 		.word	.L59+1
+ 981 005c 4F030000 		.word	.L60+1
+ 982 0060 85030000 		.word	.L61+1
+ 983 0064 BB030000 		.word	.L62+1
+ 984 0068 D5030000 		.word	.L63+1
+ 985 006c EF030000 		.word	.L64+1
+ 986 0070 09040000 		.word	.L65+1
+ 987              		.p2align 1
+ 988              	.L41:
+ 232:.\main.c      ****     {
+ 233:.\main.c      ****         //Red U Up
+ 234:.\main.c      ****     case 0:
+ 235:.\main.c      ****         RED_U += 5;
+ 989              		.loc 1 235 0
+ 990 0074 7D4B     		ldr	r3, .L66+4
+ 991 0076 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 992 0078 0533     		adds	r3, r3, #5
+ 993 007a DAB2     		uxtb	r2, r3
+ 994 007c 7B4B     		ldr	r3, .L66+4
+ 995 007e 1A70     		strb	r2, [r3]
+ 236:.\main.c      ****         sprintf(display[1],"Red U: %d",RED_U);
+ 996              		.loc 1 236 0
+ 997 0080 7A4B     		ldr	r3, .L66+4
+ 998 0082 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 999 0084 7A48     		ldr	r0, .L66+8
+ 1000 0086 7B49     		ldr	r1, .L66+12
+ 1001 0088 1A46     		mov	r2, r3
+ 1002 008a FFF7FEFF 		bl	sprintf
+ 237:.\main.c      ****         break;
+ 1003              		.loc 1 237 0
+ 1004 008e C8E1     		b	.L40
+ 1005              	.L43:
+ 238:.\main.c      ****     case 1:
+ 239:.\main.c      ****         //Red U Down
+ 240:.\main.c      ****         RED_U--;
+ 1006              		.loc 1 240 0
+ 1007 0090 764B     		ldr	r3, .L66+4
+ 1008 0092 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 24
+
+
+ 1009 0094 013B     		subs	r3, r3, #1
+ 1010 0096 DAB2     		uxtb	r2, r3
+ 1011 0098 744B     		ldr	r3, .L66+4
+ 1012 009a 1A70     		strb	r2, [r3]
+ 241:.\main.c      ****         sprintf(display[1],"Red U: %d",RED_U);
+ 1013              		.loc 1 241 0
+ 1014 009c 734B     		ldr	r3, .L66+4
+ 1015 009e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1016 00a0 7348     		ldr	r0, .L66+8
+ 1017 00a2 7449     		ldr	r1, .L66+12
+ 1018 00a4 1A46     		mov	r2, r3
+ 1019 00a6 FFF7FEFF 		bl	sprintf
+ 242:.\main.c      ****         break;
+ 1020              		.loc 1 242 0
+ 1021 00aa BAE1     		b	.L40
+ 1022              	.L44:
+ 243:.\main.c      ****     case 2:
+ 244:.\main.c      ****         //RED V UP
+ 245:.\main.c      ****         RED_V += 5;
+ 1023              		.loc 1 245 0
+ 1024 00ac 724B     		ldr	r3, .L66+16
+ 1025 00ae 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1026 00b0 0533     		adds	r3, r3, #5
+ 1027 00b2 DAB2     		uxtb	r2, r3
+ 1028 00b4 704B     		ldr	r3, .L66+16
+ 1029 00b6 1A70     		strb	r2, [r3]
+ 246:.\main.c      ****         sprintf(display[1],"Red V: %d",RED_V);
+ 1030              		.loc 1 246 0
+ 1031 00b8 6F4B     		ldr	r3, .L66+16
+ 1032 00ba 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1033 00bc 6C48     		ldr	r0, .L66+8
+ 1034 00be 6F49     		ldr	r1, .L66+20
+ 1035 00c0 1A46     		mov	r2, r3
+ 1036 00c2 FFF7FEFF 		bl	sprintf
+ 247:.\main.c      ****         break;
+ 1037              		.loc 1 247 0
+ 1038 00c6 ACE1     		b	.L40
+ 1039              	.L45:
+ 248:.\main.c      ****     case 3:
+ 249:.\main.c      ****         //Red V Down
+ 250:.\main.c      ****         RED_V--;
+ 1040              		.loc 1 250 0
+ 1041 00c8 6B4B     		ldr	r3, .L66+16
+ 1042 00ca 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1043 00cc 013B     		subs	r3, r3, #1
+ 1044 00ce DAB2     		uxtb	r2, r3
+ 1045 00d0 694B     		ldr	r3, .L66+16
+ 1046 00d2 1A70     		strb	r2, [r3]
+ 251:.\main.c      ****         sprintf(display[1],"Red V: %d",RED_V);
+ 1047              		.loc 1 251 0
+ 1048 00d4 684B     		ldr	r3, .L66+16
+ 1049 00d6 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1050 00d8 6548     		ldr	r0, .L66+8
+ 1051 00da 6849     		ldr	r1, .L66+20
+ 1052 00dc 1A46     		mov	r2, r3
+ 1053 00de FFF7FEFF 		bl	sprintf
+ 252:.\main.c      ****         break;
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 25
+
+
+ 1054              		.loc 1 252 0
+ 1055 00e2 9EE1     		b	.L40
+ 1056              	.L46:
+ 253:.\main.c      ****     case 4:
+ 254:.\main.c      ****         //Green U Up
+ 255:.\main.c      ****         GREEN_U += 5;
+ 1057              		.loc 1 255 0
+ 1058 00e4 664B     		ldr	r3, .L66+24
+ 1059 00e6 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1060 00e8 0533     		adds	r3, r3, #5
+ 1061 00ea DAB2     		uxtb	r2, r3
+ 1062 00ec 644B     		ldr	r3, .L66+24
+ 1063 00ee 1A70     		strb	r2, [r3]
+ 256:.\main.c      ****         sprintf(display[1],"Green U: %d",GREEN_U);
+ 1064              		.loc 1 256 0
+ 1065 00f0 634B     		ldr	r3, .L66+24
+ 1066 00f2 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1067 00f4 5E48     		ldr	r0, .L66+8
+ 1068 00f6 6349     		ldr	r1, .L66+28
+ 1069 00f8 1A46     		mov	r2, r3
+ 1070 00fa FFF7FEFF 		bl	sprintf
+ 257:.\main.c      ****         break;
+ 1071              		.loc 1 257 0
+ 1072 00fe 90E1     		b	.L40
+ 1073              	.L47:
+ 258:.\main.c      ****     case 5:
+ 259:.\main.c      ****         //Green U Down
+ 260:.\main.c      ****         GREEN_U--;
+ 1074              		.loc 1 260 0
+ 1075 0100 5F4B     		ldr	r3, .L66+24
+ 1076 0102 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1077 0104 013B     		subs	r3, r3, #1
+ 1078 0106 DAB2     		uxtb	r2, r3
+ 1079 0108 5D4B     		ldr	r3, .L66+24
+ 1080 010a 1A70     		strb	r2, [r3]
+ 261:.\main.c      ****         sprintf(display[1],"Green U: %d",GREEN_U);
+ 1081              		.loc 1 261 0
+ 1082 010c 5C4B     		ldr	r3, .L66+24
+ 1083 010e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1084 0110 5748     		ldr	r0, .L66+8
+ 1085 0112 5C49     		ldr	r1, .L66+28
+ 1086 0114 1A46     		mov	r2, r3
+ 1087 0116 FFF7FEFF 		bl	sprintf
+ 262:.\main.c      ****         break;
+ 1088              		.loc 1 262 0
+ 1089 011a 82E1     		b	.L40
+ 1090              	.L48:
+ 263:.\main.c      ****     case 6:
+ 264:.\main.c      ****         //Green V Up
+ 265:.\main.c      ****         GREEN_V += 5;
+ 1091              		.loc 1 265 0
+ 1092 011c 5A4B     		ldr	r3, .L66+32
+ 1093 011e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1094 0120 0533     		adds	r3, r3, #5
+ 1095 0122 DAB2     		uxtb	r2, r3
+ 1096 0124 584B     		ldr	r3, .L66+32
+ 1097 0126 1A70     		strb	r2, [r3]
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 26
+
+
+ 266:.\main.c      ****         sprintf(display[1],"Green V: %d",GREEN_V);
+ 1098              		.loc 1 266 0
+ 1099 0128 574B     		ldr	r3, .L66+32
+ 1100 012a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1101 012c 5048     		ldr	r0, .L66+8
+ 1102 012e 5749     		ldr	r1, .L66+36
+ 1103 0130 1A46     		mov	r2, r3
+ 1104 0132 FFF7FEFF 		bl	sprintf
+ 267:.\main.c      ****         break;
+ 1105              		.loc 1 267 0
+ 1106 0136 74E1     		b	.L40
+ 1107              	.L49:
+ 268:.\main.c      ****     case 7:
+ 269:.\main.c      ****         //Green V Down
+ 270:.\main.c      ****         GREEN_V--;
+ 1108              		.loc 1 270 0
+ 1109 0138 534B     		ldr	r3, .L66+32
+ 1110 013a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1111 013c 013B     		subs	r3, r3, #1
+ 1112 013e DAB2     		uxtb	r2, r3
+ 1113 0140 514B     		ldr	r3, .L66+32
+ 1114 0142 1A70     		strb	r2, [r3]
+ 271:.\main.c      ****         sprintf(display[1],"Green V: %d",GREEN_V);
+ 1115              		.loc 1 271 0
+ 1116 0144 504B     		ldr	r3, .L66+32
+ 1117 0146 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1118 0148 4948     		ldr	r0, .L66+8
+ 1119 014a 5049     		ldr	r1, .L66+36
+ 1120 014c 1A46     		mov	r2, r3
+ 1121 014e FFF7FEFF 		bl	sprintf
+ 272:.\main.c      ****         break;
+ 1122              		.loc 1 272 0
+ 1123 0152 66E1     		b	.L40
+ 1124              	.L50:
+ 273:.\main.c      ****     case 8:
+ 274:.\main.c      ****         //Blue U Up
+ 275:.\main.c      ****         BLUE_U += 5;
+ 1125              		.loc 1 275 0
+ 1126 0154 4E4B     		ldr	r3, .L66+40
+ 1127 0156 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1128 0158 0533     		adds	r3, r3, #5
+ 1129 015a DAB2     		uxtb	r2, r3
+ 1130 015c 4C4B     		ldr	r3, .L66+40
+ 1131 015e 1A70     		strb	r2, [r3]
+ 276:.\main.c      ****         sprintf(display[1],"Blue U: %d",BLUE_U);
+ 1132              		.loc 1 276 0
+ 1133 0160 4B4B     		ldr	r3, .L66+40
+ 1134 0162 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1135 0164 4248     		ldr	r0, .L66+8
+ 1136 0166 4B49     		ldr	r1, .L66+44
+ 1137 0168 1A46     		mov	r2, r3
+ 1138 016a FFF7FEFF 		bl	sprintf
+ 277:.\main.c      ****         break;
+ 1139              		.loc 1 277 0
+ 1140 016e 58E1     		b	.L40
+ 1141              	.L51:
+ 278:.\main.c      ****     case 9:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 27
+
+
+ 279:.\main.c      ****         //Green U Down
+ 280:.\main.c      ****         BLUE_U--;
+ 1142              		.loc 1 280 0
+ 1143 0170 474B     		ldr	r3, .L66+40
+ 1144 0172 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1145 0174 013B     		subs	r3, r3, #1
+ 1146 0176 DAB2     		uxtb	r2, r3
+ 1147 0178 454B     		ldr	r3, .L66+40
+ 1148 017a 1A70     		strb	r2, [r3]
+ 281:.\main.c      ****         sprintf(display[1],"Blue U: %d",BLUE_U);
+ 1149              		.loc 1 281 0
+ 1150 017c 444B     		ldr	r3, .L66+40
+ 1151 017e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1152 0180 3B48     		ldr	r0, .L66+8
+ 1153 0182 4449     		ldr	r1, .L66+44
+ 1154 0184 1A46     		mov	r2, r3
+ 1155 0186 FFF7FEFF 		bl	sprintf
+ 282:.\main.c      ****         break;
+ 1156              		.loc 1 282 0
+ 1157 018a 4AE1     		b	.L40
+ 1158              	.L52:
+ 283:.\main.c      ****     case 10:
+ 284:.\main.c      ****         //Green V Up
+ 285:.\main.c      ****         BLUE_V += 5;
+ 1159              		.loc 1 285 0
+ 1160 018c 424B     		ldr	r3, .L66+48
+ 1161 018e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1162 0190 0533     		adds	r3, r3, #5
+ 1163 0192 DAB2     		uxtb	r2, r3
+ 1164 0194 404B     		ldr	r3, .L66+48
+ 1165 0196 1A70     		strb	r2, [r3]
+ 286:.\main.c      ****         sprintf(display[1],"Blue V: %d",BLUE_V);
+ 1166              		.loc 1 286 0
+ 1167 0198 3F4B     		ldr	r3, .L66+48
+ 1168 019a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1169 019c 3448     		ldr	r0, .L66+8
+ 1170 019e 3F49     		ldr	r1, .L66+52
+ 1171 01a0 1A46     		mov	r2, r3
+ 1172 01a2 FFF7FEFF 		bl	sprintf
+ 287:.\main.c      ****         break;
+ 1173              		.loc 1 287 0
+ 1174 01a6 3CE1     		b	.L40
+ 1175              	.L53:
+ 288:.\main.c      ****     case 11:
+ 289:.\main.c      ****         //Green V Down
+ 290:.\main.c      ****         BLUE_V--;
+ 1176              		.loc 1 290 0
+ 1177 01a8 3B4B     		ldr	r3, .L66+48
+ 1178 01aa 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1179 01ac 013B     		subs	r3, r3, #1
+ 1180 01ae DAB2     		uxtb	r2, r3
+ 1181 01b0 394B     		ldr	r3, .L66+48
+ 1182 01b2 1A70     		strb	r2, [r3]
+ 291:.\main.c      ****         sprintf(display[1],"Blue V: %d",BLUE_V);
+ 1183              		.loc 1 291 0
+ 1184 01b4 384B     		ldr	r3, .L66+48
+ 1185 01b6 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 28
+
+
+ 1186 01b8 2D48     		ldr	r0, .L66+8
+ 1187 01ba 3849     		ldr	r1, .L66+52
+ 1188 01bc 1A46     		mov	r2, r3
+ 1189 01be FFF7FEFF 		bl	sprintf
+ 292:.\main.c      ****         break;
+ 1190              		.loc 1 292 0
+ 1191 01c2 2EE1     		b	.L40
+ 1192              	.L54:
+ 293:.\main.c      ****     case 12:
+ 294:.\main.c      ****         //Gain Up
+ 295:.\main.c      ****         gain = Camera_ReadReg(0x00);
+ 1193              		.loc 1 295 0
+ 1194 01c4 0020     		movs	r0, #0
+ 1195 01c6 FFF7FEFF 		bl	Camera_ReadReg
+ 1196 01ca 0346     		mov	r3, r0
+ 1197 01cc 1A46     		mov	r2, r3
+ 1198 01ce 344B     		ldr	r3, .L66+56
+ 1199 01d0 1A70     		strb	r2, [r3]
+ 296:.\main.c      ****         gain += 5;
+ 1200              		.loc 1 296 0
+ 1201 01d2 334B     		ldr	r3, .L66+56
+ 1202 01d4 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1203 01d6 0533     		adds	r3, r3, #5
+ 1204 01d8 DAB2     		uxtb	r2, r3
+ 1205 01da 314B     		ldr	r3, .L66+56
+ 1206 01dc 1A70     		strb	r2, [r3]
+ 297:.\main.c      ****         Camera_WriteReg(0x00,gain);
+ 1207              		.loc 1 297 0
+ 1208 01de 304B     		ldr	r3, .L66+56
+ 1209 01e0 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1210 01e2 0020     		movs	r0, #0
+ 1211 01e4 1946     		mov	r1, r3
+ 1212 01e6 FFF7FEFF 		bl	Camera_WriteReg
+ 298:.\main.c      ****         sprintf(display[1],"Gain: %d",gain);
+ 1213              		.loc 1 298 0
+ 1214 01ea 2D4B     		ldr	r3, .L66+56
+ 1215 01ec 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1216 01ee 2048     		ldr	r0, .L66+8
+ 1217 01f0 2C49     		ldr	r1, .L66+60
+ 1218 01f2 1A46     		mov	r2, r3
+ 1219 01f4 FFF7FEFF 		bl	sprintf
+ 299:.\main.c      ****         break;
+ 1220              		.loc 1 299 0
+ 1221 01f8 13E1     		b	.L40
+ 1222              	.L55:
+ 300:.\main.c      ****     case 13:
+ 301:.\main.c      ****         // Gain Down
+ 302:.\main.c      ****         gain = Camera_ReadReg(0x00);
+ 1223              		.loc 1 302 0
+ 1224 01fa 0020     		movs	r0, #0
+ 1225 01fc FFF7FEFF 		bl	Camera_ReadReg
+ 1226 0200 0346     		mov	r3, r0
+ 1227 0202 1A46     		mov	r2, r3
+ 1228 0204 264B     		ldr	r3, .L66+56
+ 1229 0206 1A70     		strb	r2, [r3]
+ 303:.\main.c      ****         gain--;
+ 1230              		.loc 1 303 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 29
+
+
+ 1231 0208 254B     		ldr	r3, .L66+56
+ 1232 020a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1233 020c 013B     		subs	r3, r3, #1
+ 1234 020e DAB2     		uxtb	r2, r3
+ 1235 0210 234B     		ldr	r3, .L66+56
+ 1236 0212 1A70     		strb	r2, [r3]
+ 304:.\main.c      ****         Camera_WriteReg(0x00,gain);
+ 1237              		.loc 1 304 0
+ 1238 0214 224B     		ldr	r3, .L66+56
+ 1239 0216 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1240 0218 0020     		movs	r0, #0
+ 1241 021a 1946     		mov	r1, r3
+ 1242 021c FFF7FEFF 		bl	Camera_WriteReg
+ 305:.\main.c      ****         sprintf(display[1],"Gain: %d",gain);
+ 1243              		.loc 1 305 0
+ 1244 0220 1F4B     		ldr	r3, .L66+56
+ 1245 0222 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1246 0224 1248     		ldr	r0, .L66+8
+ 1247 0226 1F49     		ldr	r1, .L66+60
+ 1248 0228 1A46     		mov	r2, r3
+ 1249 022a FFF7FEFF 		bl	sprintf
+ 306:.\main.c      ****         break;
+ 1250              		.loc 1 306 0
+ 1251 022e F8E0     		b	.L40
+ 1252              	.L56:
+ 307:.\main.c      ****     case 14:
+ 308:.\main.c      ****         //BGain Up
+ 309:.\main.c      ****         gain = Camera_ReadReg(0x01);
+ 1253              		.loc 1 309 0
+ 1254 0230 0120     		movs	r0, #1
+ 1255 0232 FFF7FEFF 		bl	Camera_ReadReg
+ 1256 0236 0346     		mov	r3, r0
+ 1257 0238 1A46     		mov	r2, r3
+ 1258 023a 194B     		ldr	r3, .L66+56
+ 1259 023c 1A70     		strb	r2, [r3]
+ 310:.\main.c      ****         gain += 5;
+ 1260              		.loc 1 310 0
+ 1261 023e 184B     		ldr	r3, .L66+56
+ 1262 0240 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1263 0242 0533     		adds	r3, r3, #5
+ 1264 0244 DAB2     		uxtb	r2, r3
+ 1265 0246 164B     		ldr	r3, .L66+56
+ 1266 0248 1A70     		strb	r2, [r3]
+ 311:.\main.c      ****         Camera_WriteReg(0x01,gain);
+ 1267              		.loc 1 311 0
+ 1268 024a 154B     		ldr	r3, .L66+56
+ 1269 024c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1270 024e 0120     		movs	r0, #1
+ 1271 0250 1946     		mov	r1, r3
+ 1272 0252 FFF7FEFF 		bl	Camera_WriteReg
+ 312:.\main.c      ****         sprintf(display[1],"BGain: %d",gain);
+ 1273              		.loc 1 312 0
+ 1274 0256 124B     		ldr	r3, .L66+56
+ 1275 0258 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1276 025a 0548     		ldr	r0, .L66+8
+ 1277 025c 1249     		ldr	r1, .L66+64
+ 1278 025e 1A46     		mov	r2, r3
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 30
+
+
+ 1279 0260 FFF7FEFF 		bl	sprintf
+ 313:.\main.c      ****         break;
+ 1280              		.loc 1 313 0
+ 1281 0264 DDE0     		b	.L40
+ 1282              	.L67:
+ 1283 0266 00BF     		.align	2
+ 1284              	.L66:
+ 1285 0268 00000000 		.word	current_display
+ 1286 026c 00000000 		.word	RED_U
+ 1287 0270 14000000 		.word	display+20
+ 1288 0274 B8000000 		.word	.LC13
+ 1289 0278 00000000 		.word	RED_V
+ 1290 027c C4000000 		.word	.LC14
+ 1291 0280 00000000 		.word	GREEN_U
+ 1292 0284 D0000000 		.word	.LC15
+ 1293 0288 00000000 		.word	GREEN_V
+ 1294 028c DC000000 		.word	.LC16
+ 1295 0290 00000000 		.word	BLUE_U
+ 1296 0294 E8000000 		.word	.LC17
+ 1297 0298 00000000 		.word	BLUE_V
+ 1298 029c F4000000 		.word	.LC18
+ 1299 02a0 00000000 		.word	gain
+ 1300 02a4 00010000 		.word	.LC19
+ 1301 02a8 0C010000 		.word	.LC20
+ 1302              	.L57:
+ 314:.\main.c      ****     case 15:
+ 315:.\main.c      ****         // BGain Down
+ 316:.\main.c      ****         gain = Camera_ReadReg(0x01);
+ 1303              		.loc 1 316 0
+ 1304 02ac 0120     		movs	r0, #1
+ 1305 02ae FFF7FEFF 		bl	Camera_ReadReg
+ 1306 02b2 0346     		mov	r3, r0
+ 1307 02b4 1A46     		mov	r2, r3
+ 1308 02b6 604B     		ldr	r3, .L68
+ 1309 02b8 1A70     		strb	r2, [r3]
+ 317:.\main.c      ****         gain--;
+ 1310              		.loc 1 317 0
+ 1311 02ba 5F4B     		ldr	r3, .L68
+ 1312 02bc 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1313 02be 013B     		subs	r3, r3, #1
+ 1314 02c0 DAB2     		uxtb	r2, r3
+ 1315 02c2 5D4B     		ldr	r3, .L68
+ 1316 02c4 1A70     		strb	r2, [r3]
+ 318:.\main.c      ****         Camera_WriteReg(0x01,gain);
+ 1317              		.loc 1 318 0
+ 1318 02c6 5C4B     		ldr	r3, .L68
+ 1319 02c8 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1320 02ca 0120     		movs	r0, #1
+ 1321 02cc 1946     		mov	r1, r3
+ 1322 02ce FFF7FEFF 		bl	Camera_WriteReg
+ 319:.\main.c      ****         sprintf(display[1],"BGain: %d",gain);
+ 1323              		.loc 1 319 0
+ 1324 02d2 594B     		ldr	r3, .L68
+ 1325 02d4 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1326 02d6 5948     		ldr	r0, .L68+4
+ 1327 02d8 5949     		ldr	r1, .L68+8
+ 1328 02da 1A46     		mov	r2, r3
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 31
+
+
+ 1329 02dc FFF7FEFF 		bl	sprintf
+ 320:.\main.c      ****         break;
+ 1330              		.loc 1 320 0
+ 1331 02e0 9FE0     		b	.L40
+ 1332              	.L58:
+ 321:.\main.c      ****     case 16:
+ 322:.\main.c      ****         // RGain Up
+ 323:.\main.c      ****         gain = Camera_ReadReg(0x02);
+ 1333              		.loc 1 323 0
+ 1334 02e2 0220     		movs	r0, #2
+ 1335 02e4 FFF7FEFF 		bl	Camera_ReadReg
+ 1336 02e8 0346     		mov	r3, r0
+ 1337 02ea 1A46     		mov	r2, r3
+ 1338 02ec 524B     		ldr	r3, .L68
+ 1339 02ee 1A70     		strb	r2, [r3]
+ 324:.\main.c      ****         gain += 5;
+ 1340              		.loc 1 324 0
+ 1341 02f0 514B     		ldr	r3, .L68
+ 1342 02f2 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1343 02f4 0533     		adds	r3, r3, #5
+ 1344 02f6 DAB2     		uxtb	r2, r3
+ 1345 02f8 4F4B     		ldr	r3, .L68
+ 1346 02fa 1A70     		strb	r2, [r3]
+ 325:.\main.c      ****         Camera_WriteReg(0x02,gain);
+ 1347              		.loc 1 325 0
+ 1348 02fc 4E4B     		ldr	r3, .L68
+ 1349 02fe 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1350 0300 0220     		movs	r0, #2
+ 1351 0302 1946     		mov	r1, r3
+ 1352 0304 FFF7FEFF 		bl	Camera_WriteReg
+ 326:.\main.c      ****         sprintf(display[1],"RGain: %d",gain);
+ 1353              		.loc 1 326 0
+ 1354 0308 4B4B     		ldr	r3, .L68
+ 1355 030a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1356 030c 4B48     		ldr	r0, .L68+4
+ 1357 030e 4D49     		ldr	r1, .L68+12
+ 1358 0310 1A46     		mov	r2, r3
+ 1359 0312 FFF7FEFF 		bl	sprintf
+ 327:.\main.c      ****         break;
+ 1360              		.loc 1 327 0
+ 1361 0316 84E0     		b	.L40
+ 1362              	.L59:
+ 328:.\main.c      ****     case 17:
+ 329:.\main.c      ****         // RGain Down
+ 330:.\main.c      ****         gain = Camera_ReadReg(0x02);
+ 1363              		.loc 1 330 0
+ 1364 0318 0220     		movs	r0, #2
+ 1365 031a FFF7FEFF 		bl	Camera_ReadReg
+ 1366 031e 0346     		mov	r3, r0
+ 1367 0320 1A46     		mov	r2, r3
+ 1368 0322 454B     		ldr	r3, .L68
+ 1369 0324 1A70     		strb	r2, [r3]
+ 331:.\main.c      ****         gain--;
+ 1370              		.loc 1 331 0
+ 1371 0326 444B     		ldr	r3, .L68
+ 1372 0328 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1373 032a 013B     		subs	r3, r3, #1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 32
+
+
+ 1374 032c DAB2     		uxtb	r2, r3
+ 1375 032e 424B     		ldr	r3, .L68
+ 1376 0330 1A70     		strb	r2, [r3]
+ 332:.\main.c      ****         Camera_WriteReg(0x02,gain);
+ 1377              		.loc 1 332 0
+ 1378 0332 414B     		ldr	r3, .L68
+ 1379 0334 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1380 0336 0220     		movs	r0, #2
+ 1381 0338 1946     		mov	r1, r3
+ 1382 033a FFF7FEFF 		bl	Camera_WriteReg
+ 333:.\main.c      ****         sprintf(display[1],"RGain: %d",gain);
+ 1383              		.loc 1 333 0
+ 1384 033e 3E4B     		ldr	r3, .L68
+ 1385 0340 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1386 0342 3E48     		ldr	r0, .L68+4
+ 1387 0344 3F49     		ldr	r1, .L68+12
+ 1388 0346 1A46     		mov	r2, r3
+ 1389 0348 FFF7FEFF 		bl	sprintf
+ 334:.\main.c      ****         break;
+ 1390              		.loc 1 334 0
+ 1391 034c 69E0     		b	.L40
+ 1392              	.L60:
+ 335:.\main.c      ****     case 18:
+ 336:.\main.c      ****         // Exposure Up
+ 337:.\main.c      ****         exposure = Camera_ReadReg(0x10);
+ 1393              		.loc 1 337 0
+ 1394 034e 1020     		movs	r0, #16
+ 1395 0350 FFF7FEFF 		bl	Camera_ReadReg
+ 1396 0354 0346     		mov	r3, r0
+ 1397 0356 1A46     		mov	r2, r3
+ 1398 0358 3B4B     		ldr	r3, .L68+16
+ 1399 035a 1A70     		strb	r2, [r3]
+ 338:.\main.c      ****         exposure += 5;
+ 1400              		.loc 1 338 0
+ 1401 035c 3A4B     		ldr	r3, .L68+16
+ 1402 035e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1403 0360 0533     		adds	r3, r3, #5
+ 1404 0362 DAB2     		uxtb	r2, r3
+ 1405 0364 384B     		ldr	r3, .L68+16
+ 1406 0366 1A70     		strb	r2, [r3]
+ 339:.\main.c      ****         Camera_WriteReg(0x10,exposure);
+ 1407              		.loc 1 339 0
+ 1408 0368 374B     		ldr	r3, .L68+16
+ 1409 036a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1410 036c 1020     		movs	r0, #16
+ 1411 036e 1946     		mov	r1, r3
+ 1412 0370 FFF7FEFF 		bl	Camera_WriteReg
+ 340:.\main.c      ****         sprintf(display[1],"Exposure: %d",exposure);
+ 1413              		.loc 1 340 0
+ 1414 0374 344B     		ldr	r3, .L68+16
+ 1415 0376 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1416 0378 3048     		ldr	r0, .L68+4
+ 1417 037a 3449     		ldr	r1, .L68+20
+ 1418 037c 1A46     		mov	r2, r3
+ 1419 037e FFF7FEFF 		bl	sprintf
+ 341:.\main.c      ****         break;
+ 1420              		.loc 1 341 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 33
+
+
+ 1421 0382 4EE0     		b	.L40
+ 1422              	.L61:
+ 342:.\main.c      ****     case 19:
+ 343:.\main.c      ****         // Exposure Down
+ 344:.\main.c      ****         exposure = Camera_ReadReg(0x10);
+ 1423              		.loc 1 344 0
+ 1424 0384 1020     		movs	r0, #16
+ 1425 0386 FFF7FEFF 		bl	Camera_ReadReg
+ 1426 038a 0346     		mov	r3, r0
+ 1427 038c 1A46     		mov	r2, r3
+ 1428 038e 2E4B     		ldr	r3, .L68+16
+ 1429 0390 1A70     		strb	r2, [r3]
+ 345:.\main.c      ****         exposure--;
+ 1430              		.loc 1 345 0
+ 1431 0392 2D4B     		ldr	r3, .L68+16
+ 1432 0394 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1433 0396 013B     		subs	r3, r3, #1
+ 1434 0398 DAB2     		uxtb	r2, r3
+ 1435 039a 2B4B     		ldr	r3, .L68+16
+ 1436 039c 1A70     		strb	r2, [r3]
+ 346:.\main.c      ****         Camera_WriteReg(0x10,exposure);
+ 1437              		.loc 1 346 0
+ 1438 039e 2A4B     		ldr	r3, .L68+16
+ 1439 03a0 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1440 03a2 1020     		movs	r0, #16
+ 1441 03a4 1946     		mov	r1, r3
+ 1442 03a6 FFF7FEFF 		bl	Camera_WriteReg
+ 347:.\main.c      ****         sprintf(display[1],"Exposure: %d",exposure);
+ 1443              		.loc 1 347 0
+ 1444 03aa 274B     		ldr	r3, .L68+16
+ 1445 03ac 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1446 03ae 2348     		ldr	r0, .L68+4
+ 1447 03b0 2649     		ldr	r1, .L68+20
+ 1448 03b2 1A46     		mov	r2, r3
+ 1449 03b4 FFF7FEFF 		bl	sprintf
+ 348:.\main.c      ****         break;
+ 1450              		.loc 1 348 0
+ 1451 03b8 33E0     		b	.L40
+ 1452              	.L62:
+ 349:.\main.c      ****     case 20:
+ 350:.\main.c      ****         // Connectedness up
+ 351:.\main.c      ****         connected++;
+ 1453              		.loc 1 351 0
+ 1454 03ba 254B     		ldr	r3, .L68+24
+ 1455 03bc 1B68     		ldr	r3, [r3]
+ 1456 03be 5A1C     		adds	r2, r3, #1
+ 1457 03c0 234B     		ldr	r3, .L68+24
+ 1458 03c2 1A60     		str	r2, [r3]
+ 352:.\main.c      ****         sprintf(display[1],"Connect: %d",connected);
+ 1459              		.loc 1 352 0
+ 1460 03c4 224B     		ldr	r3, .L68+24
+ 1461 03c6 1B68     		ldr	r3, [r3]
+ 1462 03c8 1C48     		ldr	r0, .L68+4
+ 1463 03ca 2249     		ldr	r1, .L68+28
+ 1464 03cc 1A46     		mov	r2, r3
+ 1465 03ce FFF7FEFF 		bl	sprintf
+ 353:.\main.c      ****         break;
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 34
+
+
+ 1466              		.loc 1 353 0
+ 1467 03d2 26E0     		b	.L40
+ 1468              	.L63:
+ 354:.\main.c      ****     case 21:
+ 355:.\main.c      ****         connected--;
+ 1469              		.loc 1 355 0
+ 1470 03d4 1E4B     		ldr	r3, .L68+24
+ 1471 03d6 1B68     		ldr	r3, [r3]
+ 1472 03d8 5A1E     		subs	r2, r3, #1
+ 1473 03da 1D4B     		ldr	r3, .L68+24
+ 1474 03dc 1A60     		str	r2, [r3]
+ 356:.\main.c      ****         sprintf(display[1],"Connect: %d",connected);
+ 1475              		.loc 1 356 0
+ 1476 03de 1C4B     		ldr	r3, .L68+24
+ 1477 03e0 1B68     		ldr	r3, [r3]
+ 1478 03e2 1648     		ldr	r0, .L68+4
+ 1479 03e4 1B49     		ldr	r1, .L68+28
+ 1480 03e6 1A46     		mov	r2, r3
+ 1481 03e8 FFF7FEFF 		bl	sprintf
+ 357:.\main.c      ****         break;
+ 1482              		.loc 1 357 0
+ 1483 03ec 19E0     		b	.L40
+ 1484              	.L64:
+ 358:.\main.c      ****     case 22:
+ 359:.\main.c      ****         centre_pixel--;
+ 1485              		.loc 1 359 0
+ 1486 03ee 1A4B     		ldr	r3, .L68+32
+ 1487 03f0 1B68     		ldr	r3, [r3]
+ 1488 03f2 5A1E     		subs	r2, r3, #1
+ 1489 03f4 184B     		ldr	r3, .L68+32
+ 1490 03f6 1A60     		str	r2, [r3]
+ 360:.\main.c      ****         sprintf(display[1],"Centre Pixel: %d",centre_pixel);
+ 1491              		.loc 1 360 0
+ 1492 03f8 174B     		ldr	r3, .L68+32
+ 1493 03fa 1B68     		ldr	r3, [r3]
+ 1494 03fc 0F48     		ldr	r0, .L68+4
+ 1495 03fe 1749     		ldr	r1, .L68+36
+ 1496 0400 1A46     		mov	r2, r3
+ 1497 0402 FFF7FEFF 		bl	sprintf
+ 361:.\main.c      ****         break;
+ 1498              		.loc 1 361 0
+ 1499 0406 0CE0     		b	.L40
+ 1500              	.L65:
+ 362:.\main.c      ****     case 23:
+ 363:.\main.c      ****         centre_pixel++;
+ 1501              		.loc 1 363 0
+ 1502 0408 134B     		ldr	r3, .L68+32
+ 1503 040a 1B68     		ldr	r3, [r3]
+ 1504 040c 5A1C     		adds	r2, r3, #1
+ 1505 040e 124B     		ldr	r3, .L68+32
+ 1506 0410 1A60     		str	r2, [r3]
+ 364:.\main.c      ****         sprintf(display[1],"Centre Pixel: %d",centre_pixel);
+ 1507              		.loc 1 364 0
+ 1508 0412 114B     		ldr	r3, .L68+32
+ 1509 0414 1B68     		ldr	r3, [r3]
+ 1510 0416 0948     		ldr	r0, .L68+4
+ 1511 0418 1049     		ldr	r1, .L68+36
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 35
+
+
+ 1512 041a 1A46     		mov	r2, r3
+ 1513 041c FFF7FEFF 		bl	sprintf
+ 365:.\main.c      ****         break;
+ 1514              		.loc 1 365 0
+ 1515 0420 00BF     		nop
+ 1516              	.L40:
+ 366:.\main.c      ****     }
+ 367:.\main.c      ****     LCD_ClearDisplay();
+ 1517              		.loc 1 367 0
+ 1518 0422 0120     		movs	r0, #1
+ 1519 0424 FFF7FEFF 		bl	LCD_WriteControl
+ 368:.\main.c      ****     LCD_PosPrintString(1,0,display[1]);
+ 1520              		.loc 1 368 0
+ 1521 0428 0120     		movs	r0, #1
+ 1522 042a 0021     		movs	r1, #0
+ 1523 042c FFF7FEFF 		bl	LCD_Position
+ 1524 0430 0248     		ldr	r0, .L68+4
+ 1525 0432 FFF7FEFF 		bl	LCD_PrintString
+ 369:.\main.c      **** }
+ 1526              		.loc 1 369 0
+ 1527 0436 80BD     		pop	{r7, pc}
+ 1528              	.L69:
+ 1529              		.align	2
+ 1530              	.L68:
+ 1531 0438 00000000 		.word	gain
+ 1532 043c 14000000 		.word	display+20
+ 1533 0440 0C010000 		.word	.LC20
+ 1534 0444 18010000 		.word	.LC21
+ 1535 0448 00000000 		.word	exposure
+ 1536 044c 34000000 		.word	.LC5
+ 1537 0450 00000000 		.word	connected
+ 1538 0454 24010000 		.word	.LC22
+ 1539 0458 00000000 		.word	centre_pixel
+ 1540 045c 30010000 		.word	.LC23
+ 1541              		.cfi_endproc
+ 1542              	.LFE70:
+ 1543              		.size	button_handle2, .-button_handle2
+ 1544              		.section	.rodata
+ 1545 0141 000000   		.align	2
+ 1546              	.LC24:
+ 1547 0144 52656420 		.ascii	"Red U Up\000"
+ 1547      55205570 
+ 1547      00
+ 1548 014d 000000   		.align	2
+ 1549              	.LC25:
+ 1550 0150 52656420 		.ascii	"Red U Down\000"
+ 1550      5520446F 
+ 1550      776E00
+ 1551 015b 00       		.align	2
+ 1552              	.LC26:
+ 1553 015c 52656420 		.ascii	"Red V Up\000"
+ 1553      56205570 
+ 1553      00
+ 1554 0165 000000   		.align	2
+ 1555              	.LC27:
+ 1556 0168 52656420 		.ascii	"Red V Down\000"
+ 1556      5620446F 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 36
+
+
+ 1556      776E00
+ 1557 0173 00       		.align	2
+ 1558              	.LC28:
+ 1559 0174 47726565 		.ascii	"Green U Up\000"
+ 1559      6E205520 
+ 1559      557000
+ 1560 017f 00       		.align	2
+ 1561              	.LC29:
+ 1562 0180 47726565 		.ascii	"Green U Down\000"
+ 1562      6E205520 
+ 1562      446F776E 
+ 1562      00
+ 1563 018d 000000   		.align	2
+ 1564              	.LC30:
+ 1565 0190 47726565 		.ascii	"Green V Up\000"
+ 1565      6E205620 
+ 1565      557000
+ 1566 019b 00       		.align	2
+ 1567              	.LC31:
+ 1568 019c 47726565 		.ascii	"Green V Down\000"
+ 1568      6E205620 
+ 1568      446F776E 
+ 1568      00
+ 1569 01a9 000000   		.align	2
+ 1570              	.LC32:
+ 1571 01ac 426C7565 		.ascii	"Blue U Up\000"
+ 1571      20552055 
+ 1571      7000
+ 1572 01b6 0000     		.align	2
+ 1573              	.LC33:
+ 1574 01b8 426C7565 		.ascii	"Blue U Down\000"
+ 1574      20552044 
+ 1574      6F776E00 
+ 1575              		.align	2
+ 1576              	.LC34:
+ 1577 01c4 426C7565 		.ascii	"Blue V Up\000"
+ 1577      20562055 
+ 1577      7000
+ 1578 01ce 0000     		.align	2
+ 1579              	.LC35:
+ 1580 01d0 426C7565 		.ascii	"Blue V Down\000"
+ 1580      20562044 
+ 1580      6F776E00 
+ 1581              		.align	2
+ 1582              	.LC36:
+ 1583 01dc 4761696E 		.ascii	"Gain Up\000"
+ 1583      20557000 
+ 1584              		.align	2
+ 1585              	.LC37:
+ 1586 01e4 4761696E 		.ascii	"Gain Down\000"
+ 1586      20446F77 
+ 1586      6E00
+ 1587 01ee 0000     		.align	2
+ 1588              	.LC38:
+ 1589 01f0 42476169 		.ascii	"BGain Up\000"
+ 1589      6E205570 
+ 1589      00
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 37
+
+
+ 1590 01f9 000000   		.align	2
+ 1591              	.LC39:
+ 1592 01fc 42476169 		.ascii	"BGain Down\000"
+ 1592      6E20446F 
+ 1592      776E00
+ 1593 0207 00       		.align	2
+ 1594              	.LC40:
+ 1595 0208 52476169 		.ascii	"RGain Up\000"
+ 1595      6E205570 
+ 1595      00
+ 1596 0211 000000   		.align	2
+ 1597              	.LC41:
+ 1598 0214 52476169 		.ascii	"RGain Down\000"
+ 1598      6E20446F 
+ 1598      776E00
+ 1599 021f 00       		.align	2
+ 1600              	.LC42:
+ 1601 0220 4578706F 		.ascii	"Exposure Up\000"
+ 1601      73757265 
+ 1601      20557000 
+ 1602              		.align	2
+ 1603              	.LC43:
+ 1604 022c 4578706F 		.ascii	"Exposure Down\000"
+ 1604      73757265 
+ 1604      20446F77 
+ 1604      6E00
+ 1605 023a 0000     		.align	2
+ 1606              	.LC44:
+ 1607 023c 436F6E6E 		.ascii	"Connect Up\000"
+ 1607      65637420 
+ 1607      557000
+ 1608 0247 00       		.align	2
+ 1609              	.LC45:
+ 1610 0248 436F6E6E 		.ascii	"Connect Down\000"
+ 1610      65637420 
+ 1610      446F776E 
+ 1610      00
+ 1611 0255 000000   		.align	2
+ 1612              	.LC46:
+ 1613 0258 43656E74 		.ascii	"Center Left\000"
+ 1613      6572204C 
+ 1613      65667400 
+ 1614              		.align	2
+ 1615              	.LC47:
+ 1616 0264 43656E74 		.ascii	"Center Right\000"
+ 1616      65722052 
+ 1616      69676874 
+ 1616      00
+ 1617 0271 000000   		.section	.text.handle_menus,"ax",%progbits
+ 1618              		.align	2
+ 1619              		.global	handle_menus
+ 1620              		.thumb
+ 1621              		.thumb_func
+ 1622              		.type	handle_menus, %function
+ 1623              	handle_menus:
+ 1624              	.LFB71:
+ 370:.\main.c      **** 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 38
+
+
+ 371:.\main.c      **** void handle_menus()
+ 372:.\main.c      **** {
+ 1625              		.loc 1 372 0
+ 1626              		.cfi_startproc
+ 1627              		@ args = 0, pretend = 0, frame = 0
+ 1628              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1629 0000 98B5     		push	{r3, r4, r7, lr}
+ 1630              		.cfi_def_cfa_offset 16
+ 1631              		.cfi_offset 3, -16
+ 1632              		.cfi_offset 4, -12
+ 1633              		.cfi_offset 7, -8
+ 1634              		.cfi_offset 14, -4
+ 1635 0002 00AF     		add	r7, sp, #0
+ 1636              		.cfi_def_cfa_register 7
+ 373:.\main.c      ****     current_display = (current_display + 1)%24;
+ 1637              		.loc 1 373 0
+ 1638 0004 7E4B     		ldr	r3, .L97
+ 1639 0006 1B68     		ldr	r3, [r3]
+ 1640 0008 591C     		adds	r1, r3, #1
+ 1641 000a 7E4B     		ldr	r3, .L97+4
+ 1642 000c 83FB0123 		smull	r2, r3, r3, r1
+ 1643 0010 9A10     		asrs	r2, r3, #2
+ 1644 0012 CB17     		asrs	r3, r1, #31
+ 1645 0014 D21A     		subs	r2, r2, r3
+ 1646 0016 1346     		mov	r3, r2
+ 1647 0018 5B00     		lsls	r3, r3, #1
+ 1648 001a 1344     		add	r3, r3, r2
+ 1649 001c DB00     		lsls	r3, r3, #3
+ 1650 001e CA1A     		subs	r2, r1, r3
+ 1651 0020 774B     		ldr	r3, .L97
+ 1652 0022 1A60     		str	r2, [r3]
+ 374:.\main.c      ****     switch(current_display)
+ 1653              		.loc 1 374 0
+ 1654 0024 764B     		ldr	r3, .L97
+ 1655 0026 1B68     		ldr	r3, [r3]
+ 1656 0028 172B     		cmp	r3, #23
+ 1657 002a 00F2DE80 		bhi	.L71
+ 1658 002e 01A2     		adr	r2, .L73
+ 1659 0030 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 1660              		.p2align 2
+ 1661              	.L73:
+ 1662 0034 95000000 		.word	.L72+1
+ 1663 0038 A1000000 		.word	.L74+1
+ 1664 003c B3000000 		.word	.L75+1
+ 1665 0040 BF000000 		.word	.L76+1
+ 1666 0044 D1000000 		.word	.L77+1
+ 1667 0048 E3000000 		.word	.L78+1
+ 1668 004c F1000000 		.word	.L79+1
+ 1669 0050 03010000 		.word	.L80+1
+ 1670 0054 11010000 		.word	.L81+1
+ 1671 0058 1D010000 		.word	.L82+1
+ 1672 005c 29010000 		.word	.L83+1
+ 1673 0060 35010000 		.word	.L84+1
+ 1674 0064 41010000 		.word	.L85+1
+ 1675 0068 4F010000 		.word	.L86+1
+ 1676 006c 5B010000 		.word	.L87+1
+ 1677 0070 67010000 		.word	.L88+1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 39
+
+
+ 1678 0074 79010000 		.word	.L89+1
+ 1679 0078 85010000 		.word	.L90+1
+ 1680 007c 97010000 		.word	.L91+1
+ 1681 0080 A3010000 		.word	.L92+1
+ 1682 0084 B1010000 		.word	.L93+1
+ 1683 0088 C3010000 		.word	.L94+1
+ 1684 008c D1010000 		.word	.L95+1
+ 1685 0090 DD010000 		.word	.L96+1
+ 1686              		.p2align 1
+ 1687              	.L72:
+ 375:.\main.c      ****     {
+ 376:.\main.c      ****         //Red U Up
+ 377:.\main.c      ****     case 0:
+ 378:.\main.c      ****         sprintf(display[0],"Red U Up");
+ 1688              		.loc 1 378 0
+ 1689 0094 5C4B     		ldr	r3, .L97+8
+ 1690 0096 5D4A     		ldr	r2, .L97+12
+ 1691 0098 07CA     		ldmia	r2, {r0, r1, r2}
+ 1692 009a 03C3     		stmia	r3!, {r0, r1}
+ 1693 009c 1A70     		strb	r2, [r3]
+ 379:.\main.c      ****         break;
+ 1694              		.loc 1 379 0
+ 1695 009e A4E0     		b	.L71
+ 1696              	.L74:
+ 380:.\main.c      ****     case 1:
+ 381:.\main.c      ****         //Red U Down
+ 382:.\main.c      ****         sprintf(display[0],"Red U Down");
+ 1697              		.loc 1 382 0
+ 1698 00a0 594B     		ldr	r3, .L97+8
+ 1699 00a2 5B4A     		ldr	r2, .L97+16
+ 1700 00a4 07CA     		ldmia	r2, {r0, r1, r2}
+ 1701 00a6 03C3     		stmia	r3!, {r0, r1}
+ 1702 00a8 1A80     		strh	r2, [r3]	@ movhi
+ 1703 00aa 0233     		adds	r3, r3, #2
+ 1704 00ac 120C     		lsrs	r2, r2, #16
+ 1705 00ae 1A70     		strb	r2, [r3]
+ 383:.\main.c      ****         break;
+ 1706              		.loc 1 383 0
+ 1707 00b0 9BE0     		b	.L71
+ 1708              	.L75:
+ 384:.\main.c      ****     case 2:
+ 385:.\main.c      ****         //RED V UP
+ 386:.\main.c      ****         sprintf(display[0],"Red V Up");
+ 1709              		.loc 1 386 0
+ 1710 00b2 554B     		ldr	r3, .L97+8
+ 1711 00b4 574A     		ldr	r2, .L97+20
+ 1712 00b6 07CA     		ldmia	r2, {r0, r1, r2}
+ 1713 00b8 03C3     		stmia	r3!, {r0, r1}
+ 1714 00ba 1A70     		strb	r2, [r3]
+ 387:.\main.c      ****         break;
+ 1715              		.loc 1 387 0
+ 1716 00bc 95E0     		b	.L71
+ 1717              	.L76:
+ 388:.\main.c      ****     case 3:
+ 389:.\main.c      ****         //Red V Down
+ 390:.\main.c      ****         sprintf(display[0],"Red V Down");
+ 1718              		.loc 1 390 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 40
+
+
+ 1719 00be 524B     		ldr	r3, .L97+8
+ 1720 00c0 554A     		ldr	r2, .L97+24
+ 1721 00c2 07CA     		ldmia	r2, {r0, r1, r2}
+ 1722 00c4 03C3     		stmia	r3!, {r0, r1}
+ 1723 00c6 1A80     		strh	r2, [r3]	@ movhi
+ 1724 00c8 0233     		adds	r3, r3, #2
+ 1725 00ca 120C     		lsrs	r2, r2, #16
+ 1726 00cc 1A70     		strb	r2, [r3]
+ 391:.\main.c      ****         break;
+ 1727              		.loc 1 391 0
+ 1728 00ce 8CE0     		b	.L71
+ 1729              	.L77:
+ 392:.\main.c      ****     case 4:
+ 393:.\main.c      ****         //Green U Up
+ 394:.\main.c      ****         sprintf(display[0],"Green U Up");
+ 1730              		.loc 1 394 0
+ 1731 00d0 4D4B     		ldr	r3, .L97+8
+ 1732 00d2 524A     		ldr	r2, .L97+28
+ 1733 00d4 07CA     		ldmia	r2, {r0, r1, r2}
+ 1734 00d6 03C3     		stmia	r3!, {r0, r1}
+ 1735 00d8 1A80     		strh	r2, [r3]	@ movhi
+ 1736 00da 0233     		adds	r3, r3, #2
+ 1737 00dc 120C     		lsrs	r2, r2, #16
+ 1738 00de 1A70     		strb	r2, [r3]
+ 395:.\main.c      ****         break;
+ 1739              		.loc 1 395 0
+ 1740 00e0 83E0     		b	.L71
+ 1741              	.L78:
+ 396:.\main.c      ****     case 5:
+ 397:.\main.c      ****         //Green U Down
+ 398:.\main.c      ****         sprintf(display[0],"Green U Down");
+ 1742              		.loc 1 398 0
+ 1743 00e2 494A     		ldr	r2, .L97+8
+ 1744 00e4 4E4B     		ldr	r3, .L97+32
+ 1745 00e6 1446     		mov	r4, r2
+ 1746 00e8 0FCB     		ldmia	r3, {r0, r1, r2, r3}
+ 1747 00ea 07C4     		stmia	r4!, {r0, r1, r2}
+ 1748 00ec 2370     		strb	r3, [r4]
+ 399:.\main.c      ****         break;
+ 1749              		.loc 1 399 0
+ 1750 00ee 7CE0     		b	.L71
+ 1751              	.L79:
+ 400:.\main.c      ****     case 6:
+ 401:.\main.c      ****         //Green V Up
+ 402:.\main.c      ****         sprintf(display[0],"Green V Up");
+ 1752              		.loc 1 402 0
+ 1753 00f0 454B     		ldr	r3, .L97+8
+ 1754 00f2 4C4A     		ldr	r2, .L97+36
+ 1755 00f4 07CA     		ldmia	r2, {r0, r1, r2}
+ 1756 00f6 03C3     		stmia	r3!, {r0, r1}
+ 1757 00f8 1A80     		strh	r2, [r3]	@ movhi
+ 1758 00fa 0233     		adds	r3, r3, #2
+ 1759 00fc 120C     		lsrs	r2, r2, #16
+ 1760 00fe 1A70     		strb	r2, [r3]
+ 403:.\main.c      ****         break;
+ 1761              		.loc 1 403 0
+ 1762 0100 73E0     		b	.L71
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 41
+
+
+ 1763              	.L80:
+ 404:.\main.c      ****     case 7:
+ 405:.\main.c      ****         //Green V Down
+ 406:.\main.c      ****         sprintf(display[0],"Green V Down");
+ 1764              		.loc 1 406 0
+ 1765 0102 414A     		ldr	r2, .L97+8
+ 1766 0104 484B     		ldr	r3, .L97+40
+ 1767 0106 1446     		mov	r4, r2
+ 1768 0108 0FCB     		ldmia	r3, {r0, r1, r2, r3}
+ 1769 010a 07C4     		stmia	r4!, {r0, r1, r2}
+ 1770 010c 2370     		strb	r3, [r4]
+ 407:.\main.c      ****         break;
+ 1771              		.loc 1 407 0
+ 1772 010e 6CE0     		b	.L71
+ 1773              	.L81:
+ 408:.\main.c      ****     case 8:
+ 409:.\main.c      ****         //Blue U Up
+ 410:.\main.c      ****         sprintf(display[0],"Blue U Up");
+ 1774              		.loc 1 410 0
+ 1775 0110 3D4B     		ldr	r3, .L97+8
+ 1776 0112 464A     		ldr	r2, .L97+44
+ 1777 0114 07CA     		ldmia	r2, {r0, r1, r2}
+ 1778 0116 03C3     		stmia	r3!, {r0, r1}
+ 1779 0118 1A80     		strh	r2, [r3]	@ movhi
+ 411:.\main.c      ****         break;
+ 1780              		.loc 1 411 0
+ 1781 011a 66E0     		b	.L71
+ 1782              	.L82:
+ 412:.\main.c      ****     case 9:
+ 413:.\main.c      ****         //Green U Down
+ 414:.\main.c      ****         sprintf(display[0],"Blue U Down");
+ 1783              		.loc 1 414 0
+ 1784 011c 3A4B     		ldr	r3, .L97+8
+ 1785 011e 444A     		ldr	r2, .L97+48
+ 1786 0120 07CA     		ldmia	r2, {r0, r1, r2}
+ 1787 0122 83E80700 		stmia	r3, {r0, r1, r2}
+ 415:.\main.c      ****         break;
+ 1788              		.loc 1 415 0
+ 1789 0126 60E0     		b	.L71
+ 1790              	.L83:
+ 416:.\main.c      ****     case 10:
+ 417:.\main.c      ****         //Green V Up
+ 418:.\main.c      ****         sprintf(display[0],"Blue V Up");
+ 1791              		.loc 1 418 0
+ 1792 0128 374B     		ldr	r3, .L97+8
+ 1793 012a 424A     		ldr	r2, .L97+52
+ 1794 012c 07CA     		ldmia	r2, {r0, r1, r2}
+ 1795 012e 03C3     		stmia	r3!, {r0, r1}
+ 1796 0130 1A80     		strh	r2, [r3]	@ movhi
+ 419:.\main.c      ****         break;
+ 1797              		.loc 1 419 0
+ 1798 0132 5AE0     		b	.L71
+ 1799              	.L84:
+ 420:.\main.c      ****     case 11:
+ 421:.\main.c      ****         //Green V Down
+ 422:.\main.c      ****         sprintf(display[0],"Blue V Down");
+ 1800              		.loc 1 422 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 42
+
+
+ 1801 0134 344B     		ldr	r3, .L97+8
+ 1802 0136 404A     		ldr	r2, .L97+56
+ 1803 0138 07CA     		ldmia	r2, {r0, r1, r2}
+ 1804 013a 83E80700 		stmia	r3, {r0, r1, r2}
+ 423:.\main.c      ****         break;
+ 1805              		.loc 1 423 0
+ 1806 013e 54E0     		b	.L71
+ 1807              	.L85:
+ 424:.\main.c      ****     case 12:
+ 425:.\main.c      ****         //Gain Up
+ 426:.\main.c      ****         sprintf(display[0],"Gain Up");
+ 1808              		.loc 1 426 0
+ 1809 0140 314B     		ldr	r3, .L97+8
+ 1810 0142 3E4A     		ldr	r2, .L97+60
+ 1811 0144 92E80300 		ldmia	r2, {r0, r1}
+ 1812 0148 83E80300 		stmia	r3, {r0, r1}
+ 427:.\main.c      ****         break;
+ 1813              		.loc 1 427 0
+ 1814 014c 4DE0     		b	.L71
+ 1815              	.L86:
+ 428:.\main.c      ****     case 13:
+ 429:.\main.c      ****         // Gain Down
+ 430:.\main.c      ****         sprintf(display[0],"Gain Down");
+ 1816              		.loc 1 430 0
+ 1817 014e 2E4B     		ldr	r3, .L97+8
+ 1818 0150 3B4A     		ldr	r2, .L97+64
+ 1819 0152 07CA     		ldmia	r2, {r0, r1, r2}
+ 1820 0154 03C3     		stmia	r3!, {r0, r1}
+ 1821 0156 1A80     		strh	r2, [r3]	@ movhi
+ 431:.\main.c      ****         break;
+ 1822              		.loc 1 431 0
+ 1823 0158 47E0     		b	.L71
+ 1824              	.L87:
+ 432:.\main.c      ****     case 14:
+ 433:.\main.c      ****         sprintf(display[0],"BGain Up");
+ 1825              		.loc 1 433 0
+ 1826 015a 2B4B     		ldr	r3, .L97+8
+ 1827 015c 394A     		ldr	r2, .L97+68
+ 1828 015e 07CA     		ldmia	r2, {r0, r1, r2}
+ 1829 0160 03C3     		stmia	r3!, {r0, r1}
+ 1830 0162 1A70     		strb	r2, [r3]
+ 434:.\main.c      ****         break;
+ 1831              		.loc 1 434 0
+ 1832 0164 41E0     		b	.L71
+ 1833              	.L88:
+ 435:.\main.c      ****     case 15:
+ 436:.\main.c      ****         // BGain Down
+ 437:.\main.c      ****         sprintf(display[0],"BGain Down");
+ 1834              		.loc 1 437 0
+ 1835 0166 284B     		ldr	r3, .L97+8
+ 1836 0168 374A     		ldr	r2, .L97+72
+ 1837 016a 07CA     		ldmia	r2, {r0, r1, r2}
+ 1838 016c 03C3     		stmia	r3!, {r0, r1}
+ 1839 016e 1A80     		strh	r2, [r3]	@ movhi
+ 1840 0170 0233     		adds	r3, r3, #2
+ 1841 0172 120C     		lsrs	r2, r2, #16
+ 1842 0174 1A70     		strb	r2, [r3]
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 43
+
+
+ 438:.\main.c      ****         break;
+ 1843              		.loc 1 438 0
+ 1844 0176 38E0     		b	.L71
+ 1845              	.L89:
+ 439:.\main.c      ****     case 16:
+ 440:.\main.c      ****         sprintf(display[0],"RGain Up");
+ 1846              		.loc 1 440 0
+ 1847 0178 234B     		ldr	r3, .L97+8
+ 1848 017a 344A     		ldr	r2, .L97+76
+ 1849 017c 07CA     		ldmia	r2, {r0, r1, r2}
+ 1850 017e 03C3     		stmia	r3!, {r0, r1}
+ 1851 0180 1A70     		strb	r2, [r3]
+ 441:.\main.c      ****         break;
+ 1852              		.loc 1 441 0
+ 1853 0182 32E0     		b	.L71
+ 1854              	.L90:
+ 442:.\main.c      ****     case 17:
+ 443:.\main.c      ****         sprintf(display[0],"RGain Down");
+ 1855              		.loc 1 443 0
+ 1856 0184 204B     		ldr	r3, .L97+8
+ 1857 0186 324A     		ldr	r2, .L97+80
+ 1858 0188 07CA     		ldmia	r2, {r0, r1, r2}
+ 1859 018a 03C3     		stmia	r3!, {r0, r1}
+ 1860 018c 1A80     		strh	r2, [r3]	@ movhi
+ 1861 018e 0233     		adds	r3, r3, #2
+ 1862 0190 120C     		lsrs	r2, r2, #16
+ 1863 0192 1A70     		strb	r2, [r3]
+ 444:.\main.c      ****         break;
+ 1864              		.loc 1 444 0
+ 1865 0194 29E0     		b	.L71
+ 1866              	.L91:
+ 445:.\main.c      ****     case 18:
+ 446:.\main.c      ****         sprintf(display[0],"Exposure Up");
+ 1867              		.loc 1 446 0
+ 1868 0196 1C4B     		ldr	r3, .L97+8
+ 1869 0198 2E4A     		ldr	r2, .L97+84
+ 1870 019a 07CA     		ldmia	r2, {r0, r1, r2}
+ 1871 019c 83E80700 		stmia	r3, {r0, r1, r2}
+ 447:.\main.c      ****         break;
+ 1872              		.loc 1 447 0
+ 1873 01a0 23E0     		b	.L71
+ 1874              	.L92:
+ 448:.\main.c      ****     case 19:
+ 449:.\main.c      ****         sprintf(display[0],"Exposure Down");
+ 1875              		.loc 1 449 0
+ 1876 01a2 194A     		ldr	r2, .L97+8
+ 1877 01a4 2C4B     		ldr	r3, .L97+88
+ 1878 01a6 1446     		mov	r4, r2
+ 1879 01a8 0FCB     		ldmia	r3, {r0, r1, r2, r3}
+ 1880 01aa 07C4     		stmia	r4!, {r0, r1, r2}
+ 1881 01ac 2380     		strh	r3, [r4]	@ movhi
+ 450:.\main.c      ****         break;
+ 1882              		.loc 1 450 0
+ 1883 01ae 1CE0     		b	.L71
+ 1884              	.L93:
+ 451:.\main.c      ****     case 20:
+ 452:.\main.c      ****         sprintf(display[0],"Connect Up");
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 44
+
+
+ 1885              		.loc 1 452 0
+ 1886 01b0 154B     		ldr	r3, .L97+8
+ 1887 01b2 2A4A     		ldr	r2, .L97+92
+ 1888 01b4 07CA     		ldmia	r2, {r0, r1, r2}
+ 1889 01b6 03C3     		stmia	r3!, {r0, r1}
+ 1890 01b8 1A80     		strh	r2, [r3]	@ movhi
+ 1891 01ba 0233     		adds	r3, r3, #2
+ 1892 01bc 120C     		lsrs	r2, r2, #16
+ 1893 01be 1A70     		strb	r2, [r3]
+ 453:.\main.c      ****         break;
+ 1894              		.loc 1 453 0
+ 1895 01c0 13E0     		b	.L71
+ 1896              	.L94:
+ 454:.\main.c      ****     case 21:
+ 455:.\main.c      ****         sprintf(display[0],"Connect Down");
+ 1897              		.loc 1 455 0
+ 1898 01c2 114A     		ldr	r2, .L97+8
+ 1899 01c4 264B     		ldr	r3, .L97+96
+ 1900 01c6 1446     		mov	r4, r2
+ 1901 01c8 0FCB     		ldmia	r3, {r0, r1, r2, r3}
+ 1902 01ca 07C4     		stmia	r4!, {r0, r1, r2}
+ 1903 01cc 2370     		strb	r3, [r4]
+ 456:.\main.c      ****         break;
+ 1904              		.loc 1 456 0
+ 1905 01ce 0CE0     		b	.L71
+ 1906              	.L95:
+ 457:.\main.c      ****     case 22:
+ 458:.\main.c      ****         sprintf(display[0],"Center Left");
+ 1907              		.loc 1 458 0
+ 1908 01d0 0D4B     		ldr	r3, .L97+8
+ 1909 01d2 244A     		ldr	r2, .L97+100
+ 1910 01d4 07CA     		ldmia	r2, {r0, r1, r2}
+ 1911 01d6 83E80700 		stmia	r3, {r0, r1, r2}
+ 459:.\main.c      ****         break;
+ 1912              		.loc 1 459 0
+ 1913 01da 06E0     		b	.L71
+ 1914              	.L96:
+ 460:.\main.c      ****     case 23:
+ 461:.\main.c      ****         sprintf(display[0],"Center Right");
+ 1915              		.loc 1 461 0
+ 1916 01dc 0A4A     		ldr	r2, .L97+8
+ 1917 01de 224B     		ldr	r3, .L97+104
+ 1918 01e0 1446     		mov	r4, r2
+ 1919 01e2 0FCB     		ldmia	r3, {r0, r1, r2, r3}
+ 1920 01e4 07C4     		stmia	r4!, {r0, r1, r2}
+ 1921 01e6 2370     		strb	r3, [r4]
+ 462:.\main.c      ****         break;
+ 1922              		.loc 1 462 0
+ 1923 01e8 00BF     		nop
+ 1924              	.L71:
+ 463:.\main.c      ****     }
+ 464:.\main.c      ****     LCD_ClearDisplay();
+ 1925              		.loc 1 464 0
+ 1926 01ea 0120     		movs	r0, #1
+ 1927 01ec FFF7FEFF 		bl	LCD_WriteControl
+ 465:.\main.c      ****     LCD_PosPrintString(0,0,display[0]);
+ 1928              		.loc 1 465 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 45
+
+
+ 1929 01f0 0020     		movs	r0, #0
+ 1930 01f2 0021     		movs	r1, #0
+ 1931 01f4 FFF7FEFF 		bl	LCD_Position
+ 1932 01f8 0348     		ldr	r0, .L97+8
+ 1933 01fa FFF7FEFF 		bl	LCD_PrintString
+ 466:.\main.c      **** }...
+ 1934              		.loc 1 466 0
+ 1935 01fe 98BD     		pop	{r3, r4, r7, pc}
+ 1936              	.L98:
+ 1937              		.align	2
+ 1938              	.L97:
+ 1939 0200 00000000 		.word	current_display
+ 1940 0204 ABAAAA2A 		.word	715827883
+ 1941 0208 00000000 		.word	display
+ 1942 020c 44010000 		.word	.LC24
+ 1943 0210 50010000 		.word	.LC25
+ 1944 0214 5C010000 		.word	.LC26
+ 1945 0218 68010000 		.word	.LC27
+ 1946 021c 74010000 		.word	.LC28
+ 1947 0220 80010000 		.word	.LC29
+ 1948 0224 90010000 		.word	.LC30
+ 1949 0228 9C010000 		.word	.LC31
+ 1950 022c AC010000 		.word	.LC32
+ 1951 0230 B8010000 		.word	.LC33
+ 1952 0234 C4010000 		.word	.LC34
+ 1953 0238 D0010000 		.word	.LC35
+ 1954 023c DC010000 		.word	.LC36
+ 1955 0240 E4010000 		.word	.LC37
+ 1956 0244 F0010000 		.word	.LC38
+ 1957 0248 FC010000 		.word	.LC39
+ 1958 024c 08020000 		.word	.LC40
+ 1959 0250 14020000 		.word	.LC41
+ 1960 0254 20020000 		.word	.LC42
+ 1961 0258 2C020000 		.word	.LC43
+ 1962 025c 3C020000 		.word	.LC44
+ 1963 0260 48020000 		.word	.LC45
+ 1964 0264 58020000 		.word	.LC46
+ 1965 0268 64020000 		.word	.LC47
+ 1966              		.cfi_endproc
+ 1967              	.LFE71:
+ 1968              		.size	handle_menus, .-handle_menus
+ 1969              		.text
+ 1970              	.Letext0:
+ 1971              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 1972              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 1973              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 1974              		.file 5 "./blob_stats.h"
+ 1975              		.file 6 "Generated_Source\\PSoC5/core_cm3.h"
+ 1976              		.file 7 "Generated_Source\\PSoC5/Camera.h"
+ 1977              		.file 8 "./my_camera_functions.h"
+ 1978              		.section	.debug_info,"",%progbits
+ 1979              	.Ldebug_info0:
+ 1980 0000 1E040000 		.4byte	0x41e
+ 1981 0004 0400     		.2byte	0x4
+ 1982 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 1983 000a 04       		.byte	0x4
+ 1984 000b 01       		.uleb128 0x1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 46
+
+
+ 1985 000c A4000000 		.4byte	.LASF56
+ 1986 0010 01       		.byte	0x1
+ 1987 0011 86020000 		.4byte	.LASF57
+ 1988 0015 3C000000 		.4byte	.LASF58
+ 1989 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 1990 001d 00000000 		.4byte	0
+ 1991 0021 00000000 		.4byte	.Ldebug_line0
+ 1992 0025 02       		.uleb128 0x2
+ 1993 0026 01       		.byte	0x1
+ 1994 0027 06       		.byte	0x6
+ 1995 0028 B9010000 		.4byte	.LASF0
+ 1996 002c 02       		.uleb128 0x2
+ 1997 002d 01       		.byte	0x1
+ 1998 002e 08       		.byte	0x8
+ 1999 002f 9F010000 		.4byte	.LASF1
+ 2000 0033 02       		.uleb128 0x2
+ 2001 0034 02       		.byte	0x2
+ 2002 0035 05       		.byte	0x5
+ 2003 0036 9A000000 		.4byte	.LASF2
+ 2004 003a 02       		.uleb128 0x2
+ 2005 003b 02       		.byte	0x2
+ 2006 003c 07       		.byte	0x7
+ 2007 003d FE010000 		.4byte	.LASF3
+ 2008 0041 03       		.uleb128 0x3
+ 2009 0042 8F020000 		.4byte	.LASF9
+ 2010 0046 02       		.byte	0x2
+ 2011 0047 37       		.byte	0x37
+ 2012 0048 4C000000 		.4byte	0x4c
+ 2013 004c 02       		.uleb128 0x2
+ 2014 004d 04       		.byte	0x4
+ 2015 004e 05       		.byte	0x5
+ 2016 004f 66010000 		.4byte	.LASF4
+ 2017 0053 02       		.uleb128 0x2
+ 2018 0054 04       		.byte	0x4
+ 2019 0055 07       		.byte	0x7
+ 2020 0056 54020000 		.4byte	.LASF5
+ 2021 005a 02       		.uleb128 0x2
+ 2022 005b 08       		.byte	0x8
+ 2023 005c 05       		.byte	0x5
+ 2024 005d 52010000 		.4byte	.LASF6
+ 2025 0061 02       		.uleb128 0x2
+ 2026 0062 08       		.byte	0x8
+ 2027 0063 07       		.byte	0x7
+ 2028 0064 C5010000 		.4byte	.LASF7
+ 2029 0068 04       		.uleb128 0x4
+ 2030 0069 04       		.byte	0x4
+ 2031 006a 05       		.byte	0x5
+ 2032 006b 696E7400 		.ascii	"int\000"
+ 2033 006f 02       		.uleb128 0x2
+ 2034 0070 04       		.byte	0x4
+ 2035 0071 07       		.byte	0x7
+ 2036 0072 DC010000 		.4byte	.LASF8
+ 2037 0076 03       		.uleb128 0x3
+ 2038 0077 1C020000 		.4byte	.LASF10
+ 2039 007b 03       		.byte	0x3
+ 2040 007c 41       		.byte	0x41
+ 2041 007d 41000000 		.4byte	0x41
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 47
+
+
+ 2042 0081 03       		.uleb128 0x3
+ 2043 0082 2D010000 		.4byte	.LASF11
+ 2044 0086 04       		.byte	0x4
+ 2045 0087 B3       		.byte	0xb3
+ 2046 0088 2C000000 		.4byte	0x2c
+ 2047 008c 03       		.uleb128 0x3
+ 2048 008d 20010000 		.4byte	.LASF12
+ 2049 0091 04       		.byte	0x4
+ 2050 0092 B4       		.byte	0xb4
+ 2051 0093 3A000000 		.4byte	0x3a
+ 2052 0097 03       		.uleb128 0x3
+ 2053 0098 44020000 		.4byte	.LASF13
+ 2054 009c 04       		.byte	0x4
+ 2055 009d B5       		.byte	0xb5
+ 2056 009e 53000000 		.4byte	0x53
+ 2057 00a2 03       		.uleb128 0x3
+ 2058 00a3 27010000 		.4byte	.LASF14
+ 2059 00a7 04       		.byte	0x4
+ 2060 00a8 B7       		.byte	0xb7
+ 2061 00a9 33000000 		.4byte	0x33
+ 2062 00ad 02       		.uleb128 0x2
+ 2063 00ae 04       		.byte	0x4
+ 2064 00af 04       		.byte	0x4
+ 2065 00b0 44010000 		.4byte	.LASF15
+ 2066 00b4 02       		.uleb128 0x2
+ 2067 00b5 08       		.byte	0x8
+ 2068 00b6 04       		.byte	0x4
+ 2069 00b7 66020000 		.4byte	.LASF16
+ 2070 00bb 02       		.uleb128 0x2
+ 2071 00bc 01       		.byte	0x1
+ 2072 00bd 08       		.byte	0x8
+ 2073 00be 17020000 		.4byte	.LASF17
+ 2074 00c2 02       		.uleb128 0x2
+ 2075 00c3 04       		.byte	0x4
+ 2076 00c4 07       		.byte	0x7
+ 2077 00c5 33000000 		.4byte	.LASF18
+ 2078 00c9 05       		.uleb128 0x5
+ 2079 00ca 01       		.byte	0x1
+ 2080 00cb 08       		.byte	0x8
+ 2081 00cc 1F       		.byte	0x1f
+ 2082 00cd EA000000 		.4byte	0xea
+ 2083 00d1 06       		.uleb128 0x6
+ 2084 00d2 99020000 		.4byte	.LASF19
+ 2085 00d6 00       		.sleb128 0
+ 2086 00d7 07       		.uleb128 0x7
+ 2087 00d8 52454400 		.ascii	"RED\000"
+ 2088 00dc 01       		.sleb128 1
+ 2089 00dd 06       		.uleb128 0x6
+ 2090 00de CC020000 		.4byte	.LASF20
+ 2091 00e2 02       		.sleb128 2
+ 2092 00e3 06       		.uleb128 0x6
+ 2093 00e4 D2020000 		.4byte	.LASF21
+ 2094 00e8 03       		.sleb128 3
+ 2095 00e9 00       		.byte	0
+ 2096 00ea 08       		.uleb128 0x8
+ 2097 00eb 10       		.byte	0x10
+ 2098 00ec 05       		.byte	0x5
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 48
+
+
+ 2099 00ed 15       		.byte	0x15
+ 2100 00ee 23010000 		.4byte	0x123
+ 2101 00f2 09       		.uleb128 0x9
+ 2102 00f3 9E020000 		.4byte	.LASF22
+ 2103 00f7 05       		.byte	0x5
+ 2104 00f8 17       		.byte	0x17
+ 2105 00f9 68000000 		.4byte	0x68
+ 2106 00fd 00       		.byte	0
+ 2107 00fe 09       		.uleb128 0x9
+ 2108 00ff 75020000 		.4byte	.LASF23
+ 2109 0103 05       		.byte	0x5
+ 2110 0104 18       		.byte	0x18
+ 2111 0105 97000000 		.4byte	0x97
+ 2112 0109 04       		.byte	0x4
+ 2113 010a 09       		.uleb128 0x9
+ 2114 010b 11020000 		.4byte	.LASF24
+ 2115 010f 05       		.byte	0x5
+ 2116 0110 19       		.byte	0x19
+ 2117 0111 97000000 		.4byte	0x97
+ 2118 0115 08       		.byte	0x8
+ 2119 0116 09       		.uleb128 0x9
+ 2120 0117 D7020000 		.4byte	.LASF25
+ 2121 011b 05       		.byte	0x5
+ 2122 011c 19       		.byte	0x19
+ 2123 011d 97000000 		.4byte	0x97
+ 2124 0121 0C       		.byte	0xc
+ 2125 0122 00       		.byte	0
+ 2126 0123 03       		.uleb128 0x3
+ 2127 0124 F4010000 		.4byte	.LASF26
+ 2128 0128 05       		.byte	0x5
+ 2129 0129 1A       		.byte	0x1a
+ 2130 012a EA000000 		.4byte	0xea
+ 2131 012e 0A       		.uleb128 0xa
+ 2132 012f 14000000 		.4byte	.LASF27
+ 2133 0133 01       		.byte	0x1
+ 2134 0134 28       		.byte	0x28
+ 2135 0135 00000000 		.4byte	.LFB63
+ 2136 0139 0E000000 		.4byte	.LFE63-.LFB63
+ 2137 013d 01       		.uleb128 0x1
+ 2138 013e 9C       		.byte	0x9c
+ 2139 013f 0A       		.uleb128 0xa
+ 2140 0140 B8020000 		.4byte	.LASF28
+ 2141 0144 01       		.byte	0x1
+ 2142 0145 2E       		.byte	0x2e
+ 2143 0146 00000000 		.4byte	.LFB64
+ 2144 014a 0E000000 		.4byte	.LFE64-.LFB64
+ 2145 014e 01       		.uleb128 0x1
+ 2146 014f 9C       		.byte	0x9c
+ 2147 0150 0B       		.uleb128 0xb
+ 2148 0151 8F000000 		.4byte	.LASF59
+ 2149 0155 01       		.byte	0x1
+ 2150 0156 34       		.byte	0x34
+ 2151 0157 68000000 		.4byte	0x68
+ 2152 015b 00000000 		.4byte	.LFB65
+ 2153 015f 1C010000 		.4byte	.LFE65-.LFB65
+ 2154 0163 01       		.uleb128 0x1
+ 2155 0164 9C       		.byte	0x9c
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 49
+
+
+ 2156 0165 76010000 		.4byte	0x176
+ 2157 0169 0C       		.uleb128 0xc
+ 2158 016a 6900     		.ascii	"i\000"
+ 2159 016c 01       		.byte	0x1
+ 2160 016d 38       		.byte	0x38
+ 2161 016e 68000000 		.4byte	0x68
+ 2162 0172 02       		.uleb128 0x2
+ 2163 0173 91       		.byte	0x91
+ 2164 0174 74       		.sleb128 -12
+ 2165 0175 00       		.byte	0
+ 2166 0176 0D       		.uleb128 0xd
+ 2167 0177 91010000 		.4byte	.LASF32
+ 2168 017b 01       		.byte	0x1
+ 2169 017c 75       		.byte	0x75
+ 2170 017d 00000000 		.4byte	.LFB66
+ 2171 0181 44010000 		.4byte	.LFE66-.LFB66
+ 2172 0185 01       		.uleb128 0x1
+ 2173 0186 9C       		.byte	0x9c
+ 2174 0187 0E       		.uleb128 0xe
+ 2175 0188 7A020000 		.4byte	.LASF29
+ 2176 018c 01       		.byte	0x1
+ 2177 018d 9E       		.byte	0x9e
+ 2178 018e 00000000 		.4byte	.LFB67
+ 2179 0192 DC000000 		.4byte	.LFE67-.LFB67
+ 2180 0196 01       		.uleb128 0x1
+ 2181 0197 9C       		.byte	0x9c
+ 2182 0198 A9010000 		.4byte	0x1a9
+ 2183 019c 0C       		.uleb128 0xc
+ 2184 019d 6900     		.ascii	"i\000"
+ 2185 019f 01       		.byte	0x1
+ 2186 01a0 A0       		.byte	0xa0
+ 2187 01a1 68000000 		.4byte	0x68
+ 2188 01a5 02       		.uleb128 0x2
+ 2189 01a6 91       		.byte	0x91
+ 2190 01a7 74       		.sleb128 -12
+ 2191 01a8 00       		.byte	0
+ 2192 01a9 0E       		.uleb128 0xe
+ 2193 01aa 19000000 		.4byte	.LASF30
+ 2194 01ae 01       		.byte	0x1
+ 2195 01af B9       		.byte	0xb9
+ 2196 01b0 00000000 		.4byte	.LFB68
+ 2197 01b4 7C000000 		.4byte	.LFE68-.LFB68
+ 2198 01b8 01       		.uleb128 0x1
+ 2199 01b9 9C       		.byte	0x9c
+ 2200 01ba D9010000 		.4byte	0x1d9
+ 2201 01be 0C       		.uleb128 0xc
+ 2202 01bf 52474200 		.ascii	"RGB\000"
+ 2203 01c3 01       		.byte	0x1
+ 2204 01c4 BF       		.byte	0xbf
+ 2205 01c5 D9010000 		.4byte	0x1d9
+ 2206 01c9 02       		.uleb128 0x2
+ 2207 01ca 91       		.byte	0x91
+ 2208 01cb 70       		.sleb128 -16
+ 2209 01cc 0C       		.uleb128 0xc
+ 2210 01cd 7800     		.ascii	"x\000"
+ 2211 01cf 01       		.byte	0x1
+ 2212 01d0 C0       		.byte	0xc0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 50
+
+
+ 2213 01d1 68000000 		.4byte	0x68
+ 2214 01d5 02       		.uleb128 0x2
+ 2215 01d6 91       		.byte	0x91
+ 2216 01d7 74       		.sleb128 -12
+ 2217 01d8 00       		.byte	0
+ 2218 01d9 0F       		.uleb128 0xf
+ 2219 01da BB000000 		.4byte	0xbb
+ 2220 01de E9010000 		.4byte	0x1e9
+ 2221 01e2 10       		.uleb128 0x10
+ 2222 01e3 C2000000 		.4byte	0xc2
+ 2223 01e7 03       		.byte	0x3
+ 2224 01e8 00       		.byte	0
+ 2225 01e9 0E       		.uleb128 0xe
+ 2226 01ea 26000000 		.4byte	.LASF31
+ 2227 01ee 01       		.byte	0x1
+ 2228 01ef C4       		.byte	0xc4
+ 2229 01f0 00000000 		.4byte	.LFB69
+ 2230 01f4 14010000 		.4byte	.LFE69-.LFB69
+ 2231 01f8 01       		.uleb128 0x1
+ 2232 01f9 9C       		.byte	0x9c
+ 2233 01fa 27020000 		.4byte	0x227
+ 2234 01fe 11       		.uleb128 0x11
+ 2235 01ff DD020000 		.4byte	.LASF60
+ 2236 0203 01       		.byte	0x1
+ 2237 0204 C9       		.byte	0xc9
+ 2238 0205 68000000 		.4byte	0x68
+ 2239 0209 0F020000 		.4byte	0x20f
+ 2240 020d 12       		.uleb128 0x12
+ 2241 020e 00       		.byte	0
+ 2242 020f 13       		.uleb128 0x13
+ 2243 0210 0C000000 		.4byte	.LBB2
+ 2244 0214 54000000 		.4byte	.LBE2-.LBB2
+ 2245 0218 14       		.uleb128 0x14
+ 2246 0219 DD020000 		.4byte	.LASF60
+ 2247 021d 01       		.byte	0x1
+ 2248 021e C9       		.byte	0xc9
+ 2249 021f 68000000 		.4byte	0x68
+ 2250 0223 12       		.uleb128 0x12
+ 2251 0224 00       		.byte	0
+ 2252 0225 00       		.byte	0
+ 2253 0226 00       		.byte	0
+ 2254 0227 0D       		.uleb128 0xd
+ 2255 0228 7C010000 		.4byte	.LASF33
+ 2256 022c 01       		.byte	0x1
+ 2257 022d E5       		.byte	0xe5
+ 2258 022e 00000000 		.4byte	.LFB70
+ 2259 0232 60040000 		.4byte	.LFE70-.LFB70
+ 2260 0236 01       		.uleb128 0x1
+ 2261 0237 9C       		.byte	0x9c
+ 2262 0238 15       		.uleb128 0x15
+ 2263 0239 6F010000 		.4byte	.LASF34
+ 2264 023d 01       		.byte	0x1
+ 2265 023e 7301     		.2byte	0x173
+ 2266 0240 00000000 		.4byte	.LFB71
+ 2267 0244 6C020000 		.4byte	.LFE71-.LFB71
+ 2268 0248 01       		.uleb128 0x1
+ 2269 0249 9C       		.byte	0x9c
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 51
+
+
+ 2270 024a 16       		.uleb128 0x16
+ 2271 024b BF020000 		.4byte	.LASF35
+ 2272 024f 06       		.byte	0x6
+ 2273 0250 2A06     		.2byte	0x62a
+ 2274 0252 56020000 		.4byte	0x256
+ 2275 0256 17       		.uleb128 0x17
+ 2276 0257 76000000 		.4byte	0x76
+ 2277 025b 0F       		.uleb128 0xf
+ 2278 025c 81000000 		.4byte	0x81
+ 2279 0260 77020000 		.4byte	0x277
+ 2280 0264 10       		.uleb128 0x10
+ 2281 0265 C2000000 		.4byte	0xc2
+ 2282 0269 8F       		.byte	0x8f
+ 2283 026a 10       		.uleb128 0x10
+ 2284 026b C2000000 		.4byte	0xc2
+ 2285 026f 57       		.byte	0x57
+ 2286 0270 10       		.uleb128 0x10
+ 2287 0271 C2000000 		.4byte	0xc2
+ 2288 0275 03       		.byte	0x3
+ 2289 0276 00       		.byte	0
+ 2290 0277 18       		.uleb128 0x18
+ 2291 0278 A5020000 		.4byte	.LASF36
+ 2292 027c 07       		.byte	0x7
+ 2293 027d 08       		.byte	0x8
+ 2294 027e 5B020000 		.4byte	0x25b
+ 2295 0282 05       		.uleb128 0x5
+ 2296 0283 03       		.byte	0x3
+ 2297 0284 00000000 		.4byte	Camera_framebuffer
+ 2298 0288 0F       		.uleb128 0xf
+ 2299 0289 BB000000 		.4byte	0xbb
+ 2300 028d 9E020000 		.4byte	0x29e
+ 2301 0291 10       		.uleb128 0x10
+ 2302 0292 C2000000 		.4byte	0xc2
+ 2303 0296 01       		.byte	0x1
+ 2304 0297 10       		.uleb128 0x10
+ 2305 0298 C2000000 		.4byte	0xc2
+ 2306 029c 13       		.byte	0x13
+ 2307 029d 00       		.byte	0
+ 2308 029e 18       		.uleb128 0x18
+ 2309 029f 6D020000 		.4byte	.LASF37
+ 2310 02a3 01       		.byte	0x1
+ 2311 02a4 08       		.byte	0x8
+ 2312 02a5 88020000 		.4byte	0x288
+ 2313 02a9 05       		.uleb128 0x5
+ 2314 02aa 03       		.byte	0x3
+ 2315 02ab 00000000 		.4byte	display
+ 2316 02af 0F       		.uleb128 0xf
+ 2317 02b0 BB000000 		.4byte	0xbb
+ 2318 02b4 BF020000 		.4byte	0x2bf
+ 2319 02b8 10       		.uleb128 0x10
+ 2320 02b9 C2000000 		.4byte	0xc2
+ 2321 02bd 04       		.byte	0x4
+ 2322 02be 00       		.byte	0
+ 2323 02bf 19       		.uleb128 0x19
+ 2324 02c0 52474200 		.ascii	"RGB\000"
+ 2325 02c4 01       		.byte	0x1
+ 2326 02c5 09       		.byte	0x9
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 52
+
+
+ 2327 02c6 AF020000 		.4byte	0x2af
+ 2328 02ca 05       		.uleb128 0x5
+ 2329 02cb 03       		.byte	0x3
+ 2330 02cc 00000000 		.4byte	RGB
+ 2331 02d0 18       		.uleb128 0x18
+ 2332 02d1 EF010000 		.4byte	.LASF38
+ 2333 02d5 01       		.byte	0x1
+ 2334 02d6 0A       		.byte	0xa
+ 2335 02d7 A2000000 		.4byte	0xa2
+ 2336 02db 05       		.uleb128 0x5
+ 2337 02dc 03       		.byte	0x3
+ 2338 02dd 00000000 		.4byte	disp
+ 2339 02e1 19       		.uleb128 0x19
+ 2340 02e2 6D00     		.ascii	"m\000"
+ 2341 02e4 01       		.byte	0x1
+ 2342 02e5 0A       		.byte	0xa
+ 2343 02e6 A2000000 		.4byte	0xa2
+ 2344 02ea 05       		.uleb128 0x5
+ 2345 02eb 03       		.byte	0x3
+ 2346 02ec 00000000 		.4byte	m
+ 2347 02f0 19       		.uleb128 0x19
+ 2348 02f1 6300     		.ascii	"c\000"
+ 2349 02f3 01       		.byte	0x1
+ 2350 02f4 0A       		.byte	0xa
+ 2351 02f5 A2000000 		.4byte	0xa2
+ 2352 02f9 05       		.uleb128 0x5
+ 2353 02fa 03       		.byte	0x3
+ 2354 02fb 00000000 		.4byte	c
+ 2355 02ff 0F       		.uleb128 0xf
+ 2356 0300 23010000 		.4byte	0x123
+ 2357 0304 0F030000 		.4byte	0x30f
+ 2358 0308 10       		.uleb128 0x10
+ 2359 0309 C2000000 		.4byte	0xc2
+ 2360 030d FE       		.byte	0xfe
+ 2361 030e 00       		.byte	0
+ 2362 030f 1A       		.uleb128 0x1a
+ 2363 0310 94000000 		.4byte	.LASF39
+ 2364 0314 01       		.byte	0x1
+ 2365 0315 0B       		.byte	0xb
+ 2366 0316 FF020000 		.4byte	0x2ff
+ 2367 031a 1A       		.uleb128 0x1a
+ 2368 031b AD010000 		.4byte	.LASF40
+ 2369 031f 01       		.byte	0x1
+ 2370 0320 0C       		.byte	0xc
+ 2371 0321 81000000 		.4byte	0x81
+ 2372 0325 1A       		.uleb128 0x1a
+ 2373 0326 B3010000 		.4byte	.LASF41
+ 2374 032a 01       		.byte	0x1
+ 2375 032b 0D       		.byte	0xd
+ 2376 032c 81000000 		.4byte	0x81
+ 2377 0330 1A       		.uleb128 0x1a
+ 2378 0331 34020000 		.4byte	.LASF42
+ 2379 0335 01       		.byte	0x1
+ 2380 0336 0E       		.byte	0xe
+ 2381 0337 81000000 		.4byte	0x81
+ 2382 033b 1A       		.uleb128 0x1a
+ 2383 033c 3C020000 		.4byte	.LASF43
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 53
+
+
+ 2384 0340 01       		.byte	0x1
+ 2385 0341 0F       		.byte	0xf
+ 2386 0342 81000000 		.4byte	0x81
+ 2387 0346 1A       		.uleb128 0x1a
+ 2388 0347 00000000 		.4byte	.LASF44
+ 2389 034b 01       		.byte	0x1
+ 2390 034c 10       		.byte	0x10
+ 2391 034d 81000000 		.4byte	0x81
+ 2392 0351 1A       		.uleb128 0x1a
+ 2393 0352 3D010000 		.4byte	.LASF45
+ 2394 0356 01       		.byte	0x1
+ 2395 0357 11       		.byte	0x11
+ 2396 0358 81000000 		.4byte	0x81
+ 2397 035c 18       		.uleb128 0x18
+ 2398 035d 24020000 		.4byte	.LASF46
+ 2399 0361 01       		.byte	0x1
+ 2400 0362 19       		.byte	0x19
+ 2401 0363 68000000 		.4byte	0x68
+ 2402 0367 05       		.uleb128 0x5
+ 2403 0368 03       		.byte	0x3
+ 2404 0369 00000000 		.4byte	current_display
+ 2405 036d 18       		.uleb128 0x18
+ 2406 036e 07000000 		.4byte	.LASF47
+ 2407 0372 01       		.byte	0x1
+ 2408 0373 1A       		.byte	0x1a
+ 2409 0374 68000000 		.4byte	0x68
+ 2410 0378 05       		.uleb128 0x5
+ 2411 0379 03       		.byte	0x3
+ 2412 037a 00000000 		.4byte	centre_pixel
+ 2413 037e 1A       		.uleb128 0x1a
+ 2414 037f 33010000 		.4byte	.LASF48
+ 2415 0383 01       		.byte	0x1
+ 2416 0384 20       		.byte	0x20
+ 2417 0385 68000000 		.4byte	0x68
+ 2418 0389 18       		.uleb128 0x18
+ 2419 038a 4B020000 		.4byte	.LASF49
+ 2420 038e 01       		.byte	0x1
+ 2421 038f 22       		.byte	0x22
+ 2422 0390 81000000 		.4byte	0x81
+ 2423 0394 05       		.uleb128 0x5
+ 2424 0395 03       		.byte	0x3
+ 2425 0396 00000000 		.4byte	exposure
+ 2426 039a 18       		.uleb128 0x18
+ 2427 039b F9010000 		.4byte	.LASF50
+ 2428 039f 01       		.byte	0x1
+ 2429 03a0 22       		.byte	0x22
+ 2430 03a1 81000000 		.4byte	0x81
+ 2431 03a5 05       		.uleb128 0x5
+ 2432 03a6 03       		.byte	0x3
+ 2433 03a7 00000000 		.4byte	gain
+ 2434 03ab 18       		.uleb128 0x18
+ 2435 03ac 60010000 		.4byte	.LASF51
+ 2436 03b0 01       		.byte	0x1
+ 2437 03b1 22       		.byte	0x22
+ 2438 03b2 81000000 		.4byte	0x81
+ 2439 03b6 05       		.uleb128 0x5
+ 2440 03b7 03       		.byte	0x3
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 54
+
+
+ 2441 03b8 00000000 		.4byte	bgain
+ 2442 03bc 18       		.uleb128 0x18
+ 2443 03bd 8B010000 		.4byte	.LASF52
+ 2444 03c1 01       		.byte	0x1
+ 2445 03c2 22       		.byte	0x22
+ 2446 03c3 81000000 		.4byte	0x81
+ 2447 03c7 05       		.uleb128 0x5
+ 2448 03c8 03       		.byte	0x3
+ 2449 03c9 00000000 		.4byte	rgain
+ 2450 03cd 18       		.uleb128 0x18
+ 2451 03ce 89000000 		.4byte	.LASF53
+ 2452 03d2 01       		.byte	0x1
+ 2453 03d3 23       		.byte	0x23
+ 2454 03d4 8C000000 		.4byte	0x8c
+ 2455 03d8 05       		.uleb128 0x5
+ 2456 03d9 03       		.byte	0x3
+ 2457 03da 00000000 		.4byte	blobn
+ 2458 03de 0F       		.uleb128 0xf
+ 2459 03df 68000000 		.4byte	0x68
+ 2460 03e3 EE030000 		.4byte	0x3ee
+ 2461 03e7 10       		.uleb128 0x10
+ 2462 03e8 C2000000 		.4byte	0xc2
+ 2463 03ec 02       		.byte	0x2
+ 2464 03ed 00       		.byte	0
+ 2465 03ee 19       		.uleb128 0x19
+ 2466 03ef 64697300 		.ascii	"dis\000"
+ 2467 03f3 01       		.byte	0x1
+ 2468 03f4 24       		.byte	0x24
+ 2469 03f5 DE030000 		.4byte	0x3de
+ 2470 03f9 05       		.uleb128 0x5
+ 2471 03fa 03       		.byte	0x3
+ 2472 03fb 00000000 		.4byte	dis
+ 2473 03ff 18       		.uleb128 0x18
+ 2474 0400 E9010000 		.4byte	.LASF54
+ 2475 0404 01       		.byte	0x1
+ 2476 0405 24       		.byte	0x24
+ 2477 0406 DE030000 		.4byte	0x3de
+ 2478 040a 05       		.uleb128 0x5
+ 2479 040b 03       		.byte	0x3
+ 2480 040c 00000000 		.4byte	stack
+ 2481 0410 18       		.uleb128 0x18
+ 2482 0411 4A010000 		.4byte	.LASF55
+ 2483 0415 01       		.byte	0x1
+ 2484 0416 26       		.byte	0x26
+ 2485 0417 68000000 		.4byte	0x68
+ 2486 041b 05       		.uleb128 0x5
+ 2487 041c 03       		.byte	0x3
+ 2488 041d 00000000 		.4byte	PWM_Val
+ 2489 0421 00       		.byte	0
+ 2490              		.section	.debug_abbrev,"",%progbits
+ 2491              	.Ldebug_abbrev0:
+ 2492 0000 01       		.uleb128 0x1
+ 2493 0001 11       		.uleb128 0x11
+ 2494 0002 01       		.byte	0x1
+ 2495 0003 25       		.uleb128 0x25
+ 2496 0004 0E       		.uleb128 0xe
+ 2497 0005 13       		.uleb128 0x13
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 55
+
+
+ 2498 0006 0B       		.uleb128 0xb
+ 2499 0007 03       		.uleb128 0x3
+ 2500 0008 0E       		.uleb128 0xe
+ 2501 0009 1B       		.uleb128 0x1b
+ 2502 000a 0E       		.uleb128 0xe
+ 2503 000b 55       		.uleb128 0x55
+ 2504 000c 17       		.uleb128 0x17
+ 2505 000d 11       		.uleb128 0x11
+ 2506 000e 01       		.uleb128 0x1
+ 2507 000f 10       		.uleb128 0x10
+ 2508 0010 17       		.uleb128 0x17
+ 2509 0011 00       		.byte	0
+ 2510 0012 00       		.byte	0
+ 2511 0013 02       		.uleb128 0x2
+ 2512 0014 24       		.uleb128 0x24
+ 2513 0015 00       		.byte	0
+ 2514 0016 0B       		.uleb128 0xb
+ 2515 0017 0B       		.uleb128 0xb
+ 2516 0018 3E       		.uleb128 0x3e
+ 2517 0019 0B       		.uleb128 0xb
+ 2518 001a 03       		.uleb128 0x3
+ 2519 001b 0E       		.uleb128 0xe
+ 2520 001c 00       		.byte	0
+ 2521 001d 00       		.byte	0
+ 2522 001e 03       		.uleb128 0x3
+ 2523 001f 16       		.uleb128 0x16
+ 2524 0020 00       		.byte	0
+ 2525 0021 03       		.uleb128 0x3
+ 2526 0022 0E       		.uleb128 0xe
+ 2527 0023 3A       		.uleb128 0x3a
+ 2528 0024 0B       		.uleb128 0xb
+ 2529 0025 3B       		.uleb128 0x3b
+ 2530 0026 0B       		.uleb128 0xb
+ 2531 0027 49       		.uleb128 0x49
+ 2532 0028 13       		.uleb128 0x13
+ 2533 0029 00       		.byte	0
+ 2534 002a 00       		.byte	0
+ 2535 002b 04       		.uleb128 0x4
+ 2536 002c 24       		.uleb128 0x24
+ 2537 002d 00       		.byte	0
+ 2538 002e 0B       		.uleb128 0xb
+ 2539 002f 0B       		.uleb128 0xb
+ 2540 0030 3E       		.uleb128 0x3e
+ 2541 0031 0B       		.uleb128 0xb
+ 2542 0032 03       		.uleb128 0x3
+ 2543 0033 08       		.uleb128 0x8
+ 2544 0034 00       		.byte	0
+ 2545 0035 00       		.byte	0
+ 2546 0036 05       		.uleb128 0x5
+ 2547 0037 04       		.uleb128 0x4
+ 2548 0038 01       		.byte	0x1
+ 2549 0039 0B       		.uleb128 0xb
+ 2550 003a 0B       		.uleb128 0xb
+ 2551 003b 3A       		.uleb128 0x3a
+ 2552 003c 0B       		.uleb128 0xb
+ 2553 003d 3B       		.uleb128 0x3b
+ 2554 003e 0B       		.uleb128 0xb
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 56
+
+
+ 2555 003f 01       		.uleb128 0x1
+ 2556 0040 13       		.uleb128 0x13
+ 2557 0041 00       		.byte	0
+ 2558 0042 00       		.byte	0
+ 2559 0043 06       		.uleb128 0x6
+ 2560 0044 28       		.uleb128 0x28
+ 2561 0045 00       		.byte	0
+ 2562 0046 03       		.uleb128 0x3
+ 2563 0047 0E       		.uleb128 0xe
+ 2564 0048 1C       		.uleb128 0x1c
+ 2565 0049 0D       		.uleb128 0xd
+ 2566 004a 00       		.byte	0
+ 2567 004b 00       		.byte	0
+ 2568 004c 07       		.uleb128 0x7
+ 2569 004d 28       		.uleb128 0x28
+ 2570 004e 00       		.byte	0
+ 2571 004f 03       		.uleb128 0x3
+ 2572 0050 08       		.uleb128 0x8
+ 2573 0051 1C       		.uleb128 0x1c
+ 2574 0052 0D       		.uleb128 0xd
+ 2575 0053 00       		.byte	0
+ 2576 0054 00       		.byte	0
+ 2577 0055 08       		.uleb128 0x8
+ 2578 0056 13       		.uleb128 0x13
+ 2579 0057 01       		.byte	0x1
+ 2580 0058 0B       		.uleb128 0xb
+ 2581 0059 0B       		.uleb128 0xb
+ 2582 005a 3A       		.uleb128 0x3a
+ 2583 005b 0B       		.uleb128 0xb
+ 2584 005c 3B       		.uleb128 0x3b
+ 2585 005d 0B       		.uleb128 0xb
+ 2586 005e 01       		.uleb128 0x1
+ 2587 005f 13       		.uleb128 0x13
+ 2588 0060 00       		.byte	0
+ 2589 0061 00       		.byte	0
+ 2590 0062 09       		.uleb128 0x9
+ 2591 0063 0D       		.uleb128 0xd
+ 2592 0064 00       		.byte	0
+ 2593 0065 03       		.uleb128 0x3
+ 2594 0066 0E       		.uleb128 0xe
+ 2595 0067 3A       		.uleb128 0x3a
+ 2596 0068 0B       		.uleb128 0xb
+ 2597 0069 3B       		.uleb128 0x3b
+ 2598 006a 0B       		.uleb128 0xb
+ 2599 006b 49       		.uleb128 0x49
+ 2600 006c 13       		.uleb128 0x13
+ 2601 006d 38       		.uleb128 0x38
+ 2602 006e 0B       		.uleb128 0xb
+ 2603 006f 00       		.byte	0
+ 2604 0070 00       		.byte	0
+ 2605 0071 0A       		.uleb128 0xa
+ 2606 0072 2E       		.uleb128 0x2e
+ 2607 0073 00       		.byte	0
+ 2608 0074 3F       		.uleb128 0x3f
+ 2609 0075 19       		.uleb128 0x19
+ 2610 0076 03       		.uleb128 0x3
+ 2611 0077 0E       		.uleb128 0xe
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 57
+
+
+ 2612 0078 3A       		.uleb128 0x3a
+ 2613 0079 0B       		.uleb128 0xb
+ 2614 007a 3B       		.uleb128 0x3b
+ 2615 007b 0B       		.uleb128 0xb
+ 2616 007c 27       		.uleb128 0x27
+ 2617 007d 19       		.uleb128 0x19
+ 2618 007e 11       		.uleb128 0x11
+ 2619 007f 01       		.uleb128 0x1
+ 2620 0080 12       		.uleb128 0x12
+ 2621 0081 06       		.uleb128 0x6
+ 2622 0082 40       		.uleb128 0x40
+ 2623 0083 18       		.uleb128 0x18
+ 2624 0084 9642     		.uleb128 0x2116
+ 2625 0086 19       		.uleb128 0x19
+ 2626 0087 00       		.byte	0
+ 2627 0088 00       		.byte	0
+ 2628 0089 0B       		.uleb128 0xb
+ 2629 008a 2E       		.uleb128 0x2e
+ 2630 008b 01       		.byte	0x1
+ 2631 008c 3F       		.uleb128 0x3f
+ 2632 008d 19       		.uleb128 0x19
+ 2633 008e 03       		.uleb128 0x3
+ 2634 008f 0E       		.uleb128 0xe
+ 2635 0090 3A       		.uleb128 0x3a
+ 2636 0091 0B       		.uleb128 0xb
+ 2637 0092 3B       		.uleb128 0x3b
+ 2638 0093 0B       		.uleb128 0xb
+ 2639 0094 49       		.uleb128 0x49
+ 2640 0095 13       		.uleb128 0x13
+ 2641 0096 11       		.uleb128 0x11
+ 2642 0097 01       		.uleb128 0x1
+ 2643 0098 12       		.uleb128 0x12
+ 2644 0099 06       		.uleb128 0x6
+ 2645 009a 40       		.uleb128 0x40
+ 2646 009b 18       		.uleb128 0x18
+ 2647 009c 9642     		.uleb128 0x2116
+ 2648 009e 19       		.uleb128 0x19
+ 2649 009f 01       		.uleb128 0x1
+ 2650 00a0 13       		.uleb128 0x13
+ 2651 00a1 00       		.byte	0
+ 2652 00a2 00       		.byte	0
+ 2653 00a3 0C       		.uleb128 0xc
+ 2654 00a4 34       		.uleb128 0x34
+ 2655 00a5 00       		.byte	0
+ 2656 00a6 03       		.uleb128 0x3
+ 2657 00a7 08       		.uleb128 0x8
+ 2658 00a8 3A       		.uleb128 0x3a
+ 2659 00a9 0B       		.uleb128 0xb
+ 2660 00aa 3B       		.uleb128 0x3b
+ 2661 00ab 0B       		.uleb128 0xb
+ 2662 00ac 49       		.uleb128 0x49
+ 2663 00ad 13       		.uleb128 0x13
+ 2664 00ae 02       		.uleb128 0x2
+ 2665 00af 18       		.uleb128 0x18
+ 2666 00b0 00       		.byte	0
+ 2667 00b1 00       		.byte	0
+ 2668 00b2 0D       		.uleb128 0xd
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 58
+
+
+ 2669 00b3 2E       		.uleb128 0x2e
+ 2670 00b4 00       		.byte	0
+ 2671 00b5 3F       		.uleb128 0x3f
+ 2672 00b6 19       		.uleb128 0x19
+ 2673 00b7 03       		.uleb128 0x3
+ 2674 00b8 0E       		.uleb128 0xe
+ 2675 00b9 3A       		.uleb128 0x3a
+ 2676 00ba 0B       		.uleb128 0xb
+ 2677 00bb 3B       		.uleb128 0x3b
+ 2678 00bc 0B       		.uleb128 0xb
+ 2679 00bd 11       		.uleb128 0x11
+ 2680 00be 01       		.uleb128 0x1
+ 2681 00bf 12       		.uleb128 0x12
+ 2682 00c0 06       		.uleb128 0x6
+ 2683 00c1 40       		.uleb128 0x40
+ 2684 00c2 18       		.uleb128 0x18
+ 2685 00c3 9642     		.uleb128 0x2116
+ 2686 00c5 19       		.uleb128 0x19
+ 2687 00c6 00       		.byte	0
+ 2688 00c7 00       		.byte	0
+ 2689 00c8 0E       		.uleb128 0xe
+ 2690 00c9 2E       		.uleb128 0x2e
+ 2691 00ca 01       		.byte	0x1
+ 2692 00cb 3F       		.uleb128 0x3f
+ 2693 00cc 19       		.uleb128 0x19
+ 2694 00cd 03       		.uleb128 0x3
+ 2695 00ce 0E       		.uleb128 0xe
+ 2696 00cf 3A       		.uleb128 0x3a
+ 2697 00d0 0B       		.uleb128 0xb
+ 2698 00d1 3B       		.uleb128 0x3b
+ 2699 00d2 0B       		.uleb128 0xb
+ 2700 00d3 11       		.uleb128 0x11
+ 2701 00d4 01       		.uleb128 0x1
+ 2702 00d5 12       		.uleb128 0x12
+ 2703 00d6 06       		.uleb128 0x6
+ 2704 00d7 40       		.uleb128 0x40
+ 2705 00d8 18       		.uleb128 0x18
+ 2706 00d9 9642     		.uleb128 0x2116
+ 2707 00db 19       		.uleb128 0x19
+ 2708 00dc 01       		.uleb128 0x1
+ 2709 00dd 13       		.uleb128 0x13
+ 2710 00de 00       		.byte	0
+ 2711 00df 00       		.byte	0
+ 2712 00e0 0F       		.uleb128 0xf
+ 2713 00e1 01       		.uleb128 0x1
+ 2714 00e2 01       		.byte	0x1
+ 2715 00e3 49       		.uleb128 0x49
+ 2716 00e4 13       		.uleb128 0x13
+ 2717 00e5 01       		.uleb128 0x1
+ 2718 00e6 13       		.uleb128 0x13
+ 2719 00e7 00       		.byte	0
+ 2720 00e8 00       		.byte	0
+ 2721 00e9 10       		.uleb128 0x10
+ 2722 00ea 21       		.uleb128 0x21
+ 2723 00eb 00       		.byte	0
+ 2724 00ec 49       		.uleb128 0x49
+ 2725 00ed 13       		.uleb128 0x13
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 59
+
+
+ 2726 00ee 2F       		.uleb128 0x2f
+ 2727 00ef 0B       		.uleb128 0xb
+ 2728 00f0 00       		.byte	0
+ 2729 00f1 00       		.byte	0
+ 2730 00f2 11       		.uleb128 0x11
+ 2731 00f3 2E       		.uleb128 0x2e
+ 2732 00f4 01       		.byte	0x1
+ 2733 00f5 3F       		.uleb128 0x3f
+ 2734 00f6 19       		.uleb128 0x19
+ 2735 00f7 03       		.uleb128 0x3
+ 2736 00f8 0E       		.uleb128 0xe
+ 2737 00f9 3A       		.uleb128 0x3a
+ 2738 00fa 0B       		.uleb128 0xb
+ 2739 00fb 3B       		.uleb128 0x3b
+ 2740 00fc 0B       		.uleb128 0xb
+ 2741 00fd 49       		.uleb128 0x49
+ 2742 00fe 13       		.uleb128 0x13
+ 2743 00ff 3C       		.uleb128 0x3c
+ 2744 0100 19       		.uleb128 0x19
+ 2745 0101 01       		.uleb128 0x1
+ 2746 0102 13       		.uleb128 0x13
+ 2747 0103 00       		.byte	0
+ 2748 0104 00       		.byte	0
+ 2749 0105 12       		.uleb128 0x12
+ 2750 0106 18       		.uleb128 0x18
+ 2751 0107 00       		.byte	0
+ 2752 0108 00       		.byte	0
+ 2753 0109 00       		.byte	0
+ 2754 010a 13       		.uleb128 0x13
+ 2755 010b 0B       		.uleb128 0xb
+ 2756 010c 01       		.byte	0x1
+ 2757 010d 11       		.uleb128 0x11
+ 2758 010e 01       		.uleb128 0x1
+ 2759 010f 12       		.uleb128 0x12
+ 2760 0110 06       		.uleb128 0x6
+ 2761 0111 00       		.byte	0
+ 2762 0112 00       		.byte	0
+ 2763 0113 14       		.uleb128 0x14
+ 2764 0114 2E       		.uleb128 0x2e
+ 2765 0115 01       		.byte	0x1
+ 2766 0116 3F       		.uleb128 0x3f
+ 2767 0117 19       		.uleb128 0x19
+ 2768 0118 03       		.uleb128 0x3
+ 2769 0119 0E       		.uleb128 0xe
+ 2770 011a 3A       		.uleb128 0x3a
+ 2771 011b 0B       		.uleb128 0xb
+ 2772 011c 3B       		.uleb128 0x3b
+ 2773 011d 0B       		.uleb128 0xb
+ 2774 011e 49       		.uleb128 0x49
+ 2775 011f 13       		.uleb128 0x13
+ 2776 0120 3C       		.uleb128 0x3c
+ 2777 0121 19       		.uleb128 0x19
+ 2778 0122 00       		.byte	0
+ 2779 0123 00       		.byte	0
+ 2780 0124 15       		.uleb128 0x15
+ 2781 0125 2E       		.uleb128 0x2e
+ 2782 0126 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 60
+
+
+ 2783 0127 3F       		.uleb128 0x3f
+ 2784 0128 19       		.uleb128 0x19
+ 2785 0129 03       		.uleb128 0x3
+ 2786 012a 0E       		.uleb128 0xe
+ 2787 012b 3A       		.uleb128 0x3a
+ 2788 012c 0B       		.uleb128 0xb
+ 2789 012d 3B       		.uleb128 0x3b
+ 2790 012e 05       		.uleb128 0x5
+ 2791 012f 11       		.uleb128 0x11
+ 2792 0130 01       		.uleb128 0x1
+ 2793 0131 12       		.uleb128 0x12
+ 2794 0132 06       		.uleb128 0x6
+ 2795 0133 40       		.uleb128 0x40
+ 2796 0134 18       		.uleb128 0x18
+ 2797 0135 9642     		.uleb128 0x2116
+ 2798 0137 19       		.uleb128 0x19
+ 2799 0138 00       		.byte	0
+ 2800 0139 00       		.byte	0
+ 2801 013a 16       		.uleb128 0x16
+ 2802 013b 34       		.uleb128 0x34
+ 2803 013c 00       		.byte	0
+ 2804 013d 03       		.uleb128 0x3
+ 2805 013e 0E       		.uleb128 0xe
+ 2806 013f 3A       		.uleb128 0x3a
+ 2807 0140 0B       		.uleb128 0xb
+ 2808 0141 3B       		.uleb128 0x3b
+ 2809 0142 05       		.uleb128 0x5
+ 2810 0143 49       		.uleb128 0x49
+ 2811 0144 13       		.uleb128 0x13
+ 2812 0145 3F       		.uleb128 0x3f
+ 2813 0146 19       		.uleb128 0x19
+ 2814 0147 3C       		.uleb128 0x3c
+ 2815 0148 19       		.uleb128 0x19
+ 2816 0149 00       		.byte	0
+ 2817 014a 00       		.byte	0
+ 2818 014b 17       		.uleb128 0x17
+ 2819 014c 35       		.uleb128 0x35
+ 2820 014d 00       		.byte	0
+ 2821 014e 49       		.uleb128 0x49
+ 2822 014f 13       		.uleb128 0x13
+ 2823 0150 00       		.byte	0
+ 2824 0151 00       		.byte	0
+ 2825 0152 18       		.uleb128 0x18
+ 2826 0153 34       		.uleb128 0x34
+ 2827 0154 00       		.byte	0
+ 2828 0155 03       		.uleb128 0x3
+ 2829 0156 0E       		.uleb128 0xe
+ 2830 0157 3A       		.uleb128 0x3a
+ 2831 0158 0B       		.uleb128 0xb
+ 2832 0159 3B       		.uleb128 0x3b
+ 2833 015a 0B       		.uleb128 0xb
+ 2834 015b 49       		.uleb128 0x49
+ 2835 015c 13       		.uleb128 0x13
+ 2836 015d 3F       		.uleb128 0x3f
+ 2837 015e 19       		.uleb128 0x19
+ 2838 015f 02       		.uleb128 0x2
+ 2839 0160 18       		.uleb128 0x18
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 61
+
+
+ 2840 0161 00       		.byte	0
+ 2841 0162 00       		.byte	0
+ 2842 0163 19       		.uleb128 0x19
+ 2843 0164 34       		.uleb128 0x34
+ 2844 0165 00       		.byte	0
+ 2845 0166 03       		.uleb128 0x3
+ 2846 0167 08       		.uleb128 0x8
+ 2847 0168 3A       		.uleb128 0x3a
+ 2848 0169 0B       		.uleb128 0xb
+ 2849 016a 3B       		.uleb128 0x3b
+ 2850 016b 0B       		.uleb128 0xb
+ 2851 016c 49       		.uleb128 0x49
+ 2852 016d 13       		.uleb128 0x13
+ 2853 016e 3F       		.uleb128 0x3f
+ 2854 016f 19       		.uleb128 0x19
+ 2855 0170 02       		.uleb128 0x2
+ 2856 0171 18       		.uleb128 0x18
+ 2857 0172 00       		.byte	0
+ 2858 0173 00       		.byte	0
+ 2859 0174 1A       		.uleb128 0x1a
+ 2860 0175 34       		.uleb128 0x34
+ 2861 0176 00       		.byte	0
+ 2862 0177 03       		.uleb128 0x3
+ 2863 0178 0E       		.uleb128 0xe
+ 2864 0179 3A       		.uleb128 0x3a
+ 2865 017a 0B       		.uleb128 0xb
+ 2866 017b 3B       		.uleb128 0x3b
+ 2867 017c 0B       		.uleb128 0xb
+ 2868 017d 49       		.uleb128 0x49
+ 2869 017e 13       		.uleb128 0x13
+ 2870 017f 3F       		.uleb128 0x3f
+ 2871 0180 19       		.uleb128 0x19
+ 2872 0181 3C       		.uleb128 0x3c
+ 2873 0182 19       		.uleb128 0x19
+ 2874 0183 00       		.byte	0
+ 2875 0184 00       		.byte	0
+ 2876 0185 00       		.byte	0
+ 2877              		.section	.debug_aranges,"",%progbits
+ 2878 0000 5C000000 		.4byte	0x5c
+ 2879 0004 0200     		.2byte	0x2
+ 2880 0006 00000000 		.4byte	.Ldebug_info0
+ 2881 000a 04       		.byte	0x4
+ 2882 000b 00       		.byte	0
+ 2883 000c 0000     		.2byte	0
+ 2884 000e 0000     		.2byte	0
+ 2885 0010 00000000 		.4byte	.LFB63
+ 2886 0014 0E000000 		.4byte	.LFE63-.LFB63
+ 2887 0018 00000000 		.4byte	.LFB64
+ 2888 001c 0E000000 		.4byte	.LFE64-.LFB64
+ 2889 0020 00000000 		.4byte	.LFB65
+ 2890 0024 1C010000 		.4byte	.LFE65-.LFB65
+ 2891 0028 00000000 		.4byte	.LFB66
+ 2892 002c 44010000 		.4byte	.LFE66-.LFB66
+ 2893 0030 00000000 		.4byte	.LFB67
+ 2894 0034 DC000000 		.4byte	.LFE67-.LFB67
+ 2895 0038 00000000 		.4byte	.LFB68
+ 2896 003c 7C000000 		.4byte	.LFE68-.LFB68
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 62
+
+
+ 2897 0040 00000000 		.4byte	.LFB69
+ 2898 0044 14010000 		.4byte	.LFE69-.LFB69
+ 2899 0048 00000000 		.4byte	.LFB70
+ 2900 004c 60040000 		.4byte	.LFE70-.LFB70
+ 2901 0050 00000000 		.4byte	.LFB71
+ 2902 0054 6C020000 		.4byte	.LFE71-.LFB71
+ 2903 0058 00000000 		.4byte	0
+ 2904 005c 00000000 		.4byte	0
+ 2905              		.section	.debug_ranges,"",%progbits
+ 2906              	.Ldebug_ranges0:
+ 2907 0000 00000000 		.4byte	.LFB63
+ 2908 0004 0E000000 		.4byte	.LFE63
+ 2909 0008 00000000 		.4byte	.LFB64
+ 2910 000c 0E000000 		.4byte	.LFE64
+ 2911 0010 00000000 		.4byte	.LFB65
+ 2912 0014 1C010000 		.4byte	.LFE65
+ 2913 0018 00000000 		.4byte	.LFB66
+ 2914 001c 44010000 		.4byte	.LFE66
+ 2915 0020 00000000 		.4byte	.LFB67
+ 2916 0024 DC000000 		.4byte	.LFE67
+ 2917 0028 00000000 		.4byte	.LFB68
+ 2918 002c 7C000000 		.4byte	.LFE68
+ 2919 0030 00000000 		.4byte	.LFB69
+ 2920 0034 14010000 		.4byte	.LFE69
+ 2921 0038 00000000 		.4byte	.LFB70
+ 2922 003c 60040000 		.4byte	.LFE70
+ 2923 0040 00000000 		.4byte	.LFB71
+ 2924 0044 6C020000 		.4byte	.LFE71
+ 2925 0048 00000000 		.4byte	0
+ 2926 004c 00000000 		.4byte	0
+ 2927              		.section	.debug_line,"",%progbits
+ 2928              	.Ldebug_line0:
+ 2929 0000 4D030000 		.section	.debug_str,"MS",%progbits,1
+ 2929      02008201 
+ 2929      00000201 
+ 2929      FB0E0D00 
+ 2929      01010101 
+ 2930              	.LASF44:
+ 2931 0000 424C5545 		.ascii	"BLUE_U\000"
+ 2931      5F5500
+ 2932              	.LASF47:
+ 2933 0007 63656E74 		.ascii	"centre_pixel\000"
+ 2933      72655F70 
+ 2933      6978656C 
+ 2933      00
+ 2934              	.LASF27:
+ 2935 0014 6D656E75 		.ascii	"menu\000"
+ 2935      00
+ 2936              	.LASF30:
+ 2937 0019 696D6167 		.ascii	"image_stuff2\000"
+ 2937      655F7374 
+ 2937      75666632 
+ 2937      00
+ 2938              	.LASF31:
+ 2939 0026 696D6167 		.ascii	"image_stuff3\000"
+ 2939      655F7374 
+ 2939      75666633 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 63
+
+
+ 2939      00
+ 2940              	.LASF18:
+ 2941 0033 73697A65 		.ascii	"sizetype\000"
+ 2941      74797065 
+ 2941      00
+ 2942              	.LASF58:
+ 2943 003c 433A5C55 		.ascii	"C:\\Users\\xavieran\\Desktop\\ECE3091\\WorkingCamer"
+ 2943      73657273 
+ 2943      5C786176 
+ 2943      69657261 
+ 2943      6E5C4465 
+ 2944 006a 615C4361 		.ascii	"a\\Camera_vis\\camera_test.cydsn\000"
+ 2944      6D657261 
+ 2944      5F766973 
+ 2944      5C63616D 
+ 2944      6572615F 
+ 2945              	.LASF53:
+ 2946 0089 626C6F62 		.ascii	"blobn\000"
+ 2946      6E00
+ 2947              	.LASF59:
+ 2948 008f 6D61696E 		.ascii	"main\000"
+ 2948      00
+ 2949              	.LASF39:
+ 2950 0094 626C6F62 		.ascii	"blobs\000"
+ 2950      7300
+ 2951              	.LASF2:
+ 2952 009a 73686F72 		.ascii	"short int\000"
+ 2952      7420696E 
+ 2952      7400
+ 2953              	.LASF56:
+ 2954 00a4 474E5520 		.ascii	"GNU C 4.8.4 20140526 (release) [ARM/embedded-4_8-br"
+ 2954      4320342E 
+ 2954      382E3420 
+ 2954      32303134 
+ 2954      30353236 
+ 2955 00d7 616E6368 		.ascii	"anch revision 211358] -mcpu=cortex-m3 -mthumb -g -O"
+ 2955      20726576 
+ 2955      6973696F 
+ 2955      6E203231 
+ 2955      31333538 
+ 2956 010a 30202D66 		.ascii	"0 -ffunction-sections\000"
+ 2956      66756E63 
+ 2956      74696F6E 
+ 2956      2D736563 
+ 2956      74696F6E 
+ 2957              	.LASF12:
+ 2958 0120 75696E74 		.ascii	"uint16\000"
+ 2958      313600
+ 2959              	.LASF14:
+ 2960 0127 696E7431 		.ascii	"int16\000"
+ 2960      3600
+ 2961              	.LASF11:
+ 2962 012d 75696E74 		.ascii	"uint8\000"
+ 2962      3800
+ 2963              	.LASF48:
+ 2964 0133 636F6E6E 		.ascii	"connected\000"
+ 2964      65637465 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 64
+
+
+ 2964      6400
+ 2965              	.LASF45:
+ 2966 013d 424C5545 		.ascii	"BLUE_V\000"
+ 2966      5F5600
+ 2967              	.LASF15:
+ 2968 0144 666C6F61 		.ascii	"float\000"
+ 2968      7400
+ 2969              	.LASF55:
+ 2970 014a 50574D5F 		.ascii	"PWM_Val\000"
+ 2970      56616C00 
+ 2971              	.LASF6:
+ 2972 0152 6C6F6E67 		.ascii	"long long int\000"
+ 2972      206C6F6E 
+ 2972      6720696E 
+ 2972      7400
+ 2973              	.LASF51:
+ 2974 0160 62676169 		.ascii	"bgain\000"
+ 2974      6E00
+ 2975              	.LASF4:
+ 2976 0166 6C6F6E67 		.ascii	"long int\000"
+ 2976      20696E74 
+ 2976      00
+ 2977              	.LASF34:
+ 2978 016f 68616E64 		.ascii	"handle_menus\000"
+ 2978      6C655F6D 
+ 2978      656E7573 
+ 2978      00
+ 2979              	.LASF33:
+ 2980 017c 62757474 		.ascii	"button_handle2\000"
+ 2980      6F6E5F68 
+ 2980      616E646C 
+ 2980      653200
+ 2981              	.LASF52:
+ 2982 018b 72676169 		.ascii	"rgain\000"
+ 2982      6E00
+ 2983              	.LASF32:
+ 2984 0191 62757474 		.ascii	"button_handle\000"
+ 2984      6F6E5F68 
+ 2984      616E646C 
+ 2984      6500
+ 2985              	.LASF1:
+ 2986 019f 756E7369 		.ascii	"unsigned char\000"
+ 2986      676E6564 
+ 2986      20636861 
+ 2986      7200
+ 2987              	.LASF40:
+ 2988 01ad 5245445F 		.ascii	"RED_U\000"
+ 2988      5500
+ 2989              	.LASF41:
+ 2990 01b3 5245445F 		.ascii	"RED_V\000"
+ 2990      5600
+ 2991              	.LASF0:
+ 2992 01b9 7369676E 		.ascii	"signed char\000"
+ 2992      65642063 
+ 2992      68617200 
+ 2993              	.LASF7:
+ 2994 01c5 6C6F6E67 		.ascii	"long long unsigned int\000"
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 65
+
+
+ 2994      206C6F6E 
+ 2994      6720756E 
+ 2994      7369676E 
+ 2994      65642069 
+ 2995              	.LASF8:
+ 2996 01dc 756E7369 		.ascii	"unsigned int\000"
+ 2996      676E6564 
+ 2996      20696E74 
+ 2996      00
+ 2997              	.LASF54:
+ 2998 01e9 73746163 		.ascii	"stack\000"
+ 2998      6B00
+ 2999              	.LASF38:
+ 3000 01ef 64697370 		.ascii	"disp\000"
+ 3000      00
+ 3001              	.LASF26:
+ 3002 01f4 626C6F62 		.ascii	"blob\000"
+ 3002      00
+ 3003              	.LASF50:
+ 3004 01f9 6761696E 		.ascii	"gain\000"
+ 3004      00
+ 3005              	.LASF3:
+ 3006 01fe 73686F72 		.ascii	"short unsigned int\000"
+ 3006      7420756E 
+ 3006      7369676E 
+ 3006      65642069 
+ 3006      6E7400
+ 3007              	.LASF24:
+ 3008 0211 785F7375 		.ascii	"x_sum\000"
+ 3008      6D00
+ 3009              	.LASF17:
+ 3010 0217 63686172 		.ascii	"char\000"
+ 3010      00
+ 3011              	.LASF10:
+ 3012 021c 696E7433 		.ascii	"int32_t\000"
+ 3012      325F7400 
+ 3013              	.LASF46:
+ 3014 0224 63757272 		.ascii	"current_display\000"
+ 3014      656E745F 
+ 3014      64697370 
+ 3014      6C617900 
+ 3015              	.LASF42:
+ 3016 0234 47524545 		.ascii	"GREEN_U\000"
+ 3016      4E5F5500 
+ 3017              	.LASF43:
+ 3018 023c 47524545 		.ascii	"GREEN_V\000"
+ 3018      4E5F5600 
+ 3019              	.LASF13:
+ 3020 0244 75696E74 		.ascii	"uint32\000"
+ 3020      333200
+ 3021              	.LASF49:
+ 3022 024b 6578706F 		.ascii	"exposure\000"
+ 3022      73757265 
+ 3022      00
+ 3023              	.LASF5:
+ 3024 0254 6C6F6E67 		.ascii	"long unsigned int\000"
+ 3024      20756E73 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 66
+
+
+ 3024      69676E65 
+ 3024      6420696E 
+ 3024      7400
+ 3025              	.LASF16:
+ 3026 0266 646F7562 		.ascii	"double\000"
+ 3026      6C6500
+ 3027              	.LASF37:
+ 3028 026d 64697370 		.ascii	"display\000"
+ 3028      6C617900 
+ 3029              	.LASF23:
+ 3030 0275 73697A65 		.ascii	"size\000"
+ 3030      00
+ 3031              	.LASF29:
+ 3032 027a 696D6167 		.ascii	"image_stuff\000"
+ 3032      655F7374 
+ 3032      75666600 
+ 3033              	.LASF57:
+ 3034 0286 2E5C6D61 		.ascii	".\\main.c\000"
+ 3034      696E2E63 
+ 3034      00
+ 3035              	.LASF9:
+ 3036 028f 5F5F696E 		.ascii	"__int32_t\000"
+ 3036      7433325F 
+ 3036      7400
+ 3037              	.LASF19:
+ 3038 0299 4E4F4E45 		.ascii	"NONE\000"
+ 3038      00
+ 3039              	.LASF22:
+ 3040 029e 636F6C6F 		.ascii	"colour\000"
+ 3040      757200
+ 3041              	.LASF36:
+ 3042 02a5 43616D65 		.ascii	"Camera_framebuffer\000"
+ 3042      72615F66 
+ 3042      72616D65 
+ 3042      62756666 
+ 3042      657200
+ 3043              	.LASF28:
+ 3044 02b8 6368616E 		.ascii	"change\000"
+ 3044      676500
+ 3045              	.LASF35:
+ 3046 02bf 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 3046      52784275 
+ 3046      66666572 
+ 3046      00
+ 3047              	.LASF20:
+ 3048 02cc 47524545 		.ascii	"GREEN\000"
+ 3048      4E00
+ 3049              	.LASF21:
+ 3050 02d2 424C5545 		.ascii	"BLUE\000"
+ 3050      00
+ 3051              	.LASF25:
+ 3052 02d7 795F7375 		.ascii	"y_sum\000"
+ 3052      6D00
+ 3053              	.LASF60:
+ 3054 02dd 41726D5F 		.ascii	"Arm_WriteCompare\000"
+ 3054      57726974 
+ 3054      65436F6D 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccKfeI5w.s 			page 67
+
+
+ 3054      70617265 
+ 3054      00
+ 3055              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.8.4 20140526 (release) [ARM/embedded-4_8-br

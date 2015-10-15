@@ -1,0 +1,1179 @@
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc3Pt3kN.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"I2C.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.global	I2C_initVar
+  19              		.bss
+  20              		.type	I2C_initVar, %object
+  21              		.size	I2C_initVar, 1
+  22              	I2C_initVar:
+  23 0000 00       		.space	1
+  24              		.comm	I2C_state,1,1
+  25              		.section	.text.I2C_Init,"ax",%progbits
+  26              		.align	2
+  27              		.global	I2C_Init
+  28              		.thumb
+  29              		.thumb_func
+  30              		.type	I2C_Init, %function
+  31              	I2C_Init:
+  32              	.LFB0:
+  33              		.file 1 ".\\Generated_Source\\PSoC5\\I2C.c"
+   1:.\Generated_Source\PSoC5/I2C.c **** /*******************************************************************************
+   2:.\Generated_Source\PSoC5/I2C.c **** * File Name: I2C.c
+   3:.\Generated_Source\PSoC5/I2C.c **** * Version 3.50
+   4:.\Generated_Source\PSoC5/I2C.c **** *
+   5:.\Generated_Source\PSoC5/I2C.c **** * Description:
+   6:.\Generated_Source\PSoC5/I2C.c **** *  This file provides the source code of APIs for the I2C component.
+   7:.\Generated_Source\PSoC5/I2C.c **** *  The actual protocol and operation code resides in the interrupt service
+   8:.\Generated_Source\PSoC5/I2C.c **** *  routine file.
+   9:.\Generated_Source\PSoC5/I2C.c **** *
+  10:.\Generated_Source\PSoC5/I2C.c **** *******************************************************************************
+  11:.\Generated_Source\PSoC5/I2C.c **** * Copyright 2008-2015, Cypress Semiconductor Corporation. All rights reserved.
+  12:.\Generated_Source\PSoC5/I2C.c **** * You may use this file only in accordance with the license, terms, conditions,
+  13:.\Generated_Source\PSoC5/I2C.c **** * disclaimers, and limitations in the end user license agreement accompanying
+  14:.\Generated_Source\PSoC5/I2C.c **** * the software package with which this file was provided.
+  15:.\Generated_Source\PSoC5/I2C.c **** *******************************************************************************/
+  16:.\Generated_Source\PSoC5/I2C.c **** 
+  17:.\Generated_Source\PSoC5/I2C.c **** #include "I2C_PVT.h"
+  18:.\Generated_Source\PSoC5/I2C.c **** 
+  19:.\Generated_Source\PSoC5/I2C.c **** 
+  20:.\Generated_Source\PSoC5/I2C.c **** /**********************************
+  21:.\Generated_Source\PSoC5/I2C.c **** *      System variables
+  22:.\Generated_Source\PSoC5/I2C.c **** **********************************/
+  23:.\Generated_Source\PSoC5/I2C.c **** 
+  24:.\Generated_Source\PSoC5/I2C.c **** uint8 I2C_initVar = 0u; /* Defines if component was initialized */
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc3Pt3kN.s 			page 2
+
+
+  25:.\Generated_Source\PSoC5/I2C.c **** 
+  26:.\Generated_Source\PSoC5/I2C.c **** volatile uint8 I2C_state;  /* Current state of I2C FSM */
+  27:.\Generated_Source\PSoC5/I2C.c **** 
+  28:.\Generated_Source\PSoC5/I2C.c **** 
+  29:.\Generated_Source\PSoC5/I2C.c **** /*******************************************************************************
+  30:.\Generated_Source\PSoC5/I2C.c **** * Function Name: I2C_Init
+  31:.\Generated_Source\PSoC5/I2C.c **** ********************************************************************************
+  32:.\Generated_Source\PSoC5/I2C.c **** *
+  33:.\Generated_Source\PSoC5/I2C.c **** * Summary:
+  34:.\Generated_Source\PSoC5/I2C.c **** *  Initializes I2C registers with initial values provided from customizer.
+  35:.\Generated_Source\PSoC5/I2C.c **** *
+  36:.\Generated_Source\PSoC5/I2C.c **** * Parameters:
+  37:.\Generated_Source\PSoC5/I2C.c **** *  None.
+  38:.\Generated_Source\PSoC5/I2C.c **** *
+  39:.\Generated_Source\PSoC5/I2C.c **** * Return:
+  40:.\Generated_Source\PSoC5/I2C.c **** *  None.
+  41:.\Generated_Source\PSoC5/I2C.c **** *
+  42:.\Generated_Source\PSoC5/I2C.c **** * Global variables:
+  43:.\Generated_Source\PSoC5/I2C.c **** *  None.
+  44:.\Generated_Source\PSoC5/I2C.c **** *
+  45:.\Generated_Source\PSoC5/I2C.c **** * Reentrant:
+  46:.\Generated_Source\PSoC5/I2C.c **** *  No.
+  47:.\Generated_Source\PSoC5/I2C.c **** *
+  48:.\Generated_Source\PSoC5/I2C.c **** *******************************************************************************/
+  49:.\Generated_Source\PSoC5/I2C.c **** void I2C_Init(void) 
+  50:.\Generated_Source\PSoC5/I2C.c **** {
+  34              		.loc 1 50 0
+  35              		.cfi_startproc
+  36              		@ args = 0, pretend = 0, frame = 8
+  37              		@ frame_needed = 1, uses_anonymous_args = 0
+  38 0000 80B5     		push	{r7, lr}
+  39              		.cfi_def_cfa_offset 8
+  40              		.cfi_offset 7, -8
+  41              		.cfi_offset 14, -4
+  42 0002 82B0     		sub	sp, sp, #8
+  43              		.cfi_def_cfa_offset 16
+  44 0004 00AF     		add	r7, sp, #0
+  45              		.cfi_def_cfa_register 7
+  51:.\Generated_Source\PSoC5/I2C.c **** #if (I2C_FF_IMPLEMENTED)
+  52:.\Generated_Source\PSoC5/I2C.c ****     /* Configure fixed function block */
+  53:.\Generated_Source\PSoC5/I2C.c ****     I2C_CFG_REG  = I2C_DEFAULT_CFG;
+  54:.\Generated_Source\PSoC5/I2C.c ****     I2C_XCFG_REG = I2C_DEFAULT_XCFG;
+  55:.\Generated_Source\PSoC5/I2C.c ****     I2C_ADDR_REG = I2C_DEFAULT_ADDR;
+  56:.\Generated_Source\PSoC5/I2C.c ****     I2C_CLKDIV1_REG = LO8(I2C_DEFAULT_DIVIDE_FACTOR);
+  57:.\Generated_Source\PSoC5/I2C.c ****     I2C_CLKDIV2_REG = HI8(I2C_DEFAULT_DIVIDE_FACTOR);
+  58:.\Generated_Source\PSoC5/I2C.c **** 
+  59:.\Generated_Source\PSoC5/I2C.c **** #else
+  60:.\Generated_Source\PSoC5/I2C.c ****     uint8 intState;
+  61:.\Generated_Source\PSoC5/I2C.c **** 
+  62:.\Generated_Source\PSoC5/I2C.c ****     /* Configure control and interrupt sources */
+  63:.\Generated_Source\PSoC5/I2C.c ****     I2C_CFG_REG      = I2C_DEFAULT_CFG;
+  46              		.loc 1 63 0
+  47 0006 1B4B     		ldr	r3, .L2
+  48 0008 0022     		movs	r2, #0
+  49 000a 1A70     		strb	r2, [r3]
+  64:.\Generated_Source\PSoC5/I2C.c ****     I2C_INT_MASK_REG = I2C_DEFAULT_INT_MASK;
+  50              		.loc 1 64 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc3Pt3kN.s 			page 3
+
+
+  51 000c 1A4B     		ldr	r3, .L2+4
+  52 000e 0122     		movs	r2, #1
+  53 0010 1A70     		strb	r2, [r3]
+  65:.\Generated_Source\PSoC5/I2C.c **** 
+  66:.\Generated_Source\PSoC5/I2C.c ****     /* Enable interrupt generation in status */
+  67:.\Generated_Source\PSoC5/I2C.c ****     intState = CyEnterCriticalSection();
+  54              		.loc 1 67 0
+  55 0012 FFF7FEFF 		bl	CyEnterCriticalSection
+  56 0016 0346     		mov	r3, r0
+  57 0018 FB71     		strb	r3, [r7, #7]
+  68:.\Generated_Source\PSoC5/I2C.c ****     I2C_INT_ENABLE_REG |= I2C_INTR_ENABLE;
+  58              		.loc 1 68 0
+  59 001a 184B     		ldr	r3, .L2+8
+  60 001c 174A     		ldr	r2, .L2+8
+  61 001e 1278     		ldrb	r2, [r2]
+  62 0020 D2B2     		uxtb	r2, r2
+  63 0022 42F01002 		orr	r2, r2, #16
+  64 0026 D2B2     		uxtb	r2, r2
+  65 0028 1A70     		strb	r2, [r3]
+  69:.\Generated_Source\PSoC5/I2C.c ****     CyExitCriticalSection(intState);
+  66              		.loc 1 69 0
+  67 002a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+  68 002c 1846     		mov	r0, r3
+  69 002e FFF7FEFF 		bl	CyExitCriticalSection
+  70:.\Generated_Source\PSoC5/I2C.c **** 
+  71:.\Generated_Source\PSoC5/I2C.c ****     /* Configure bit counter */
+  72:.\Generated_Source\PSoC5/I2C.c ****     #if (I2C_MODE_SLAVE_ENABLED)
+  73:.\Generated_Source\PSoC5/I2C.c ****         I2C_PERIOD_REG = I2C_DEFAULT_PERIOD;
+  74:.\Generated_Source\PSoC5/I2C.c ****     #endif  /* (I2C_MODE_SLAVE_ENABLED) */
+  75:.\Generated_Source\PSoC5/I2C.c **** 
+  76:.\Generated_Source\PSoC5/I2C.c ****     /* Configure clock generator */
+  77:.\Generated_Source\PSoC5/I2C.c ****     #if (I2C_MODE_MASTER_ENABLED)
+  78:.\Generated_Source\PSoC5/I2C.c ****         I2C_MCLK_PRD_REG = I2C_DEFAULT_MCLK_PRD;
+  70              		.loc 1 78 0
+  71 0032 134B     		ldr	r3, .L2+12
+  72 0034 0F22     		movs	r2, #15
+  73 0036 1A70     		strb	r2, [r3]
+  79:.\Generated_Source\PSoC5/I2C.c ****         I2C_MCLK_CMP_REG = I2C_DEFAULT_MCLK_CMP;
+  74              		.loc 1 79 0
+  75 0038 124B     		ldr	r3, .L2+16
+  76 003a 0822     		movs	r2, #8
+  77 003c 1A70     		strb	r2, [r3]
+  80:.\Generated_Source\PSoC5/I2C.c ****     #endif /* (I2C_MODE_MASTER_ENABLED) */
+  81:.\Generated_Source\PSoC5/I2C.c **** #endif /* (I2C_FF_IMPLEMENTED) */
+  82:.\Generated_Source\PSoC5/I2C.c **** 
+  83:.\Generated_Source\PSoC5/I2C.c **** #if (I2C_TIMEOUT_ENABLED)
+  84:.\Generated_Source\PSoC5/I2C.c ****     I2C_TimeoutInit();
+  85:.\Generated_Source\PSoC5/I2C.c **** #endif /* (I2C_TIMEOUT_ENABLED) */
+  86:.\Generated_Source\PSoC5/I2C.c **** 
+  87:.\Generated_Source\PSoC5/I2C.c ****     /* Configure internal interrupt */
+  88:.\Generated_Source\PSoC5/I2C.c ****     CyIntDisable    (I2C_ISR_NUMBER);
+  78              		.loc 1 88 0
+  79 003e 124B     		ldr	r3, .L2+20
+  80 0040 0422     		movs	r2, #4
+  81 0042 1A60     		str	r2, [r3]
+  89:.\Generated_Source\PSoC5/I2C.c ****     CyIntSetPriority(I2C_ISR_NUMBER, I2C_ISR_PRIORITY);
+  82              		.loc 1 89 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc3Pt3kN.s 			page 4
+
+
+  83 0044 0220     		movs	r0, #2
+  84 0046 0721     		movs	r1, #7
+  85 0048 FFF7FEFF 		bl	CyIntSetPriority
+  90:.\Generated_Source\PSoC5/I2C.c ****     #if (I2C_INTERN_I2C_INTR_HANDLER)
+  91:.\Generated_Source\PSoC5/I2C.c ****         (void) CyIntSetVector(I2C_ISR_NUMBER, &I2C_ISR);
+  86              		.loc 1 91 0
+  87 004c 0220     		movs	r0, #2
+  88 004e 0F49     		ldr	r1, .L2+24
+  89 0050 FFF7FEFF 		bl	CyIntSetVector
+  92:.\Generated_Source\PSoC5/I2C.c ****     #endif /* (I2C_INTERN_I2C_INTR_HANDLER) */
+  93:.\Generated_Source\PSoC5/I2C.c **** 
+  94:.\Generated_Source\PSoC5/I2C.c ****     /* Set FSM to default state */
+  95:.\Generated_Source\PSoC5/I2C.c ****     I2C_state = I2C_SM_IDLE;
+  90              		.loc 1 95 0
+  91 0054 0E4B     		ldr	r3, .L2+28
+  92 0056 1022     		movs	r2, #16
+  93 0058 1A70     		strb	r2, [r3]
+  96:.\Generated_Source\PSoC5/I2C.c **** 
+  97:.\Generated_Source\PSoC5/I2C.c **** #if (I2C_MODE_SLAVE_ENABLED)
+  98:.\Generated_Source\PSoC5/I2C.c ****     /* Clear status and buffers index */
+  99:.\Generated_Source\PSoC5/I2C.c ****     I2C_slStatus = 0u;
+ 100:.\Generated_Source\PSoC5/I2C.c ****     I2C_slRdBufIndex = 0u;
+ 101:.\Generated_Source\PSoC5/I2C.c ****     I2C_slWrBufIndex = 0u;
+ 102:.\Generated_Source\PSoC5/I2C.c **** 
+ 103:.\Generated_Source\PSoC5/I2C.c ****     /* Configure matched address */
+ 104:.\Generated_Source\PSoC5/I2C.c ****     I2C_SlaveSetAddress(I2C_DEFAULT_ADDR);
+ 105:.\Generated_Source\PSoC5/I2C.c **** #endif /* (I2C_MODE_SLAVE_ENABLED) */
+ 106:.\Generated_Source\PSoC5/I2C.c **** 
+ 107:.\Generated_Source\PSoC5/I2C.c **** #if (I2C_MODE_MASTER_ENABLED)
+ 108:.\Generated_Source\PSoC5/I2C.c ****     /* Clear status and buffers index */
+ 109:.\Generated_Source\PSoC5/I2C.c ****     I2C_mstrStatus = 0u;
+  94              		.loc 1 109 0
+  95 005a 0E4B     		ldr	r3, .L2+32
+  96 005c 0022     		movs	r2, #0
+  97 005e 1A70     		strb	r2, [r3]
+ 110:.\Generated_Source\PSoC5/I2C.c ****     I2C_mstrRdBufIndex = 0u;
+  98              		.loc 1 110 0
+  99 0060 0D4B     		ldr	r3, .L2+36
+ 100 0062 0022     		movs	r2, #0
+ 101 0064 1A70     		strb	r2, [r3]
+ 111:.\Generated_Source\PSoC5/I2C.c ****     I2C_mstrWrBufIndex = 0u;
+ 102              		.loc 1 111 0
+ 103 0066 0D4B     		ldr	r3, .L2+40
+ 104 0068 0022     		movs	r2, #0
+ 105 006a 1A70     		strb	r2, [r3]
+ 112:.\Generated_Source\PSoC5/I2C.c **** #endif /* (I2C_MODE_MASTER_ENABLED) */
+ 113:.\Generated_Source\PSoC5/I2C.c **** }
+ 106              		.loc 1 113 0
+ 107 006c 0837     		adds	r7, r7, #8
+ 108 006e BD46     		mov	sp, r7
+ 109              		@ sp needed
+ 110 0070 80BD     		pop	{r7, pc}
+ 111              	.L3:
+ 112 0072 00BF     		.align	2
+ 113              	.L2:
+ 114 0074 77640040 		.word	1073767543
+ 115 0078 8B640040 		.word	1073767563
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc3Pt3kN.s 			page 5
+
+
+ 116 007c 9B640040 		.word	1073767579
+ 117 0080 2D640040 		.word	1073767469
+ 118 0084 3D640040 		.word	1073767485
+ 119 0088 80E100E0 		.word	-536813184
+ 120 008c 00000000 		.word	I2C_ISR
+ 121 0090 00000000 		.word	I2C_state
+ 122 0094 00000000 		.word	I2C_mstrStatus
+ 123 0098 00000000 		.word	I2C_mstrRdBufIndex
+ 124 009c 00000000 		.word	I2C_mstrWrBufIndex
+ 125              		.cfi_endproc
+ 126              	.LFE0:
+ 127              		.size	I2C_Init, .-I2C_Init
+ 128              		.section	.text.I2C_Enable,"ax",%progbits
+ 129              		.align	2
+ 130              		.global	I2C_Enable
+ 131              		.thumb
+ 132              		.thumb_func
+ 133              		.type	I2C_Enable, %function
+ 134              	I2C_Enable:
+ 135              	.LFB1:
+ 114:.\Generated_Source\PSoC5/I2C.c **** 
+ 115:.\Generated_Source\PSoC5/I2C.c **** 
+ 116:.\Generated_Source\PSoC5/I2C.c **** /*******************************************************************************
+ 117:.\Generated_Source\PSoC5/I2C.c **** * Function Name: I2C_Enable
+ 118:.\Generated_Source\PSoC5/I2C.c **** ********************************************************************************
+ 119:.\Generated_Source\PSoC5/I2C.c **** *
+ 120:.\Generated_Source\PSoC5/I2C.c **** * Summary:
+ 121:.\Generated_Source\PSoC5/I2C.c **** *  Enables I2C operations.
+ 122:.\Generated_Source\PSoC5/I2C.c **** *
+ 123:.\Generated_Source\PSoC5/I2C.c **** * Parameters:
+ 124:.\Generated_Source\PSoC5/I2C.c **** *  None.
+ 125:.\Generated_Source\PSoC5/I2C.c **** *
+ 126:.\Generated_Source\PSoC5/I2C.c **** * Return:
+ 127:.\Generated_Source\PSoC5/I2C.c **** *  None.
+ 128:.\Generated_Source\PSoC5/I2C.c **** *
+ 129:.\Generated_Source\PSoC5/I2C.c **** * Global variables:
+ 130:.\Generated_Source\PSoC5/I2C.c **** *  None.
+ 131:.\Generated_Source\PSoC5/I2C.c **** *
+ 132:.\Generated_Source\PSoC5/I2C.c **** *******************************************************************************/
+ 133:.\Generated_Source\PSoC5/I2C.c **** void I2C_Enable(void) 
+ 134:.\Generated_Source\PSoC5/I2C.c **** {
+ 136              		.loc 1 134 0
+ 137              		.cfi_startproc
+ 138              		@ args = 0, pretend = 0, frame = 0
+ 139              		@ frame_needed = 1, uses_anonymous_args = 0
+ 140              		@ link register save eliminated.
+ 141 0000 80B4     		push	{r7}
+ 142              		.cfi_def_cfa_offset 4
+ 143              		.cfi_offset 7, -4
+ 144 0002 00AF     		add	r7, sp, #0
+ 145              		.cfi_def_cfa_register 7
+ 135:.\Generated_Source\PSoC5/I2C.c **** #if (I2C_FF_IMPLEMENTED)
+ 136:.\Generated_Source\PSoC5/I2C.c ****     uint8 intState;
+ 137:.\Generated_Source\PSoC5/I2C.c **** 
+ 138:.\Generated_Source\PSoC5/I2C.c ****     /* Enable power to block */
+ 139:.\Generated_Source\PSoC5/I2C.c ****     intState = CyEnterCriticalSection();
+ 140:.\Generated_Source\PSoC5/I2C.c ****     I2C_ACT_PWRMGR_REG  |= I2C_ACT_PWR_EN;
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc3Pt3kN.s 			page 6
+
+
+ 141:.\Generated_Source\PSoC5/I2C.c ****     I2C_STBY_PWRMGR_REG |= I2C_STBY_PWR_EN;
+ 142:.\Generated_Source\PSoC5/I2C.c ****     CyExitCriticalSection(intState);
+ 143:.\Generated_Source\PSoC5/I2C.c **** #else
+ 144:.\Generated_Source\PSoC5/I2C.c ****     #if (I2C_MODE_SLAVE_ENABLED)
+ 145:.\Generated_Source\PSoC5/I2C.c ****         /* Enable bit counter */
+ 146:.\Generated_Source\PSoC5/I2C.c ****         uint8 intState = CyEnterCriticalSection();
+ 147:.\Generated_Source\PSoC5/I2C.c ****         I2C_COUNTER_AUX_CTL_REG |= I2C_CNT7_ENABLE;
+ 148:.\Generated_Source\PSoC5/I2C.c ****         CyExitCriticalSection(intState);
+ 149:.\Generated_Source\PSoC5/I2C.c ****     #endif /* (I2C_MODE_SLAVE_ENABLED) */
+ 150:.\Generated_Source\PSoC5/I2C.c **** 
+ 151:.\Generated_Source\PSoC5/I2C.c ****     /* Enable slave or master bits */
+ 152:.\Generated_Source\PSoC5/I2C.c ****     I2C_CFG_REG |= I2C_ENABLE_MS;
+ 146              		.loc 1 152 0
+ 147 0004 054B     		ldr	r3, .L5
+ 148 0006 054A     		ldr	r2, .L5
+ 149 0008 1278     		ldrb	r2, [r2]
+ 150 000a D2B2     		uxtb	r2, r2
+ 151 000c 42F00202 		orr	r2, r2, #2
+ 152 0010 D2B2     		uxtb	r2, r2
+ 153 0012 1A70     		strb	r2, [r3]
+ 153:.\Generated_Source\PSoC5/I2C.c **** #endif /* (I2C_FF_IMPLEMENTED) */
+ 154:.\Generated_Source\PSoC5/I2C.c **** 
+ 155:.\Generated_Source\PSoC5/I2C.c **** #if (I2C_TIMEOUT_ENABLED)
+ 156:.\Generated_Source\PSoC5/I2C.c ****     I2C_TimeoutEnable();
+ 157:.\Generated_Source\PSoC5/I2C.c **** #endif /* (I2C_TIMEOUT_ENABLED) */
+ 158:.\Generated_Source\PSoC5/I2C.c **** }
+ 154              		.loc 1 158 0
+ 155 0014 BD46     		mov	sp, r7
+ 156              		@ sp needed
+ 157 0016 5DF8047B 		ldr	r7, [sp], #4
+ 158 001a 7047     		bx	lr
+ 159              	.L6:
+ 160              		.align	2
+ 161              	.L5:
+ 162 001c 77640040 		.word	1073767543
+ 163              		.cfi_endproc
+ 164              	.LFE1:
+ 165              		.size	I2C_Enable, .-I2C_Enable
+ 166              		.section	.text.I2C_Start,"ax",%progbits
+ 167              		.align	2
+ 168              		.global	I2C_Start
+ 169              		.thumb
+ 170              		.thumb_func
+ 171              		.type	I2C_Start, %function
+ 172              	I2C_Start:
+ 173              	.LFB2:
+ 159:.\Generated_Source\PSoC5/I2C.c **** 
+ 160:.\Generated_Source\PSoC5/I2C.c **** 
+ 161:.\Generated_Source\PSoC5/I2C.c **** /*******************************************************************************
+ 162:.\Generated_Source\PSoC5/I2C.c **** * Function Name: I2C_Start
+ 163:.\Generated_Source\PSoC5/I2C.c **** ********************************************************************************
+ 164:.\Generated_Source\PSoC5/I2C.c **** *
+ 165:.\Generated_Source\PSoC5/I2C.c **** * Summary:
+ 166:.\Generated_Source\PSoC5/I2C.c **** *  Starts the I2C hardware. Enables Active mode power template bits or clock
+ 167:.\Generated_Source\PSoC5/I2C.c **** *  gating as appropriate. It is required to be executed before I2C bus
+ 168:.\Generated_Source\PSoC5/I2C.c **** *  operation.
+ 169:.\Generated_Source\PSoC5/I2C.c **** *
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc3Pt3kN.s 			page 7
+
+
+ 170:.\Generated_Source\PSoC5/I2C.c **** * Parameters:
+ 171:.\Generated_Source\PSoC5/I2C.c **** *  None.
+ 172:.\Generated_Source\PSoC5/I2C.c **** *
+ 173:.\Generated_Source\PSoC5/I2C.c **** * Return:
+ 174:.\Generated_Source\PSoC5/I2C.c **** *  None.
+ 175:.\Generated_Source\PSoC5/I2C.c **** *
+ 176:.\Generated_Source\PSoC5/I2C.c **** * Side Effects:
+ 177:.\Generated_Source\PSoC5/I2C.c **** *  This component automatically enables its interrupt.  If I2C is enabled !
+ 178:.\Generated_Source\PSoC5/I2C.c **** *  without the interrupt enabled, it can lock up the I2C bus.
+ 179:.\Generated_Source\PSoC5/I2C.c **** *
+ 180:.\Generated_Source\PSoC5/I2C.c **** * Global variables:
+ 181:.\Generated_Source\PSoC5/I2C.c **** *  I2C_initVar - This variable is used to check the initial
+ 182:.\Generated_Source\PSoC5/I2C.c **** *                             configuration, modified on the first
+ 183:.\Generated_Source\PSoC5/I2C.c **** *                             function call.
+ 184:.\Generated_Source\PSoC5/I2C.c **** *
+ 185:.\Generated_Source\PSoC5/I2C.c **** * Reentrant:
+ 186:.\Generated_Source\PSoC5/I2C.c **** *  No.
+ 187:.\Generated_Source\PSoC5/I2C.c **** *
+ 188:.\Generated_Source\PSoC5/I2C.c **** *******************************************************************************/
+ 189:.\Generated_Source\PSoC5/I2C.c **** void I2C_Start(void) 
+ 190:.\Generated_Source\PSoC5/I2C.c **** {
+ 174              		.loc 1 190 0
+ 175              		.cfi_startproc
+ 176              		@ args = 0, pretend = 0, frame = 0
+ 177              		@ frame_needed = 1, uses_anonymous_args = 0
+ 178 0000 80B5     		push	{r7, lr}
+ 179              		.cfi_def_cfa_offset 8
+ 180              		.cfi_offset 7, -8
+ 181              		.cfi_offset 14, -4
+ 182 0002 00AF     		add	r7, sp, #0
+ 183              		.cfi_def_cfa_register 7
+ 191:.\Generated_Source\PSoC5/I2C.c ****     if (0u == I2C_initVar)
+ 184              		.loc 1 191 0
+ 185 0004 074B     		ldr	r3, .L9
+ 186 0006 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 187 0008 002B     		cmp	r3, #0
+ 188 000a 04D1     		bne	.L8
+ 192:.\Generated_Source\PSoC5/I2C.c ****     {
+ 193:.\Generated_Source\PSoC5/I2C.c ****         I2C_Init();
+ 189              		.loc 1 193 0
+ 190 000c FFF7FEFF 		bl	I2C_Init
+ 194:.\Generated_Source\PSoC5/I2C.c ****         I2C_initVar = 1u; /* Component initialized */
+ 191              		.loc 1 194 0
+ 192 0010 044B     		ldr	r3, .L9
+ 193 0012 0122     		movs	r2, #1
+ 194 0014 1A70     		strb	r2, [r3]
+ 195              	.L8:
+ 195:.\Generated_Source\PSoC5/I2C.c ****     }
+ 196:.\Generated_Source\PSoC5/I2C.c **** 
+ 197:.\Generated_Source\PSoC5/I2C.c ****     I2C_Enable();
+ 196              		.loc 1 197 0
+ 197 0016 FFF7FEFF 		bl	I2C_Enable
+ 198:.\Generated_Source\PSoC5/I2C.c ****     I2C_EnableInt();
+ 198              		.loc 1 198 0
+ 199 001a 034B     		ldr	r3, .L9+4
+ 200 001c 0422     		movs	r2, #4
+ 201 001e 1A60     		str	r2, [r3]
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc3Pt3kN.s 			page 8
+
+
+ 199:.\Generated_Source\PSoC5/I2C.c **** }
+ 202              		.loc 1 199 0
+ 203 0020 80BD     		pop	{r7, pc}
+ 204              	.L10:
+ 205 0022 00BF     		.align	2
+ 206              	.L9:
+ 207 0024 00000000 		.word	I2C_initVar
+ 208 0028 00E100E0 		.word	-536813312
+ 209              		.cfi_endproc
+ 210              	.LFE2:
+ 211              		.size	I2C_Start, .-I2C_Start
+ 212              		.section	.text.I2C_Stop,"ax",%progbits
+ 213              		.align	2
+ 214              		.global	I2C_Stop
+ 215              		.thumb
+ 216              		.thumb_func
+ 217              		.type	I2C_Stop, %function
+ 218              	I2C_Stop:
+ 219              	.LFB3:
+ 200:.\Generated_Source\PSoC5/I2C.c **** 
+ 201:.\Generated_Source\PSoC5/I2C.c **** 
+ 202:.\Generated_Source\PSoC5/I2C.c **** /*******************************************************************************
+ 203:.\Generated_Source\PSoC5/I2C.c **** * Function Name: I2C_Stop
+ 204:.\Generated_Source\PSoC5/I2C.c **** ********************************************************************************
+ 205:.\Generated_Source\PSoC5/I2C.c **** *
+ 206:.\Generated_Source\PSoC5/I2C.c **** * Summary:
+ 207:.\Generated_Source\PSoC5/I2C.c **** *  Disables I2C hardware and disables I2C interrupt. Disables Active mode power
+ 208:.\Generated_Source\PSoC5/I2C.c **** *  template bits or clock gating as appropriate.
+ 209:.\Generated_Source\PSoC5/I2C.c **** *
+ 210:.\Generated_Source\PSoC5/I2C.c **** * Parameters:
+ 211:.\Generated_Source\PSoC5/I2C.c **** *  None.
+ 212:.\Generated_Source\PSoC5/I2C.c **** *
+ 213:.\Generated_Source\PSoC5/I2C.c **** * Return:
+ 214:.\Generated_Source\PSoC5/I2C.c **** *  None.
+ 215:.\Generated_Source\PSoC5/I2C.c **** *
+ 216:.\Generated_Source\PSoC5/I2C.c **** *******************************************************************************/
+ 217:.\Generated_Source\PSoC5/I2C.c **** void I2C_Stop(void) 
+ 218:.\Generated_Source\PSoC5/I2C.c **** {
+ 220              		.loc 1 218 0
+ 221              		.cfi_startproc
+ 222              		@ args = 0, pretend = 0, frame = 0
+ 223              		@ frame_needed = 1, uses_anonymous_args = 0
+ 224              		@ link register save eliminated.
+ 225 0000 80B4     		push	{r7}
+ 226              		.cfi_def_cfa_offset 4
+ 227              		.cfi_offset 7, -4
+ 228 0002 00AF     		add	r7, sp, #0
+ 229              		.cfi_def_cfa_register 7
+ 219:.\Generated_Source\PSoC5/I2C.c ****     I2C_DisableInt();
+ 230              		.loc 1 219 0
+ 231 0004 0F4B     		ldr	r3, .L12
+ 232 0006 0422     		movs	r2, #4
+ 233 0008 1A60     		str	r2, [r3]
+ 220:.\Generated_Source\PSoC5/I2C.c **** 
+ 221:.\Generated_Source\PSoC5/I2C.c **** #if (I2C_TIMEOUT_ENABLED)
+ 222:.\Generated_Source\PSoC5/I2C.c ****     I2C_TimeoutStop();
+ 223:.\Generated_Source\PSoC5/I2C.c **** #endif  /* End (I2C_TIMEOUT_ENABLED) */
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc3Pt3kN.s 			page 9
+
+
+ 224:.\Generated_Source\PSoC5/I2C.c **** 
+ 225:.\Generated_Source\PSoC5/I2C.c **** #if (I2C_FF_IMPLEMENTED)
+ 226:.\Generated_Source\PSoC5/I2C.c ****     {
+ 227:.\Generated_Source\PSoC5/I2C.c ****         uint8 intState;
+ 228:.\Generated_Source\PSoC5/I2C.c ****         uint16 blockResetCycles;
+ 229:.\Generated_Source\PSoC5/I2C.c **** 
+ 230:.\Generated_Source\PSoC5/I2C.c ****         /* Store registers effected by block disable */
+ 231:.\Generated_Source\PSoC5/I2C.c ****         I2C_backup.addr    = I2C_ADDR_REG;
+ 232:.\Generated_Source\PSoC5/I2C.c ****         I2C_backup.clkDiv1 = I2C_CLKDIV1_REG;
+ 233:.\Generated_Source\PSoC5/I2C.c ****         I2C_backup.clkDiv2 = I2C_CLKDIV2_REG;
+ 234:.\Generated_Source\PSoC5/I2C.c **** 
+ 235:.\Generated_Source\PSoC5/I2C.c ****         /* Calculate number of cycles to reset block */
+ 236:.\Generated_Source\PSoC5/I2C.c ****         blockResetCycles = ((uint16) ((uint16) I2C_CLKDIV2_REG << 8u) | I2C_CLKDIV1_REG) + 1u;
+ 237:.\Generated_Source\PSoC5/I2C.c **** 
+ 238:.\Generated_Source\PSoC5/I2C.c ****         /* Disable block */
+ 239:.\Generated_Source\PSoC5/I2C.c ****         I2C_CFG_REG &= (uint8) ~I2C_CFG_EN_SLAVE;
+ 240:.\Generated_Source\PSoC5/I2C.c ****         /* Wait for block reset before disable power */
+ 241:.\Generated_Source\PSoC5/I2C.c ****         CyDelayCycles((uint32) blockResetCycles);
+ 242:.\Generated_Source\PSoC5/I2C.c **** 
+ 243:.\Generated_Source\PSoC5/I2C.c ****         /* Disable power to block */
+ 244:.\Generated_Source\PSoC5/I2C.c ****         intState = CyEnterCriticalSection();
+ 245:.\Generated_Source\PSoC5/I2C.c ****         I2C_ACT_PWRMGR_REG  &= (uint8) ~I2C_ACT_PWR_EN;
+ 246:.\Generated_Source\PSoC5/I2C.c ****         I2C_STBY_PWRMGR_REG &= (uint8) ~I2C_STBY_PWR_EN;
+ 247:.\Generated_Source\PSoC5/I2C.c ****         CyExitCriticalSection(intState);
+ 248:.\Generated_Source\PSoC5/I2C.c **** 
+ 249:.\Generated_Source\PSoC5/I2C.c ****         /* Enable block */
+ 250:.\Generated_Source\PSoC5/I2C.c ****         I2C_CFG_REG |= (uint8) I2C_ENABLE_MS;
+ 251:.\Generated_Source\PSoC5/I2C.c **** 
+ 252:.\Generated_Source\PSoC5/I2C.c ****         /* Restore registers effected by block disable. Ticket ID#198004 */
+ 253:.\Generated_Source\PSoC5/I2C.c ****         I2C_ADDR_REG    = I2C_backup.addr;
+ 254:.\Generated_Source\PSoC5/I2C.c ****         I2C_ADDR_REG    = I2C_backup.addr;
+ 255:.\Generated_Source\PSoC5/I2C.c ****         I2C_CLKDIV1_REG = I2C_backup.clkDiv1;
+ 256:.\Generated_Source\PSoC5/I2C.c ****         I2C_CLKDIV2_REG = I2C_backup.clkDiv2;
+ 257:.\Generated_Source\PSoC5/I2C.c ****     }
+ 258:.\Generated_Source\PSoC5/I2C.c **** #else
+ 259:.\Generated_Source\PSoC5/I2C.c **** 
+ 260:.\Generated_Source\PSoC5/I2C.c ****     /* Disable slave or master bits */
+ 261:.\Generated_Source\PSoC5/I2C.c ****     I2C_CFG_REG &= (uint8) ~I2C_ENABLE_MS;
+ 234              		.loc 1 261 0
+ 235 000a 0F4B     		ldr	r3, .L12+4
+ 236 000c 0E4A     		ldr	r2, .L12+4
+ 237 000e 1278     		ldrb	r2, [r2]
+ 238 0010 D2B2     		uxtb	r2, r2
+ 239 0012 22F00202 		bic	r2, r2, #2
+ 240 0016 D2B2     		uxtb	r2, r2
+ 241 0018 1A70     		strb	r2, [r3]
+ 262:.\Generated_Source\PSoC5/I2C.c **** 
+ 263:.\Generated_Source\PSoC5/I2C.c **** #if (I2C_MODE_SLAVE_ENABLED)
+ 264:.\Generated_Source\PSoC5/I2C.c ****     {
+ 265:.\Generated_Source\PSoC5/I2C.c ****         /* Disable bit counter */
+ 266:.\Generated_Source\PSoC5/I2C.c ****         uint8 intState = CyEnterCriticalSection();
+ 267:.\Generated_Source\PSoC5/I2C.c ****         I2C_COUNTER_AUX_CTL_REG &= (uint8) ~I2C_CNT7_ENABLE;
+ 268:.\Generated_Source\PSoC5/I2C.c ****         CyExitCriticalSection(intState);
+ 269:.\Generated_Source\PSoC5/I2C.c ****     }
+ 270:.\Generated_Source\PSoC5/I2C.c **** #endif /* (I2C_MODE_SLAVE_ENABLED) */
+ 271:.\Generated_Source\PSoC5/I2C.c **** 
+ 272:.\Generated_Source\PSoC5/I2C.c ****     /* Clear interrupt source register */
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc3Pt3kN.s 			page 10
+
+
+ 273:.\Generated_Source\PSoC5/I2C.c ****     (void) I2C_CSR_REG;
+ 242              		.loc 1 273 0
+ 243 001a 0C4B     		ldr	r3, .L12+8
+ 244 001c 1B78     		ldrb	r3, [r3]
+ 274:.\Generated_Source\PSoC5/I2C.c **** #endif /* (I2C_FF_IMPLEMENTED) */
+ 275:.\Generated_Source\PSoC5/I2C.c **** 
+ 276:.\Generated_Source\PSoC5/I2C.c ****     /* Disable interrupt on stop (enabled by write transaction) */
+ 277:.\Generated_Source\PSoC5/I2C.c ****     I2C_DISABLE_INT_ON_STOP;
+ 245              		.loc 1 277 0
+ 246 001e 0C4B     		ldr	r3, .L12+12
+ 247 0020 0B4A     		ldr	r2, .L12+12
+ 248 0022 1278     		ldrb	r2, [r2]
+ 249 0024 D2B2     		uxtb	r2, r2
+ 250 0026 22F02002 		bic	r2, r2, #32
+ 251 002a D2B2     		uxtb	r2, r2
+ 252 002c 1A70     		strb	r2, [r3]
+ 278:.\Generated_Source\PSoC5/I2C.c ****     I2C_ClearPendingInt();
+ 253              		.loc 1 278 0
+ 254 002e 094B     		ldr	r3, .L12+16
+ 255 0030 0422     		movs	r2, #4
+ 256 0032 1A60     		str	r2, [r3]
+ 279:.\Generated_Source\PSoC5/I2C.c **** 
+ 280:.\Generated_Source\PSoC5/I2C.c ****     /* Reset FSM to default state */
+ 281:.\Generated_Source\PSoC5/I2C.c ****     I2C_state = I2C_SM_IDLE;
+ 257              		.loc 1 281 0
+ 258 0034 084B     		ldr	r3, .L12+20
+ 259 0036 1022     		movs	r2, #16
+ 260 0038 1A70     		strb	r2, [r3]
+ 282:.\Generated_Source\PSoC5/I2C.c **** 
+ 283:.\Generated_Source\PSoC5/I2C.c ****     /* Clear busy statuses */
+ 284:.\Generated_Source\PSoC5/I2C.c **** #if (I2C_MODE_SLAVE_ENABLED)
+ 285:.\Generated_Source\PSoC5/I2C.c ****     I2C_slStatus &= (uint8) ~(I2C_SSTAT_RD_BUSY | I2C_SSTAT_WR_BUSY);
+ 286:.\Generated_Source\PSoC5/I2C.c **** #endif /* (I2C_MODE_SLAVE_ENABLED) */
+ 287:.\Generated_Source\PSoC5/I2C.c **** }
+ 261              		.loc 1 287 0
+ 262 003a BD46     		mov	sp, r7
+ 263              		@ sp needed
+ 264 003c 5DF8047B 		ldr	r7, [sp], #4
+ 265 0040 7047     		bx	lr
+ 266              	.L13:
+ 267 0042 00BF     		.align	2
+ 268              	.L12:
+ 269 0044 80E100E0 		.word	-536813184
+ 270 0048 77640040 		.word	1073767543
+ 271 004c 6B640040 		.word	1073767531
+ 272 0050 8B640040 		.word	1073767563
+ 273 0054 80E200E0 		.word	-536812928
+ 274 0058 00000000 		.word	I2C_state
+ 275              		.cfi_endproc
+ 276              	.LFE3:
+ 277              		.size	I2C_Stop, .-I2C_Stop
+ 278              		.text
+ 279              	.Letext0:
+ 280              		.file 2 ".\\Generated_Source\\PSoC5\\cytypes.h"
+ 281              		.file 3 ".\\Generated_Source\\PSoC5\\I2C_PVT.h"
+ 282              		.section	.debug_info,"",%progbits
+ 283              	.Ldebug_info0:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc3Pt3kN.s 			page 11
+
+
+ 284 0000 56010000 		.4byte	0x156
+ 285 0004 0400     		.2byte	0x4
+ 286 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 287 000a 04       		.byte	0x4
+ 288 000b 01       		.uleb128 0x1
+ 289 000c 2E010000 		.4byte	.LASF25
+ 290 0010 01       		.byte	0x1
+ 291 0011 3C000000 		.4byte	.LASF26
+ 292 0015 AD000000 		.4byte	.LASF27
+ 293 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 294 001d 00000000 		.4byte	0
+ 295 0021 00000000 		.4byte	.Ldebug_line0
+ 296 0025 02       		.uleb128 0x2
+ 297 0026 01       		.byte	0x1
+ 298 0027 06       		.byte	0x6
+ 299 0028 5B000000 		.4byte	.LASF0
+ 300 002c 02       		.uleb128 0x2
+ 301 002d 01       		.byte	0x1
+ 302 002e 08       		.byte	0x8
+ 303 002f 67000000 		.4byte	.LASF1
+ 304 0033 02       		.uleb128 0x2
+ 305 0034 02       		.byte	0x2
+ 306 0035 05       		.byte	0x5
+ 307 0036 CF010000 		.4byte	.LASF2
+ 308 003a 02       		.uleb128 0x2
+ 309 003b 02       		.byte	0x2
+ 310 003c 07       		.byte	0x7
+ 311 003d 06000000 		.4byte	.LASF3
+ 312 0041 02       		.uleb128 0x2
+ 313 0042 04       		.byte	0x4
+ 314 0043 05       		.byte	0x5
+ 315 0044 E8010000 		.4byte	.LASF4
+ 316 0048 02       		.uleb128 0x2
+ 317 0049 04       		.byte	0x4
+ 318 004a 07       		.byte	0x7
+ 319 004b 83000000 		.4byte	.LASF5
+ 320 004f 02       		.uleb128 0x2
+ 321 0050 08       		.byte	0x8
+ 322 0051 05       		.byte	0x5
+ 323 0052 BC010000 		.4byte	.LASF6
+ 324 0056 02       		.uleb128 0x2
+ 325 0057 08       		.byte	0x8
+ 326 0058 07       		.byte	0x7
+ 327 0059 17010000 		.4byte	.LASF7
+ 328 005d 03       		.uleb128 0x3
+ 329 005e 04       		.byte	0x4
+ 330 005f 05       		.byte	0x5
+ 331 0060 696E7400 		.ascii	"int\000"
+ 332 0064 02       		.uleb128 0x2
+ 333 0065 04       		.byte	0x4
+ 334 0066 07       		.byte	0x7
+ 335 0067 0A010000 		.4byte	.LASF8
+ 336 006b 04       		.uleb128 0x4
+ 337 006c 95000000 		.4byte	.LASF9
+ 338 0070 02       		.byte	0x2
+ 339 0071 B3       		.byte	0xb3
+ 340 0072 2C000000 		.4byte	0x2c
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc3Pt3kN.s 			page 12
+
+
+ 341 0076 04       		.uleb128 0x4
+ 342 0077 FA000000 		.4byte	.LASF10
+ 343 007b 02       		.byte	0x2
+ 344 007c B5       		.byte	0xb5
+ 345 007d 48000000 		.4byte	0x48
+ 346 0081 02       		.uleb128 0x2
+ 347 0082 04       		.byte	0x4
+ 348 0083 04       		.byte	0x4
+ 349 0084 36000000 		.4byte	.LASF11
+ 350 0088 02       		.uleb128 0x2
+ 351 0089 08       		.byte	0x8
+ 352 008a 04       		.byte	0x4
+ 353 008b A6000000 		.4byte	.LASF12
+ 354 008f 02       		.uleb128 0x2
+ 355 0090 01       		.byte	0x1
+ 356 0091 08       		.byte	0x8
+ 357 0092 CA010000 		.4byte	.LASF13
+ 358 0096 05       		.uleb128 0x5
+ 359 0097 75000000 		.4byte	.LASF14
+ 360 009b 02       		.byte	0x2
+ 361 009c 5D01     		.2byte	0x15d
+ 362 009e A2000000 		.4byte	0xa2
+ 363 00a2 06       		.uleb128 0x6
+ 364 00a3 6B000000 		.4byte	0x6b
+ 365 00a7 05       		.uleb128 0x5
+ 366 00a8 00000000 		.4byte	.LASF15
+ 367 00ac 02       		.byte	0x2
+ 368 00ad 5F01     		.2byte	0x15f
+ 369 00af B3000000 		.4byte	0xb3
+ 370 00b3 06       		.uleb128 0x6
+ 371 00b4 76000000 		.4byte	0x76
+ 372 00b8 02       		.uleb128 0x2
+ 373 00b9 04       		.byte	0x4
+ 374 00ba 07       		.byte	0x7
+ 375 00bb B3010000 		.4byte	.LASF16
+ 376 00bf 07       		.uleb128 0x7
+ 377 00c0 AA010000 		.4byte	.LASF28
+ 378 00c4 01       		.byte	0x1
+ 379 00c5 31       		.byte	0x31
+ 380 00c6 00000000 		.4byte	.LFB0
+ 381 00ca A0000000 		.4byte	.LFE0-.LFB0
+ 382 00ce 01       		.uleb128 0x1
+ 383 00cf 9C       		.byte	0x9c
+ 384 00d0 E3000000 		.4byte	0xe3
+ 385 00d4 08       		.uleb128 0x8
+ 386 00d5 01010000 		.4byte	.LASF29
+ 387 00d9 01       		.byte	0x1
+ 388 00da 3C       		.byte	0x3c
+ 389 00db 6B000000 		.4byte	0x6b
+ 390 00df 02       		.uleb128 0x2
+ 391 00e0 91       		.byte	0x91
+ 392 00e1 77       		.sleb128 -9
+ 393 00e2 00       		.byte	0
+ 394 00e3 09       		.uleb128 0x9
+ 395 00e4 9B000000 		.4byte	.LASF17
+ 396 00e8 01       		.byte	0x1
+ 397 00e9 85       		.byte	0x85
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc3Pt3kN.s 			page 13
+
+
+ 398 00ea 00000000 		.4byte	.LFB1
+ 399 00ee 20000000 		.4byte	.LFE1-.LFB1
+ 400 00f2 01       		.uleb128 0x1
+ 401 00f3 9C       		.byte	0x9c
+ 402 00f4 0A       		.uleb128 0xa
+ 403 00f5 19000000 		.4byte	.LASF18
+ 404 00f9 01       		.byte	0x1
+ 405 00fa BD       		.byte	0xbd
+ 406 00fb 00000000 		.4byte	.LFB2
+ 407 00ff 2C000000 		.4byte	.LFE2-.LFB2
+ 408 0103 01       		.uleb128 0x1
+ 409 0104 9C       		.byte	0x9c
+ 410 0105 09       		.uleb128 0x9
+ 411 0106 7A000000 		.4byte	.LASF19
+ 412 010a 01       		.byte	0x1
+ 413 010b D9       		.byte	0xd9
+ 414 010c 00000000 		.4byte	.LFB3
+ 415 0110 5C000000 		.4byte	.LFE3-.LFB3
+ 416 0114 01       		.uleb128 0x1
+ 417 0115 9C       		.byte	0x9c
+ 418 0116 0B       		.uleb128 0xb
+ 419 0117 0E020000 		.4byte	.LASF20
+ 420 011b 01       		.byte	0x1
+ 421 011c 18       		.byte	0x18
+ 422 011d 6B000000 		.4byte	0x6b
+ 423 0121 05       		.uleb128 0x5
+ 424 0122 03       		.byte	0x3
+ 425 0123 00000000 		.4byte	I2C_initVar
+ 426 0127 0B       		.uleb128 0xb
+ 427 0128 F1010000 		.4byte	.LASF21
+ 428 012c 01       		.byte	0x1
+ 429 012d 1A       		.byte	0x1a
+ 430 012e A2000000 		.4byte	0xa2
+ 431 0132 05       		.uleb128 0x5
+ 432 0133 03       		.byte	0x3
+ 433 0134 00000000 		.4byte	I2C_state
+ 434 0138 0C       		.uleb128 0xc
+ 435 0139 D9010000 		.4byte	.LASF22
+ 436 013d 03       		.byte	0x3
+ 437 013e 27       		.byte	0x27
+ 438 013f A2000000 		.4byte	0xa2
+ 439 0143 0C       		.uleb128 0xc
+ 440 0144 23000000 		.4byte	.LASF23
+ 441 0148 03       		.byte	0x3
+ 442 0149 2D       		.byte	0x2d
+ 443 014a A2000000 		.4byte	0xa2
+ 444 014e 0C       		.uleb128 0xc
+ 445 014f FB010000 		.4byte	.LASF24
+ 446 0153 03       		.byte	0x3
+ 447 0154 32       		.byte	0x32
+ 448 0155 A2000000 		.4byte	0xa2
+ 449 0159 00       		.byte	0
+ 450              		.section	.debug_abbrev,"",%progbits
+ 451              	.Ldebug_abbrev0:
+ 452 0000 01       		.uleb128 0x1
+ 453 0001 11       		.uleb128 0x11
+ 454 0002 01       		.byte	0x1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc3Pt3kN.s 			page 14
+
+
+ 455 0003 25       		.uleb128 0x25
+ 456 0004 0E       		.uleb128 0xe
+ 457 0005 13       		.uleb128 0x13
+ 458 0006 0B       		.uleb128 0xb
+ 459 0007 03       		.uleb128 0x3
+ 460 0008 0E       		.uleb128 0xe
+ 461 0009 1B       		.uleb128 0x1b
+ 462 000a 0E       		.uleb128 0xe
+ 463 000b 55       		.uleb128 0x55
+ 464 000c 17       		.uleb128 0x17
+ 465 000d 11       		.uleb128 0x11
+ 466 000e 01       		.uleb128 0x1
+ 467 000f 10       		.uleb128 0x10
+ 468 0010 17       		.uleb128 0x17
+ 469 0011 00       		.byte	0
+ 470 0012 00       		.byte	0
+ 471 0013 02       		.uleb128 0x2
+ 472 0014 24       		.uleb128 0x24
+ 473 0015 00       		.byte	0
+ 474 0016 0B       		.uleb128 0xb
+ 475 0017 0B       		.uleb128 0xb
+ 476 0018 3E       		.uleb128 0x3e
+ 477 0019 0B       		.uleb128 0xb
+ 478 001a 03       		.uleb128 0x3
+ 479 001b 0E       		.uleb128 0xe
+ 480 001c 00       		.byte	0
+ 481 001d 00       		.byte	0
+ 482 001e 03       		.uleb128 0x3
+ 483 001f 24       		.uleb128 0x24
+ 484 0020 00       		.byte	0
+ 485 0021 0B       		.uleb128 0xb
+ 486 0022 0B       		.uleb128 0xb
+ 487 0023 3E       		.uleb128 0x3e
+ 488 0024 0B       		.uleb128 0xb
+ 489 0025 03       		.uleb128 0x3
+ 490 0026 08       		.uleb128 0x8
+ 491 0027 00       		.byte	0
+ 492 0028 00       		.byte	0
+ 493 0029 04       		.uleb128 0x4
+ 494 002a 16       		.uleb128 0x16
+ 495 002b 00       		.byte	0
+ 496 002c 03       		.uleb128 0x3
+ 497 002d 0E       		.uleb128 0xe
+ 498 002e 3A       		.uleb128 0x3a
+ 499 002f 0B       		.uleb128 0xb
+ 500 0030 3B       		.uleb128 0x3b
+ 501 0031 0B       		.uleb128 0xb
+ 502 0032 49       		.uleb128 0x49
+ 503 0033 13       		.uleb128 0x13
+ 504 0034 00       		.byte	0
+ 505 0035 00       		.byte	0
+ 506 0036 05       		.uleb128 0x5
+ 507 0037 16       		.uleb128 0x16
+ 508 0038 00       		.byte	0
+ 509 0039 03       		.uleb128 0x3
+ 510 003a 0E       		.uleb128 0xe
+ 511 003b 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc3Pt3kN.s 			page 15
+
+
+ 512 003c 0B       		.uleb128 0xb
+ 513 003d 3B       		.uleb128 0x3b
+ 514 003e 05       		.uleb128 0x5
+ 515 003f 49       		.uleb128 0x49
+ 516 0040 13       		.uleb128 0x13
+ 517 0041 00       		.byte	0
+ 518 0042 00       		.byte	0
+ 519 0043 06       		.uleb128 0x6
+ 520 0044 35       		.uleb128 0x35
+ 521 0045 00       		.byte	0
+ 522 0046 49       		.uleb128 0x49
+ 523 0047 13       		.uleb128 0x13
+ 524 0048 00       		.byte	0
+ 525 0049 00       		.byte	0
+ 526 004a 07       		.uleb128 0x7
+ 527 004b 2E       		.uleb128 0x2e
+ 528 004c 01       		.byte	0x1
+ 529 004d 3F       		.uleb128 0x3f
+ 530 004e 19       		.uleb128 0x19
+ 531 004f 03       		.uleb128 0x3
+ 532 0050 0E       		.uleb128 0xe
+ 533 0051 3A       		.uleb128 0x3a
+ 534 0052 0B       		.uleb128 0xb
+ 535 0053 3B       		.uleb128 0x3b
+ 536 0054 0B       		.uleb128 0xb
+ 537 0055 27       		.uleb128 0x27
+ 538 0056 19       		.uleb128 0x19
+ 539 0057 11       		.uleb128 0x11
+ 540 0058 01       		.uleb128 0x1
+ 541 0059 12       		.uleb128 0x12
+ 542 005a 06       		.uleb128 0x6
+ 543 005b 40       		.uleb128 0x40
+ 544 005c 18       		.uleb128 0x18
+ 545 005d 9642     		.uleb128 0x2116
+ 546 005f 19       		.uleb128 0x19
+ 547 0060 01       		.uleb128 0x1
+ 548 0061 13       		.uleb128 0x13
+ 549 0062 00       		.byte	0
+ 550 0063 00       		.byte	0
+ 551 0064 08       		.uleb128 0x8
+ 552 0065 34       		.uleb128 0x34
+ 553 0066 00       		.byte	0
+ 554 0067 03       		.uleb128 0x3
+ 555 0068 0E       		.uleb128 0xe
+ 556 0069 3A       		.uleb128 0x3a
+ 557 006a 0B       		.uleb128 0xb
+ 558 006b 3B       		.uleb128 0x3b
+ 559 006c 0B       		.uleb128 0xb
+ 560 006d 49       		.uleb128 0x49
+ 561 006e 13       		.uleb128 0x13
+ 562 006f 02       		.uleb128 0x2
+ 563 0070 18       		.uleb128 0x18
+ 564 0071 00       		.byte	0
+ 565 0072 00       		.byte	0
+ 566 0073 09       		.uleb128 0x9
+ 567 0074 2E       		.uleb128 0x2e
+ 568 0075 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc3Pt3kN.s 			page 16
+
+
+ 569 0076 3F       		.uleb128 0x3f
+ 570 0077 19       		.uleb128 0x19
+ 571 0078 03       		.uleb128 0x3
+ 572 0079 0E       		.uleb128 0xe
+ 573 007a 3A       		.uleb128 0x3a
+ 574 007b 0B       		.uleb128 0xb
+ 575 007c 3B       		.uleb128 0x3b
+ 576 007d 0B       		.uleb128 0xb
+ 577 007e 27       		.uleb128 0x27
+ 578 007f 19       		.uleb128 0x19
+ 579 0080 11       		.uleb128 0x11
+ 580 0081 01       		.uleb128 0x1
+ 581 0082 12       		.uleb128 0x12
+ 582 0083 06       		.uleb128 0x6
+ 583 0084 40       		.uleb128 0x40
+ 584 0085 18       		.uleb128 0x18
+ 585 0086 9742     		.uleb128 0x2117
+ 586 0088 19       		.uleb128 0x19
+ 587 0089 00       		.byte	0
+ 588 008a 00       		.byte	0
+ 589 008b 0A       		.uleb128 0xa
+ 590 008c 2E       		.uleb128 0x2e
+ 591 008d 00       		.byte	0
+ 592 008e 3F       		.uleb128 0x3f
+ 593 008f 19       		.uleb128 0x19
+ 594 0090 03       		.uleb128 0x3
+ 595 0091 0E       		.uleb128 0xe
+ 596 0092 3A       		.uleb128 0x3a
+ 597 0093 0B       		.uleb128 0xb
+ 598 0094 3B       		.uleb128 0x3b
+ 599 0095 0B       		.uleb128 0xb
+ 600 0096 27       		.uleb128 0x27
+ 601 0097 19       		.uleb128 0x19
+ 602 0098 11       		.uleb128 0x11
+ 603 0099 01       		.uleb128 0x1
+ 604 009a 12       		.uleb128 0x12
+ 605 009b 06       		.uleb128 0x6
+ 606 009c 40       		.uleb128 0x40
+ 607 009d 18       		.uleb128 0x18
+ 608 009e 9642     		.uleb128 0x2116
+ 609 00a0 19       		.uleb128 0x19
+ 610 00a1 00       		.byte	0
+ 611 00a2 00       		.byte	0
+ 612 00a3 0B       		.uleb128 0xb
+ 613 00a4 34       		.uleb128 0x34
+ 614 00a5 00       		.byte	0
+ 615 00a6 03       		.uleb128 0x3
+ 616 00a7 0E       		.uleb128 0xe
+ 617 00a8 3A       		.uleb128 0x3a
+ 618 00a9 0B       		.uleb128 0xb
+ 619 00aa 3B       		.uleb128 0x3b
+ 620 00ab 0B       		.uleb128 0xb
+ 621 00ac 49       		.uleb128 0x49
+ 622 00ad 13       		.uleb128 0x13
+ 623 00ae 3F       		.uleb128 0x3f
+ 624 00af 19       		.uleb128 0x19
+ 625 00b0 02       		.uleb128 0x2
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc3Pt3kN.s 			page 17
+
+
+ 626 00b1 18       		.uleb128 0x18
+ 627 00b2 00       		.byte	0
+ 628 00b3 00       		.byte	0
+ 629 00b4 0C       		.uleb128 0xc
+ 630 00b5 34       		.uleb128 0x34
+ 631 00b6 00       		.byte	0
+ 632 00b7 03       		.uleb128 0x3
+ 633 00b8 0E       		.uleb128 0xe
+ 634 00b9 3A       		.uleb128 0x3a
+ 635 00ba 0B       		.uleb128 0xb
+ 636 00bb 3B       		.uleb128 0x3b
+ 637 00bc 0B       		.uleb128 0xb
+ 638 00bd 49       		.uleb128 0x49
+ 639 00be 13       		.uleb128 0x13
+ 640 00bf 3F       		.uleb128 0x3f
+ 641 00c0 19       		.uleb128 0x19
+ 642 00c1 3C       		.uleb128 0x3c
+ 643 00c2 19       		.uleb128 0x19
+ 644 00c3 00       		.byte	0
+ 645 00c4 00       		.byte	0
+ 646 00c5 00       		.byte	0
+ 647              		.section	.debug_aranges,"",%progbits
+ 648 0000 34000000 		.4byte	0x34
+ 649 0004 0200     		.2byte	0x2
+ 650 0006 00000000 		.4byte	.Ldebug_info0
+ 651 000a 04       		.byte	0x4
+ 652 000b 00       		.byte	0
+ 653 000c 0000     		.2byte	0
+ 654 000e 0000     		.2byte	0
+ 655 0010 00000000 		.4byte	.LFB0
+ 656 0014 A0000000 		.4byte	.LFE0-.LFB0
+ 657 0018 00000000 		.4byte	.LFB1
+ 658 001c 20000000 		.4byte	.LFE1-.LFB1
+ 659 0020 00000000 		.4byte	.LFB2
+ 660 0024 2C000000 		.4byte	.LFE2-.LFB2
+ 661 0028 00000000 		.4byte	.LFB3
+ 662 002c 5C000000 		.4byte	.LFE3-.LFB3
+ 663 0030 00000000 		.4byte	0
+ 664 0034 00000000 		.4byte	0
+ 665              		.section	.debug_ranges,"",%progbits
+ 666              	.Ldebug_ranges0:
+ 667 0000 00000000 		.4byte	.LFB0
+ 668 0004 A0000000 		.4byte	.LFE0
+ 669 0008 00000000 		.4byte	.LFB1
+ 670 000c 20000000 		.4byte	.LFE1
+ 671 0010 00000000 		.4byte	.LFB2
+ 672 0014 2C000000 		.4byte	.LFE2
+ 673 0018 00000000 		.4byte	.LFB3
+ 674 001c 5C000000 		.4byte	.LFE3
+ 675 0020 00000000 		.4byte	0
+ 676 0024 00000000 		.4byte	0
+ 677              		.section	.debug_line,"",%progbits
+ 678              	.Ldebug_line0:
+ 679 0000 BF000000 		.section	.debug_str,"MS",%progbits,1
+ 679      02004F00 
+ 679      00000201 
+ 679      FB0E0D00 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc3Pt3kN.s 			page 18
+
+
+ 679      01010101 
+ 680              	.LASF15:
+ 681 0000 72656733 		.ascii	"reg32\000"
+ 681      3200
+ 682              	.LASF3:
+ 683 0006 73686F72 		.ascii	"short unsigned int\000"
+ 683      7420756E 
+ 683      7369676E 
+ 683      65642069 
+ 683      6E7400
+ 684              	.LASF18:
+ 685 0019 4932435F 		.ascii	"I2C_Start\000"
+ 685      53746172 
+ 685      7400
+ 686              	.LASF23:
+ 687 0023 4932435F 		.ascii	"I2C_mstrRdBufIndex\000"
+ 687      6D737472 
+ 687      52644275 
+ 687      66496E64 
+ 687      657800
+ 688              	.LASF11:
+ 689 0036 666C6F61 		.ascii	"float\000"
+ 689      7400
+ 690              	.LASF26:
+ 691 003c 2E5C4765 		.ascii	".\\Generated_Source\\PSoC5\\I2C.c\000"
+ 691      6E657261 
+ 691      7465645F 
+ 691      536F7572 
+ 691      63655C50 
+ 692              	.LASF0:
+ 693 005b 7369676E 		.ascii	"signed char\000"
+ 693      65642063 
+ 693      68617200 
+ 694              	.LASF1:
+ 695 0067 756E7369 		.ascii	"unsigned char\000"
+ 695      676E6564 
+ 695      20636861 
+ 695      7200
+ 696              	.LASF14:
+ 697 0075 72656738 		.ascii	"reg8\000"
+ 697      00
+ 698              	.LASF19:
+ 699 007a 4932435F 		.ascii	"I2C_Stop\000"
+ 699      53746F70 
+ 699      00
+ 700              	.LASF5:
+ 701 0083 6C6F6E67 		.ascii	"long unsigned int\000"
+ 701      20756E73 
+ 701      69676E65 
+ 701      6420696E 
+ 701      7400
+ 702              	.LASF9:
+ 703 0095 75696E74 		.ascii	"uint8\000"
+ 703      3800
+ 704              	.LASF17:
+ 705 009b 4932435F 		.ascii	"I2C_Enable\000"
+ 705      456E6162 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc3Pt3kN.s 			page 19
+
+
+ 705      6C6500
+ 706              	.LASF12:
+ 707 00a6 646F7562 		.ascii	"double\000"
+ 707      6C6500
+ 708              	.LASF27:
+ 709 00ad 433A5C55 		.ascii	"C:\\Users\\xavieran\\Desktop\\ECE3091\\WorkingCamer"
+ 709      73657273 
+ 709      5C786176 
+ 709      69657261 
+ 709      6E5C4465 
+ 710 00db 615C4361 		.ascii	"a\\Camera_vis\\camera_test.cydsn\000"
+ 710      6D657261 
+ 710      5F766973 
+ 710      5C63616D 
+ 710      6572615F 
+ 711              	.LASF10:
+ 712 00fa 75696E74 		.ascii	"uint32\000"
+ 712      333200
+ 713              	.LASF29:
+ 714 0101 696E7453 		.ascii	"intState\000"
+ 714      74617465 
+ 714      00
+ 715              	.LASF8:
+ 716 010a 756E7369 		.ascii	"unsigned int\000"
+ 716      676E6564 
+ 716      20696E74 
+ 716      00
+ 717              	.LASF7:
+ 718 0117 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 718      206C6F6E 
+ 718      6720756E 
+ 718      7369676E 
+ 718      65642069 
+ 719              	.LASF25:
+ 720 012e 474E5520 		.ascii	"GNU C 4.8.4 20140526 (release) [ARM/embedded-4_8-br"
+ 720      4320342E 
+ 720      382E3420 
+ 720      32303134 
+ 720      30353236 
+ 721 0161 616E6368 		.ascii	"anch revision 211358] -mcpu=cortex-m3 -mthumb -g -O"
+ 721      20726576 
+ 721      6973696F 
+ 721      6E203231 
+ 721      31333538 
+ 722 0194 30202D66 		.ascii	"0 -ffunction-sections\000"
+ 722      66756E63 
+ 722      74696F6E 
+ 722      2D736563 
+ 722      74696F6E 
+ 723              	.LASF28:
+ 724 01aa 4932435F 		.ascii	"I2C_Init\000"
+ 724      496E6974 
+ 724      00
+ 725              	.LASF16:
+ 726 01b3 73697A65 		.ascii	"sizetype\000"
+ 726      74797065 
+ 726      00
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cc3Pt3kN.s 			page 20
+
+
+ 727              	.LASF6:
+ 728 01bc 6C6F6E67 		.ascii	"long long int\000"
+ 728      206C6F6E 
+ 728      6720696E 
+ 728      7400
+ 729              	.LASF13:
+ 730 01ca 63686172 		.ascii	"char\000"
+ 730      00
+ 731              	.LASF2:
+ 732 01cf 73686F72 		.ascii	"short int\000"
+ 732      7420696E 
+ 732      7400
+ 733              	.LASF22:
+ 734 01d9 4932435F 		.ascii	"I2C_mstrStatus\000"
+ 734      6D737472 
+ 734      53746174 
+ 734      757300
+ 735              	.LASF4:
+ 736 01e8 6C6F6E67 		.ascii	"long int\000"
+ 736      20696E74 
+ 736      00
+ 737              	.LASF21:
+ 738 01f1 4932435F 		.ascii	"I2C_state\000"
+ 738      73746174 
+ 738      6500
+ 739              	.LASF24:
+ 740 01fb 4932435F 		.ascii	"I2C_mstrWrBufIndex\000"
+ 740      6D737472 
+ 740      57724275 
+ 740      66496E64 
+ 740      657800
+ 741              	.LASF20:
+ 742 020e 4932435F 		.ascii	"I2C_initVar\000"
+ 742      696E6974 
+ 742      56617200 
+ 743              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.8.4 20140526 (release) [ARM/embedded-4_8-br
