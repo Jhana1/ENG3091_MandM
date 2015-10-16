@@ -34,10 +34,18 @@
 #define PAUSE 50
  
 //uint8 arm_levels[6] = {22, 30, 35, 40, 45, 50};
-uint8 arm_levels[6] = {50, 58, 63, 68, 73, 78};
+uint8 arm_levels[6] = {49, 58, 63, 68, 73, 78};
 
 void arm_set_level(int level){
     Arm_PWM_WriteCompare(arm_levels[level]);
+}
+
+void arm_inbetween_level(int l1, int l2){
+    Arm_PWM_WriteCompare((arm_levels[l1] + arm_levels[l2])/2);
+}
+
+void arm_carry_home(){
+    Arm_PWM_WriteCompare((arm_levels[0] + arm_levels[1])/2);
 }
 
 void start_arm(){

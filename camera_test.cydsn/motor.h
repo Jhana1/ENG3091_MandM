@@ -28,8 +28,8 @@
     #define MEND_S_ROTATING 1
     #define MEND_S_DRIVING 2
     
-    #define STALL_SPEED 80
-    #define MAX_SPEED 150
+    #define STALL_SPEED 150
+    #define MAX_SPEED 200
     #define HEADING_ERROR_LIMIT 3 //degrees
     #define LEFT_MOTOR_SPEED_CORRECTION 0 //attempt to correct for unmatched motors
     

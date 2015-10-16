@@ -1,6 +1,6 @@
 -- ======================================================================
 -- camera_test.ctl generated from camera_test
--- 10/14/2015 at 19:14
+-- 10/16/2015 at 20:12
 -- This file is auto generated. ANY EDITS YOU MAKE MAY BE LOST WHEN THIS FILE IS REGENERATED!!!
 -- ======================================================================
 

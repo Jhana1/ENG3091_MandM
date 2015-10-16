@@ -15,6 +15,8 @@
     
     void start_arm(void);
     void arm_set_level(int);
+    void arm_carry_home();
+    void arm_inbetween_level(int l1, int l2);
 #endif
 
 

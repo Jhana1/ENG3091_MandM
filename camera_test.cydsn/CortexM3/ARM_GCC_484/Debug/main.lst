@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 1
 
 
    1              		.syntax unified
@@ -20,15 +20,16 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 1
   17              		.cfi_sections	.debug_frame
   18              		.comm	Camera_framebuffer,50688,4
   19              		.comm	stack,16,4
-  20              		.section	.text.print,"ax",%progbits
-  21              		.align	2
-  22              		.global	print
-  23              		.thumb
-  24              		.thumb_func
-  25              		.type	print, %function
-  26              	print:
-  27              	.LFB63:
-  28              		.file 1 ".\\main.c"
+  20              		.comm	outString,25,4
+  21              		.section	.text.print,"ax",%progbits
+  22              		.align	2
+  23              		.global	print
+  24              		.thumb
+  25              		.thumb_func
+  26              		.type	print, %function
+  27              	print:
+  28              	.LFB63:
+  29              		.file 1 ".\\main.c"
    1:.\main.c      **** /* ========================================
    2:.\main.c      ****  *
    3:.\main.c      ****  * Copyright YOUR COMPANY, THE YEAR
@@ -46,1618 +47,3564 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 1
   15:.\main.c      **** #include <math.h>
   16:.\main.c      **** #include <stdlib.h>
   17:.\main.c      **** 
-  18:.\main.c      **** #include <infrared_front.h>
-  19:.\main.c      **** #include <infrared_left.h>
-  20:.\main.c      **** #include <motor.h>
-  21:.\main.c      **** #include <buttons.h>
-  22:.\main.c      **** #include <compass.h>
-  23:.\main.c      **** #include <ultrasonic.h>
-  24:.\main.c      **** #include <gripper.h>
-  25:.\main.c      **** #include <arm.h>
-  26:.\main.c      **** #include <my_camera_functions.h>
-  27:.\main.c      **** #include <blob_stats.h>
-  28:.\main.c      **** #include <beam.h>
-  29:.\main.c      **** 
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 2
+  18:.\main.c      **** #include <infrared.h>
+  19:.\main.c      **** #include <motor.h>
+  20:.\main.c      **** #include <buttons.h>
+  21:.\main.c      **** #include <compass.h>
+  22:.\main.c      **** #include <ultrasonic.h>
+  23:.\main.c      **** #include <ultrasonic_s.h>
+  24:.\main.c      **** 
+  25:.\main.c      **** #include <gripper.h>
+  26:.\main.c      **** #include <arm.h>
+  27:.\main.c      **** #include <my_camera_functions.h>
+  28:.\main.c      **** #include <blob_stats.h>
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 2
 
 
-  30:.\main.c      **** extern blob blobs[255];
-  31:.\main.c      **** //these are in button.c
-  32:.\main.c      **** extern volatile uint8 but0_b;
-  33:.\main.c      **** extern volatile uint8 but1_b;
-  34:.\main.c      **** 
-  35:.\main.c      **** //These are in compass.c
-  36:.\main.c      **** extern int16 compass_x;
-  37:.\main.c      **** extern int16 compass_y;
-  38:.\main.c      **** extern int16 compass_z;
-  39:.\main.c      **** extern int16 compass_heading;
-  40:.\main.c      **** extern volatile uint8 compass_ready;
-  41:.\main.c      **** extern int16 original_compass_heading; //We set this to make the angles relative
-  42:.\main.c      **** 
-  43:.\main.c      **** //This is in ultrasonic.c
-  44:.\main.c      **** extern volatile uint16 ultra_distance;
-  45:.\main.c      **** 
-  46:.\main.c      **** // print() function, works like snprintf(). See: http://www.cplusplus.com/reference/cstdio/snprintf
-  47:.\main.c      **** void print(const char *fmt, ...)
-  48:.\main.c      **** {
-  29              		.loc 1 48 0
-  30              		.cfi_startproc
-  31              		@ args = 4, pretend = 16, frame = 72
-  32              		@ frame_needed = 1, uses_anonymous_args = 1
-  33 0000 0FB4     		push	{r0, r1, r2, r3}
-  34              		.cfi_def_cfa_offset 16
-  35              		.cfi_offset 0, -16
-  36              		.cfi_offset 1, -12
-  37              		.cfi_offset 2, -8
-  38              		.cfi_offset 3, -4
-  39 0002 80B5     		push	{r7, lr}
-  40              		.cfi_def_cfa_offset 24
-  41              		.cfi_offset 7, -24
-  42              		.cfi_offset 14, -20
-  43 0004 92B0     		sub	sp, sp, #72
-  44              		.cfi_def_cfa_offset 96
-  45 0006 00AF     		add	r7, sp, #0
-  46              		.cfi_def_cfa_register 7
-  49:.\main.c      ****    if(!USB_GetConfiguration()) return;  // Do nothing if the USB cable is not connected.
-  47              		.loc 1 49 0
-  48 0008 FFF7FEFF 		bl	USB_GetConfiguration
-  49 000c 0346     		mov	r3, r0
-  50 000e 002B     		cmp	r3, #0
-  51 0010 15D0     		beq	.L1
-  50:.\main.c      ****    char buffer[64];
-  51:.\main.c      ****    va_list args;
-  52:.\main.c      ****    va_start(args, fmt);
-  52              		.loc 1 52 0
-  53 0012 07F15403 		add	r3, r7, #84
-  54 0016 7B60     		str	r3, [r7, #4]
-  53:.\main.c      ****    vsnprintf(buffer, sizeof(buffer), fmt, args);
-  55              		.loc 1 53 0
-  56 0018 07F10803 		add	r3, r7, #8
-  57 001c 1846     		mov	r0, r3
-  58 001e 4021     		movs	r1, #64
-  59 0020 3A6D     		ldr	r2, [r7, #80]
-  60 0022 7B68     		ldr	r3, [r7, #4]
-  61 0024 FFF7FEFF 		bl	vsnprintf
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 3
+  29:.\main.c      **** #include <beam.h>
+  30:.\main.c      **** 
+  31:.\main.c      **** extern blob blobs[255];
+  32:.\main.c      **** //these are in button.c
+  33:.\main.c      **** extern volatile uint8 but0_b;
+  34:.\main.c      **** extern volatile uint8 but1_b;
+  35:.\main.c      **** 
+  36:.\main.c      **** //These are in compass.c
+  37:.\main.c      **** extern int16 compass_x;
+  38:.\main.c      **** extern int16 compass_y;
+  39:.\main.c      **** extern int16 compass_z;
+  40:.\main.c      **** extern int16 compass_heading;
+  41:.\main.c      **** extern volatile uint8 compass_ready;
+  42:.\main.c      **** extern int16 original_compass_heading; //We set this to make the angles relative
+  43:.\main.c      **** 
+  44:.\main.c      **** //This is in ultrasonic.c
+  45:.\main.c      **** extern volatile uint16 ultra_distance;
+  46:.\main.c      **** 
+  47:.\main.c      **** char outString[25];
+  48:.\main.c      **** void calibrate_compass();
+  49:.\main.c      **** 
+  50:.\main.c      **** #define POS_PRINTF(R,C,X,...) \
+  51:.\main.c      ****  {sprintf(outString, X, ##__VA_ARGS__); LCD_Position(R, C); LCD_PrintString(outString);}
+  52:.\main.c      **** 
+  53:.\main.c      **** 
+  54:.\main.c      **** // print() function, works like snprintf(). See: http://www.cplusplus.com/reference/cstdio/snprintf
+  55:.\main.c      **** void print(const char *fmt, ...)
+  56:.\main.c      **** {
+  30              		.loc 1 56 0
+  31              		.cfi_startproc
+  32              		@ args = 4, pretend = 16, frame = 72
+  33              		@ frame_needed = 1, uses_anonymous_args = 1
+  34 0000 0FB4     		push	{r0, r1, r2, r3}
+  35              		.cfi_def_cfa_offset 16
+  36              		.cfi_offset 0, -16
+  37              		.cfi_offset 1, -12
+  38              		.cfi_offset 2, -8
+  39              		.cfi_offset 3, -4
+  40 0002 80B5     		push	{r7, lr}
+  41              		.cfi_def_cfa_offset 24
+  42              		.cfi_offset 7, -24
+  43              		.cfi_offset 14, -20
+  44 0004 92B0     		sub	sp, sp, #72
+  45              		.cfi_def_cfa_offset 96
+  46 0006 00AF     		add	r7, sp, #0
+  47              		.cfi_def_cfa_register 7
+  57:.\main.c      ****    if(!USB_GetConfiguration()) return;  // Do nothing if the USB cable is not connected.
+  48              		.loc 1 57 0
+  49 0008 FFF7FEFF 		bl	USB_GetConfiguration
+  50 000c 0346     		mov	r3, r0
+  51 000e 002B     		cmp	r3, #0
+  52 0010 15D0     		beq	.L1
+  58:.\main.c      ****    char buffer[64];
+  59:.\main.c      ****    va_list args;
+  60:.\main.c      ****    va_start(args, fmt);
+  53              		.loc 1 60 0
+  54 0012 07F15403 		add	r3, r7, #84
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 3
 
 
-  54:.\main.c      ****    va_end(args);
-  55:.\main.c      ****    while(!USB_CDCIsReady());
-  62              		.loc 1 55 0
-  63 0028 00BF     		nop
-  64              	.L4:
-  65              		.loc 1 55 0 is_stmt 0 discriminator 1
-  66 002a FFF7FEFF 		bl	USB_CDCIsReady
-  67 002e 0346     		mov	r3, r0
-  68 0030 002B     		cmp	r3, #0
-  69 0032 FAD0     		beq	.L4
-  56:.\main.c      ****    USB_PutString(buffer);
-  70              		.loc 1 56 0 is_stmt 1
-  71 0034 07F10803 		add	r3, r7, #8
-  72 0038 1846     		mov	r0, r3
-  73 003a FFF7FEFF 		bl	USB_PutString
-  74              	.L1:
-  57:.\main.c      **** }
-  75              		.loc 1 57 0
-  76 003e 4837     		adds	r7, r7, #72
-  77 0040 BD46     		mov	sp, r7
-  78              		@ sp needed
-  79 0042 BDE88040 		pop	{r7, lr}
-  80 0046 04B0     		add	sp, sp, #16
-  81 0048 7047     		bx	lr
-  82              		.cfi_endproc
-  83              	.LFE63:
-  84              		.size	print, .-print
-  85 004a 00BF     		.section	.text.within_range,"ax",%progbits
-  86              		.align	2
-  87              		.global	within_range
-  88              		.thumb
-  89              		.thumb_func
-  90              		.type	within_range, %function
-  91              	within_range:
-  92              	.LFB64:
-  58:.\main.c      **** 
-  59:.\main.c      **** int within_range(int lower, int val, int upper){
-  93              		.loc 1 59 0
-  94              		.cfi_startproc
-  95              		@ args = 0, pretend = 0, frame = 16
-  96              		@ frame_needed = 1, uses_anonymous_args = 0
-  97              		@ link register save eliminated.
-  98 0000 80B4     		push	{r7}
-  99              		.cfi_def_cfa_offset 4
- 100              		.cfi_offset 7, -4
- 101 0002 85B0     		sub	sp, sp, #20
- 102              		.cfi_def_cfa_offset 24
- 103 0004 00AF     		add	r7, sp, #0
- 104              		.cfi_def_cfa_register 7
- 105 0006 F860     		str	r0, [r7, #12]
- 106 0008 B960     		str	r1, [r7, #8]
- 107 000a 7A60     		str	r2, [r7, #4]
-  60:.\main.c      ****     return val >= lower && val <= upper;
- 108              		.loc 1 60 0
- 109 000c BA68     		ldr	r2, [r7, #8]
- 110 000e FB68     		ldr	r3, [r7, #12]
- 111 0010 9A42     		cmp	r2, r3
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 4
+  55 0016 7B60     		str	r3, [r7, #4]
+  61:.\main.c      ****    vsnprintf(buffer, sizeof(buffer), fmt, args);
+  56              		.loc 1 61 0
+  57 0018 07F10803 		add	r3, r7, #8
+  58 001c 1846     		mov	r0, r3
+  59 001e 4021     		movs	r1, #64
+  60 0020 3A6D     		ldr	r2, [r7, #80]
+  61 0022 7B68     		ldr	r3, [r7, #4]
+  62 0024 FFF7FEFF 		bl	vsnprintf
+  62:.\main.c      ****    va_end(args);
+  63:.\main.c      ****    while(!USB_CDCIsReady());
+  63              		.loc 1 63 0
+  64 0028 00BF     		nop
+  65              	.L4:
+  66              		.loc 1 63 0 is_stmt 0 discriminator 1
+  67 002a FFF7FEFF 		bl	USB_CDCIsReady
+  68 002e 0346     		mov	r3, r0
+  69 0030 002B     		cmp	r3, #0
+  70 0032 FAD0     		beq	.L4
+  64:.\main.c      ****    USB_PutString(buffer);
+  71              		.loc 1 64 0 is_stmt 1
+  72 0034 07F10803 		add	r3, r7, #8
+  73 0038 1846     		mov	r0, r3
+  74 003a FFF7FEFF 		bl	USB_PutString
+  75              	.L1:
+  65:.\main.c      **** }
+  76              		.loc 1 65 0
+  77 003e 4837     		adds	r7, r7, #72
+  78 0040 BD46     		mov	sp, r7
+  79              		@ sp needed
+  80 0042 BDE88040 		pop	{r7, lr}
+  81 0046 04B0     		add	sp, sp, #16
+  82 0048 7047     		bx	lr
+  83              		.cfi_endproc
+  84              	.LFE63:
+  85              		.size	print, .-print
+  86 004a 00BF     		.section	.text.within_range,"ax",%progbits
+  87              		.align	2
+  88              		.global	within_range
+  89              		.thumb
+  90              		.thumb_func
+  91              		.type	within_range, %function
+  92              	within_range:
+  93              	.LFB64:
+  66:.\main.c      **** 
+  67:.\main.c      **** int within_range(int lower, int val, int upper){
+  94              		.loc 1 67 0
+  95              		.cfi_startproc
+  96              		@ args = 0, pretend = 0, frame = 16
+  97              		@ frame_needed = 1, uses_anonymous_args = 0
+  98              		@ link register save eliminated.
+  99 0000 80B4     		push	{r7}
+ 100              		.cfi_def_cfa_offset 4
+ 101              		.cfi_offset 7, -4
+ 102 0002 85B0     		sub	sp, sp, #20
+ 103              		.cfi_def_cfa_offset 24
+ 104 0004 00AF     		add	r7, sp, #0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 4
 
 
- 112 0012 05DB     		blt	.L6
- 113              		.loc 1 60 0 is_stmt 0 discriminator 1
- 114 0014 BA68     		ldr	r2, [r7, #8]
- 115 0016 7B68     		ldr	r3, [r7, #4]
- 116 0018 9A42     		cmp	r2, r3
- 117 001a 01DC     		bgt	.L6
- 118              		.loc 1 60 0 discriminator 3
- 119 001c 0123     		movs	r3, #1
- 120 001e 00E0     		b	.L7
- 121              	.L6:
- 122              		.loc 1 60 0 discriminator 2
- 123 0020 0023     		movs	r3, #0
- 124              	.L7:
-  61:.\main.c      **** }
- 125              		.loc 1 61 0 is_stmt 1 discriminator 4
- 126 0022 1846     		mov	r0, r3
- 127 0024 1437     		adds	r7, r7, #20
- 128 0026 BD46     		mov	sp, r7
- 129              		@ sp needed
- 130 0028 5DF8047B 		ldr	r7, [sp], #4
- 131 002c 7047     		bx	lr
- 132              		.cfi_endproc
- 133              	.LFE64:
- 134              		.size	within_range, .-within_range
- 135 002e 00BF     		.section	.rodata
- 136              		.align	2
- 137              	.LC0:
- 138 0000 49256420 		.ascii	"I%d U%d V%d\000"
- 138      55256420 
- 138      56256400 
- 139              		.align	2
- 140              	.LC1:
- 141 000c 75202564 		.ascii	"u %d ic %d\000"
- 141      20696320 
- 141      256400
- 142 0017 00       		.align	2
- 143              	.LC2:
- 144 0018 73256420 		.ascii	"s%d c%d vu %d\000"
- 144      63256420 
- 144      76752025 
- 144      6400
- 145 0026 0000     		.section	.text.main,"ax",%progbits
- 146              		.align	2
- 147              		.global	main
- 148              		.thumb
- 149              		.thumb_func
- 150              		.type	main, %function
- 151              	main:
- 152              	.LFB65:
-  62:.\main.c      **** 
-  63:.\main.c      **** int main()
-  64:.\main.c      **** {
- 153              		.loc 1 64 0
- 154              		.cfi_startproc
- 155              		@ args = 0, pretend = 0, frame = 32
- 156              		@ frame_needed = 1, uses_anonymous_args = 0
- 157 0000 B0B5     		push	{r4, r5, r7, lr}
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 5
+ 105              		.cfi_def_cfa_register 7
+ 106 0006 F860     		str	r0, [r7, #12]
+ 107 0008 B960     		str	r1, [r7, #8]
+ 108 000a 7A60     		str	r2, [r7, #4]
+  68:.\main.c      ****     return val >= lower && val <= upper;
+ 109              		.loc 1 68 0
+ 110 000c BA68     		ldr	r2, [r7, #8]
+ 111 000e FB68     		ldr	r3, [r7, #12]
+ 112 0010 9A42     		cmp	r2, r3
+ 113 0012 05DB     		blt	.L6
+ 114              		.loc 1 68 0 is_stmt 0 discriminator 1
+ 115 0014 BA68     		ldr	r2, [r7, #8]
+ 116 0016 7B68     		ldr	r3, [r7, #4]
+ 117 0018 9A42     		cmp	r2, r3
+ 118 001a 01DC     		bgt	.L6
+ 119              		.loc 1 68 0 discriminator 3
+ 120 001c 0123     		movs	r3, #1
+ 121 001e 00E0     		b	.L7
+ 122              	.L6:
+ 123              		.loc 1 68 0 discriminator 2
+ 124 0020 0023     		movs	r3, #0
+ 125              	.L7:
+  69:.\main.c      **** }
+ 126              		.loc 1 69 0 is_stmt 1 discriminator 4
+ 127 0022 1846     		mov	r0, r3
+ 128 0024 1437     		adds	r7, r7, #20
+ 129 0026 BD46     		mov	sp, r7
+ 130              		@ sp needed
+ 131 0028 5DF8047B 		ldr	r7, [sp], #4
+ 132 002c 7047     		bx	lr
+ 133              		.cfi_endproc
+ 134              	.LFE64:
+ 135              		.size	within_range, .-within_range
+ 136 002e 00BF     		.section	.rodata
+ 137              		.align	2
+ 138              	.LC0:
+ 139 0000 494E2047 		.ascii	"IN GO HOME I:%d U%d\000"
+ 139      4F20484F 
+ 139      4D452049 
+ 139      3A256420 
+ 139      55256400 
+ 140              		.align	2
+ 141              	.LC1:
+ 142 0014 493A2564 		.ascii	"I:%d < 10: fwd\000"
+ 142      203C2031 
+ 142      303A2066 
+ 142      776400
+ 143 0023 00       		.align	2
+ 144              	.LC2:
+ 145 0024 21212120 		.ascii	"!!! %d !!!\000"
+ 145      25642021 
+ 145      212100
+ 146 002f 00       		.align	2
+ 147              	.LC3:
+ 148 0030 43454E54 		.ascii	"CENTER IR GO HOME\000"
+ 148      45522049 
+ 148      5220474F 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 5
 
 
- 158              		.cfi_def_cfa_offset 16
- 159              		.cfi_offset 4, -16
- 160              		.cfi_offset 5, -12
- 161              		.cfi_offset 7, -8
- 162              		.cfi_offset 14, -4
- 163 0002 8AB0     		sub	sp, sp, #40
- 164              		.cfi_def_cfa_offset 56
- 165 0004 02AF     		add	r7, sp, #8
- 166              		.cfi_def_cfa 7, 48
-  65:.\main.c      ****     RED_Write(1);
- 167              		.loc 1 65 0
- 168 0006 0120     		movs	r0, #1
- 169 0008 FFF7FEFF 		bl	RED_Write
-  66:.\main.c      ****     CYGlobalIntEnable;
- 170              		.loc 1 66 0
- 171              	@ 66 ".\main.c" 1
- 172 000c 62B6     		CPSIE   i
- 173              	@ 0 "" 2
-  67:.\main.c      ****     char outString[16];
-  68:.\main.c      ****     
-  69:.\main.c      ****     /**** INITIALIZE COMPONENTS ****/
-  70:.\main.c      ****     LCD_Start();
- 174              		.loc 1 70 0
- 175              		.thumb
- 176 000e FFF7FEFF 		bl	LCD_Start
-  71:.\main.c      ****     USB_Start(0, USB_DWR_VDDD_OPERATION);
- 177              		.loc 1 71 0
- 178 0012 0020     		movs	r0, #0
- 179 0014 0221     		movs	r1, #2
- 180 0016 FFF7FEFF 		bl	USB_Start
-  72:.\main.c      ****    
-  73:.\main.c      ****     //CyDelay(5000);
-  74:.\main.c      ****     //LCD_PosPrintString(0,0,"STARTING CAM");
-  75:.\main.c      ****     //init_camera();
-  76:.\main.c      ****     //LCD_PosPrintString(0,0, "CAMERA STARTED!!!");
-  77:.\main.c      ****     
-  78:.\main.c      ****     Timer_Start();
- 181              		.loc 1 78 0
- 182 001a FFF7FEFF 		bl	Timer_Start
-  79:.\main.c      ****     start_buttons();
- 183              		.loc 1 79 0
- 184 001e FFF7FEFF 		bl	start_buttons
-  80:.\main.c      ****     start_compass();
- 185              		.loc 1 80 0
- 186 0022 FFF7FEFF 		bl	start_compass
-  81:.\main.c      ****     while (!compass_ready){;}
- 187              		.loc 1 81 0
- 188 0026 00BF     		nop
- 189              	.L10:
- 190              		.loc 1 81 0 is_stmt 0 discriminator 1
- 191 0028 7C4B     		ldr	r3, .L28
- 192 002a 1B78     		ldrb	r3, [r3]
- 193 002c DBB2     		uxtb	r3, r3
- 194 002e 002B     		cmp	r3, #0
- 195 0030 FAD0     		beq	.L10
-  82:.\main.c      ****     compass_read();
- 196              		.loc 1 82 0 is_stmt 1
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 6
+ 148      20484F4D 
+ 148      4500
+ 149 0042 0000     		.align	2
+ 150              	.LC4:
+ 151 0044 494E5641 		.ascii	"INVALID IR GO HOME\000"
+ 151      4C494420 
+ 151      49522047 
+ 151      4F20484F 
+ 151      4D4500
+ 152 0057 00       		.align	2
+ 153              	.LC5:
+ 154 0058 4E454152 		.ascii	"NEAR HOME FIND 100\000"
+ 154      20484F4D 
+ 154      45204649 
+ 154      4E442031 
+ 154      303000
+ 155 006b 00       		.align	2
+ 156              	.LC6:
+ 157 006c 69723A25 		.ascii	"ir:%d\000"
+ 157      6400
+ 158 0072 0000     		.align	2
+ 159              	.LC7:
+ 160 0074 4E454152 		.ascii	"NEAR HOME FIND 60\000"
+ 160      20484F4D 
+ 160      45204649 
+ 160      4E442036 
+ 160      3000
+ 161 0086 0000     		.align	2
+ 162              	.LC8:
+ 163 0088 69722564 		.ascii	"ir%d\000"
+ 163      00
+ 164 008d 000000   		.align	2
+ 165              	.LC9:
+ 166 0090 43454E54 		.ascii	"CENTERED ON BASE\000"
+ 166      45524544 
+ 166      204F4E20 
+ 166      42415345 
+ 166      00
+ 167 00a1 000000   		.align	2
+ 168              	.LC10:
+ 169 00a4 53544143 		.ascii	"STACKING!\000"
+ 169      4B494E47 
+ 169      2100
+ 170 00ae 0000     		.align	2
+ 171              	.LC11:
+ 172 00b0 42256420 		.ascii	"B%d SU%d\000"
+ 172      53552564 
+ 172      00
+ 173 00b9 000000   		.align	2
+ 174              	.LC12:
+ 175 00bc 474F5420 		.ascii	"GOT HOME\000"
+ 175      484F4D45 
+ 175      00
+ 176              		.section	.text.main,"ax",%progbits
+ 177              		.align	2
+ 178              		.global	main
+ 179              		.thumb
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 6
 
 
- 197 0032 FFF7FEFF 		bl	compass_read
-  83:.\main.c      ****     original_compass_heading = compass_heading;
- 198              		.loc 1 83 0
- 199 0036 7A4B     		ldr	r3, .L28+4
- 200 0038 1A88     		ldrh	r2, [r3]
- 201 003a 7A4B     		ldr	r3, .L28+8
- 202 003c 1A80     		strh	r2, [r3]	@ movhi
-  84:.\main.c      ****     /*
-  85:.\main.c      ****     while (1){
-  86:.\main.c      ****         if (compass_ready){
-  87:.\main.c      ****             compass_read();
-  88:.\main.c      ****         }
-  89:.\main.c      ****         print("%d %d\n", compass_x, compass_y);
-  90:.\main.c      ****     }*/
-  91:.\main.c      ****     
-  92:.\main.c      ****     start_motors();
- 203              		.loc 1 92 0
- 204 003e FFF7FEFF 		bl	start_motors
-  93:.\main.c      ****     start_gripper();
- 205              		.loc 1 93 0
- 206 0042 FFF7FEFF 		bl	start_gripper
-  94:.\main.c      ****     drop_puck();
- 207              		.loc 1 94 0
- 208 0046 FFF7FEFF 		bl	drop_puck
-  95:.\main.c      ****     start_arm();
- 209              		.loc 1 95 0
- 210 004a FFF7FEFF 		bl	start_arm
-  96:.\main.c      ****     arm_set_level(0);
- 211              		.loc 1 96 0
- 212 004e 0020     		movs	r0, #0
- 213 0050 FFF7FEFF 		bl	arm_set_level
-  97:.\main.c      ****     start_ultrasonic();
- 214              		.loc 1 97 0
- 215 0054 FFF7FEFF 		bl	start_ultrasonic
-  98:.\main.c      ****     start_infrared_front();
- 216              		.loc 1 98 0
- 217 0058 FFF7FEFF 		bl	start_infrared_front
-  99:.\main.c      ****     beam_broken();
- 218              		.loc 1 99 0
- 219 005c FFF7FEFF 		bl	beam_broken
- 100:.\main.c      ****     
- 101:.\main.c      ****     /**** Declare Variables ****/
- 102:.\main.c      ****     
- 103:.\main.c      ****     uint16 ir_result;
- 104:.\main.c      ****     uint16 state;
- 105:.\main.c      ****     
- 106:.\main.c      ****     #define S_START 0
- 107:.\main.c      ****     #define S_LEAVE_BASE 1
- 108:.\main.c      ****     #define S_LEFT_BASE 2
- 109:.\main.c      ****     #define S_FIND_PUCK 3
- 110:.\main.c      ****     #define S_GO_HOME 4
- 111:.\main.c      ****     #define S_FACE_HOME 5
- 112:.\main.c      ****     #define S_GOT_HOME 6
- 113:.\main.c      ****     #define S_IN_CORNER 7
- 114:.\main.c      ****     #define S_GOOD_ULTRA 8
- 115:.\main.c      ****     
- 116:.\main.c      ****     state = S_START;
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 7
+ 180              		.thumb_func
+ 181              		.type	main, %function
+ 182              	main:
+ 183              	.LFB65:
+  70:.\main.c      **** 
+  71:.\main.c      **** enum State {
+  72:.\main.c      ****     S_START = 0,
+  73:.\main.c      ****     S_LEAVE_BASE,
+  74:.\main.c      ****     S_LEFT_BASE,
+  75:.\main.c      ****     S_FIND_PUCK,
+  76:.\main.c      ****     S_GO_HOME,
+  77:.\main.c      ****     S_FACE_HOME,
+  78:.\main.c      ****     S_GOT_HOME,
+  79:.\main.c      ****     S_IN_CORNER,
+  80:.\main.c      ****     S_GOING_HOME_INVALID_IR,
+  81:.\main.c      ****     S_GOING_HOME_CENTER_IR,
+  82:.\main.c      ****     S_GOING_HOME_LEFT_IR,
+  83:.\main.c      ****     S_GOING_HOME_RIGHT_IR,
+  84:.\main.c      ****     S_NEAR_HOME_FIND_100,
+  85:.\main.c      ****     S_NEAR_HOME_FIND_60,
+  86:.\main.c      ****     S_CENTERED_ON_BASE,
+  87:.\main.c      ****     S_PLACE_PUCK
+  88:.\main.c      **** };
+  89:.\main.c      **** 
+  90:.\main.c      **** int main()
+  91:.\main.c      **** {
+ 184              		.loc 1 91 0
+ 185              		.cfi_startproc
+ 186              		@ args = 0, pretend = 0, frame = 32
+ 187              		@ frame_needed = 1, uses_anonymous_args = 0
+ 188 0000 B0B5     		push	{r4, r5, r7, lr}
+ 189              		.cfi_def_cfa_offset 16
+ 190              		.cfi_offset 4, -16
+ 191              		.cfi_offset 5, -12
+ 192              		.cfi_offset 7, -8
+ 193              		.cfi_offset 14, -4
+ 194 0002 88B0     		sub	sp, sp, #32
+ 195              		.cfi_def_cfa_offset 48
+ 196 0004 00AF     		add	r7, sp, #0
+ 197              		.cfi_def_cfa_register 7
+  92:.\main.c      ****     RED_Write(1);
+ 198              		.loc 1 92 0
+ 199 0006 0120     		movs	r0, #1
+ 200 0008 FFF7FEFF 		bl	RED_Write
+  93:.\main.c      ****     CYGlobalIntEnable;
+ 201              		.loc 1 93 0
+ 202              	@ 93 ".\main.c" 1
+ 203 000c 62B6     		CPSIE   i
+ 204              	@ 0 "" 2
+  94:.\main.c      ****     
+  95:.\main.c      ****     /**** INITIALIZE COMPONENTS ****/
+  96:.\main.c      ****     LCD_Start();
+ 205              		.loc 1 96 0
+ 206              		.thumb
+ 207 000e FFF7FEFF 		bl	LCD_Start
+  97:.\main.c      ****     USB_Start(0, USB_DWR_VDDD_OPERATION);
+ 208              		.loc 1 97 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 7
 
 
- 220              		.loc 1 116 0
- 221 0060 0023     		movs	r3, #0
- 222 0062 BB83     		strh	r3, [r7, #28]	@ movhi
- 223              	.L27:
- 117:.\main.c      ****    
- 118:.\main.c      ****     
- 119:.\main.c      ****     while (1){
- 120:.\main.c      ****         switch(state){
- 224              		.loc 1 120 0
- 225 0064 BB8B     		ldrh	r3, [r7, #28]
- 226 0066 062B     		cmp	r3, #6
- 227 0068 00F2A680 		bhi	.L11
- 228 006c 01A2     		adr	r2, .L13
- 229 006e 52F823F0 		ldr	pc, [r2, r3, lsl #2]
- 230 0072 00BF     		.p2align 2
- 231              	.L13:
- 232 0074 91000000 		.word	.L12+1
- 233 0078 97000000 		.word	.L14+1
- 234 007c A5000000 		.word	.L15+1
- 235 0080 BF000000 		.word	.L16+1
- 236 0084 F1000000 		.word	.L17+1
- 237 0088 D7000000 		.word	.L18+1
- 238 008c B9010000 		.word	.L11+1
- 239              		.p2align 1
- 240              	.L12:
- 121:.\main.c      ****             case S_START:
- 122:.\main.c      ****                 state = S_LEAVE_BASE;
- 241              		.loc 1 122 0
- 242 0090 0123     		movs	r3, #1
- 243 0092 BB83     		strh	r3, [r7, #28]	@ movhi
- 123:.\main.c      ****                 break;
- 244              		.loc 1 123 0
- 245 0094 90E0     		b	.L11
- 246              	.L14:
- 124:.\main.c      ****             case S_LEAVE_BASE:
- 125:.\main.c      ****                 go_backward_ultra(50, 255);
- 247              		.loc 1 125 0
- 248 0096 3220     		movs	r0, #50
- 249 0098 FF21     		movs	r1, #255
- 250 009a FFF7FEFF 		bl	go_backward_ultra
- 126:.\main.c      ****                 state = S_LEFT_BASE;
- 251              		.loc 1 126 0
- 252 009e 0223     		movs	r3, #2
- 253 00a0 BB83     		strh	r3, [r7, #28]	@ movhi
- 127:.\main.c      ****                 break;
- 254              		.loc 1 127 0
- 255 00a2 89E0     		b	.L11
- 256              	.L15:
- 128:.\main.c      ****             case S_LEFT_BASE:
- 129:.\main.c      ****                 set_heading(180);
- 257              		.loc 1 129 0
- 258 00a4 B420     		movs	r0, #180
- 259 00a6 FFF7FEFF 		bl	set_heading
- 130:.\main.c      ****                 rotate_degrees(0);
- 260              		.loc 1 130 0
- 261 00aa 0020     		movs	r0, #0
- 262 00ac FFF7FEFF 		bl	rotate_degrees
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 8
+ 209 0012 0020     		movs	r0, #0
+ 210 0014 0221     		movs	r1, #2
+ 211 0016 FFF7FEFF 		bl	USB_Start
+  98:.\main.c      ****    
+  99:.\main.c      ****     //CyDelay(5000);
+ 100:.\main.c      ****     //LCD_PosPrintString(0,0,"STARTING CAM");
+ 101:.\main.c      ****     //init_camera();
+ 102:.\main.c      ****     //LCD_PosPrintString(0,0, "CAMERA STARTED!!!");
+ 103:.\main.c      ****     
+ 104:.\main.c      ****     Timer_Start();
+ 212              		.loc 1 104 0
+ 213 001a FFF7FEFF 		bl	Timer_Start
+ 105:.\main.c      ****     start_buttons();
+ 214              		.loc 1 105 0
+ 215 001e FFF7FEFF 		bl	start_buttons
+ 106:.\main.c      ****     start_compass();
+ 216              		.loc 1 106 0
+ 217 0022 FFF7FEFF 		bl	start_compass
+ 107:.\main.c      ****     while (!compass_ready){;}
+ 218              		.loc 1 107 0
+ 219 0026 00BF     		nop
+ 220              	.L10:
+ 221              		.loc 1 107 0 is_stmt 0 discriminator 1
+ 222 0028 C14B     		ldr	r3, .L64
+ 223 002a 1B78     		ldrb	r3, [r3]
+ 224 002c DBB2     		uxtb	r3, r3
+ 225 002e 002B     		cmp	r3, #0
+ 226 0030 FAD0     		beq	.L10
+ 108:.\main.c      ****     compass_read();
+ 227              		.loc 1 108 0 is_stmt 1
+ 228 0032 FFF7FEFF 		bl	compass_read
+ 109:.\main.c      ****     original_compass_heading = compass_heading;
+ 229              		.loc 1 109 0
+ 230 0036 BF4B     		ldr	r3, .L64+4
+ 231 0038 1A88     		ldrh	r2, [r3]
+ 232 003a BF4B     		ldr	r3, .L64+8
+ 233 003c 1A80     		strh	r2, [r3]	@ movhi
+ 110:.\main.c      ****         
+ 111:.\main.c      ****     start_motors();
+ 234              		.loc 1 111 0
+ 235 003e FFF7FEFF 		bl	start_motors
+ 112:.\main.c      ****     start_gripper();
+ 236              		.loc 1 112 0
+ 237 0042 FFF7FEFF 		bl	start_gripper
+ 113:.\main.c      ****     drop_puck();
+ 238              		.loc 1 113 0
+ 239 0046 FFF7FEFF 		bl	drop_puck
+ 114:.\main.c      ****     start_arm();
+ 240              		.loc 1 114 0
+ 241 004a FFF7FEFF 		bl	start_arm
+ 115:.\main.c      ****     arm_set_level(0);
+ 242              		.loc 1 115 0
+ 243 004e 0020     		movs	r0, #0
+ 244 0050 FFF7FEFF 		bl	arm_set_level
+ 116:.\main.c      ****     start_ultrasonic();
+ 245              		.loc 1 116 0
+ 246 0054 FFF7FEFF 		bl	start_ultrasonic
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 8
 
 
- 131:.\main.c      ****                 CyDelay(1000);
- 263              		.loc 1 131 0
- 264 00b0 4FF47A70 		mov	r0, #1000
- 265 00b4 FFF7FEFF 		bl	CyDelay
- 132:.\main.c      ****                 state = S_FIND_PUCK;
- 266              		.loc 1 132 0
- 267 00b8 0323     		movs	r3, #3
- 268 00ba BB83     		strh	r3, [r7, #28]	@ movhi
- 133:.\main.c      ****                 break;
- 269              		.loc 1 133 0
- 270 00bc 7CE0     		b	.L11
- 271              	.L16:
- 134:.\main.c      ****             case S_FIND_PUCK:
- 135:.\main.c      ****                 go_forward(2000, 255);
- 272              		.loc 1 135 0
- 273 00be 4FF4FA60 		mov	r0, #2000
- 274 00c2 FF21     		movs	r1, #255
- 275 00c4 FFF7FEFF 		bl	go_forward
- 136:.\main.c      ****                 CyDelay(1000);
- 276              		.loc 1 136 0
- 277 00c8 4FF47A70 		mov	r0, #1000
- 278 00cc FFF7FEFF 		bl	CyDelay
- 137:.\main.c      ****                 state = S_FACE_HOME;
- 279              		.loc 1 137 0
- 280 00d0 0523     		movs	r3, #5
- 281 00d2 BB83     		strh	r3, [r7, #28]	@ movhi
- 138:.\main.c      ****                 break;
- 282              		.loc 1 138 0
- 283 00d4 70E0     		b	.L11
- 284              	.L18:
- 139:.\main.c      ****             case S_FACE_HOME:
- 140:.\main.c      ****                 set_heading(0);
- 285              		.loc 1 140 0
- 286 00d6 0020     		movs	r0, #0
- 287 00d8 FFF7FEFF 		bl	set_heading
- 141:.\main.c      ****                 rotate_degrees(0);
- 288              		.loc 1 141 0
- 289 00dc 0020     		movs	r0, #0
- 290 00de FFF7FEFF 		bl	rotate_degrees
- 142:.\main.c      ****                 CyDelay(1000);
- 291              		.loc 1 142 0
- 292 00e2 4FF47A70 		mov	r0, #1000
- 293 00e6 FFF7FEFF 		bl	CyDelay
- 143:.\main.c      ****                 state = S_GO_HOME;
- 294              		.loc 1 143 0
- 295 00ea 0423     		movs	r3, #4
- 296 00ec BB83     		strh	r3, [r7, #28]	@ movhi
- 144:.\main.c      ****                 break;
- 297              		.loc 1 144 0
- 298 00ee 63E0     		b	.L11
- 299              	.L17:
- 145:.\main.c      ****             case S_GO_HOME:
- 146:.\main.c      ****                 ir_result = get_front_ir();
- 300              		.loc 1 146 0
- 301 00f0 FFF7FEFF 		bl	get_front_ir
- 302 00f4 0346     		mov	r3, r0
- 303 00f6 FB83     		strh	r3, [r7, #30]	@ movhi
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 9
+ 117:.\main.c      ****     start_ultrasonic_s();
+ 247              		.loc 1 117 0
+ 248 0058 FFF7FEFF 		bl	start_ultrasonic_s
+ 118:.\main.c      ****     start_infrared();
+ 249              		.loc 1 118 0
+ 250 005c FFF7FEFF 		bl	start_infrared
+ 119:.\main.c      ****     beam_broken();
+ 251              		.loc 1 119 0
+ 252 0060 FFF7FEFF 		bl	beam_broken
+ 120:.\main.c      ****     
+ 121:.\main.c      ****     /*
+ 122:.\main.c      ****     while (1){
+ 123:.\main.c      ****         POS_PRINTF(0,0,"M %d R %d S %d", get_avg_mean_ultra(), get_mean_ultra(), get_mean_ultra_s()
+ 124:.\main.c      ****         POS_PRINTF(1,0,"B %d", beam_broken());
+ 125:.\main.c      ****         CyDelay(50);
+ 126:.\main.c      ****     }*/
+ 127:.\main.c      ****     
+ 128:.\main.c      ****     calibrate_compass();
+ 253              		.loc 1 128 0
+ 254 0064 FFF7FEFF 		bl	calibrate_compass
+ 129:.\main.c      ****     /*
+ 130:.\main.c      ****     while (1){
+ 131:.\main.c      ****         LCD_ClearDisplay();
+ 132:.\main.c      ****         POS_PRINTF(0,0,"F %d L %d", get_front_ir(), get_left_ir());
+ 133:.\main.c      ****         POS_PRINTF(1,0,"U %d V %d", get_mean_ultra(), get_var_ultra());
+ 134:.\main.c      ****         CyDelay(50);
+ 135:.\main.c      ****     }*/
+ 136:.\main.c      ****     /*
+ 137:.\main.c      ****     while (1){
+ 138:.\main.c      ****         if (compass_ready){
+ 139:.\main.c      ****             compass_read();
+ 140:.\main.c      ****         }
+ 141:.\main.c      ****         print("%d %d\n", compass_x, compass_y);
+ 142:.\main.c      ****     }*/
+ 143:.\main.c      **** 
+ 144:.\main.c      ****     /**** Declare Variables ****/
+ 145:.\main.c      ****     
+ 146:.\main.c      ****     uint16 ir_result;
+ 147:.\main.c      ****     uint16 state;
+ 148:.\main.c      ****     int pucks_gotten = 0;
+ 255              		.loc 1 148 0
+ 256 0068 0023     		movs	r3, #0
+ 257 006a BB61     		str	r3, [r7, #24]
+ 149:.\main.c      ****     int near_base = 70;
+ 258              		.loc 1 149 0
+ 259 006c 4623     		movs	r3, #70
+ 260 006e 7B60     		str	r3, [r7, #4]
+ 150:.\main.c      ****     
+ 151:.\main.c      ****     
+ 152:.\main.c      ****     state = S_START;
+ 261              		.loc 1 152 0
+ 262 0070 0023     		movs	r3, #0
+ 263 0072 FB83     		strh	r3, [r7, #30]	@ movhi
+ 153:.\main.c      ****    
+ 154:.\main.c      ****     /*
+ 155:.\main.c      ****     while (1){
+ 156:.\main.c      ****         LCD_ClearDisplay();
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 9
 
 
- 147:.\main.c      ****                 if (ir_result < 10){
- 304              		.loc 1 147 0
- 305 00f8 FB8B     		ldrh	r3, [r7, #30]
- 306 00fa 092B     		cmp	r3, #9
- 307 00fc 3FD8     		bhi	.L20
- 308              	.LBB2:
- 148:.\main.c      ****                     go_forward(1200, 255);
- 309              		.loc 1 148 0
- 310 00fe 4FF49660 		mov	r0, #1200
- 311 0102 FF21     		movs	r1, #255
- 312 0104 FFF7FEFF 		bl	go_forward
- 149:.\main.c      ****                     CyDelay(500);
- 313              		.loc 1 149 0
- 314 0108 4FF4FA70 		mov	r0, #500
- 315 010c FFF7FEFF 		bl	CyDelay
- 150:.\main.c      ****                     ir_result = get_front_ir();
- 316              		.loc 1 150 0
- 317 0110 FFF7FEFF 		bl	get_front_ir
- 318 0114 0346     		mov	r3, r0
- 319 0116 FB83     		strh	r3, [r7, #30]	@ movhi
- 151:.\main.c      ****                     if (ir_result < 10){
- 320              		.loc 1 151 0
- 321 0118 FB8B     		ldrh	r3, [r7, #30]
- 322 011a 092B     		cmp	r3, #9
- 323 011c 0CD8     		bhi	.L21
- 324              	.LBB3:
- 152:.\main.c      ****                         //PERHAPS STOP AND TAKE 3 if not accurate...
- 153:.\main.c      ****                         int var = get_var_ultra();
- 325              		.loc 1 153 0
- 326 011e FFF7FEFF 		bl	get_var_ultra
- 327 0122 0346     		mov	r3, r0
- 328 0124 BB61     		str	r3, [r7, #24]
- 154:.\main.c      ****                         if (var > 200){
- 329              		.loc 1 154 0
- 330 0126 BB69     		ldr	r3, [r7, #24]
- 331 0128 C82B     		cmp	r3, #200
- 332 012a 02DD     		ble	.L22
- 155:.\main.c      ****                             state = S_IN_CORNER;
- 333              		.loc 1 155 0
- 334 012c 0723     		movs	r3, #7
- 335 012e BB83     		strh	r3, [r7, #28]	@ movhi
- 336 0130 21E0     		b	.L24
- 337              	.L22:
- 156:.\main.c      ****                         } else {
- 157:.\main.c      ****                             state = S_GOOD_ULTRA;
- 338              		.loc 1 157 0
- 339 0132 0823     		movs	r3, #8
- 340 0134 BB83     		strh	r3, [r7, #28]	@ movhi
- 341              	.LBE3:
- 342 0136 1EE0     		b	.L24
- 343              	.L21:
- 158:.\main.c      ****                         }
- 159:.\main.c      ****                     } else {
- 160:.\main.c      ****                         if (within_range(57,ir_result,60)){
- 344              		.loc 1 160 0
- 345 0138 FB8B     		ldrh	r3, [r7, #30]
- 346 013a 3920     		movs	r0, #57
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 10
+ 157:.\main.c      ****         POS_PRINTF(0,0,"u%d i%d", get_mean_ultra(), get_front_ir());
+ 158:.\main.c      ****         CyDelay(50);
+ 159:.\main.c      ****     }*/
+ 160:.\main.c      ****     
+ 161:.\main.c      ****     pickup_puck();
+ 264              		.loc 1 161 0
+ 265 0074 FFF7FEFF 		bl	pickup_puck
+ 162:.\main.c      ****     CyDelay(1000);
+ 266              		.loc 1 162 0
+ 267 0078 4FF47A70 		mov	r0, #1000
+ 268 007c FFF7FEFF 		bl	CyDelay
+ 269 0080 00E0     		b	.L62
+ 270              	.L63:
+ 163:.\main.c      ****     while (1){
+ 164:.\main.c      ****         switch(state){
+ 165:.\main.c      ****             case S_START:
+ 166:.\main.c      ****                 arm_set_level(5);
+ 167:.\main.c      ****                 CyDelay(500);
+ 168:.\main.c      ****                 go_forward(400, 255);
+ 169:.\main.c      ****                 CyDelay(500);
+ 170:.\main.c      ****                 drop_puck();
+ 171:.\main.c      ****                 CyDelay(500);
+ 172:.\main.c      ****                 go_backward(700, 255);
+ 173:.\main.c      ****                 int i;
+ 174:.\main.c      ****                 for (i = 4; i >= 0; i--){
+ 175:.\main.c      ****                     arm_set_level(i);
+ 176:.\main.c      ****                     CyDelay(500);
+ 177:.\main.c      ****                 }
+ 178:.\main.c      ****                 state = S_LEAVE_BASE;
+ 179:.\main.c      ****                 break;
+ 180:.\main.c      ****             case S_LEAVE_BASE:
+ 181:.\main.c      ****                 arm_set_level(0);
+ 182:.\main.c      ****                 go_backward_ultra(50, 255);
+ 183:.\main.c      ****                 state = S_LEFT_BASE;
+ 184:.\main.c      ****                 break;
+ 185:.\main.c      ****             case S_LEFT_BASE:
+ 186:.\main.c      ****                 set_heading(180);
+ 187:.\main.c      ****                 rotate_degrees(0);
+ 188:.\main.c      ****                 CyDelay(1000);
+ 189:.\main.c      ****                 state = S_FIND_PUCK;
+ 190:.\main.c      ****                 break;
+ 191:.\main.c      ****             case S_FIND_PUCK:
+ 192:.\main.c      ****                 go_forward(1000, 200);
+ 193:.\main.c      ****                 CyDelay(1000);
+ 194:.\main.c      ****                 if (beam_broken() || beam_broken()){
+ 195:.\main.c      ****                     go_forward(750, 255);
+ 196:.\main.c      ****                     pickup_puck();
+ 197:.\main.c      ****                     CyDelay(100);
+ 198:.\main.c      ****                     arm_carry_home();
+ 199:.\main.c      ****                     pucks_gotten++;
+ 200:.\main.c      ****                     state = S_FACE_HOME;
+ 201:.\main.c      ****                 }
+ 202:.\main.c      ****                 CyDelay(1000);
+ 203:.\main.c      ****                 break;
+ 204:.\main.c      ****             case S_FACE_HOME:
+ 205:.\main.c      ****                 set_heading(0);
+ 206:.\main.c      ****                 rotate_degrees(0);
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 10
 
 
- 347 013c 1946     		mov	r1, r3
- 348 013e 3C22     		movs	r2, #60
- 349 0140 FFF7FEFF 		bl	within_range
- 350 0144 0346     		mov	r3, r0
- 351 0146 002B     		cmp	r3, #0
- 352 0148 15D0     		beq	.L24
- 161:.\main.c      ****                             while (get_mean_ultra() < 70){
- 353              		.loc 1 161 0
- 354 014a 08E0     		b	.L25
- 355              	.L26:
- 162:.\main.c      ****                                 go_forward(750, 255);
- 356              		.loc 1 162 0
- 357 014c 40F2EE20 		movw	r0, #750
- 358 0150 FF21     		movs	r1, #255
- 359 0152 FFF7FEFF 		bl	go_forward
- 163:.\main.c      ****                                 CyDelay(500);
- 360              		.loc 1 163 0
- 361 0156 4FF4FA70 		mov	r0, #500
- 362 015a FFF7FEFF 		bl	CyDelay
- 363              	.L25:
- 161:.\main.c      ****                             while (get_mean_ultra() < 70){
- 364              		.loc 1 161 0 discriminator 1
- 365 015e FFF7FEFF 		bl	get_mean_ultra
- 366 0162 0346     		mov	r3, r0
- 367 0164 452B     		cmp	r3, #69
- 368 0166 F1D9     		bls	.L26
- 164:.\main.c      ****                             }
- 165:.\main.c      ****                             set_heading(270);
- 369              		.loc 1 165 0
- 370 0168 4FF48770 		mov	r0, #270
- 371 016c FFF7FEFF 		bl	set_heading
- 166:.\main.c      ****                             rotate_degrees(0);
- 372              		.loc 1 166 0
- 373 0170 0020     		movs	r0, #0
- 374 0172 FFF7FEFF 		bl	rotate_degrees
- 375              	.L24:
- 167:.\main.c      ****                         }
- 168:.\main.c      ****                 }
- 169:.\main.c      ****                            
- 170:.\main.c      ****                     int mean = get_mean_ultra();
- 376              		.loc 1 170 0
- 377 0176 FFF7FEFF 		bl	get_mean_ultra
- 378 017a 0346     		mov	r3, r0
- 379 017c 7B61     		str	r3, [r7, #20]
- 380              	.L20:
- 381              	.LBE2:
- 171:.\main.c      ****                 }
- 172:.\main.c      ****                 LCD_ClearDisplay();
- 382              		.loc 1 172 0
- 383 017e 0120     		movs	r0, #1
- 384 0180 FFF7FEFF 		bl	LCD_WriteControl
- 173:.\main.c      ****                 sprintf(outString, "I%d U%d V%d", ir_result, get_mean_ultra(), get_var_ultra());
- 385              		.loc 1 173 0
- 386 0184 FD8B     		ldrh	r5, [r7, #30]
- 387 0186 FFF7FEFF 		bl	get_mean_ultra
- 388 018a 0346     		mov	r3, r0
- 389 018c 1C46     		mov	r4, r3
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 11
+ 207:.\main.c      ****                 CyDelay(1000);
+ 208:.\main.c      ****                 set_heading(45);
+ 209:.\main.c      ****                 rotate_degrees(0);
+ 210:.\main.c      ****                 go_forward(800, 255);
+ 211:.\main.c      ****                 CyDelay(1000);
+ 212:.\main.c      ****                 set_heading(300);
+ 213:.\main.c      ****                 rotate_degrees(0);
+ 214:.\main.c      ****                 go_forward(800, 255);
+ 215:.\main.c      ****                 set_heading(0);
+ 216:.\main.c      ****                 rotate_degrees(0);
+ 217:.\main.c      ****                 state = S_GO_HOME;
+ 218:.\main.c      ****                 break;
+ 219:.\main.c      ****             case S_GO_HOME:
+ 220:.\main.c      ****                 select_front();
+ 221:.\main.c      ****                 CyDelay(500);
+ 222:.\main.c      ****                 ir_result = get_ir_val();
+ 223:.\main.c      ****                 LCD_ClearDisplay();
+ 224:.\main.c      ****                 POS_PRINTF(0,0,"IN GO HOME I:%d U%d", ir_result, get_mean_ultra());
+ 225:.\main.c      ****                 if (get_mean_ultra() < near_base){
+ 226:.\main.c      ****                     state = S_NEAR_HOME_FIND_100;
+ 227:.\main.c      ****                     break;
+ 228:.\main.c      ****                 }
+ 229:.\main.c      ****                     
+ 230:.\main.c      ****                 
+ 231:.\main.c      ****                 if (ir_result < 10){//IR INVALID
+ 232:.\main.c      ****                     POS_PRINTF(0,0,"I:%d < 10: fwd", ir_result);
+ 233:.\main.c      ****                     //while (!but0_b){;}but0_b = 0;
+ 234:.\main.c      ****                     //or look at variance of ir
+ 235:.\main.c      ****                     state = S_GOING_HOME_INVALID_IR;
+ 236:.\main.c      ****                     break;
+ 237:.\main.c      ****                 } else if (within_range(57, ir_result, 60)){
+ 238:.\main.c      ****                     state = S_GOING_HOME_CENTER_IR;
+ 239:.\main.c      ****                     break;
+ 240:.\main.c      ****                 } else if (within_range(80, ir_result, 100)){
+ 241:.\main.c      ****                     state = S_GOING_HOME_LEFT_IR;
+ 242:.\main.c      ****                     break;
+ 243:.\main.c      ****                 } else if (within_range(25, ir_result,30)){
+ 244:.\main.c      ****                     state = S_GOING_HOME_RIGHT_IR;
+ 245:.\main.c      ****                     break;
+ 246:.\main.c      ****                 } else {
+ 247:.\main.c      ****                     POS_PRINTF(0,0,"!!! %d !!!", ir_result);
+ 248:.\main.c      ****                     go_forward(500,255);
+ 249:.\main.c      ****                 }
+ 250:.\main.c      ****                 break;
+ 251:.\main.c      ****             case S_GOING_HOME_CENTER_IR:
+ 252:.\main.c      ****                 POS_PRINTF(0,0,"CENTER IR GO HOME");
+ 253:.\main.c      ****                 //while (!but0_b){;}but0_b = 0;
+ 254:.\main.c      ****                 while (get_mean_ultra() > near_base){
+ 255:.\main.c      ****                     go_forward(600, 255);
+ 256:.\main.c      ****                     CyDelay(600);
+ 257:.\main.c      ****                 }
+ 258:.\main.c      ****                 state = S_NEAR_HOME_FIND_100;
+ 259:.\main.c      ****                 break;
+ 260:.\main.c      ****             case S_GOING_HOME_INVALID_IR:
+ 261:.\main.c      ****                 POS_PRINTF(0,0,"INVALID IR GO HOME");
+ 262:.\main.c      ****                 //while (!but0_b){;}but0_b = 0;
+ 263:.\main.c      ****                 while (get_mean_ultra() > near_base){
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 11
 
 
- 390 018e FFF7FEFF 		bl	get_var_ultra
- 391 0192 0346     		mov	r3, r0
- 392 0194 1A46     		mov	r2, r3
- 393 0196 3B1D     		adds	r3, r7, #4
- 394 0198 0092     		str	r2, [sp]
- 395 019a 1846     		mov	r0, r3
- 396 019c 2249     		ldr	r1, .L28+12
- 397 019e 2A46     		mov	r2, r5
- 398 01a0 2346     		mov	r3, r4
- 399 01a2 FFF7FEFF 		bl	sprintf
- 174:.\main.c      ****                 LCD_PosPrintString(0,0,outString);
- 400              		.loc 1 174 0
- 401 01a6 0020     		movs	r0, #0
- 402 01a8 0021     		movs	r1, #0
- 403 01aa FFF7FEFF 		bl	LCD_Position
- 404 01ae 3B1D     		adds	r3, r7, #4
- 405 01b0 1846     		mov	r0, r3
- 406 01b2 FFF7FEFF 		bl	LCD_PrintString
- 175:.\main.c      ****                 break;
- 407              		.loc 1 175 0
- 408 01b6 00BF     		nop
- 409              	.L11:
- 176:.\main.c      ****             case S_GOT_HOME:
- 177:.\main.c      ****                 ;
- 178:.\main.c      ****                 break;
- 179:.\main.c      ****         }
- 180:.\main.c      ****         
- 181:.\main.c      ****         //ir_result = get_front_ir();
- 182:.\main.c      ****         
- 183:.\main.c      ****         LCD_ClearDisplay();
- 410              		.loc 1 183 0
- 411 01b8 0120     		movs	r0, #1
- 412 01ba FFF7FEFF 		bl	LCD_WriteControl
- 184:.\main.c      ****         sprintf(outString, "u %d ic %d", ultra_distance, ir_result);
- 413              		.loc 1 184 0
- 414 01be 1B4B     		ldr	r3, .L28+16
- 415 01c0 1B88     		ldrh	r3, [r3]	@ movhi
- 416 01c2 9BB2     		uxth	r3, r3
- 417 01c4 1A46     		mov	r2, r3
- 418 01c6 FB8B     		ldrh	r3, [r7, #30]
- 419 01c8 391D     		adds	r1, r7, #4
- 420 01ca 0846     		mov	r0, r1
- 421 01cc 1849     		ldr	r1, .L28+20
- 422 01ce FFF7FEFF 		bl	sprintf
- 185:.\main.c      ****         LCD_PosPrintString(0,0,outString);
- 423              		.loc 1 185 0
- 424 01d2 0020     		movs	r0, #0
- 425 01d4 0021     		movs	r1, #0
- 426 01d6 FFF7FEFF 		bl	LCD_Position
- 427 01da 3B1D     		adds	r3, r7, #4
- 428 01dc 1846     		mov	r0, r3
- 429 01de FFF7FEFF 		bl	LCD_PrintString
- 186:.\main.c      ****         sprintf(outString, "s%d c%d vu %d", state, compass_heading, get_var_ultra());
- 430              		.loc 1 186 0
- 431 01e2 BD8B     		ldrh	r5, [r7, #28]
- 432 01e4 0E4B     		ldr	r3, .L28+4
- 433 01e6 1B88     		ldrh	r3, [r3]
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 12
+ 264:.\main.c      ****                     go_forward(500, 255);
+ 265:.\main.c      ****                     CyDelay(600);
+ 266:.\main.c      ****                 }
+ 267:.\main.c      ****                 state = S_NEAR_HOME_FIND_100;
+ 268:.\main.c      ****                 break;
+ 269:.\main.c      ****             case S_GOING_HOME_LEFT_IR:
+ 270:.\main.c      ****                 set_heading(90);
+ 271:.\main.c      ****                 rotate_degrees(0);
+ 272:.\main.c      ****                 go_forward(1000, 255);
+ 273:.\main.c      ****                 set_heading(0);
+ 274:.\main.c      ****                 rotate_degrees(0);
+ 275:.\main.c      ****                 select_right();
+ 276:.\main.c      ****                 ir_result = get_ir_val();
+ 277:.\main.c      ****                 ///if (ir_result 
+ 278:.\main.c      ****                 while (get_mean_ultra() > near_base){
+ 279:.\main.c      ****                     go_forward(500, 255);
+ 280:.\main.c      ****                     CyDelay(600);
+ 281:.\main.c      ****                 }
+ 282:.\main.c      ****                 state = S_NEAR_HOME_FIND_100;
+ 283:.\main.c      ****                 break;
+ 284:.\main.c      ****             case S_GOING_HOME_RIGHT_IR:
+ 285:.\main.c      ****                 set_heading(270);
+ 286:.\main.c      ****                 rotate_degrees(0);
+ 287:.\main.c      ****                 go_forward(1000, 255);
+ 288:.\main.c      ****                 set_heading(0);
+ 289:.\main.c      ****                 rotate_degrees(0);
+ 290:.\main.c      ****                 select_right();
+ 291:.\main.c      ****                 ir_result = get_ir_val();
+ 292:.\main.c      ****                 //DO SOMETHING WITH THAT...
+ 293:.\main.c      ****                 while (get_mean_ultra() > near_base){
+ 294:.\main.c      ****                     go_forward(600, 255);
+ 295:.\main.c      ****                     CyDelay(600);
+ 296:.\main.c      ****                 }
+ 297:.\main.c      ****                 state = S_NEAR_HOME_FIND_100;
+ 298:.\main.c      ****                 break;
+ 299:.\main.c      ****             case S_NEAR_HOME_FIND_100:
+ 300:.\main.c      ****                 POS_PRINTF(0,0,"NEAR HOME FIND 100");
+ 301:.\main.c      ****                 //while (!but0_b){;}but0_b = 0;
+ 302:.\main.c      ****                 set_heading(270);
+ 303:.\main.c      ****                 rotate_degrees(0);
+ 304:.\main.c      ****                 CyDelay(1000);
+ 305:.\main.c      ****                 select_right();
+ 306:.\main.c      ****                 ir_result = get_ir_val();
+ 307:.\main.c      ****                 POS_PRINTF(1,0,"ir:%d", ir_result);
+ 308:.\main.c      ****                 //while (!but0_b){;}but0_b = 0;
+ 309:.\main.c      ****                 
+ 310:.\main.c      ****                 if (within_range(80, ir_result, 105)){
+ 311:.\main.c      ****                     int i;
+ 312:.\main.c      ****                     int good_val = 1;
+ 313:.\main.c      ****                     for (i = 0; i < 3; i++){
+ 314:.\main.c      ****                         CyDelay(500);
+ 315:.\main.c      ****                         if (!within_range(80, get_ir_val(), 105)){
+ 316:.\main.c      ****                             good_val = 0;
+ 317:.\main.c      ****                             break;
+ 318:.\main.c      ****                         }
+ 319:.\main.c      ****                     }
+ 320:.\main.c      ****                     if (good_val){
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 12
 
 
- 434 01e8 1CB2     		sxth	r4, r3
- 435 01ea FFF7FEFF 		bl	get_var_ultra
- 436 01ee 0346     		mov	r3, r0
- 437 01f0 1A46     		mov	r2, r3
- 438 01f2 3B1D     		adds	r3, r7, #4
- 439 01f4 0092     		str	r2, [sp]
- 440 01f6 1846     		mov	r0, r3
- 441 01f8 0E49     		ldr	r1, .L28+24
- 442 01fa 2A46     		mov	r2, r5
- 443 01fc 2346     		mov	r3, r4
- 444 01fe FFF7FEFF 		bl	sprintf
- 187:.\main.c      ****         LCD_PosPrintString(1,0,outString);
- 445              		.loc 1 187 0
- 446 0202 0120     		movs	r0, #1
- 447 0204 0021     		movs	r1, #0
- 448 0206 FFF7FEFF 		bl	LCD_Position
- 449 020a 3B1D     		adds	r3, r7, #4
- 450 020c 1846     		mov	r0, r3
- 451 020e FFF7FEFF 		bl	LCD_PrintString
- 188:.\main.c      ****         CyDelay(50);
- 452              		.loc 1 188 0
- 453 0212 3220     		movs	r0, #50
- 454 0214 FFF7FEFF 		bl	CyDelay
- 189:.\main.c      ****     }
- 455              		.loc 1 189 0
- 456 0218 24E7     		b	.L27
- 457              	.L29:
- 458 021a 00BF     		.align	2
- 459              	.L28:
- 460 021c 00000000 		.word	compass_ready
- 461 0220 00000000 		.word	compass_heading
- 462 0224 00000000 		.word	original_compass_heading
- 463 0228 00000000 		.word	.LC0
- 464 022c 00000000 		.word	ultra_distance
- 465 0230 0C000000 		.word	.LC1
- 466 0234 18000000 		.word	.LC2
- 467              		.cfi_endproc
- 468              	.LFE65:
- 469              		.size	main, .-main
- 470              		.text
- 471              	.Letext0:
- 472              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
- 473              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
- 474              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
- 475              		.file 5 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
- 476              		.file 6 "Generated_Source\\PSoC5/core_cm3.h"
- 477              		.file 7 "Generated_Source\\PSoC5/Camera.h"
- 478              		.file 8 "./my_camera_functions.h"
- 479              		.file 9 "<built-in>"
- 480              		.section	.debug_info,"",%progbits
- 481              	.Ldebug_info0:
- 482 0000 AC020000 		.4byte	0x2ac
- 483 0004 0400     		.2byte	0x4
- 484 0006 00000000 		.4byte	.Ldebug_abbrev0
- 485 000a 04       		.byte	0x4
- 486 000b 01       		.uleb128 0x1
- 487 000c 5B010000 		.4byte	.LASF38
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 13
+ 321:.\main.c      ****                         state = S_NEAR_HOME_FIND_60;
+ 322:.\main.c      ****                     }
+ 323:.\main.c      ****                     break;
+ 324:.\main.c      ****                 }
+ 325:.\main.c      ****                 go_forward(300, 255);
+ 326:.\main.c      ****                 break;
+ 327:.\main.c      ****             case S_NEAR_HOME_FIND_60:
+ 328:.\main.c      ****                 POS_PRINTF(0,0,"NEAR HOME FIND 60");
+ 329:.\main.c      ****                 //while (!but0_b){;}but0_b = 0;
+ 330:.\main.c      ****                 CyDelay(1000);
+ 331:.\main.c      ****                 select_right();
+ 332:.\main.c      ****                 ir_result = get_ir_val();
+ 333:.\main.c      ****                 POS_PRINTF(1,0,"ir%d", ir_result);
+ 334:.\main.c      ****                 //while (!but0_b){;}but0_b = 0;
+ 335:.\main.c      ****                 if (within_range(57, ir_result, 65)){
+ 336:.\main.c      ****                     set_heading(0);
+ 337:.\main.c      ****                     rotate_degrees(0);
+ 338:.\main.c      ****                     state = S_CENTERED_ON_BASE;
+ 339:.\main.c      ****                     break;
+ 340:.\main.c      ****                 }
+ 341:.\main.c      ****                 go_backward(250, 255);
+ 342:.\main.c      ****                 break;
+ 343:.\main.c      ****             case S_CENTERED_ON_BASE:
+ 344:.\main.c      ****                 POS_PRINTF(0,0,"CENTERED ON BASE");
+ 345:.\main.c      ****                 arm_set_level(4);
+ 346:.\main.c      ****                 while (get_avg_mean_ultra() > 15){
+ 347:.\main.c      ****                     go_forward(300, 255);
+ 348:.\main.c      ****                     CyDelay(500);
+ 349:.\main.c      ****                 }
+ 350:.\main.c      ****                 if (get_avg_mean_ultra() < 14){
+ 351:.\main.c      ****                     go_backward(200, 255);
+ 352:.\main.c      ****                 }
+ 353:.\main.c      ****                 set_heading(90);
+ 354:.\main.c      ****                 rotate_degrees(0);
+ 355:.\main.c      ****                 
+ 356:.\main.c      ****                 state = S_PLACE_PUCK;
+ 357:.\main.c      ****                 break;
+ 358:.\main.c      ****             case S_PLACE_PUCK:
+ 359:.\main.c      ****                 //FIRST PUCK EVER!
+ 360:.\main.c      ****                 if (pucks_gotten == 1){
+ 361:.\main.c      ****                     go_forward(1500, 200);
+ 362:.\main.c      ****                     drop_puck();
+ 363:.\main.c      ****                     go_backward(2000, 255);
+ 364:.\main.c      ****                 } else {
+ 365:.\main.c      ****                     arm_set_level(pucks_gotten + 1);
+ 366:.\main.c      ****                     go_forward(500, 200);
+ 367:.\main.c      ****                     int on_stack = 0;
+ 368:.\main.c      ****                     while (!on_stack){
+ 369:.\main.c      ****                         POS_PRINTF(0,0,"STACKING!");
+ 370:.\main.c      ****                         POS_PRINTF(1, 0, "B%d SU%d", beam_broken(), get_mean_ultra_s());
+ 371:.\main.c      ****                         if (beam_broken()){
+ 372:.\main.c      ****                             on_stack = 1;
+ 373:.\main.c      ****                         } else if (get_mean_ultra_s() < 10){
+ 374:.\main.c      ****                             
+ 375:.\main.c      ****                             go_backward(100, 255);
+ 376:.\main.c      ****                         } else {
+ 377:.\main.c      ****                             go_forward(200, 255);
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 13
 
 
- 488 0010 01       		.byte	0x1
- 489 0011 7A000000 		.4byte	.LASF39
- 490 0015 83000000 		.4byte	.LASF40
- 491 0019 00000000 		.4byte	.Ldebug_ranges0+0
- 492 001d 00000000 		.4byte	0
- 493 0021 00000000 		.4byte	.Ldebug_line0
- 494 0025 02       		.uleb128 0x2
- 495 0026 01       		.byte	0x1
- 496 0027 06       		.byte	0x6
- 497 0028 50020000 		.4byte	.LASF0
- 498 002c 02       		.uleb128 0x2
- 499 002d 01       		.byte	0x1
- 500 002e 08       		.byte	0x8
- 501 002f 6C000000 		.4byte	.LASF1
- 502 0033 02       		.uleb128 0x2
- 503 0034 02       		.byte	0x2
- 504 0035 05       		.byte	0x5
- 505 0036 15020000 		.4byte	.LASF2
- 506 003a 02       		.uleb128 0x2
- 507 003b 02       		.byte	0x2
- 508 003c 07       		.byte	0x7
- 509 003d E4000000 		.4byte	.LASF3
- 510 0041 03       		.uleb128 0x3
- 511 0042 11000000 		.4byte	.LASF9
- 512 0046 02       		.byte	0x2
- 513 0047 37       		.byte	0x37
- 514 0048 4C000000 		.4byte	0x4c
- 515 004c 02       		.uleb128 0x2
- 516 004d 04       		.byte	0x4
- 517 004e 05       		.byte	0x5
- 518 004f 3B020000 		.4byte	.LASF4
- 519 0053 02       		.uleb128 0x2
- 520 0054 04       		.byte	0x4
- 521 0055 07       		.byte	0x7
- 522 0056 D2000000 		.4byte	.LASF5
- 523 005a 02       		.uleb128 0x2
- 524 005b 08       		.byte	0x8
- 525 005c 05       		.byte	0x5
- 526 005d F2010000 		.4byte	.LASF6
- 527 0061 02       		.uleb128 0x2
- 528 0062 08       		.byte	0x8
- 529 0063 07       		.byte	0x7
- 530 0064 39010000 		.4byte	.LASF7
- 531 0068 04       		.uleb128 0x4
- 532 0069 04       		.byte	0x4
- 533 006a 05       		.byte	0x5
- 534 006b 696E7400 		.ascii	"int\000"
- 535 006f 02       		.uleb128 0x2
- 536 0070 04       		.byte	0x4
- 537 0071 07       		.byte	0x7
- 538 0072 2C010000 		.4byte	.LASF8
- 539 0076 03       		.uleb128 0x3
- 540 0077 D7010000 		.4byte	.LASF10
- 541 007b 03       		.byte	0x3
- 542 007c 41       		.byte	0x41
- 543 007d 41000000 		.4byte	0x41
- 544 0081 03       		.uleb128 0x3
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 14
+ 378:.\main.c      ****                         }
+ 379:.\main.c      ****                     }
+ 380:.\main.c      ****                     go_backward(200, 255);
+ 381:.\main.c      ****                     arm_inbetween_level(pucks_gotten - 1, pucks_gotten);
+ 382:.\main.c      ****                     CyDelay(500);
+ 383:.\main.c      ****                     drop_puck();
+ 384:.\main.c      ****                     go_backward(2000, 255);
+ 385:.\main.c      ****                     arm_carry_home();
+ 386:.\main.c      ****                     arm_set_level(0);
+ 387:.\main.c      ****                     CyDelay(500);
+ 388:.\main.c      ****                 }
+ 389:.\main.c      ****                 
+ 390:.\main.c      ****                 set_heading(0);
+ 391:.\main.c      ****                 rotate_degrees(0);
+ 392:.\main.c      ****                 go_backward(2000, 255);
+ 393:.\main.c      ****                 state = S_LEAVE_BASE;
+ 394:.\main.c      ****                 break;
+ 395:.\main.c      ****                     
+ 396:.\main.c      ****             case S_GOT_HOME:
+ 397:.\main.c      ****                 POS_PRINTF(0,0,"GOT HOME");
+ 398:.\main.c      ****                 while (!but0_b){;}but0_b = 0;
+ 399:.\main.c      ****                 break;
+ 400:.\main.c      ****         }
+ 401:.\main.c      ****         
+ 402:.\main.c      ****         /*
+ 403:.\main.c      ****         LCD_ClearDisplay();
+ 404:.\main.c      ****         sprintf(outString, "u %d ic %d", ultra_distance, ir_result);
+ 405:.\main.c      ****         LCD_PosPrintString(0,0,outString);
+ 406:.\main.c      ****         sprintf(outString, "s%d c%d vu %d", state, compass_heading, get_var_ultra());
+ 407:.\main.c      ****         LCD_PosPrintString(1,0,outString);
+ 408:.\main.c      ****         CyDelay(50);*/
+ 409:.\main.c      ****     }
+ 271              		.loc 1 409 0
+ 272 0082 00BF     		nop
+ 273              	.L62:
+ 164:.\main.c      ****         switch(state){
+ 274              		.loc 1 164 0
+ 275 0084 FB8B     		ldrh	r3, [r7, #30]
+ 276 0086 0F2B     		cmp	r3, #15
+ 277 0088 FBD8     		bhi	.L63
+ 278 008a 01A2     		adr	r2, .L13
+ 279 008c 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 280              		.p2align 2
+ 281              	.L13:
+ 282 0090 D1000000 		.word	.L12+1
+ 283 0094 2D010000 		.word	.L14+1
+ 284 0098 41010000 		.word	.L15+1
+ 285 009c 5B010000 		.word	.L16+1
+ 286 00a0 09020000 		.word	.L17+1
+ 287 00a4 AD010000 		.word	.L18+1
+ 288 00a8 15070000 		.word	.L19+1
+ 289 00ac 83000000 		.word	.L63+1
+ 290 00b0 51030000 		.word	.L20+1
+ 291 00b4 EB020000 		.word	.L21+1
+ 292 00b8 9F030000 		.word	.L22+1
+ 293 00bc F5030000 		.word	.L23+1
+ 294 00c0 4D040000 		.word	.L24+1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 14
 
 
- 545 0082 2B020000 		.4byte	.LASF11
- 546 0086 04       		.byte	0x4
- 547 0087 B3       		.byte	0xb3
- 548 0088 2C000000 		.4byte	0x2c
- 549 008c 03       		.uleb128 0x3
- 550 008d 18010000 		.4byte	.LASF12
- 551 0091 04       		.byte	0x4
- 552 0092 B4       		.byte	0xb4
- 553 0093 3A000000 		.4byte	0x3a
- 554 0097 03       		.uleb128 0x3
- 555 0098 55010000 		.4byte	.LASF13
- 556 009c 04       		.byte	0x4
- 557 009d B7       		.byte	0xb7
- 558 009e 33000000 		.4byte	0x33
- 559 00a2 02       		.uleb128 0x2
- 560 00a3 04       		.byte	0x4
- 561 00a4 04       		.byte	0x4
- 562 00a5 49000000 		.4byte	.LASF14
- 563 00a9 02       		.uleb128 0x2
- 564 00aa 08       		.byte	0x8
- 565 00ab 04       		.byte	0x4
- 566 00ac 0C010000 		.4byte	.LASF15
- 567 00b0 02       		.uleb128 0x2
- 568 00b1 01       		.byte	0x1
- 569 00b2 08       		.byte	0x8
- 570 00b3 00020000 		.4byte	.LASF16
- 571 00b7 05       		.uleb128 0x5
- 572 00b8 81000000 		.4byte	0x81
- 573 00bc 05       		.uleb128 0x5
- 574 00bd 8C000000 		.4byte	0x8c
- 575 00c1 02       		.uleb128 0x2
- 576 00c2 04       		.byte	0x4
- 577 00c3 07       		.byte	0x7
- 578 00c4 DF010000 		.4byte	.LASF17
- 579 00c8 06       		.uleb128 0x6
- 580 00c9 04       		.byte	0x4
- 581 00ca 07       		.uleb128 0x7
- 582 00cb 04       		.byte	0x4
- 583 00cc D0000000 		.4byte	0xd0
- 584 00d0 08       		.uleb128 0x8
- 585 00d1 B0000000 		.4byte	0xb0
- 586 00d5 03       		.uleb128 0x3
- 587 00d6 5D000000 		.4byte	.LASF18
- 588 00da 05       		.byte	0x5
- 589 00db 28       		.byte	0x28
- 590 00dc E0000000 		.4byte	0xe0
- 591 00e0 09       		.uleb128 0x9
- 592 00e1 E8010000 		.4byte	.LASF41
- 593 00e5 04       		.byte	0x4
- 594 00e6 09       		.byte	0x9
- 595 00e7 00       		.byte	0
- 596 00e8 F7000000 		.4byte	0xf7
- 597 00ec 0A       		.uleb128 0xa
- 598 00ed 50010000 		.4byte	.LASF42
- 599 00f1 C8000000 		.4byte	0xc8
- 600 00f5 00       		.byte	0
- 601 00f6 00       		.byte	0
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 15
+ 295 00c4 15050000 		.word	.L25+1
+ 296 00c8 8F050000 		.word	.L26+1
+ 297 00cc F5050000 		.word	.L27+1
+ 298              		.p2align 1
+ 299              	.L12:
+ 300              	.LBB2:
+ 166:.\main.c      ****                 arm_set_level(5);
+ 301              		.loc 1 166 0
+ 302 00d0 0520     		movs	r0, #5
+ 303 00d2 FFF7FEFF 		bl	arm_set_level
+ 167:.\main.c      ****                 CyDelay(500);
+ 304              		.loc 1 167 0
+ 305 00d6 4FF4FA70 		mov	r0, #500
+ 306 00da FFF7FEFF 		bl	CyDelay
+ 168:.\main.c      ****                 go_forward(400, 255);
+ 307              		.loc 1 168 0
+ 308 00de 4FF4C870 		mov	r0, #400
+ 309 00e2 FF21     		movs	r1, #255
+ 310 00e4 FFF7FEFF 		bl	go_forward
+ 169:.\main.c      ****                 CyDelay(500);
+ 311              		.loc 1 169 0
+ 312 00e8 4FF4FA70 		mov	r0, #500
+ 313 00ec FFF7FEFF 		bl	CyDelay
+ 170:.\main.c      ****                 drop_puck();
+ 314              		.loc 1 170 0
+ 315 00f0 FFF7FEFF 		bl	drop_puck
+ 171:.\main.c      ****                 CyDelay(500);
+ 316              		.loc 1 171 0
+ 317 00f4 4FF4FA70 		mov	r0, #500
+ 318 00f8 FFF7FEFF 		bl	CyDelay
+ 172:.\main.c      ****                 go_backward(700, 255);
+ 319              		.loc 1 172 0
+ 320 00fc 4FF42F70 		mov	r0, #700
+ 321 0100 FF21     		movs	r1, #255
+ 322 0102 FFF7FEFF 		bl	go_backward
+ 174:.\main.c      ****                 for (i = 4; i >= 0; i--){
+ 323              		.loc 1 174 0
+ 324 0106 0423     		movs	r3, #4
+ 325 0108 7B61     		str	r3, [r7, #20]
+ 326 010a 09E0     		b	.L28
+ 327              	.L29:
+ 175:.\main.c      ****                     arm_set_level(i);
+ 328              		.loc 1 175 0 discriminator 2
+ 329 010c 7869     		ldr	r0, [r7, #20]
+ 330 010e FFF7FEFF 		bl	arm_set_level
+ 176:.\main.c      ****                     CyDelay(500);
+ 331              		.loc 1 176 0 discriminator 2
+ 332 0112 4FF4FA70 		mov	r0, #500
+ 333 0116 FFF7FEFF 		bl	CyDelay
+ 174:.\main.c      ****                 for (i = 4; i >= 0; i--){
+ 334              		.loc 1 174 0 discriminator 2
+ 335 011a 7B69     		ldr	r3, [r7, #20]
+ 336 011c 013B     		subs	r3, r3, #1
+ 337 011e 7B61     		str	r3, [r7, #20]
+ 338              	.L28:
+ 174:.\main.c      ****                 for (i = 4; i >= 0; i--){
+ 339              		.loc 1 174 0 is_stmt 0 discriminator 1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 15
 
 
- 602 00f7 03       		.uleb128 0x3
- 603 00f8 04010000 		.4byte	.LASF19
- 604 00fc 05       		.byte	0x5
- 605 00fd 62       		.byte	0x62
- 606 00fe D5000000 		.4byte	0xd5
- 607 0102 02       		.uleb128 0x2
- 608 0103 08       		.byte	0x8
- 609 0104 04       		.byte	0x4
- 610 0105 44020000 		.4byte	.LASF20
- 611 0109 0B       		.uleb128 0xb
- 612 010a 05020000 		.4byte	.LASF25
- 613 010e 01       		.byte	0x1
- 614 010f 2F       		.byte	0x2f
- 615 0110 00000000 		.4byte	.LFB63
- 616 0114 4A000000 		.4byte	.LFE63-.LFB63
- 617 0118 01       		.uleb128 0x1
- 618 0119 9C       		.byte	0x9c
- 619 011a 4C010000 		.4byte	0x14c
- 620 011e 0C       		.uleb128 0xc
- 621 011f 666D7400 		.ascii	"fmt\000"
- 622 0123 01       		.byte	0x1
- 623 0124 2F       		.byte	0x2f
- 624 0125 CA000000 		.4byte	0xca
- 625 0129 02       		.uleb128 0x2
- 626 012a 91       		.byte	0x91
- 627 012b 70       		.sleb128 -16
- 628 012c 0D       		.uleb128 0xd
- 629 012d 0E       		.uleb128 0xe
- 630 012e 24020000 		.4byte	.LASF21
- 631 0132 01       		.byte	0x1
- 632 0133 32       		.byte	0x32
- 633 0134 4C010000 		.4byte	0x14c
- 634 0138 03       		.uleb128 0x3
- 635 0139 91       		.byte	0x91
- 636 013a A87F     		.sleb128 -88
- 637 013c 0E       		.uleb128 0xe
- 638 013d 1F020000 		.4byte	.LASF22
- 639 0141 01       		.byte	0x1
- 640 0142 33       		.byte	0x33
- 641 0143 F7000000 		.4byte	0xf7
- 642 0147 03       		.uleb128 0x3
- 643 0148 91       		.byte	0x91
- 644 0149 A47F     		.sleb128 -92
- 645 014b 00       		.byte	0
- 646 014c 0F       		.uleb128 0xf
- 647 014d B0000000 		.4byte	0xb0
- 648 0151 5C010000 		.4byte	0x15c
- 649 0155 10       		.uleb128 0x10
- 650 0156 C1000000 		.4byte	0xc1
- 651 015a 3F       		.byte	0x3f
- 652 015b 00       		.byte	0
- 653 015c 11       		.uleb128 0x11
- 654 015d F7000000 		.4byte	.LASF43
- 655 0161 01       		.byte	0x1
- 656 0162 3B       		.byte	0x3b
- 657 0163 68000000 		.4byte	0x68
- 658 0167 00000000 		.4byte	.LFB64
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 16
+ 340 0120 7B69     		ldr	r3, [r7, #20]
+ 341 0122 002B     		cmp	r3, #0
+ 342 0124 F2DA     		bge	.L29
+ 178:.\main.c      ****                 state = S_LEAVE_BASE;
+ 343              		.loc 1 178 0 is_stmt 1
+ 344 0126 0123     		movs	r3, #1
+ 345 0128 FB83     		strh	r3, [r7, #30]	@ movhi
+ 179:.\main.c      ****                 break;
+ 346              		.loc 1 179 0
+ 347 012a 09E3     		b	.L11
+ 348              	.L14:
+ 181:.\main.c      ****                 arm_set_level(0);
+ 349              		.loc 1 181 0
+ 350 012c 0020     		movs	r0, #0
+ 351 012e FFF7FEFF 		bl	arm_set_level
+ 182:.\main.c      ****                 go_backward_ultra(50, 255);
+ 352              		.loc 1 182 0
+ 353 0132 3220     		movs	r0, #50
+ 354 0134 FF21     		movs	r1, #255
+ 355 0136 FFF7FEFF 		bl	go_backward_ultra
+ 183:.\main.c      ****                 state = S_LEFT_BASE;
+ 356              		.loc 1 183 0
+ 357 013a 0223     		movs	r3, #2
+ 358 013c FB83     		strh	r3, [r7, #30]	@ movhi
+ 184:.\main.c      ****                 break;
+ 359              		.loc 1 184 0
+ 360 013e FFE2     		b	.L11
+ 361              	.L15:
+ 186:.\main.c      ****                 set_heading(180);
+ 362              		.loc 1 186 0
+ 363 0140 B420     		movs	r0, #180
+ 364 0142 FFF7FEFF 		bl	set_heading
+ 187:.\main.c      ****                 rotate_degrees(0);
+ 365              		.loc 1 187 0
+ 366 0146 0020     		movs	r0, #0
+ 367 0148 FFF7FEFF 		bl	rotate_degrees
+ 188:.\main.c      ****                 CyDelay(1000);
+ 368              		.loc 1 188 0
+ 369 014c 4FF47A70 		mov	r0, #1000
+ 370 0150 FFF7FEFF 		bl	CyDelay
+ 189:.\main.c      ****                 state = S_FIND_PUCK;
+ 371              		.loc 1 189 0
+ 372 0154 0323     		movs	r3, #3
+ 373 0156 FB83     		strh	r3, [r7, #30]	@ movhi
+ 190:.\main.c      ****                 break;
+ 374              		.loc 1 190 0
+ 375 0158 F2E2     		b	.L11
+ 376              	.L16:
+ 192:.\main.c      ****                 go_forward(1000, 200);
+ 377              		.loc 1 192 0
+ 378 015a 4FF47A70 		mov	r0, #1000
+ 379 015e C821     		movs	r1, #200
+ 380 0160 FFF7FEFF 		bl	go_forward
+ 193:.\main.c      ****                 CyDelay(1000);
+ 381              		.loc 1 193 0
+ 382 0164 4FF47A70 		mov	r0, #1000
+ 383 0168 FFF7FEFF 		bl	CyDelay
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 16
 
 
- 659 016b 2E000000 		.4byte	.LFE64-.LFB64
- 660 016f 01       		.uleb128 0x1
- 661 0170 9C       		.byte	0x9c
- 662 0171 A0010000 		.4byte	0x1a0
- 663 0175 12       		.uleb128 0x12
- 664 0176 34000000 		.4byte	.LASF23
- 665 017a 01       		.byte	0x1
- 666 017b 3B       		.byte	0x3b
- 667 017c 68000000 		.4byte	0x68
- 668 0180 02       		.uleb128 0x2
- 669 0181 91       		.byte	0x91
- 670 0182 74       		.sleb128 -12
- 671 0183 0C       		.uleb128 0xc
- 672 0184 76616C00 		.ascii	"val\000"
- 673 0188 01       		.byte	0x1
- 674 0189 3B       		.byte	0x3b
- 675 018a 68000000 		.4byte	0x68
- 676 018e 02       		.uleb128 0x2
- 677 018f 91       		.byte	0x91
- 678 0190 70       		.sleb128 -16
- 679 0191 12       		.uleb128 0x12
- 680 0192 0B000000 		.4byte	.LASF24
- 681 0196 01       		.byte	0x1
- 682 0197 3B       		.byte	0x3b
- 683 0198 68000000 		.4byte	0x68
- 684 019c 02       		.uleb128 0x2
- 685 019d 91       		.byte	0x91
- 686 019e 6C       		.sleb128 -20
- 687 019f 00       		.byte	0
- 688 01a0 13       		.uleb128 0x13
- 689 01a1 13010000 		.4byte	.LASF26
- 690 01a5 01       		.byte	0x1
- 691 01a6 3F       		.byte	0x3f
- 692 01a7 68000000 		.4byte	0x68
- 693 01ab 00000000 		.4byte	.LFB65
- 694 01af 38020000 		.4byte	.LFE65-.LFB65
- 695 01b3 01       		.uleb128 0x1
- 696 01b4 9C       		.byte	0x9c
- 697 01b5 14020000 		.4byte	0x214
- 698 01b9 0E       		.uleb128 0xe
- 699 01ba 31020000 		.4byte	.LASF27
- 700 01be 01       		.byte	0x1
- 701 01bf 43       		.byte	0x43
- 702 01c0 14020000 		.4byte	0x214
- 703 01c4 02       		.uleb128 0x2
- 704 01c5 91       		.byte	0x91
- 705 01c6 54       		.sleb128 -44
- 706 01c7 0E       		.uleb128 0xe
- 707 01c8 0B020000 		.4byte	.LASF28
- 708 01cc 01       		.byte	0x1
- 709 01cd 67       		.byte	0x67
- 710 01ce 8C000000 		.4byte	0x8c
- 711 01d2 02       		.uleb128 0x2
- 712 01d3 91       		.byte	0x91
- 713 01d4 6E       		.sleb128 -18
- 714 01d5 0E       		.uleb128 0xe
- 715 01d6 05000000 		.4byte	.LASF29
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 17
+ 194:.\main.c      ****                 if (beam_broken() || beam_broken()){
+ 384              		.loc 1 194 0
+ 385 016c FFF7FEFF 		bl	beam_broken
+ 386 0170 0346     		mov	r3, r0
+ 387 0172 002B     		cmp	r3, #0
+ 388 0174 04D1     		bne	.L30
+ 194:.\main.c      ****                 if (beam_broken() || beam_broken()){
+ 389              		.loc 1 194 0 is_stmt 0 discriminator 1
+ 390 0176 FFF7FEFF 		bl	beam_broken
+ 391 017a 0346     		mov	r3, r0
+ 392 017c 002B     		cmp	r3, #0
+ 393 017e 10D0     		beq	.L31
+ 394              	.L30:
+ 195:.\main.c      ****                     go_forward(750, 255);
+ 395              		.loc 1 195 0 is_stmt 1
+ 396 0180 40F2EE20 		movw	r0, #750
+ 397 0184 FF21     		movs	r1, #255
+ 398 0186 FFF7FEFF 		bl	go_forward
+ 196:.\main.c      ****                     pickup_puck();
+ 399              		.loc 1 196 0
+ 400 018a FFF7FEFF 		bl	pickup_puck
+ 197:.\main.c      ****                     CyDelay(100);
+ 401              		.loc 1 197 0
+ 402 018e 6420     		movs	r0, #100
+ 403 0190 FFF7FEFF 		bl	CyDelay
+ 198:.\main.c      ****                     arm_carry_home();
+ 404              		.loc 1 198 0
+ 405 0194 FFF7FEFF 		bl	arm_carry_home
+ 199:.\main.c      ****                     pucks_gotten++;
+ 406              		.loc 1 199 0
+ 407 0198 BB69     		ldr	r3, [r7, #24]
+ 408 019a 0133     		adds	r3, r3, #1
+ 409 019c BB61     		str	r3, [r7, #24]
+ 200:.\main.c      ****                     state = S_FACE_HOME;
+ 410              		.loc 1 200 0
+ 411 019e 0523     		movs	r3, #5
+ 412 01a0 FB83     		strh	r3, [r7, #30]	@ movhi
+ 413              	.L31:
+ 202:.\main.c      ****                 CyDelay(1000);
+ 414              		.loc 1 202 0
+ 415 01a2 4FF47A70 		mov	r0, #1000
+ 416 01a6 FFF7FEFF 		bl	CyDelay
+ 203:.\main.c      ****                 break;
+ 417              		.loc 1 203 0
+ 418 01aa C9E2     		b	.L11
+ 419              	.L18:
+ 205:.\main.c      ****                 set_heading(0);
+ 420              		.loc 1 205 0
+ 421 01ac 0020     		movs	r0, #0
+ 422 01ae FFF7FEFF 		bl	set_heading
+ 206:.\main.c      ****                 rotate_degrees(0);
+ 423              		.loc 1 206 0
+ 424 01b2 0020     		movs	r0, #0
+ 425 01b4 FFF7FEFF 		bl	rotate_degrees
+ 207:.\main.c      ****                 CyDelay(1000);
+ 426              		.loc 1 207 0
+ 427 01b8 4FF47A70 		mov	r0, #1000
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 17
 
 
- 716 01da 01       		.byte	0x1
- 717 01db 68       		.byte	0x68
- 718 01dc 8C000000 		.4byte	0x8c
- 719 01e0 02       		.uleb128 0x2
- 720 01e1 91       		.byte	0x91
- 721 01e2 6C       		.sleb128 -20
- 722 01e3 14       		.uleb128 0x14
- 723 01e4 FE000000 		.4byte	.LBB2
- 724 01e8 80000000 		.4byte	.LBE2-.LBB2
- 725 01ec 0E       		.uleb128 0xe
- 726 01ed 00000000 		.4byte	.LASF30
- 727 01f1 01       		.byte	0x1
- 728 01f2 AA       		.byte	0xaa
- 729 01f3 68000000 		.4byte	0x68
- 730 01f7 02       		.uleb128 0x2
- 731 01f8 91       		.byte	0x91
- 732 01f9 64       		.sleb128 -28
- 733 01fa 14       		.uleb128 0x14
- 734 01fb 1E010000 		.4byte	.LBB3
- 735 01ff 18000000 		.4byte	.LBE3-.LBB3
- 736 0203 15       		.uleb128 0x15
- 737 0204 76617200 		.ascii	"var\000"
- 738 0208 01       		.byte	0x1
- 739 0209 99       		.byte	0x99
- 740 020a 68000000 		.4byte	0x68
- 741 020e 02       		.uleb128 0x2
- 742 020f 91       		.byte	0x91
- 743 0210 68       		.sleb128 -24
- 744 0211 00       		.byte	0
- 745 0212 00       		.byte	0
- 746 0213 00       		.byte	0
- 747 0214 0F       		.uleb128 0xf
- 748 0215 B0000000 		.4byte	0xb0
- 749 0219 24020000 		.4byte	0x224
- 750 021d 10       		.uleb128 0x10
- 751 021e C1000000 		.4byte	0xc1
- 752 0222 0F       		.byte	0xf
- 753 0223 00       		.byte	0
- 754 0224 16       		.uleb128 0x16
- 755 0225 1F010000 		.4byte	.LASF31
- 756 0229 06       		.byte	0x6
- 757 022a 2A06     		.2byte	0x62a
- 758 022c 30020000 		.4byte	0x230
- 759 0230 05       		.uleb128 0x5
- 760 0231 76000000 		.4byte	0x76
- 761 0235 0F       		.uleb128 0xf
- 762 0236 81000000 		.4byte	0x81
- 763 023a 51020000 		.4byte	0x251
- 764 023e 10       		.uleb128 0x10
- 765 023f C1000000 		.4byte	0xc1
- 766 0243 8F       		.byte	0x8f
- 767 0244 10       		.uleb128 0x10
- 768 0245 C1000000 		.4byte	0xc1
- 769 0249 57       		.byte	0x57
- 770 024a 10       		.uleb128 0x10
- 771 024b C1000000 		.4byte	0xc1
- 772 024f 03       		.byte	0x3
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 18
+ 428 01bc FFF7FEFF 		bl	CyDelay
+ 208:.\main.c      ****                 set_heading(45);
+ 429              		.loc 1 208 0
+ 430 01c0 2D20     		movs	r0, #45
+ 431 01c2 FFF7FEFF 		bl	set_heading
+ 209:.\main.c      ****                 rotate_degrees(0);
+ 432              		.loc 1 209 0
+ 433 01c6 0020     		movs	r0, #0
+ 434 01c8 FFF7FEFF 		bl	rotate_degrees
+ 210:.\main.c      ****                 go_forward(800, 255);
+ 435              		.loc 1 210 0
+ 436 01cc 4FF44870 		mov	r0, #800
+ 437 01d0 FF21     		movs	r1, #255
+ 438 01d2 FFF7FEFF 		bl	go_forward
+ 211:.\main.c      ****                 CyDelay(1000);
+ 439              		.loc 1 211 0
+ 440 01d6 4FF47A70 		mov	r0, #1000
+ 441 01da FFF7FEFF 		bl	CyDelay
+ 212:.\main.c      ****                 set_heading(300);
+ 442              		.loc 1 212 0
+ 443 01de 4FF49670 		mov	r0, #300
+ 444 01e2 FFF7FEFF 		bl	set_heading
+ 213:.\main.c      ****                 rotate_degrees(0);
+ 445              		.loc 1 213 0
+ 446 01e6 0020     		movs	r0, #0
+ 447 01e8 FFF7FEFF 		bl	rotate_degrees
+ 214:.\main.c      ****                 go_forward(800, 255);
+ 448              		.loc 1 214 0
+ 449 01ec 4FF44870 		mov	r0, #800
+ 450 01f0 FF21     		movs	r1, #255
+ 451 01f2 FFF7FEFF 		bl	go_forward
+ 215:.\main.c      ****                 set_heading(0);
+ 452              		.loc 1 215 0
+ 453 01f6 0020     		movs	r0, #0
+ 454 01f8 FFF7FEFF 		bl	set_heading
+ 216:.\main.c      ****                 rotate_degrees(0);
+ 455              		.loc 1 216 0
+ 456 01fc 0020     		movs	r0, #0
+ 457 01fe FFF7FEFF 		bl	rotate_degrees
+ 217:.\main.c      ****                 state = S_GO_HOME;
+ 458              		.loc 1 217 0
+ 459 0202 0423     		movs	r3, #4
+ 460 0204 FB83     		strh	r3, [r7, #30]	@ movhi
+ 218:.\main.c      ****                 break;
+ 461              		.loc 1 218 0
+ 462 0206 9BE2     		b	.L11
+ 463              	.L17:
+ 220:.\main.c      ****                 select_front();
+ 464              		.loc 1 220 0
+ 465 0208 FFF7FEFF 		bl	select_front
+ 221:.\main.c      ****                 CyDelay(500);
+ 466              		.loc 1 221 0
+ 467 020c 4FF4FA70 		mov	r0, #500
+ 468 0210 FFF7FEFF 		bl	CyDelay
+ 222:.\main.c      ****                 ir_result = get_ir_val();
+ 469              		.loc 1 222 0
+ 470 0214 FFF7FEFF 		bl	get_ir_val
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 18
 
 
- 773 0250 00       		.byte	0
- 774 0251 17       		.uleb128 0x17
- 775 0252 21000000 		.4byte	.LASF32
- 776 0256 07       		.byte	0x7
- 777 0257 08       		.byte	0x8
- 778 0258 35020000 		.4byte	0x235
- 779 025c 05       		.uleb128 0x5
- 780 025d 03       		.byte	0x3
- 781 025e 00000000 		.4byte	Camera_framebuffer
- 782 0262 0F       		.uleb128 0xf
- 783 0263 68000000 		.4byte	0x68
- 784 0267 72020000 		.4byte	0x272
- 785 026b 10       		.uleb128 0x10
- 786 026c C1000000 		.4byte	0xc1
- 787 0270 03       		.byte	0x3
- 788 0271 00       		.byte	0
- 789 0272 17       		.uleb128 0x17
- 790 0273 1B000000 		.4byte	.LASF33
- 791 0277 08       		.byte	0x8
- 792 0278 1F       		.byte	0x1f
- 793 0279 62020000 		.4byte	0x262
- 794 027d 05       		.uleb128 0x5
- 795 027e 03       		.byte	0x3
- 796 027f 00000000 		.4byte	stack
- 797 0283 18       		.uleb128 0x18
- 798 0284 75020000 		.4byte	.LASF34
- 799 0288 01       		.byte	0x1
- 800 0289 27       		.byte	0x27
- 801 028a 97000000 		.4byte	0x97
- 802 028e 18       		.uleb128 0x18
- 803 028f 4F000000 		.4byte	.LASF35
- 804 0293 01       		.byte	0x1
- 805 0294 28       		.byte	0x28
- 806 0295 B7000000 		.4byte	0xb7
- 807 0299 18       		.uleb128 0x18
- 808 029a 5C020000 		.4byte	.LASF36
- 809 029e 01       		.byte	0x1
- 810 029f 29       		.byte	0x29
- 811 02a0 97000000 		.4byte	0x97
- 812 02a4 18       		.uleb128 0x18
- 813 02a5 3A000000 		.4byte	.LASF37
- 814 02a9 01       		.byte	0x1
- 815 02aa 2C       		.byte	0x2c
- 816 02ab BC000000 		.4byte	0xbc
- 817 02af 00       		.byte	0
- 818              		.section	.debug_abbrev,"",%progbits
- 819              	.Ldebug_abbrev0:
- 820 0000 01       		.uleb128 0x1
- 821 0001 11       		.uleb128 0x11
- 822 0002 01       		.byte	0x1
- 823 0003 25       		.uleb128 0x25
- 824 0004 0E       		.uleb128 0xe
- 825 0005 13       		.uleb128 0x13
- 826 0006 0B       		.uleb128 0xb
- 827 0007 03       		.uleb128 0x3
- 828 0008 0E       		.uleb128 0xe
- 829 0009 1B       		.uleb128 0x1b
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 19
+ 471 0218 0346     		mov	r3, r0
+ 472 021a 7B80     		strh	r3, [r7, #2]	@ movhi
+ 223:.\main.c      ****                 LCD_ClearDisplay();
+ 473              		.loc 1 223 0
+ 474 021c 0120     		movs	r0, #1
+ 475 021e FFF7FEFF 		bl	LCD_WriteControl
+ 224:.\main.c      ****                 POS_PRINTF(0,0,"IN GO HOME I:%d U%d", ir_result, get_mean_ultra());
+ 476              		.loc 1 224 0
+ 477 0222 7C88     		ldrh	r4, [r7, #2]
+ 478 0224 FFF7FEFF 		bl	get_mean_ultra
+ 479 0228 0346     		mov	r3, r0
+ 480 022a 4448     		ldr	r0, .L64+12
+ 481 022c 4449     		ldr	r1, .L64+16
+ 482 022e 2246     		mov	r2, r4
+ 483 0230 FFF7FEFF 		bl	sprintf
+ 484 0234 0020     		movs	r0, #0
+ 485 0236 0021     		movs	r1, #0
+ 486 0238 FFF7FEFF 		bl	LCD_Position
+ 487 023c 3F48     		ldr	r0, .L64+12
+ 488 023e FFF7FEFF 		bl	LCD_PrintString
+ 225:.\main.c      ****                 if (get_mean_ultra() < near_base){
+ 489              		.loc 1 225 0
+ 490 0242 FFF7FEFF 		bl	get_mean_ultra
+ 491 0246 0346     		mov	r3, r0
+ 492 0248 1A46     		mov	r2, r3
+ 493 024a 7B68     		ldr	r3, [r7, #4]
+ 494 024c 9A42     		cmp	r2, r3
+ 495 024e 02DA     		bge	.L32
+ 226:.\main.c      ****                     state = S_NEAR_HOME_FIND_100;
+ 496              		.loc 1 226 0
+ 497 0250 0C23     		movs	r3, #12
+ 498 0252 FB83     		strh	r3, [r7, #30]	@ movhi
+ 227:.\main.c      ****                     break;
+ 499              		.loc 1 227 0
+ 500 0254 74E2     		b	.L11
+ 501              	.L32:
+ 231:.\main.c      ****                 if (ir_result < 10){//IR INVALID
+ 502              		.loc 1 231 0
+ 503 0256 7B88     		ldrh	r3, [r7, #2]
+ 504 0258 092B     		cmp	r3, #9
+ 505 025a 0FD8     		bhi	.L33
+ 232:.\main.c      ****                     POS_PRINTF(0,0,"I:%d < 10: fwd", ir_result);
+ 506              		.loc 1 232 0
+ 507 025c 7B88     		ldrh	r3, [r7, #2]
+ 508 025e 3748     		ldr	r0, .L64+12
+ 509 0260 3849     		ldr	r1, .L64+20
+ 510 0262 1A46     		mov	r2, r3
+ 511 0264 FFF7FEFF 		bl	sprintf
+ 512 0268 0020     		movs	r0, #0
+ 513 026a 0021     		movs	r1, #0
+ 514 026c FFF7FEFF 		bl	LCD_Position
+ 515 0270 3248     		ldr	r0, .L64+12
+ 516 0272 FFF7FEFF 		bl	LCD_PrintString
+ 235:.\main.c      ****                     state = S_GOING_HOME_INVALID_IR;
+ 517              		.loc 1 235 0
+ 518 0276 0823     		movs	r3, #8
+ 519 0278 FB83     		strh	r3, [r7, #30]	@ movhi
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 19
 
 
- 830 000a 0E       		.uleb128 0xe
- 831 000b 55       		.uleb128 0x55
- 832 000c 17       		.uleb128 0x17
- 833 000d 11       		.uleb128 0x11
- 834 000e 01       		.uleb128 0x1
- 835 000f 10       		.uleb128 0x10
- 836 0010 17       		.uleb128 0x17
- 837 0011 00       		.byte	0
- 838 0012 00       		.byte	0
- 839 0013 02       		.uleb128 0x2
- 840 0014 24       		.uleb128 0x24
- 841 0015 00       		.byte	0
- 842 0016 0B       		.uleb128 0xb
- 843 0017 0B       		.uleb128 0xb
- 844 0018 3E       		.uleb128 0x3e
- 845 0019 0B       		.uleb128 0xb
- 846 001a 03       		.uleb128 0x3
- 847 001b 0E       		.uleb128 0xe
- 848 001c 00       		.byte	0
- 849 001d 00       		.byte	0
- 850 001e 03       		.uleb128 0x3
- 851 001f 16       		.uleb128 0x16
- 852 0020 00       		.byte	0
- 853 0021 03       		.uleb128 0x3
- 854 0022 0E       		.uleb128 0xe
- 855 0023 3A       		.uleb128 0x3a
- 856 0024 0B       		.uleb128 0xb
- 857 0025 3B       		.uleb128 0x3b
- 858 0026 0B       		.uleb128 0xb
- 859 0027 49       		.uleb128 0x49
- 860 0028 13       		.uleb128 0x13
- 861 0029 00       		.byte	0
- 862 002a 00       		.byte	0
- 863 002b 04       		.uleb128 0x4
- 864 002c 24       		.uleb128 0x24
- 865 002d 00       		.byte	0
- 866 002e 0B       		.uleb128 0xb
- 867 002f 0B       		.uleb128 0xb
- 868 0030 3E       		.uleb128 0x3e
- 869 0031 0B       		.uleb128 0xb
- 870 0032 03       		.uleb128 0x3
- 871 0033 08       		.uleb128 0x8
- 872 0034 00       		.byte	0
- 873 0035 00       		.byte	0
- 874 0036 05       		.uleb128 0x5
- 875 0037 35       		.uleb128 0x35
- 876 0038 00       		.byte	0
- 877 0039 49       		.uleb128 0x49
- 878 003a 13       		.uleb128 0x13
- 879 003b 00       		.byte	0
- 880 003c 00       		.byte	0
- 881 003d 06       		.uleb128 0x6
- 882 003e 0F       		.uleb128 0xf
- 883 003f 00       		.byte	0
- 884 0040 0B       		.uleb128 0xb
- 885 0041 0B       		.uleb128 0xb
- 886 0042 00       		.byte	0
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 20
+ 236:.\main.c      ****                     break;
+ 520              		.loc 1 236 0
+ 521 027a 61E2     		b	.L11
+ 522              	.L33:
+ 237:.\main.c      ****                 } else if (within_range(57, ir_result, 60)){
+ 523              		.loc 1 237 0
+ 524 027c 7B88     		ldrh	r3, [r7, #2]
+ 525 027e 3920     		movs	r0, #57
+ 526 0280 1946     		mov	r1, r3
+ 527 0282 3C22     		movs	r2, #60
+ 528 0284 FFF7FEFF 		bl	within_range
+ 529 0288 0346     		mov	r3, r0
+ 530 028a 002B     		cmp	r3, #0
+ 531 028c 02D0     		beq	.L34
+ 238:.\main.c      ****                     state = S_GOING_HOME_CENTER_IR;
+ 532              		.loc 1 238 0
+ 533 028e 0923     		movs	r3, #9
+ 534 0290 FB83     		strh	r3, [r7, #30]	@ movhi
+ 239:.\main.c      ****                     break;
+ 535              		.loc 1 239 0
+ 536 0292 55E2     		b	.L11
+ 537              	.L34:
+ 240:.\main.c      ****                 } else if (within_range(80, ir_result, 100)){
+ 538              		.loc 1 240 0
+ 539 0294 7B88     		ldrh	r3, [r7, #2]
+ 540 0296 5020     		movs	r0, #80
+ 541 0298 1946     		mov	r1, r3
+ 542 029a 6422     		movs	r2, #100
+ 543 029c FFF7FEFF 		bl	within_range
+ 544 02a0 0346     		mov	r3, r0
+ 545 02a2 002B     		cmp	r3, #0
+ 546 02a4 02D0     		beq	.L35
+ 241:.\main.c      ****                     state = S_GOING_HOME_LEFT_IR;
+ 547              		.loc 1 241 0
+ 548 02a6 0A23     		movs	r3, #10
+ 549 02a8 FB83     		strh	r3, [r7, #30]	@ movhi
+ 242:.\main.c      ****                     break;
+ 550              		.loc 1 242 0
+ 551 02aa 49E2     		b	.L11
+ 552              	.L35:
+ 243:.\main.c      ****                 } else if (within_range(25, ir_result,30)){
+ 553              		.loc 1 243 0
+ 554 02ac 7B88     		ldrh	r3, [r7, #2]
+ 555 02ae 1920     		movs	r0, #25
+ 556 02b0 1946     		mov	r1, r3
+ 557 02b2 1E22     		movs	r2, #30
+ 558 02b4 FFF7FEFF 		bl	within_range
+ 559 02b8 0346     		mov	r3, r0
+ 560 02ba 002B     		cmp	r3, #0
+ 561 02bc 02D0     		beq	.L36
+ 244:.\main.c      ****                     state = S_GOING_HOME_RIGHT_IR;
+ 562              		.loc 1 244 0
+ 563 02be 0B23     		movs	r3, #11
+ 564 02c0 FB83     		strh	r3, [r7, #30]	@ movhi
+ 245:.\main.c      ****                     break;
+ 565              		.loc 1 245 0
+ 566 02c2 3DE2     		b	.L11
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 20
 
 
- 887 0043 00       		.byte	0
- 888 0044 07       		.uleb128 0x7
- 889 0045 0F       		.uleb128 0xf
- 890 0046 00       		.byte	0
- 891 0047 0B       		.uleb128 0xb
- 892 0048 0B       		.uleb128 0xb
- 893 0049 49       		.uleb128 0x49
- 894 004a 13       		.uleb128 0x13
- 895 004b 00       		.byte	0
- 896 004c 00       		.byte	0
- 897 004d 08       		.uleb128 0x8
- 898 004e 26       		.uleb128 0x26
- 899 004f 00       		.byte	0
- 900 0050 49       		.uleb128 0x49
- 901 0051 13       		.uleb128 0x13
- 902 0052 00       		.byte	0
- 903 0053 00       		.byte	0
- 904 0054 09       		.uleb128 0x9
- 905 0055 13       		.uleb128 0x13
- 906 0056 01       		.byte	0x1
- 907 0057 03       		.uleb128 0x3
- 908 0058 0E       		.uleb128 0xe
- 909 0059 0B       		.uleb128 0xb
- 910 005a 0B       		.uleb128 0xb
- 911 005b 3A       		.uleb128 0x3a
- 912 005c 0B       		.uleb128 0xb
- 913 005d 3B       		.uleb128 0x3b
- 914 005e 0B       		.uleb128 0xb
- 915 005f 01       		.uleb128 0x1
- 916 0060 13       		.uleb128 0x13
- 917 0061 00       		.byte	0
- 918 0062 00       		.byte	0
- 919 0063 0A       		.uleb128 0xa
- 920 0064 0D       		.uleb128 0xd
- 921 0065 00       		.byte	0
- 922 0066 03       		.uleb128 0x3
- 923 0067 0E       		.uleb128 0xe
- 924 0068 49       		.uleb128 0x49
- 925 0069 13       		.uleb128 0x13
- 926 006a 38       		.uleb128 0x38
- 927 006b 0B       		.uleb128 0xb
- 928 006c 34       		.uleb128 0x34
- 929 006d 19       		.uleb128 0x19
- 930 006e 00       		.byte	0
- 931 006f 00       		.byte	0
- 932 0070 0B       		.uleb128 0xb
- 933 0071 2E       		.uleb128 0x2e
- 934 0072 01       		.byte	0x1
- 935 0073 3F       		.uleb128 0x3f
- 936 0074 19       		.uleb128 0x19
- 937 0075 03       		.uleb128 0x3
- 938 0076 0E       		.uleb128 0xe
- 939 0077 3A       		.uleb128 0x3a
- 940 0078 0B       		.uleb128 0xb
- 941 0079 3B       		.uleb128 0x3b
- 942 007a 0B       		.uleb128 0xb
- 943 007b 27       		.uleb128 0x27
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 21
+ 567              	.L36:
+ 247:.\main.c      ****                     POS_PRINTF(0,0,"!!! %d !!!", ir_result);
+ 568              		.loc 1 247 0
+ 569 02c4 7B88     		ldrh	r3, [r7, #2]
+ 570 02c6 1D48     		ldr	r0, .L64+12
+ 571 02c8 1F49     		ldr	r1, .L64+24
+ 572 02ca 1A46     		mov	r2, r3
+ 573 02cc FFF7FEFF 		bl	sprintf
+ 574 02d0 0020     		movs	r0, #0
+ 575 02d2 0021     		movs	r1, #0
+ 576 02d4 FFF7FEFF 		bl	LCD_Position
+ 577 02d8 1848     		ldr	r0, .L64+12
+ 578 02da FFF7FEFF 		bl	LCD_PrintString
+ 248:.\main.c      ****                     go_forward(500,255);
+ 579              		.loc 1 248 0
+ 580 02de 4FF4FA70 		mov	r0, #500
+ 581 02e2 FF21     		movs	r1, #255
+ 582 02e4 FFF7FEFF 		bl	go_forward
+ 250:.\main.c      ****                 break;
+ 583              		.loc 1 250 0
+ 584 02e8 2AE2     		b	.L11
+ 585              	.L21:
+ 252:.\main.c      ****                 POS_PRINTF(0,0,"CENTER IR GO HOME");
+ 586              		.loc 1 252 0
+ 587 02ea 144A     		ldr	r2, .L64+12
+ 588 02ec 174B     		ldr	r3, .L64+28
+ 589 02ee 1446     		mov	r4, r2
+ 590 02f0 1D46     		mov	r5, r3
+ 591 02f2 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+ 592 02f4 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ 593 02f6 2B68     		ldr	r3, [r5]
+ 594 02f8 2380     		strh	r3, [r4]	@ movhi
+ 595 02fa 0020     		movs	r0, #0
+ 596 02fc 0021     		movs	r1, #0
+ 597 02fe FFF7FEFF 		bl	LCD_Position
+ 598 0302 0E48     		ldr	r0, .L64+12
+ 599 0304 FFF7FEFF 		bl	LCD_PrintString
+ 254:.\main.c      ****                 while (get_mean_ultra() > near_base){
+ 600              		.loc 1 254 0
+ 601 0308 08E0     		b	.L37
+ 602              	.L38:
+ 255:.\main.c      ****                     go_forward(600, 255);
+ 603              		.loc 1 255 0
+ 604 030a 4FF41670 		mov	r0, #600
+ 605 030e FF21     		movs	r1, #255
+ 606 0310 FFF7FEFF 		bl	go_forward
+ 256:.\main.c      ****                     CyDelay(600);
+ 607              		.loc 1 256 0
+ 608 0314 4FF41670 		mov	r0, #600
+ 609 0318 FFF7FEFF 		bl	CyDelay
+ 610              	.L37:
+ 254:.\main.c      ****                 while (get_mean_ultra() > near_base){
+ 611              		.loc 1 254 0 discriminator 1
+ 612 031c FFF7FEFF 		bl	get_mean_ultra
+ 613 0320 0346     		mov	r3, r0
+ 614 0322 1A46     		mov	r2, r3
+ 615 0324 7B68     		ldr	r3, [r7, #4]
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 21
 
 
- 944 007c 19       		.uleb128 0x19
- 945 007d 11       		.uleb128 0x11
- 946 007e 01       		.uleb128 0x1
- 947 007f 12       		.uleb128 0x12
- 948 0080 06       		.uleb128 0x6
- 949 0081 40       		.uleb128 0x40
- 950 0082 18       		.uleb128 0x18
- 951 0083 9642     		.uleb128 0x2116
- 952 0085 19       		.uleb128 0x19
- 953 0086 01       		.uleb128 0x1
- 954 0087 13       		.uleb128 0x13
- 955 0088 00       		.byte	0
- 956 0089 00       		.byte	0
- 957 008a 0C       		.uleb128 0xc
- 958 008b 05       		.uleb128 0x5
- 959 008c 00       		.byte	0
- 960 008d 03       		.uleb128 0x3
- 961 008e 08       		.uleb128 0x8
- 962 008f 3A       		.uleb128 0x3a
- 963 0090 0B       		.uleb128 0xb
- 964 0091 3B       		.uleb128 0x3b
- 965 0092 0B       		.uleb128 0xb
- 966 0093 49       		.uleb128 0x49
- 967 0094 13       		.uleb128 0x13
- 968 0095 02       		.uleb128 0x2
- 969 0096 18       		.uleb128 0x18
- 970 0097 00       		.byte	0
- 971 0098 00       		.byte	0
- 972 0099 0D       		.uleb128 0xd
- 973 009a 18       		.uleb128 0x18
- 974 009b 00       		.byte	0
- 975 009c 00       		.byte	0
- 976 009d 00       		.byte	0
- 977 009e 0E       		.uleb128 0xe
- 978 009f 34       		.uleb128 0x34
- 979 00a0 00       		.byte	0
- 980 00a1 03       		.uleb128 0x3
- 981 00a2 0E       		.uleb128 0xe
- 982 00a3 3A       		.uleb128 0x3a
- 983 00a4 0B       		.uleb128 0xb
- 984 00a5 3B       		.uleb128 0x3b
- 985 00a6 0B       		.uleb128 0xb
- 986 00a7 49       		.uleb128 0x49
- 987 00a8 13       		.uleb128 0x13
- 988 00a9 02       		.uleb128 0x2
- 989 00aa 18       		.uleb128 0x18
- 990 00ab 00       		.byte	0
- 991 00ac 00       		.byte	0
- 992 00ad 0F       		.uleb128 0xf
- 993 00ae 01       		.uleb128 0x1
- 994 00af 01       		.byte	0x1
- 995 00b0 49       		.uleb128 0x49
- 996 00b1 13       		.uleb128 0x13
- 997 00b2 01       		.uleb128 0x1
- 998 00b3 13       		.uleb128 0x13
- 999 00b4 00       		.byte	0
- 1000 00b5 00       		.byte	0
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 22
+ 616 0326 9A42     		cmp	r2, r3
+ 617 0328 EFDC     		bgt	.L38
+ 258:.\main.c      ****                 state = S_NEAR_HOME_FIND_100;
+ 618              		.loc 1 258 0
+ 619 032a 0C23     		movs	r3, #12
+ 620 032c FB83     		strh	r3, [r7, #30]	@ movhi
+ 259:.\main.c      ****                 break;
+ 621              		.loc 1 259 0
+ 622 032e 07E2     		b	.L11
+ 623              	.L65:
+ 624              		.align	2
+ 625              	.L64:
+ 626 0330 00000000 		.word	compass_ready
+ 627 0334 00000000 		.word	compass_heading
+ 628 0338 00000000 		.word	original_compass_heading
+ 629 033c 00000000 		.word	outString
+ 630 0340 00000000 		.word	.LC0
+ 631 0344 14000000 		.word	.LC1
+ 632 0348 24000000 		.word	.LC2
+ 633 034c 30000000 		.word	.LC3
+ 634              	.L20:
+ 261:.\main.c      ****                 POS_PRINTF(0,0,"INVALID IR GO HOME");
+ 635              		.loc 1 261 0
+ 636 0350 B74A     		ldr	r2, .L66
+ 637 0352 B84B     		ldr	r3, .L66+4
+ 638 0354 1446     		mov	r4, r2
+ 639 0356 1D46     		mov	r5, r3
+ 640 0358 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+ 641 035a 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ 642 035c 2B68     		ldr	r3, [r5]
+ 643 035e 1A46     		mov	r2, r3	@ movhi
+ 644 0360 2280     		strh	r2, [r4]	@ movhi
+ 645 0362 0234     		adds	r4, r4, #2
+ 646 0364 1B0C     		lsrs	r3, r3, #16
+ 647 0366 2370     		strb	r3, [r4]
+ 648 0368 0020     		movs	r0, #0
+ 649 036a 0021     		movs	r1, #0
+ 650 036c FFF7FEFF 		bl	LCD_Position
+ 651 0370 AF48     		ldr	r0, .L66
+ 652 0372 FFF7FEFF 		bl	LCD_PrintString
+ 263:.\main.c      ****                 while (get_mean_ultra() > near_base){
+ 653              		.loc 1 263 0
+ 654 0376 08E0     		b	.L39
+ 655              	.L40:
+ 264:.\main.c      ****                     go_forward(500, 255);
+ 656              		.loc 1 264 0
+ 657 0378 4FF4FA70 		mov	r0, #500
+ 658 037c FF21     		movs	r1, #255
+ 659 037e FFF7FEFF 		bl	go_forward
+ 265:.\main.c      ****                     CyDelay(600);
+ 660              		.loc 1 265 0
+ 661 0382 4FF41670 		mov	r0, #600
+ 662 0386 FFF7FEFF 		bl	CyDelay
+ 663              	.L39:
+ 263:.\main.c      ****                 while (get_mean_ultra() > near_base){
+ 664              		.loc 1 263 0 discriminator 1
+ 665 038a FFF7FEFF 		bl	get_mean_ultra
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 22
 
 
- 1001 00b6 10       		.uleb128 0x10
- 1002 00b7 21       		.uleb128 0x21
- 1003 00b8 00       		.byte	0
- 1004 00b9 49       		.uleb128 0x49
- 1005 00ba 13       		.uleb128 0x13
- 1006 00bb 2F       		.uleb128 0x2f
- 1007 00bc 0B       		.uleb128 0xb
- 1008 00bd 00       		.byte	0
- 1009 00be 00       		.byte	0
- 1010 00bf 11       		.uleb128 0x11
- 1011 00c0 2E       		.uleb128 0x2e
- 1012 00c1 01       		.byte	0x1
- 1013 00c2 3F       		.uleb128 0x3f
- 1014 00c3 19       		.uleb128 0x19
- 1015 00c4 03       		.uleb128 0x3
- 1016 00c5 0E       		.uleb128 0xe
- 1017 00c6 3A       		.uleb128 0x3a
- 1018 00c7 0B       		.uleb128 0xb
- 1019 00c8 3B       		.uleb128 0x3b
- 1020 00c9 0B       		.uleb128 0xb
- 1021 00ca 27       		.uleb128 0x27
- 1022 00cb 19       		.uleb128 0x19
- 1023 00cc 49       		.uleb128 0x49
- 1024 00cd 13       		.uleb128 0x13
- 1025 00ce 11       		.uleb128 0x11
- 1026 00cf 01       		.uleb128 0x1
- 1027 00d0 12       		.uleb128 0x12
- 1028 00d1 06       		.uleb128 0x6
- 1029 00d2 40       		.uleb128 0x40
- 1030 00d3 18       		.uleb128 0x18
- 1031 00d4 9742     		.uleb128 0x2117
- 1032 00d6 19       		.uleb128 0x19
- 1033 00d7 01       		.uleb128 0x1
- 1034 00d8 13       		.uleb128 0x13
- 1035 00d9 00       		.byte	0
- 1036 00da 00       		.byte	0
- 1037 00db 12       		.uleb128 0x12
- 1038 00dc 05       		.uleb128 0x5
- 1039 00dd 00       		.byte	0
- 1040 00de 03       		.uleb128 0x3
- 1041 00df 0E       		.uleb128 0xe
- 1042 00e0 3A       		.uleb128 0x3a
- 1043 00e1 0B       		.uleb128 0xb
- 1044 00e2 3B       		.uleb128 0x3b
- 1045 00e3 0B       		.uleb128 0xb
- 1046 00e4 49       		.uleb128 0x49
- 1047 00e5 13       		.uleb128 0x13
- 1048 00e6 02       		.uleb128 0x2
- 1049 00e7 18       		.uleb128 0x18
- 1050 00e8 00       		.byte	0
- 1051 00e9 00       		.byte	0
- 1052 00ea 13       		.uleb128 0x13
- 1053 00eb 2E       		.uleb128 0x2e
- 1054 00ec 01       		.byte	0x1
- 1055 00ed 3F       		.uleb128 0x3f
- 1056 00ee 19       		.uleb128 0x19
- 1057 00ef 03       		.uleb128 0x3
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 23
+ 666 038e 0346     		mov	r3, r0
+ 667 0390 1A46     		mov	r2, r3
+ 668 0392 7B68     		ldr	r3, [r7, #4]
+ 669 0394 9A42     		cmp	r2, r3
+ 670 0396 EFDC     		bgt	.L40
+ 267:.\main.c      ****                 state = S_NEAR_HOME_FIND_100;
+ 671              		.loc 1 267 0
+ 672 0398 0C23     		movs	r3, #12
+ 673 039a FB83     		strh	r3, [r7, #30]	@ movhi
+ 268:.\main.c      ****                 break;
+ 674              		.loc 1 268 0
+ 675 039c D0E1     		b	.L11
+ 676              	.L22:
+ 270:.\main.c      ****                 set_heading(90);
+ 677              		.loc 1 270 0
+ 678 039e 5A20     		movs	r0, #90
+ 679 03a0 FFF7FEFF 		bl	set_heading
+ 271:.\main.c      ****                 rotate_degrees(0);
+ 680              		.loc 1 271 0
+ 681 03a4 0020     		movs	r0, #0
+ 682 03a6 FFF7FEFF 		bl	rotate_degrees
+ 272:.\main.c      ****                 go_forward(1000, 255);
+ 683              		.loc 1 272 0
+ 684 03aa 4FF47A70 		mov	r0, #1000
+ 685 03ae FF21     		movs	r1, #255
+ 686 03b0 FFF7FEFF 		bl	go_forward
+ 273:.\main.c      ****                 set_heading(0);
+ 687              		.loc 1 273 0
+ 688 03b4 0020     		movs	r0, #0
+ 689 03b6 FFF7FEFF 		bl	set_heading
+ 274:.\main.c      ****                 rotate_degrees(0);
+ 690              		.loc 1 274 0
+ 691 03ba 0020     		movs	r0, #0
+ 692 03bc FFF7FEFF 		bl	rotate_degrees
+ 275:.\main.c      ****                 select_right();
+ 693              		.loc 1 275 0
+ 694 03c0 FFF7FEFF 		bl	select_right
+ 276:.\main.c      ****                 ir_result = get_ir_val();
+ 695              		.loc 1 276 0
+ 696 03c4 FFF7FEFF 		bl	get_ir_val
+ 697 03c8 0346     		mov	r3, r0
+ 698 03ca 7B80     		strh	r3, [r7, #2]	@ movhi
+ 278:.\main.c      ****                 while (get_mean_ultra() > near_base){
+ 699              		.loc 1 278 0
+ 700 03cc 08E0     		b	.L41
+ 701              	.L42:
+ 279:.\main.c      ****                     go_forward(500, 255);
+ 702              		.loc 1 279 0
+ 703 03ce 4FF4FA70 		mov	r0, #500
+ 704 03d2 FF21     		movs	r1, #255
+ 705 03d4 FFF7FEFF 		bl	go_forward
+ 280:.\main.c      ****                     CyDelay(600);
+ 706              		.loc 1 280 0
+ 707 03d8 4FF41670 		mov	r0, #600
+ 708 03dc FFF7FEFF 		bl	CyDelay
+ 709              	.L41:
+ 278:.\main.c      ****                 while (get_mean_ultra() > near_base){
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 23
 
 
- 1058 00f0 0E       		.uleb128 0xe
- 1059 00f1 3A       		.uleb128 0x3a
- 1060 00f2 0B       		.uleb128 0xb
- 1061 00f3 3B       		.uleb128 0x3b
- 1062 00f4 0B       		.uleb128 0xb
- 1063 00f5 49       		.uleb128 0x49
- 1064 00f6 13       		.uleb128 0x13
- 1065 00f7 11       		.uleb128 0x11
- 1066 00f8 01       		.uleb128 0x1
- 1067 00f9 12       		.uleb128 0x12
- 1068 00fa 06       		.uleb128 0x6
- 1069 00fb 40       		.uleb128 0x40
- 1070 00fc 18       		.uleb128 0x18
- 1071 00fd 9642     		.uleb128 0x2116
- 1072 00ff 19       		.uleb128 0x19
- 1073 0100 01       		.uleb128 0x1
- 1074 0101 13       		.uleb128 0x13
- 1075 0102 00       		.byte	0
- 1076 0103 00       		.byte	0
- 1077 0104 14       		.uleb128 0x14
- 1078 0105 0B       		.uleb128 0xb
- 1079 0106 01       		.byte	0x1
- 1080 0107 11       		.uleb128 0x11
- 1081 0108 01       		.uleb128 0x1
- 1082 0109 12       		.uleb128 0x12
- 1083 010a 06       		.uleb128 0x6
- 1084 010b 00       		.byte	0
- 1085 010c 00       		.byte	0
- 1086 010d 15       		.uleb128 0x15
- 1087 010e 34       		.uleb128 0x34
- 1088 010f 00       		.byte	0
- 1089 0110 03       		.uleb128 0x3
- 1090 0111 08       		.uleb128 0x8
- 1091 0112 3A       		.uleb128 0x3a
- 1092 0113 0B       		.uleb128 0xb
- 1093 0114 3B       		.uleb128 0x3b
- 1094 0115 0B       		.uleb128 0xb
- 1095 0116 49       		.uleb128 0x49
- 1096 0117 13       		.uleb128 0x13
- 1097 0118 02       		.uleb128 0x2
- 1098 0119 18       		.uleb128 0x18
- 1099 011a 00       		.byte	0
- 1100 011b 00       		.byte	0
- 1101 011c 16       		.uleb128 0x16
- 1102 011d 34       		.uleb128 0x34
- 1103 011e 00       		.byte	0
- 1104 011f 03       		.uleb128 0x3
- 1105 0120 0E       		.uleb128 0xe
- 1106 0121 3A       		.uleb128 0x3a
- 1107 0122 0B       		.uleb128 0xb
- 1108 0123 3B       		.uleb128 0x3b
- 1109 0124 05       		.uleb128 0x5
- 1110 0125 49       		.uleb128 0x49
- 1111 0126 13       		.uleb128 0x13
- 1112 0127 3F       		.uleb128 0x3f
- 1113 0128 19       		.uleb128 0x19
- 1114 0129 3C       		.uleb128 0x3c
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 24
+ 710              		.loc 1 278 0 discriminator 1
+ 711 03e0 FFF7FEFF 		bl	get_mean_ultra
+ 712 03e4 0346     		mov	r3, r0
+ 713 03e6 1A46     		mov	r2, r3
+ 714 03e8 7B68     		ldr	r3, [r7, #4]
+ 715 03ea 9A42     		cmp	r2, r3
+ 716 03ec EFDC     		bgt	.L42
+ 282:.\main.c      ****                 state = S_NEAR_HOME_FIND_100;
+ 717              		.loc 1 282 0
+ 718 03ee 0C23     		movs	r3, #12
+ 719 03f0 FB83     		strh	r3, [r7, #30]	@ movhi
+ 283:.\main.c      ****                 break;
+ 720              		.loc 1 283 0
+ 721 03f2 A5E1     		b	.L11
+ 722              	.L23:
+ 285:.\main.c      ****                 set_heading(270);
+ 723              		.loc 1 285 0
+ 724 03f4 4FF48770 		mov	r0, #270
+ 725 03f8 FFF7FEFF 		bl	set_heading
+ 286:.\main.c      ****                 rotate_degrees(0);
+ 726              		.loc 1 286 0
+ 727 03fc 0020     		movs	r0, #0
+ 728 03fe FFF7FEFF 		bl	rotate_degrees
+ 287:.\main.c      ****                 go_forward(1000, 255);
+ 729              		.loc 1 287 0
+ 730 0402 4FF47A70 		mov	r0, #1000
+ 731 0406 FF21     		movs	r1, #255
+ 732 0408 FFF7FEFF 		bl	go_forward
+ 288:.\main.c      ****                 set_heading(0);
+ 733              		.loc 1 288 0
+ 734 040c 0020     		movs	r0, #0
+ 735 040e FFF7FEFF 		bl	set_heading
+ 289:.\main.c      ****                 rotate_degrees(0);
+ 736              		.loc 1 289 0
+ 737 0412 0020     		movs	r0, #0
+ 738 0414 FFF7FEFF 		bl	rotate_degrees
+ 290:.\main.c      ****                 select_right();
+ 739              		.loc 1 290 0
+ 740 0418 FFF7FEFF 		bl	select_right
+ 291:.\main.c      ****                 ir_result = get_ir_val();
+ 741              		.loc 1 291 0
+ 742 041c FFF7FEFF 		bl	get_ir_val
+ 743 0420 0346     		mov	r3, r0
+ 744 0422 7B80     		strh	r3, [r7, #2]	@ movhi
+ 293:.\main.c      ****                 while (get_mean_ultra() > near_base){
+ 745              		.loc 1 293 0
+ 746 0424 08E0     		b	.L43
+ 747              	.L44:
+ 294:.\main.c      ****                     go_forward(600, 255);
+ 748              		.loc 1 294 0
+ 749 0426 4FF41670 		mov	r0, #600
+ 750 042a FF21     		movs	r1, #255
+ 751 042c FFF7FEFF 		bl	go_forward
+ 295:.\main.c      ****                     CyDelay(600);
+ 752              		.loc 1 295 0
+ 753 0430 4FF41670 		mov	r0, #600
+ 754 0434 FFF7FEFF 		bl	CyDelay
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 24
 
 
- 1115 012a 19       		.uleb128 0x19
- 1116 012b 00       		.byte	0
- 1117 012c 00       		.byte	0
- 1118 012d 17       		.uleb128 0x17
- 1119 012e 34       		.uleb128 0x34
- 1120 012f 00       		.byte	0
- 1121 0130 03       		.uleb128 0x3
- 1122 0131 0E       		.uleb128 0xe
- 1123 0132 3A       		.uleb128 0x3a
- 1124 0133 0B       		.uleb128 0xb
- 1125 0134 3B       		.uleb128 0x3b
- 1126 0135 0B       		.uleb128 0xb
- 1127 0136 49       		.uleb128 0x49
- 1128 0137 13       		.uleb128 0x13
- 1129 0138 3F       		.uleb128 0x3f
- 1130 0139 19       		.uleb128 0x19
- 1131 013a 02       		.uleb128 0x2
- 1132 013b 18       		.uleb128 0x18
- 1133 013c 00       		.byte	0
- 1134 013d 00       		.byte	0
- 1135 013e 18       		.uleb128 0x18
- 1136 013f 34       		.uleb128 0x34
- 1137 0140 00       		.byte	0
- 1138 0141 03       		.uleb128 0x3
- 1139 0142 0E       		.uleb128 0xe
- 1140 0143 3A       		.uleb128 0x3a
- 1141 0144 0B       		.uleb128 0xb
- 1142 0145 3B       		.uleb128 0x3b
- 1143 0146 0B       		.uleb128 0xb
- 1144 0147 49       		.uleb128 0x49
- 1145 0148 13       		.uleb128 0x13
- 1146 0149 3F       		.uleb128 0x3f
- 1147 014a 19       		.uleb128 0x19
- 1148 014b 3C       		.uleb128 0x3c
- 1149 014c 19       		.uleb128 0x19
- 1150 014d 00       		.byte	0
- 1151 014e 00       		.byte	0
- 1152 014f 00       		.byte	0
- 1153              		.section	.debug_aranges,"",%progbits
- 1154 0000 2C000000 		.4byte	0x2c
- 1155 0004 0200     		.2byte	0x2
- 1156 0006 00000000 		.4byte	.Ldebug_info0
- 1157 000a 04       		.byte	0x4
- 1158 000b 00       		.byte	0
- 1159 000c 0000     		.2byte	0
- 1160 000e 0000     		.2byte	0
- 1161 0010 00000000 		.4byte	.LFB63
- 1162 0014 4A000000 		.4byte	.LFE63-.LFB63
- 1163 0018 00000000 		.4byte	.LFB64
- 1164 001c 2E000000 		.4byte	.LFE64-.LFB64
- 1165 0020 00000000 		.4byte	.LFB65
- 1166 0024 38020000 		.4byte	.LFE65-.LFB65
- 1167 0028 00000000 		.4byte	0
- 1168 002c 00000000 		.4byte	0
- 1169              		.section	.debug_ranges,"",%progbits
- 1170              	.Ldebug_ranges0:
- 1171 0000 00000000 		.4byte	.LFB63
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 25
+ 755              	.L43:
+ 293:.\main.c      ****                 while (get_mean_ultra() > near_base){
+ 756              		.loc 1 293 0 discriminator 1
+ 757 0438 FFF7FEFF 		bl	get_mean_ultra
+ 758 043c 0346     		mov	r3, r0
+ 759 043e 1A46     		mov	r2, r3
+ 760 0440 7B68     		ldr	r3, [r7, #4]
+ 761 0442 9A42     		cmp	r2, r3
+ 762 0444 EFDC     		bgt	.L44
+ 297:.\main.c      ****                 state = S_NEAR_HOME_FIND_100;
+ 763              		.loc 1 297 0
+ 764 0446 0C23     		movs	r3, #12
+ 765 0448 FB83     		strh	r3, [r7, #30]	@ movhi
+ 298:.\main.c      ****                 break;
+ 766              		.loc 1 298 0
+ 767 044a 79E1     		b	.L11
+ 768              	.L24:
+ 300:.\main.c      ****                 POS_PRINTF(0,0,"NEAR HOME FIND 100");
+ 769              		.loc 1 300 0
+ 770 044c 784A     		ldr	r2, .L66
+ 771 044e 7A4B     		ldr	r3, .L66+8
+ 772 0450 1446     		mov	r4, r2
+ 773 0452 1D46     		mov	r5, r3
+ 774 0454 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+ 775 0456 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ 776 0458 2B68     		ldr	r3, [r5]
+ 777 045a 1A46     		mov	r2, r3	@ movhi
+ 778 045c 2280     		strh	r2, [r4]	@ movhi
+ 779 045e 0234     		adds	r4, r4, #2
+ 780 0460 1B0C     		lsrs	r3, r3, #16
+ 781 0462 2370     		strb	r3, [r4]
+ 782 0464 0020     		movs	r0, #0
+ 783 0466 0021     		movs	r1, #0
+ 784 0468 FFF7FEFF 		bl	LCD_Position
+ 785 046c 7048     		ldr	r0, .L66
+ 786 046e FFF7FEFF 		bl	LCD_PrintString
+ 302:.\main.c      ****                 set_heading(270);
+ 787              		.loc 1 302 0
+ 788 0472 4FF48770 		mov	r0, #270
+ 789 0476 FFF7FEFF 		bl	set_heading
+ 303:.\main.c      ****                 rotate_degrees(0);
+ 790              		.loc 1 303 0
+ 791 047a 0020     		movs	r0, #0
+ 792 047c FFF7FEFF 		bl	rotate_degrees
+ 304:.\main.c      ****                 CyDelay(1000);
+ 793              		.loc 1 304 0
+ 794 0480 4FF47A70 		mov	r0, #1000
+ 795 0484 FFF7FEFF 		bl	CyDelay
+ 305:.\main.c      ****                 select_right();
+ 796              		.loc 1 305 0
+ 797 0488 FFF7FEFF 		bl	select_right
+ 306:.\main.c      ****                 ir_result = get_ir_val();
+ 798              		.loc 1 306 0
+ 799 048c FFF7FEFF 		bl	get_ir_val
+ 800 0490 0346     		mov	r3, r0
+ 801 0492 7B80     		strh	r3, [r7, #2]	@ movhi
+ 307:.\main.c      ****                 POS_PRINTF(1,0,"ir:%d", ir_result);
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 25
 
 
- 1172 0004 4A000000 		.4byte	.LFE63
- 1173 0008 00000000 		.4byte	.LFB64
- 1174 000c 2E000000 		.4byte	.LFE64
- 1175 0010 00000000 		.4byte	.LFB65
- 1176 0014 38020000 		.4byte	.LFE65
- 1177 0018 00000000 		.4byte	0
- 1178 001c 00000000 		.4byte	0
- 1179              		.section	.debug_line,"",%progbits
- 1180              	.Ldebug_line0:
- 1181 0000 AC020000 		.section	.debug_str,"MS",%progbits,1
- 1181      02000002 
- 1181      00000201 
- 1181      FB0E0D00 
- 1181      01010101 
- 1182              	.LASF30:
- 1183 0000 6D65616E 		.ascii	"mean\000"
- 1183      00
- 1184              	.LASF29:
- 1185 0005 73746174 		.ascii	"state\000"
- 1185      6500
- 1186              	.LASF24:
- 1187 000b 75707065 		.ascii	"upper\000"
- 1187      7200
- 1188              	.LASF9:
- 1189 0011 5F5F696E 		.ascii	"__int32_t\000"
- 1189      7433325F 
- 1189      7400
- 1190              	.LASF33:
- 1191 001b 73746163 		.ascii	"stack\000"
- 1191      6B00
- 1192              	.LASF32:
- 1193 0021 43616D65 		.ascii	"Camera_framebuffer\000"
- 1193      72615F66 
- 1193      72616D65 
- 1193      62756666 
- 1193      657200
- 1194              	.LASF23:
- 1195 0034 6C6F7765 		.ascii	"lower\000"
- 1195      7200
- 1196              	.LASF37:
- 1197 003a 756C7472 		.ascii	"ultra_distance\000"
- 1197      615F6469 
- 1197      7374616E 
- 1197      636500
- 1198              	.LASF14:
- 1199 0049 666C6F61 		.ascii	"float\000"
- 1199      7400
- 1200              	.LASF35:
- 1201 004f 636F6D70 		.ascii	"compass_ready\000"
- 1201      6173735F 
- 1201      72656164 
- 1201      7900
- 1202              	.LASF18:
- 1203 005d 5F5F676E 		.ascii	"__gnuc_va_list\000"
- 1203      75635F76 
- 1203      615F6C69 
- 1203      737400
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 26
+ 802              		.loc 1 307 0
+ 803 0494 7B88     		ldrh	r3, [r7, #2]
+ 804 0496 6648     		ldr	r0, .L66
+ 805 0498 6849     		ldr	r1, .L66+12
+ 806 049a 1A46     		mov	r2, r3
+ 807 049c FFF7FEFF 		bl	sprintf
+ 808 04a0 0120     		movs	r0, #1
+ 809 04a2 0021     		movs	r1, #0
+ 810 04a4 FFF7FEFF 		bl	LCD_Position
+ 811 04a8 6148     		ldr	r0, .L66
+ 812 04aa FFF7FEFF 		bl	LCD_PrintString
+ 310:.\main.c      ****                 if (within_range(80, ir_result, 105)){
+ 813              		.loc 1 310 0
+ 814 04ae 7B88     		ldrh	r3, [r7, #2]
+ 815 04b0 5020     		movs	r0, #80
+ 816 04b2 1946     		mov	r1, r3
+ 817 04b4 6922     		movs	r2, #105
+ 818 04b6 FFF7FEFF 		bl	within_range
+ 819 04ba 0346     		mov	r3, r0
+ 820 04bc 002B     		cmp	r3, #0
+ 821 04be 23D0     		beq	.L45
+ 822              	.LBB3:
+ 312:.\main.c      ****                     int good_val = 1;
+ 823              		.loc 1 312 0
+ 824 04c0 0123     		movs	r3, #1
+ 825 04c2 FB60     		str	r3, [r7, #12]
+ 313:.\main.c      ****                     for (i = 0; i < 3; i++){
+ 826              		.loc 1 313 0
+ 827 04c4 0023     		movs	r3, #0
+ 828 04c6 3B61     		str	r3, [r7, #16]
+ 829 04c8 14E0     		b	.L46
+ 830              	.L49:
+ 314:.\main.c      ****                         CyDelay(500);
+ 831              		.loc 1 314 0
+ 832 04ca 4FF4FA70 		mov	r0, #500
+ 833 04ce FFF7FEFF 		bl	CyDelay
+ 315:.\main.c      ****                         if (!within_range(80, get_ir_val(), 105)){
+ 834              		.loc 1 315 0
+ 835 04d2 FFF7FEFF 		bl	get_ir_val
+ 836 04d6 0346     		mov	r3, r0
+ 837 04d8 5020     		movs	r0, #80
+ 838 04da 1946     		mov	r1, r3
+ 839 04dc 6922     		movs	r2, #105
+ 840 04de FFF7FEFF 		bl	within_range
+ 841 04e2 0346     		mov	r3, r0
+ 842 04e4 002B     		cmp	r3, #0
+ 843 04e6 02D1     		bne	.L47
+ 316:.\main.c      ****                             good_val = 0;
+ 844              		.loc 1 316 0
+ 845 04e8 0023     		movs	r3, #0
+ 846 04ea FB60     		str	r3, [r7, #12]
+ 317:.\main.c      ****                             break;
+ 847              		.loc 1 317 0
+ 848 04ec 05E0     		b	.L48
+ 849              	.L47:
+ 313:.\main.c      ****                     for (i = 0; i < 3; i++){
+ 850              		.loc 1 313 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 26
 
 
- 1204              	.LASF1:
- 1205 006c 756E7369 		.ascii	"unsigned char\000"
- 1205      676E6564 
- 1205      20636861 
- 1205      7200
- 1206              	.LASF39:
- 1207 007a 2E5C6D61 		.ascii	".\\main.c\000"
- 1207      696E2E63 
- 1207      00
- 1208              	.LASF40:
- 1209 0083 433A5C55 		.ascii	"C:\\Users\\xavieran\\Desktop\\ECE3091\\PSOCProjects"
- 1209      73657273 
- 1209      5C786176 
- 1209      69657261 
- 1209      6E5C4465 
- 1210 00b1 5C454E47 		.ascii	"\\ENG3091_MandM\\camera_test.cydsn\000"
- 1210      33303931 
- 1210      5F4D616E 
- 1210      644D5C63 
- 1210      616D6572 
- 1211              	.LASF5:
- 1212 00d2 6C6F6E67 		.ascii	"long unsigned int\000"
- 1212      20756E73 
- 1212      69676E65 
- 1212      6420696E 
- 1212      7400
- 1213              	.LASF3:
- 1214 00e4 73686F72 		.ascii	"short unsigned int\000"
- 1214      7420756E 
- 1214      7369676E 
- 1214      65642069 
- 1214      6E7400
- 1215              	.LASF43:
- 1216 00f7 77697468 		.ascii	"within_range\000"
- 1216      696E5F72 
- 1216      616E6765 
- 1216      00
- 1217              	.LASF19:
- 1218 0104 76615F6C 		.ascii	"va_list\000"
- 1218      69737400 
- 1219              	.LASF15:
- 1220 010c 646F7562 		.ascii	"double\000"
- 1220      6C6500
- 1221              	.LASF26:
- 1222 0113 6D61696E 		.ascii	"main\000"
- 1222      00
- 1223              	.LASF12:
- 1224 0118 75696E74 		.ascii	"uint16\000"
- 1224      313600
- 1225              	.LASF31:
- 1226 011f 49544D5F 		.ascii	"ITM_RxBuffer\000"
- 1226      52784275 
- 1226      66666572 
- 1226      00
- 1227              	.LASF8:
- 1228 012c 756E7369 		.ascii	"unsigned int\000"
- 1228      676E6564 
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 27
+ 851 04ee 3B69     		ldr	r3, [r7, #16]
+ 852 04f0 0133     		adds	r3, r3, #1
+ 853 04f2 3B61     		str	r3, [r7, #16]
+ 854              	.L46:
+ 313:.\main.c      ****                     for (i = 0; i < 3; i++){
+ 855              		.loc 1 313 0 is_stmt 0 discriminator 1
+ 856 04f4 3B69     		ldr	r3, [r7, #16]
+ 857 04f6 022B     		cmp	r3, #2
+ 858 04f8 E7DD     		ble	.L49
+ 859              	.L48:
+ 320:.\main.c      ****                     if (good_val){
+ 860              		.loc 1 320 0 is_stmt 1
+ 861 04fa FB68     		ldr	r3, [r7, #12]
+ 862 04fc 002B     		cmp	r3, #0
+ 863 04fe 02D0     		beq	.L50
+ 321:.\main.c      ****                         state = S_NEAR_HOME_FIND_60;
+ 864              		.loc 1 321 0
+ 865 0500 0D23     		movs	r3, #13
+ 866 0502 FB83     		strh	r3, [r7, #30]	@ movhi
+ 323:.\main.c      ****                     break;
+ 867              		.loc 1 323 0
+ 868 0504 1CE1     		b	.L11
+ 869              	.L50:
+ 870 0506 1BE1     		b	.L11
+ 871              	.L45:
+ 872              	.LBE3:
+ 325:.\main.c      ****                 go_forward(300, 255);
+ 873              		.loc 1 325 0
+ 874 0508 4FF49670 		mov	r0, #300
+ 875 050c FF21     		movs	r1, #255
+ 876 050e FFF7FEFF 		bl	go_forward
+ 326:.\main.c      ****                 break;
+ 877              		.loc 1 326 0
+ 878 0512 15E1     		b	.L11
+ 879              	.L25:
+ 328:.\main.c      ****                 POS_PRINTF(0,0,"NEAR HOME FIND 60");
+ 880              		.loc 1 328 0
+ 881 0514 464A     		ldr	r2, .L66
+ 882 0516 4A4B     		ldr	r3, .L66+16
+ 883 0518 1446     		mov	r4, r2
+ 884 051a 1D46     		mov	r5, r3
+ 885 051c 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+ 886 051e 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ 887 0520 2B68     		ldr	r3, [r5]
+ 888 0522 2380     		strh	r3, [r4]	@ movhi
+ 889 0524 0020     		movs	r0, #0
+ 890 0526 0021     		movs	r1, #0
+ 891 0528 FFF7FEFF 		bl	LCD_Position
+ 892 052c 4048     		ldr	r0, .L66
+ 893 052e FFF7FEFF 		bl	LCD_PrintString
+ 330:.\main.c      ****                 CyDelay(1000);
+ 894              		.loc 1 330 0
+ 895 0532 4FF47A70 		mov	r0, #1000
+ 896 0536 FFF7FEFF 		bl	CyDelay
+ 331:.\main.c      ****                 select_right();
+ 897              		.loc 1 331 0
+ 898 053a FFF7FEFF 		bl	select_right
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 27
 
 
- 1228      20696E74 
- 1228      00
- 1229              	.LASF7:
- 1230 0139 6C6F6E67 		.ascii	"long long unsigned int\000"
- 1230      206C6F6E 
- 1230      6720756E 
- 1230      7369676E 
- 1230      65642069 
- 1231              	.LASF42:
- 1232 0150 5F5F6170 		.ascii	"__ap\000"
- 1232      00
- 1233              	.LASF13:
- 1234 0155 696E7431 		.ascii	"int16\000"
- 1234      3600
- 1235              	.LASF38:
- 1236 015b 474E5520 		.ascii	"GNU C 4.8.4 20140526 (release) [ARM/embedded-4_8-br"
- 1236      4320342E 
- 1236      382E3420 
- 1236      32303134 
- 1236      30353236 
- 1237 018e 616E6368 		.ascii	"anch revision 211358] -mcpu=cortex-m3 -mthumb -g -O"
- 1237      20726576 
- 1237      6973696F 
- 1237      6E203231 
- 1237      31333538 
- 1238 01c1 30202D66 		.ascii	"0 -ffunction-sections\000"
- 1238      66756E63 
- 1238      74696F6E 
- 1238      2D736563 
- 1238      74696F6E 
- 1239              	.LASF10:
- 1240 01d7 696E7433 		.ascii	"int32_t\000"
- 1240      325F7400 
- 1241              	.LASF17:
- 1242 01df 73697A65 		.ascii	"sizetype\000"
- 1242      74797065 
- 1242      00
- 1243              	.LASF41:
- 1244 01e8 5F5F7661 		.ascii	"__va_list\000"
- 1244      5F6C6973 
- 1244      7400
- 1245              	.LASF6:
- 1246 01f2 6C6F6E67 		.ascii	"long long int\000"
- 1246      206C6F6E 
- 1246      6720696E 
- 1246      7400
- 1247              	.LASF16:
- 1248 0200 63686172 		.ascii	"char\000"
- 1248      00
- 1249              	.LASF25:
- 1250 0205 7072696E 		.ascii	"print\000"
- 1250      7400
- 1251              	.LASF28:
- 1252 020b 69725F72 		.ascii	"ir_result\000"
- 1252      6573756C 
- 1252      7400
- 1253              	.LASF2:
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccYo1mBK.s 			page 28
+ 332:.\main.c      ****                 ir_result = get_ir_val();
+ 899              		.loc 1 332 0
+ 900 053e FFF7FEFF 		bl	get_ir_val
+ 901 0542 0346     		mov	r3, r0
+ 902 0544 7B80     		strh	r3, [r7, #2]	@ movhi
+ 333:.\main.c      ****                 POS_PRINTF(1,0,"ir%d", ir_result);
+ 903              		.loc 1 333 0
+ 904 0546 7B88     		ldrh	r3, [r7, #2]
+ 905 0548 3948     		ldr	r0, .L66
+ 906 054a 3E49     		ldr	r1, .L66+20
+ 907 054c 1A46     		mov	r2, r3
+ 908 054e FFF7FEFF 		bl	sprintf
+ 909 0552 0120     		movs	r0, #1
+ 910 0554 0021     		movs	r1, #0
+ 911 0556 FFF7FEFF 		bl	LCD_Position
+ 912 055a 3548     		ldr	r0, .L66
+ 913 055c FFF7FEFF 		bl	LCD_PrintString
+ 335:.\main.c      ****                 if (within_range(57, ir_result, 65)){
+ 914              		.loc 1 335 0
+ 915 0560 7B88     		ldrh	r3, [r7, #2]
+ 916 0562 3920     		movs	r0, #57
+ 917 0564 1946     		mov	r1, r3
+ 918 0566 4122     		movs	r2, #65
+ 919 0568 FFF7FEFF 		bl	within_range
+ 920 056c 0346     		mov	r3, r0
+ 921 056e 002B     		cmp	r3, #0
+ 922 0570 08D0     		beq	.L51
+ 336:.\main.c      ****                     set_heading(0);
+ 923              		.loc 1 336 0
+ 924 0572 0020     		movs	r0, #0
+ 925 0574 FFF7FEFF 		bl	set_heading
+ 337:.\main.c      ****                     rotate_degrees(0);
+ 926              		.loc 1 337 0
+ 927 0578 0020     		movs	r0, #0
+ 928 057a FFF7FEFF 		bl	rotate_degrees
+ 338:.\main.c      ****                     state = S_CENTERED_ON_BASE;
+ 929              		.loc 1 338 0
+ 930 057e 0E23     		movs	r3, #14
+ 931 0580 FB83     		strh	r3, [r7, #30]	@ movhi
+ 339:.\main.c      ****                     break;
+ 932              		.loc 1 339 0
+ 933 0582 DDE0     		b	.L11
+ 934              	.L51:
+ 341:.\main.c      ****                 go_backward(250, 255);
+ 935              		.loc 1 341 0
+ 936 0584 FA20     		movs	r0, #250
+ 937 0586 FF21     		movs	r1, #255
+ 938 0588 FFF7FEFF 		bl	go_backward
+ 342:.\main.c      ****                 break;
+ 939              		.loc 1 342 0
+ 940 058c D8E0     		b	.L11
+ 941              	.L26:
+ 344:.\main.c      ****                 POS_PRINTF(0,0,"CENTERED ON BASE");
+ 942              		.loc 1 344 0
+ 943 058e 284A     		ldr	r2, .L66
+ 944 0590 2D4B     		ldr	r3, .L66+24
+ 945 0592 1446     		mov	r4, r2
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 28
 
 
- 1254 0215 73686F72 		.ascii	"short int\000"
- 1254      7420696E 
- 1254      7400
- 1255              	.LASF22:
- 1256 021f 61726773 		.ascii	"args\000"
- 1256      00
- 1257              	.LASF21:
- 1258 0224 62756666 		.ascii	"buffer\000"
- 1258      657200
- 1259              	.LASF11:
- 1260 022b 75696E74 		.ascii	"uint8\000"
- 1260      3800
- 1261              	.LASF27:
- 1262 0231 6F757453 		.ascii	"outString\000"
- 1262      7472696E 
- 1262      6700
- 1263              	.LASF4:
- 1264 023b 6C6F6E67 		.ascii	"long int\000"
- 1264      20696E74 
- 1264      00
- 1265              	.LASF20:
- 1266 0244 6C6F6E67 		.ascii	"long double\000"
- 1266      20646F75 
- 1266      626C6500 
- 1267              	.LASF0:
- 1268 0250 7369676E 		.ascii	"signed char\000"
- 1268      65642063 
- 1268      68617200 
- 1269              	.LASF36:
- 1270 025c 6F726967 		.ascii	"original_compass_heading\000"
- 1270      696E616C 
- 1270      5F636F6D 
- 1270      70617373 
- 1270      5F686561 
- 1271              	.LASF34:
- 1272 0275 636F6D70 		.ascii	"compass_heading\000"
- 1272      6173735F 
- 1272      68656164 
- 1272      696E6700 
- 1273              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.8.4 20140526 (release) [ARM/embedded-4_8-br
+ 946 0594 1D46     		mov	r5, r3
+ 947 0596 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+ 948 0598 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ 949 059a 2B68     		ldr	r3, [r5]
+ 950 059c 2370     		strb	r3, [r4]
+ 951 059e 0020     		movs	r0, #0
+ 952 05a0 0021     		movs	r1, #0
+ 953 05a2 FFF7FEFF 		bl	LCD_Position
+ 954 05a6 2248     		ldr	r0, .L66
+ 955 05a8 FFF7FEFF 		bl	LCD_PrintString
+ 345:.\main.c      ****                 arm_set_level(4);
+ 956              		.loc 1 345 0
+ 957 05ac 0420     		movs	r0, #4
+ 958 05ae FFF7FEFF 		bl	arm_set_level
+ 346:.\main.c      ****                 while (get_avg_mean_ultra() > 15){
+ 959              		.loc 1 346 0
+ 960 05b2 08E0     		b	.L52
+ 961              	.L53:
+ 347:.\main.c      ****                     go_forward(300, 255);
+ 962              		.loc 1 347 0
+ 963 05b4 4FF49670 		mov	r0, #300
+ 964 05b8 FF21     		movs	r1, #255
+ 965 05ba FFF7FEFF 		bl	go_forward
+ 348:.\main.c      ****                     CyDelay(500);
+ 966              		.loc 1 348 0
+ 967 05be 4FF4FA70 		mov	r0, #500
+ 968 05c2 FFF7FEFF 		bl	CyDelay
+ 969              	.L52:
+ 346:.\main.c      ****                 while (get_avg_mean_ultra() > 15){
+ 970              		.loc 1 346 0 discriminator 1
+ 971 05c6 FFF7FEFF 		bl	get_avg_mean_ultra
+ 972 05ca 0346     		mov	r3, r0
+ 973 05cc 0F2B     		cmp	r3, #15
+ 974 05ce F1D8     		bhi	.L53
+ 350:.\main.c      ****                 if (get_avg_mean_ultra() < 14){
+ 975              		.loc 1 350 0
+ 976 05d0 FFF7FEFF 		bl	get_avg_mean_ultra
+ 977 05d4 0346     		mov	r3, r0
+ 978 05d6 0D2B     		cmp	r3, #13
+ 979 05d8 03D8     		bhi	.L54
+ 351:.\main.c      ****                     go_backward(200, 255);
+ 980              		.loc 1 351 0
+ 981 05da C820     		movs	r0, #200
+ 982 05dc FF21     		movs	r1, #255
+ 983 05de FFF7FEFF 		bl	go_backward
+ 984              	.L54:
+ 353:.\main.c      ****                 set_heading(90);
+ 985              		.loc 1 353 0
+ 986 05e2 5A20     		movs	r0, #90
+ 987 05e4 FFF7FEFF 		bl	set_heading
+ 354:.\main.c      ****                 rotate_degrees(0);
+ 988              		.loc 1 354 0
+ 989 05e8 0020     		movs	r0, #0
+ 990 05ea FFF7FEFF 		bl	rotate_degrees
+ 356:.\main.c      ****                 state = S_PLACE_PUCK;
+ 991              		.loc 1 356 0
+ 992 05ee 0F23     		movs	r3, #15
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 29
+
+
+ 993 05f0 FB83     		strh	r3, [r7, #30]	@ movhi
+ 357:.\main.c      ****                 break;
+ 994              		.loc 1 357 0
+ 995 05f2 A5E0     		b	.L11
+ 996              	.L27:
+ 360:.\main.c      ****                 if (pucks_gotten == 1){
+ 997              		.loc 1 360 0
+ 998 05f4 BB69     		ldr	r3, [r7, #24]
+ 999 05f6 012B     		cmp	r3, #1
+ 1000 05f8 0CD1     		bne	.L55
+ 361:.\main.c      ****                     go_forward(1500, 200);
+ 1001              		.loc 1 361 0
+ 1002 05fa 40F2DC50 		movw	r0, #1500
+ 1003 05fe C821     		movs	r1, #200
+ 1004 0600 FFF7FEFF 		bl	go_forward
+ 362:.\main.c      ****                     drop_puck();
+ 1005              		.loc 1 362 0
+ 1006 0604 FFF7FEFF 		bl	drop_puck
+ 363:.\main.c      ****                     go_backward(2000, 255);
+ 1007              		.loc 1 363 0
+ 1008 0608 4FF4FA60 		mov	r0, #2000
+ 1009 060c FF21     		movs	r1, #255
+ 1010 060e FFF7FEFF 		bl	go_backward
+ 1011 0612 71E0     		b	.L56
+ 1012              	.L55:
+ 1013              	.LBB4:
+ 365:.\main.c      ****                     arm_set_level(pucks_gotten + 1);
+ 1014              		.loc 1 365 0
+ 1015 0614 BB69     		ldr	r3, [r7, #24]
+ 1016 0616 0133     		adds	r3, r3, #1
+ 1017 0618 1846     		mov	r0, r3
+ 1018 061a FFF7FEFF 		bl	arm_set_level
+ 366:.\main.c      ****                     go_forward(500, 200);
+ 1019              		.loc 1 366 0
+ 1020 061e 4FF4FA70 		mov	r0, #500
+ 1021 0622 C821     		movs	r1, #200
+ 1022 0624 FFF7FEFF 		bl	go_forward
+ 367:.\main.c      ****                     int on_stack = 0;
+ 1023              		.loc 1 367 0
+ 1024 0628 0023     		movs	r3, #0
+ 1025 062a BB60     		str	r3, [r7, #8]
+ 368:.\main.c      ****                     while (!on_stack){
+ 1026              		.loc 1 368 0
+ 1027 062c 43E0     		b	.L57
+ 1028              	.L67:
+ 1029 062e 00BF     		.align	2
+ 1030              	.L66:
+ 1031 0630 00000000 		.word	outString
+ 1032 0634 44000000 		.word	.LC4
+ 1033 0638 58000000 		.word	.LC5
+ 1034 063c 6C000000 		.word	.LC6
+ 1035 0640 74000000 		.word	.LC7
+ 1036 0644 88000000 		.word	.LC8
+ 1037 0648 90000000 		.word	.LC9
+ 1038              	.L60:
+ 369:.\main.c      ****                         POS_PRINTF(0,0,"STACKING!");
+ 1039              		.loc 1 369 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 30
+
+
+ 1040 064c 3D4B     		ldr	r3, .L68
+ 1041 064e 3E4A     		ldr	r2, .L68+4
+ 1042 0650 07CA     		ldmia	r2, {r0, r1, r2}
+ 1043 0652 03C3     		stmia	r3!, {r0, r1}
+ 1044 0654 1A80     		strh	r2, [r3]	@ movhi
+ 1045 0656 0020     		movs	r0, #0
+ 1046 0658 0021     		movs	r1, #0
+ 1047 065a FFF7FEFF 		bl	LCD_Position
+ 1048 065e 3948     		ldr	r0, .L68
+ 1049 0660 FFF7FEFF 		bl	LCD_PrintString
+ 370:.\main.c      ****                         POS_PRINTF(1, 0, "B%d SU%d", beam_broken(), get_mean_ultra_s());
+ 1050              		.loc 1 370 0
+ 1051 0664 FFF7FEFF 		bl	beam_broken
+ 1052 0668 0346     		mov	r3, r0
+ 1053 066a 1C46     		mov	r4, r3
+ 1054 066c FFF7FEFF 		bl	get_mean_ultra_s
+ 1055 0670 0346     		mov	r3, r0
+ 1056 0672 3448     		ldr	r0, .L68
+ 1057 0674 3549     		ldr	r1, .L68+8
+ 1058 0676 2246     		mov	r2, r4
+ 1059 0678 FFF7FEFF 		bl	sprintf
+ 1060 067c 0120     		movs	r0, #1
+ 1061 067e 0021     		movs	r1, #0
+ 1062 0680 FFF7FEFF 		bl	LCD_Position
+ 1063 0684 2F48     		ldr	r0, .L68
+ 1064 0686 FFF7FEFF 		bl	LCD_PrintString
+ 371:.\main.c      ****                         if (beam_broken()){
+ 1065              		.loc 1 371 0
+ 1066 068a FFF7FEFF 		bl	beam_broken
+ 1067 068e 0346     		mov	r3, r0
+ 1068 0690 002B     		cmp	r3, #0
+ 1069 0692 02D0     		beq	.L58
+ 372:.\main.c      ****                             on_stack = 1;
+ 1070              		.loc 1 372 0
+ 1071 0694 0123     		movs	r3, #1
+ 1072 0696 BB60     		str	r3, [r7, #8]
+ 1073 0698 0DE0     		b	.L57
+ 1074              	.L58:
+ 373:.\main.c      ****                         } else if (get_mean_ultra_s() < 10){
+ 1075              		.loc 1 373 0
+ 1076 069a FFF7FEFF 		bl	get_mean_ultra_s
+ 1077 069e 0346     		mov	r3, r0
+ 1078 06a0 092B     		cmp	r3, #9
+ 1079 06a2 04D8     		bhi	.L59
+ 375:.\main.c      ****                             go_backward(100, 255);
+ 1080              		.loc 1 375 0
+ 1081 06a4 6420     		movs	r0, #100
+ 1082 06a6 FF21     		movs	r1, #255
+ 1083 06a8 FFF7FEFF 		bl	go_backward
+ 1084 06ac 03E0     		b	.L57
+ 1085              	.L59:
+ 377:.\main.c      ****                             go_forward(200, 255);
+ 1086              		.loc 1 377 0
+ 1087 06ae C820     		movs	r0, #200
+ 1088 06b0 FF21     		movs	r1, #255
+ 1089 06b2 FFF7FEFF 		bl	go_forward
+ 1090              	.L57:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 31
+
+
+ 368:.\main.c      ****                     while (!on_stack){
+ 1091              		.loc 1 368 0 discriminator 1
+ 1092 06b6 BB68     		ldr	r3, [r7, #8]
+ 1093 06b8 002B     		cmp	r3, #0
+ 1094 06ba C7D0     		beq	.L60
+ 380:.\main.c      ****                     go_backward(200, 255);
+ 1095              		.loc 1 380 0
+ 1096 06bc C820     		movs	r0, #200
+ 1097 06be FF21     		movs	r1, #255
+ 1098 06c0 FFF7FEFF 		bl	go_backward
+ 381:.\main.c      ****                     arm_inbetween_level(pucks_gotten - 1, pucks_gotten);
+ 1099              		.loc 1 381 0
+ 1100 06c4 BB69     		ldr	r3, [r7, #24]
+ 1101 06c6 013B     		subs	r3, r3, #1
+ 1102 06c8 1846     		mov	r0, r3
+ 1103 06ca B969     		ldr	r1, [r7, #24]
+ 1104 06cc FFF7FEFF 		bl	arm_inbetween_level
+ 382:.\main.c      ****                     CyDelay(500);
+ 1105              		.loc 1 382 0
+ 1106 06d0 4FF4FA70 		mov	r0, #500
+ 1107 06d4 FFF7FEFF 		bl	CyDelay
+ 383:.\main.c      ****                     drop_puck();
+ 1108              		.loc 1 383 0
+ 1109 06d8 FFF7FEFF 		bl	drop_puck
+ 384:.\main.c      ****                     go_backward(2000, 255);
+ 1110              		.loc 1 384 0
+ 1111 06dc 4FF4FA60 		mov	r0, #2000
+ 1112 06e0 FF21     		movs	r1, #255
+ 1113 06e2 FFF7FEFF 		bl	go_backward
+ 385:.\main.c      ****                     arm_carry_home();
+ 1114              		.loc 1 385 0
+ 1115 06e6 FFF7FEFF 		bl	arm_carry_home
+ 386:.\main.c      ****                     arm_set_level(0);
+ 1116              		.loc 1 386 0
+ 1117 06ea 0020     		movs	r0, #0
+ 1118 06ec FFF7FEFF 		bl	arm_set_level
+ 387:.\main.c      ****                     CyDelay(500);
+ 1119              		.loc 1 387 0
+ 1120 06f0 4FF4FA70 		mov	r0, #500
+ 1121 06f4 FFF7FEFF 		bl	CyDelay
+ 1122              	.L56:
+ 1123              	.LBE4:
+ 390:.\main.c      ****                 set_heading(0);
+ 1124              		.loc 1 390 0
+ 1125 06f8 0020     		movs	r0, #0
+ 1126 06fa FFF7FEFF 		bl	set_heading
+ 391:.\main.c      ****                 rotate_degrees(0);
+ 1127              		.loc 1 391 0
+ 1128 06fe 0020     		movs	r0, #0
+ 1129 0700 FFF7FEFF 		bl	rotate_degrees
+ 392:.\main.c      ****                 go_backward(2000, 255);
+ 1130              		.loc 1 392 0
+ 1131 0704 4FF4FA60 		mov	r0, #2000
+ 1132 0708 FF21     		movs	r1, #255
+ 1133 070a FFF7FEFF 		bl	go_backward
+ 393:.\main.c      ****                 state = S_LEAVE_BASE;
+ 1134              		.loc 1 393 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 32
+
+
+ 1135 070e 0123     		movs	r3, #1
+ 1136 0710 FB83     		strh	r3, [r7, #30]	@ movhi
+ 394:.\main.c      ****                 break;
+ 1137              		.loc 1 394 0
+ 1138 0712 15E0     		b	.L11
+ 1139              	.L19:
+ 397:.\main.c      ****                 POS_PRINTF(0,0,"GOT HOME");
+ 1140              		.loc 1 397 0
+ 1141 0714 0B4B     		ldr	r3, .L68
+ 1142 0716 0E4A     		ldr	r2, .L68+12
+ 1143 0718 07CA     		ldmia	r2, {r0, r1, r2}
+ 1144 071a 03C3     		stmia	r3!, {r0, r1}
+ 1145 071c 1A70     		strb	r2, [r3]
+ 1146 071e 0020     		movs	r0, #0
+ 1147 0720 0021     		movs	r1, #0
+ 1148 0722 FFF7FEFF 		bl	LCD_Position
+ 1149 0726 0748     		ldr	r0, .L68
+ 1150 0728 FFF7FEFF 		bl	LCD_PrintString
+ 398:.\main.c      ****                 while (!but0_b){;}but0_b = 0;
+ 1151              		.loc 1 398 0
+ 1152 072c 00BF     		nop
+ 1153              	.L61:
+ 398:.\main.c      ****                 while (!but0_b){;}but0_b = 0;
+ 1154              		.loc 1 398 0 is_stmt 0 discriminator 1
+ 1155 072e 094B     		ldr	r3, .L68+16
+ 1156 0730 1B78     		ldrb	r3, [r3]
+ 1157 0732 DBB2     		uxtb	r3, r3
+ 1158 0734 002B     		cmp	r3, #0
+ 1159 0736 FAD0     		beq	.L61
+ 398:.\main.c      ****                 while (!but0_b){;}but0_b = 0;
+ 1160              		.loc 1 398 0 discriminator 2
+ 1161 0738 064B     		ldr	r3, .L68+16
+ 1162 073a 0022     		movs	r2, #0
+ 1163 073c 1A70     		strb	r2, [r3]
+ 399:.\main.c      ****                 break;
+ 1164              		.loc 1 399 0 is_stmt 1 discriminator 2
+ 1165 073e 00BF     		nop
+ 1166              	.L11:
+ 1167              	.LBE2:
+ 1168              		.loc 1 409 0
+ 1169 0740 9FE4     		b	.L63
+ 1170              	.L69:
+ 1171 0742 00BF     		.align	2
+ 1172              	.L68:
+ 1173 0744 00000000 		.word	outString
+ 1174 0748 A4000000 		.word	.LC10
+ 1175 074c B0000000 		.word	.LC11
+ 1176 0750 BC000000 		.word	.LC12
+ 1177 0754 00000000 		.word	but0_b
+ 1178              		.cfi_endproc
+ 1179              	.LFE65:
+ 1180              		.size	main, .-main
+ 1181              		.global	__aeabi_i2d
+ 1182              		.global	__aeabi_ddiv
+ 1183              		.global	__aeabi_dadd
+ 1184              		.global	__aeabi_d2iz
+ 1185              		.section	.rodata
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 33
+
+
+ 1186 00c5 000000   		.align	2
+ 1187              	.LC13:
+ 1188 00c8 583A2564 		.ascii	"X:%d Y:%d\000"
+ 1188      20593A25 
+ 1188      6400
+ 1189 00d2 0000     		.align	2
+ 1190              	.LC14:
+ 1191 00d4 433A2564 		.ascii	"C:%d/%d\000"
+ 1191      2F256400 
+ 1192              		.section	.text.calibrate_compass,"ax",%progbits
+ 1193              		.align	2
+ 1194              		.global	calibrate_compass
+ 1195              		.thumb
+ 1196              		.thumb_func
+ 1197              		.type	calibrate_compass, %function
+ 1198              	calibrate_compass:
+ 1199              	.LFB66:
+ 410:.\main.c      **** }
+ 411:.\main.c      **** 
+ 412:.\main.c      **** void calibrate_compass()
+ 413:.\main.c      **** {
+ 1200              		.loc 1 413 0
+ 1201              		.cfi_startproc
+ 1202              		@ args = 0, pretend = 0, frame = 72
+ 1203              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1204 0000 B0B5     		push	{r4, r5, r7, lr}
+ 1205              		.cfi_def_cfa_offset 16
+ 1206              		.cfi_offset 4, -16
+ 1207              		.cfi_offset 5, -12
+ 1208              		.cfi_offset 7, -8
+ 1209              		.cfi_offset 14, -4
+ 1210 0002 92B0     		sub	sp, sp, #72
+ 1211              		.cfi_def_cfa_offset 88
+ 1212 0004 00AF     		add	r7, sp, #0
+ 1213              		.cfi_def_cfa_register 7
+ 414:.\main.c      ****     char outString[25];
+ 415:.\main.c      ****     double avx = 0,avy = 0;
+ 1214              		.loc 1 415 0
+ 1215 0006 4FF00002 		mov	r2, #0
+ 1216 000a 4FF00003 		mov	r3, #0
+ 1217 000e C7E91023 		strd	r2, [r7, #64]
+ 1218 0012 4FF00002 		mov	r2, #0
+ 1219 0016 4FF00003 		mov	r3, #0
+ 1220 001a C7E90E23 		strd	r2, [r7, #56]
+ 416:.\main.c      ****     int trials = 1000;
+ 1221              		.loc 1 416 0
+ 1222 001e 4FF47A73 		mov	r3, #1000
+ 1223 0022 3B63     		str	r3, [r7, #48]
+ 417:.\main.c      ****     short xHIGH, xLOW, yHIGH, yLOW;
+ 418:.\main.c      ****     int i;
+ 419:.\main.c      ****     rotate_left(130);
+ 1224              		.loc 1 419 0
+ 1225 0024 8220     		movs	r0, #130
+ 1226 0026 FFF7FEFF 		bl	rotate_left
+ 420:.\main.c      ****     for(i = 0; i < trials; i++)
+ 1227              		.loc 1 420 0
+ 1228 002a 0023     		movs	r3, #0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 34
+
+
+ 1229 002c 7B63     		str	r3, [r7, #52]
+ 1230 002e 85E0     		b	.L71
+ 1231              	.L73:
+ 421:.\main.c      ****     {
+ 422:.\main.c      ****         while(!compass_ready){}
+ 1232              		.loc 1 422 0
+ 1233 0030 00BF     		nop
+ 1234              	.L72:
+ 1235              		.loc 1 422 0 is_stmt 0 discriminator 1
+ 1236 0032 614B     		ldr	r3, .L75
+ 1237 0034 1B78     		ldrb	r3, [r3]
+ 1238 0036 DBB2     		uxtb	r3, r3
+ 1239 0038 002B     		cmp	r3, #0
+ 1240 003a FAD0     		beq	.L72
+ 423:.\main.c      ****         compass_read();
+ 1241              		.loc 1 423 0 is_stmt 1
+ 1242 003c FFF7FEFF 		bl	compass_read
+ 424:.\main.c      ****         avx += compass_x/((double) trials);
+ 1243              		.loc 1 424 0
+ 1244 0040 5E4B     		ldr	r3, .L75+4
+ 1245 0042 1B88     		ldrh	r3, [r3]
+ 1246 0044 1BB2     		sxth	r3, r3
+ 1247 0046 1846     		mov	r0, r3
+ 1248 0048 FFF7FEFF 		bl	__aeabi_i2d
+ 1249 004c 0446     		mov	r4, r0
+ 1250 004e 0D46     		mov	r5, r1
+ 1251 0050 386B     		ldr	r0, [r7, #48]
+ 1252 0052 FFF7FEFF 		bl	__aeabi_i2d
+ 1253 0056 0246     		mov	r2, r0
+ 1254 0058 0B46     		mov	r3, r1
+ 1255 005a 2046     		mov	r0, r4
+ 1256 005c 2946     		mov	r1, r5
+ 1257 005e FFF7FEFF 		bl	__aeabi_ddiv
+ 1258 0062 0246     		mov	r2, r0
+ 1259 0064 0B46     		mov	r3, r1
+ 1260 0066 D7E91001 		ldrd	r0, [r7, #64]
+ 1261 006a FFF7FEFF 		bl	__aeabi_dadd
+ 1262 006e 0246     		mov	r2, r0
+ 1263 0070 0B46     		mov	r3, r1
+ 1264 0072 C7E91023 		strd	r2, [r7, #64]
+ 425:.\main.c      ****         avy += compass_y/((double) trials);
+ 1265              		.loc 1 425 0
+ 1266 0076 524B     		ldr	r3, .L75+8
+ 1267 0078 1B88     		ldrh	r3, [r3]
+ 1268 007a 1BB2     		sxth	r3, r3
+ 1269 007c 1846     		mov	r0, r3
+ 1270 007e FFF7FEFF 		bl	__aeabi_i2d
+ 1271 0082 0446     		mov	r4, r0
+ 1272 0084 0D46     		mov	r5, r1
+ 1273 0086 386B     		ldr	r0, [r7, #48]
+ 1274 0088 FFF7FEFF 		bl	__aeabi_i2d
+ 1275 008c 0246     		mov	r2, r0
+ 1276 008e 0B46     		mov	r3, r1
+ 1277 0090 2046     		mov	r0, r4
+ 1278 0092 2946     		mov	r1, r5
+ 1279 0094 FFF7FEFF 		bl	__aeabi_ddiv
+ 1280 0098 0246     		mov	r2, r0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 35
+
+
+ 1281 009a 0B46     		mov	r3, r1
+ 1282 009c D7E90E01 		ldrd	r0, [r7, #56]
+ 1283 00a0 FFF7FEFF 		bl	__aeabi_dadd
+ 1284 00a4 0246     		mov	r2, r0
+ 1285 00a6 0B46     		mov	r3, r1
+ 1286 00a8 C7E90E23 		strd	r2, [r7, #56]
+ 426:.\main.c      ****         LCD_ClearDisplay();
+ 1287              		.loc 1 426 0
+ 1288 00ac 0120     		movs	r0, #1
+ 1289 00ae FFF7FEFF 		bl	LCD_WriteControl
+ 427:.\main.c      ****         POS_PRINTF(0,0,"X:%d Y:%d",(int) round(avx),(int) round(avy));
+ 1290              		.loc 1 427 0
+ 1291 00b2 D7E91001 		ldrd	r0, [r7, #64]
+ 1292 00b6 FFF7FEFF 		bl	round
+ 1293 00ba 0246     		mov	r2, r0
+ 1294 00bc 0B46     		mov	r3, r1
+ 1295 00be 1046     		mov	r0, r2
+ 1296 00c0 1946     		mov	r1, r3
+ 1297 00c2 FFF7FEFF 		bl	__aeabi_d2iz
+ 1298 00c6 0446     		mov	r4, r0
+ 1299 00c8 D7E90E01 		ldrd	r0, [r7, #56]
+ 1300 00cc FFF7FEFF 		bl	round
+ 1301 00d0 0246     		mov	r2, r0
+ 1302 00d2 0B46     		mov	r3, r1
+ 1303 00d4 1046     		mov	r0, r2
+ 1304 00d6 1946     		mov	r1, r3
+ 1305 00d8 FFF7FEFF 		bl	__aeabi_d2iz
+ 1306 00dc 0346     		mov	r3, r0
+ 1307 00de 3A1D     		adds	r2, r7, #4
+ 1308 00e0 1046     		mov	r0, r2
+ 1309 00e2 3849     		ldr	r1, .L75+12
+ 1310 00e4 2246     		mov	r2, r4
+ 1311 00e6 FFF7FEFF 		bl	sprintf
+ 1312 00ea 0020     		movs	r0, #0
+ 1313 00ec 0021     		movs	r1, #0
+ 1314 00ee FFF7FEFF 		bl	LCD_Position
+ 1315 00f2 3B1D     		adds	r3, r7, #4
+ 1316 00f4 1846     		mov	r0, r3
+ 1317 00f6 FFF7FEFF 		bl	LCD_PrintString
+ 428:.\main.c      ****         POS_PRINTF(1,0,"C:%d/%d",i,(int) round(trials));
+ 1318              		.loc 1 428 0
+ 1319 00fa 386B     		ldr	r0, [r7, #48]
+ 1320 00fc FFF7FEFF 		bl	__aeabi_i2d
+ 1321 0100 0246     		mov	r2, r0
+ 1322 0102 0B46     		mov	r3, r1
+ 1323 0104 1046     		mov	r0, r2
+ 1324 0106 1946     		mov	r1, r3
+ 1325 0108 FFF7FEFF 		bl	round
+ 1326 010c 0246     		mov	r2, r0
+ 1327 010e 0B46     		mov	r3, r1
+ 1328 0110 1046     		mov	r0, r2
+ 1329 0112 1946     		mov	r1, r3
+ 1330 0114 FFF7FEFF 		bl	__aeabi_d2iz
+ 1331 0118 0346     		mov	r3, r0
+ 1332 011a 3A1D     		adds	r2, r7, #4
+ 1333 011c 1046     		mov	r0, r2
+ 1334 011e 2A49     		ldr	r1, .L75+16
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 36
+
+
+ 1335 0120 7A6B     		ldr	r2, [r7, #52]
+ 1336 0122 FFF7FEFF 		bl	sprintf
+ 1337 0126 0120     		movs	r0, #1
+ 1338 0128 0021     		movs	r1, #0
+ 1339 012a FFF7FEFF 		bl	LCD_Position
+ 1340 012e 3B1D     		adds	r3, r7, #4
+ 1341 0130 1846     		mov	r0, r3
+ 1342 0132 FFF7FEFF 		bl	LCD_PrintString
+ 420:.\main.c      ****     for(i = 0; i < trials; i++)
+ 1343              		.loc 1 420 0
+ 1344 0136 7B6B     		ldr	r3, [r7, #52]
+ 1345 0138 0133     		adds	r3, r3, #1
+ 1346 013a 7B63     		str	r3, [r7, #52]
+ 1347              	.L71:
+ 420:.\main.c      ****     for(i = 0; i < trials; i++)
+ 1348              		.loc 1 420 0 is_stmt 0 discriminator 1
+ 1349 013c 7A6B     		ldr	r2, [r7, #52]
+ 1350 013e 3B6B     		ldr	r3, [r7, #48]
+ 1351 0140 9A42     		cmp	r2, r3
+ 1352 0142 FFF675AF 		blt	.L73
+ 429:.\main.c      ****     }
+ 430:.\main.c      ****     setCoast(MBOTH);
+ 1353              		.loc 1 430 0 is_stmt 1
+ 1354 0146 0320     		movs	r0, #3
+ 1355 0148 FFF7FEFF 		bl	setCoast
+ 431:.\main.c      ****     int x = round(avx);
+ 1356              		.loc 1 431 0
+ 1357 014c D7E91001 		ldrd	r0, [r7, #64]
+ 1358 0150 FFF7FEFF 		bl	round
+ 1359 0154 0246     		mov	r2, r0
+ 1360 0156 0B46     		mov	r3, r1
+ 1361 0158 1046     		mov	r0, r2
+ 1362 015a 1946     		mov	r1, r3
+ 1363 015c FFF7FEFF 		bl	__aeabi_d2iz
+ 1364 0160 0346     		mov	r3, r0
+ 1365 0162 FB62     		str	r3, [r7, #44]
+ 432:.\main.c      ****     int y = round(avy);
+ 1366              		.loc 1 432 0
+ 1367 0164 D7E90E01 		ldrd	r0, [r7, #56]
+ 1368 0168 FFF7FEFF 		bl	round
+ 1369 016c 0246     		mov	r2, r0
+ 1370 016e 0B46     		mov	r3, r1
+ 1371 0170 1046     		mov	r0, r2
+ 1372 0172 1946     		mov	r1, r3
+ 1373 0174 FFF7FEFF 		bl	__aeabi_d2iz
+ 1374 0178 0346     		mov	r3, r0
+ 1375 017a BB62     		str	r3, [r7, #40]
+ 433:.\main.c      ****     xHIGH = x >> 8;
+ 1376              		.loc 1 433 0
+ 1377 017c FB6A     		ldr	r3, [r7, #44]
+ 1378 017e 1B12     		asrs	r3, r3, #8
+ 1379 0180 FB84     		strh	r3, [r7, #38]	@ movhi
+ 434:.\main.c      ****     xLOW = x & 0xFF;
+ 1380              		.loc 1 434 0
+ 1381 0182 FB6A     		ldr	r3, [r7, #44]
+ 1382 0184 9BB2     		uxth	r3, r3
+ 1383 0186 DBB2     		uxtb	r3, r3
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 37
+
+
+ 1384 0188 BB84     		strh	r3, [r7, #36]	@ movhi
+ 435:.\main.c      ****     yHIGH = y >> 8;
+ 1385              		.loc 1 435 0
+ 1386 018a BB6A     		ldr	r3, [r7, #40]
+ 1387 018c 1B12     		asrs	r3, r3, #8
+ 1388 018e 7B84     		strh	r3, [r7, #34]	@ movhi
+ 436:.\main.c      ****     yLOW = y & 0xFF;
+ 1389              		.loc 1 436 0
+ 1390 0190 BB6A     		ldr	r3, [r7, #40]
+ 1391 0192 9BB2     		uxth	r3, r3
+ 1392 0194 DBB2     		uxtb	r3, r3
+ 1393 0196 3B84     		strh	r3, [r7, #32]	@ movhi
+ 437:.\main.c      ****     //EEPROM1_Write(&xHIGH,0);
+ 438:.\main.c      ****     //EEPROM1_Write(&xLOW,1);
+ 439:.\main.c      ****     //EEPROM1_Write(&yHIGH,2);
+ 440:.\main.c      ****     //EEPROM1_Write(&yLOW,3);
+ 441:.\main.c      ****     sprintf(outString,"X:%d Y:%d",x,y); 
+ 1394              		.loc 1 441 0
+ 1395 0198 3B1D     		adds	r3, r7, #4
+ 1396 019a 1846     		mov	r0, r3
+ 1397 019c 0949     		ldr	r1, .L75+12
+ 1398 019e FA6A     		ldr	r2, [r7, #44]
+ 1399 01a0 BB6A     		ldr	r3, [r7, #40]
+ 1400 01a2 FFF7FEFF 		bl	sprintf
+ 442:.\main.c      ****     LCD_PosPrintString(0,0,outString);
+ 1401              		.loc 1 442 0
+ 1402 01a6 0020     		movs	r0, #0
+ 1403 01a8 0021     		movs	r1, #0
+ 1404 01aa FFF7FEFF 		bl	LCD_Position
+ 1405 01ae 3B1D     		adds	r3, r7, #4
+ 1406 01b0 1846     		mov	r0, r3
+ 1407 01b2 FFF7FEFF 		bl	LCD_PrintString
+ 1408              	.L74:
+ 443:.\main.c      ****     while(1)
+ 444:.\main.c      ****     {
+ 445:.\main.c      ****     }
+ 1409              		.loc 1 445 0 discriminator 1
+ 1410 01b6 FEE7     		b	.L74
+ 1411              	.L76:
+ 1412              		.align	2
+ 1413              	.L75:
+ 1414 01b8 00000000 		.word	compass_ready
+ 1415 01bc 00000000 		.word	compass_x
+ 1416 01c0 00000000 		.word	compass_y
+ 1417 01c4 C8000000 		.word	.LC13
+ 1418 01c8 D4000000 		.word	.LC14
+ 1419              		.cfi_endproc
+ 1420              	.LFE66:
+ 1421              		.size	calibrate_compass, .-calibrate_compass
+ 1422              		.text
+ 1423              	.Letext0:
+ 1424              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 1425              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 1426              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 1427              		.file 5 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 1428              		.file 6 "Generated_Source\\PSoC5/core_cm3.h"
+ 1429              		.file 7 "Generated_Source\\PSoC5/Camera.h"
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 38
+
+
+ 1430              		.file 8 "./my_camera_functions.h"
+ 1431              		.file 9 "<built-in>"
+ 1432              		.section	.debug_info,"",%progbits
+ 1433              	.Ldebug_info0:
+ 1434 0000 29040000 		.4byte	0x429
+ 1435 0004 0400     		.2byte	0x4
+ 1436 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 1437 000a 04       		.byte	0x4
+ 1438 000b 01       		.uleb128 0x1
+ 1439 000c 86000000 		.4byte	.LASF64
+ 1440 0010 01       		.byte	0x1
+ 1441 0011 F7020000 		.4byte	.LASF65
+ 1442 0015 78030000 		.4byte	.LASF66
+ 1443 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 1444 001d 00000000 		.4byte	0
+ 1445 0021 00000000 		.4byte	.Ldebug_line0
+ 1446 0025 02       		.uleb128 0x2
+ 1447 0026 01       		.byte	0x1
+ 1448 0027 06       		.byte	0x6
+ 1449 0028 A8010000 		.4byte	.LASF0
+ 1450 002c 02       		.uleb128 0x2
+ 1451 002d 01       		.byte	0x1
+ 1452 002e 08       		.byte	0x8
+ 1453 002f 8D010000 		.4byte	.LASF1
+ 1454 0033 02       		.uleb128 0x2
+ 1455 0034 02       		.byte	0x2
+ 1456 0035 05       		.byte	0x5
+ 1457 0036 1E000000 		.4byte	.LASF2
+ 1458 003a 02       		.uleb128 0x2
+ 1459 003b 02       		.byte	0x2
+ 1460 003c 07       		.byte	0x7
+ 1461 003d 18020000 		.4byte	.LASF3
+ 1462 0041 03       		.uleb128 0x3
+ 1463 0042 00030000 		.4byte	.LASF9
+ 1464 0046 02       		.byte	0x2
+ 1465 0047 37       		.byte	0x37
+ 1466 0048 4C000000 		.4byte	0x4c
+ 1467 004c 02       		.uleb128 0x2
+ 1468 004d 04       		.byte	0x4
+ 1469 004e 05       		.byte	0x5
+ 1470 004f 54010000 		.4byte	.LASF4
+ 1471 0053 02       		.uleb128 0x2
+ 1472 0054 04       		.byte	0x4
+ 1473 0055 07       		.byte	0x7
+ 1474 0056 99020000 		.4byte	.LASF5
+ 1475 005a 02       		.uleb128 0x2
+ 1476 005b 08       		.byte	0x8
+ 1477 005c 05       		.byte	0x5
+ 1478 005d 35010000 		.4byte	.LASF6
+ 1479 0061 02       		.uleb128 0x2
+ 1480 0062 08       		.byte	0x8
+ 1481 0063 07       		.byte	0x7
+ 1482 0064 BC010000 		.4byte	.LASF7
+ 1483 0068 04       		.uleb128 0x4
+ 1484 0069 04       		.byte	0x4
+ 1485 006a 05       		.byte	0x5
+ 1486 006b 696E7400 		.ascii	"int\000"
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 39
+
+
+ 1487 006f 02       		.uleb128 0x2
+ 1488 0070 04       		.byte	0x4
+ 1489 0071 07       		.byte	0x7
+ 1490 0072 00020000 		.4byte	.LASF8
+ 1491 0076 03       		.uleb128 0x3
+ 1492 0077 B4010000 		.4byte	.LASF10
+ 1493 007b 03       		.byte	0x3
+ 1494 007c 41       		.byte	0x41
+ 1495 007d 41000000 		.4byte	0x41
+ 1496 0081 03       		.uleb128 0x3
+ 1497 0082 0F010000 		.4byte	.LASF11
+ 1498 0086 04       		.byte	0x4
+ 1499 0087 B3       		.byte	0xb3
+ 1500 0088 2C000000 		.4byte	0x2c
+ 1501 008c 03       		.uleb128 0x3
+ 1502 008d 02010000 		.4byte	.LASF12
+ 1503 0091 04       		.byte	0x4
+ 1504 0092 B4       		.byte	0xb4
+ 1505 0093 3A000000 		.4byte	0x3a
+ 1506 0097 03       		.uleb128 0x3
+ 1507 0098 09010000 		.4byte	.LASF13
+ 1508 009c 04       		.byte	0x4
+ 1509 009d B7       		.byte	0xb7
+ 1510 009e 33000000 		.4byte	0x33
+ 1511 00a2 02       		.uleb128 0x2
+ 1512 00a3 04       		.byte	0x4
+ 1513 00a4 04       		.byte	0x4
+ 1514 00a5 1C010000 		.4byte	.LASF14
+ 1515 00a9 02       		.uleb128 0x2
+ 1516 00aa 08       		.byte	0x8
+ 1517 00ab 04       		.byte	0x4
+ 1518 00ac C0020000 		.4byte	.LASF15
+ 1519 00b0 02       		.uleb128 0x2
+ 1520 00b1 01       		.byte	0x1
+ 1521 00b2 08       		.byte	0x8
+ 1522 00b3 30020000 		.4byte	.LASF16
+ 1523 00b7 05       		.uleb128 0x5
+ 1524 00b8 81000000 		.4byte	0x81
+ 1525 00bc 02       		.uleb128 0x2
+ 1526 00bd 04       		.byte	0x4
+ 1527 00be 07       		.byte	0x7
+ 1528 00bf 3E000000 		.4byte	.LASF17
+ 1529 00c3 06       		.uleb128 0x6
+ 1530 00c4 04       		.byte	0x4
+ 1531 00c5 07       		.uleb128 0x7
+ 1532 00c6 04       		.byte	0x4
+ 1533 00c7 CB000000 		.4byte	0xcb
+ 1534 00cb 08       		.uleb128 0x8
+ 1535 00cc B0000000 		.4byte	0xb0
+ 1536 00d0 09       		.uleb128 0x9
+ 1537 00d1 B0000000 		.4byte	0xb0
+ 1538 00d5 E0000000 		.4byte	0xe0
+ 1539 00d9 0A       		.uleb128 0xa
+ 1540 00da BC000000 		.4byte	0xbc
+ 1541 00de 18       		.byte	0x18
+ 1542 00df 00       		.byte	0
+ 1543 00e0 03       		.uleb128 0x3
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 40
+
+
+ 1544 00e1 19030000 		.4byte	.LASF18
+ 1545 00e5 05       		.byte	0x5
+ 1546 00e6 28       		.byte	0x28
+ 1547 00e7 EB000000 		.4byte	0xeb
+ 1548 00eb 0B       		.uleb128 0xb
+ 1549 00ec 5D010000 		.4byte	.LASF67
+ 1550 00f0 04       		.byte	0x4
+ 1551 00f1 09       		.byte	0x9
+ 1552 00f2 00       		.byte	0
+ 1553 00f3 02010000 		.4byte	0x102
+ 1554 00f7 0C       		.uleb128 0xc
+ 1555 00f8 2B020000 		.4byte	.LASF68
+ 1556 00fc C3000000 		.4byte	0xc3
+ 1557 0100 00       		.byte	0
+ 1558 0101 00       		.byte	0
+ 1559 0102 03       		.uleb128 0x3
+ 1560 0103 5B000000 		.4byte	.LASF19
+ 1561 0107 05       		.byte	0x5
+ 1562 0108 62       		.byte	0x62
+ 1563 0109 E0000000 		.4byte	0xe0
+ 1564 010d 02       		.uleb128 0x2
+ 1565 010e 08       		.byte	0x8
+ 1566 010f 04       		.byte	0x4
+ 1567 0110 81010000 		.4byte	.LASF20
+ 1568 0114 0D       		.uleb128 0xd
+ 1569 0115 4E010000 		.4byte	.LASF69
+ 1570 0119 01       		.byte	0x1
+ 1571 011a 01       		.byte	0x1
+ 1572 011b 47       		.byte	0x47
+ 1573 011c 81010000 		.4byte	0x181
+ 1574 0120 0E       		.uleb128 0xe
+ 1575 0121 DF030000 		.4byte	.LASF21
+ 1576 0125 00       		.sleb128 0
+ 1577 0126 0E       		.uleb128 0xe
+ 1578 0127 22010000 		.4byte	.LASF22
+ 1579 012b 01       		.sleb128 1
+ 1580 012c 0E       		.uleb128 0xe
+ 1581 012d 00000000 		.4byte	.LASF23
+ 1582 0131 02       		.sleb128 2
+ 1583 0132 0E       		.uleb128 0xe
+ 1584 0133 D3010000 		.4byte	.LASF24
+ 1585 0137 03       		.sleb128 3
+ 1586 0138 0E       		.uleb128 0xe
+ 1587 0139 71010000 		.4byte	.LASF25
+ 1588 013d 04       		.sleb128 4
+ 1589 013e 0E       		.uleb128 0xe
+ 1590 013f 7A020000 		.4byte	.LASF26
+ 1591 0143 05       		.sleb128 5
+ 1592 0144 0E       		.uleb128 0xe
+ 1593 0145 43010000 		.4byte	.LASF27
+ 1594 0149 06       		.sleb128 6
+ 1595 014a 0E       		.uleb128 0xe
+ 1596 014b 86020000 		.4byte	.LASF28
+ 1597 014f 07       		.sleb128 7
+ 1598 0150 0E       		.uleb128 0xe
+ 1599 0151 C7030000 		.4byte	.LASF29
+ 1600 0155 08       		.sleb128 8
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 41
+
+
+ 1601 0156 0E       		.uleb128 0xe
+ 1602 0157 DF010000 		.4byte	.LASF30
+ 1603 015b 09       		.sleb128 9
+ 1604 015c 0E       		.uleb128 0xe
+ 1605 015d AB020000 		.4byte	.LASF31
+ 1606 0161 0A       		.sleb128 10
+ 1607 0162 0E       		.uleb128 0xe
+ 1608 0163 28000000 		.4byte	.LASF32
+ 1609 0167 0B       		.sleb128 11
+ 1610 0168 0E       		.uleb128 0xe
+ 1611 0169 57020000 		.4byte	.LASF33
+ 1612 016d 0C       		.sleb128 12
+ 1613 016e 0E       		.uleb128 0xe
+ 1614 016f D9020000 		.4byte	.LASF34
+ 1615 0173 0D       		.sleb128 13
+ 1616 0174 0E       		.uleb128 0xe
+ 1617 0175 44030000 		.4byte	.LASF35
+ 1618 0179 0E       		.sleb128 14
+ 1619 017a 0E       		.uleb128 0xe
+ 1620 017b 5E030000 		.4byte	.LASF36
+ 1621 017f 0F       		.sleb128 15
+ 1622 0180 00       		.byte	0
+ 1623 0181 0F       		.uleb128 0xf
+ 1624 0182 0A030000 		.4byte	.LASF41
+ 1625 0186 01       		.byte	0x1
+ 1626 0187 37       		.byte	0x37
+ 1627 0188 00000000 		.4byte	.LFB63
+ 1628 018c 4A000000 		.4byte	.LFE63-.LFB63
+ 1629 0190 01       		.uleb128 0x1
+ 1630 0191 9C       		.byte	0x9c
+ 1631 0192 C4010000 		.4byte	0x1c4
+ 1632 0196 10       		.uleb128 0x10
+ 1633 0197 666D7400 		.ascii	"fmt\000"
+ 1634 019b 01       		.byte	0x1
+ 1635 019c 37       		.byte	0x37
+ 1636 019d C5000000 		.4byte	0xc5
+ 1637 01a1 02       		.uleb128 0x2
+ 1638 01a2 91       		.byte	0x91
+ 1639 01a3 70       		.sleb128 -16
+ 1640 01a4 11       		.uleb128 0x11
+ 1641 01a5 12       		.uleb128 0x12
+ 1642 01a6 92020000 		.4byte	.LASF37
+ 1643 01aa 01       		.byte	0x1
+ 1644 01ab 3A       		.byte	0x3a
+ 1645 01ac C4010000 		.4byte	0x1c4
+ 1646 01b0 03       		.uleb128 0x3
+ 1647 01b1 91       		.byte	0x91
+ 1648 01b2 A87F     		.sleb128 -88
+ 1649 01b4 12       		.uleb128 0x12
+ 1650 01b5 13020000 		.4byte	.LASF38
+ 1651 01b9 01       		.byte	0x1
+ 1652 01ba 3B       		.byte	0x3b
+ 1653 01bb 02010000 		.4byte	0x102
+ 1654 01bf 03       		.uleb128 0x3
+ 1655 01c0 91       		.byte	0x91
+ 1656 01c1 A47F     		.sleb128 -92
+ 1657 01c3 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 42
+
+
+ 1658 01c4 09       		.uleb128 0x9
+ 1659 01c5 B0000000 		.4byte	0xb0
+ 1660 01c9 D4010000 		.4byte	0x1d4
+ 1661 01cd 0A       		.uleb128 0xa
+ 1662 01ce BC000000 		.4byte	0xbc
+ 1663 01d2 3F       		.byte	0x3f
+ 1664 01d3 00       		.byte	0
+ 1665 01d4 13       		.uleb128 0x13
+ 1666 01d5 6B030000 		.4byte	.LASF70
+ 1667 01d9 01       		.byte	0x1
+ 1668 01da 43       		.byte	0x43
+ 1669 01db 68000000 		.4byte	0x68
+ 1670 01df 00000000 		.4byte	.LFB64
+ 1671 01e3 2E000000 		.4byte	.LFE64-.LFB64
+ 1672 01e7 01       		.uleb128 0x1
+ 1673 01e8 9C       		.byte	0x9c
+ 1674 01e9 18020000 		.4byte	0x218
+ 1675 01ed 14       		.uleb128 0x14
+ 1676 01ee 2F010000 		.4byte	.LASF39
+ 1677 01f2 01       		.byte	0x1
+ 1678 01f3 43       		.byte	0x43
+ 1679 01f4 68000000 		.4byte	0x68
+ 1680 01f8 02       		.uleb128 0x2
+ 1681 01f9 91       		.byte	0x91
+ 1682 01fa 74       		.sleb128 -12
+ 1683 01fb 10       		.uleb128 0x10
+ 1684 01fc 76616C00 		.ascii	"val\000"
+ 1685 0200 01       		.byte	0x1
+ 1686 0201 43       		.byte	0x43
+ 1687 0202 68000000 		.4byte	0x68
+ 1688 0206 02       		.uleb128 0x2
+ 1689 0207 91       		.byte	0x91
+ 1690 0208 70       		.sleb128 -16
+ 1691 0209 14       		.uleb128 0x14
+ 1692 020a 0C000000 		.4byte	.LASF40
+ 1693 020e 01       		.byte	0x1
+ 1694 020f 43       		.byte	0x43
+ 1695 0210 68000000 		.4byte	0x68
+ 1696 0214 02       		.uleb128 0x2
+ 1697 0215 91       		.byte	0x91
+ 1698 0216 6C       		.sleb128 -20
+ 1699 0217 00       		.byte	0
+ 1700 0218 15       		.uleb128 0x15
+ 1701 0219 47000000 		.4byte	.LASF42
+ 1702 021d 01       		.byte	0x1
+ 1703 021e 5A       		.byte	0x5a
+ 1704 021f 68000000 		.4byte	0x68
+ 1705 0223 00000000 		.4byte	.LFB65
+ 1706 0227 58070000 		.4byte	.LFE65-.LFB65
+ 1707 022b 01       		.uleb128 0x1
+ 1708 022c 9C       		.byte	0x9c
+ 1709 022d C3020000 		.4byte	0x2c3
+ 1710 0231 12       		.uleb128 0x12
+ 1711 0232 ED020000 		.4byte	.LASF43
+ 1712 0236 01       		.byte	0x1
+ 1713 0237 92       		.byte	0x92
+ 1714 0238 8C000000 		.4byte	0x8c
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 43
+
+
+ 1715 023c 02       		.uleb128 0x2
+ 1716 023d 91       		.byte	0x91
+ 1717 023e 52       		.sleb128 -46
+ 1718 023f 12       		.uleb128 0x12
+ 1719 0240 12000000 		.4byte	.LASF44
+ 1720 0244 01       		.byte	0x1
+ 1721 0245 93       		.byte	0x93
+ 1722 0246 8C000000 		.4byte	0x8c
+ 1723 024a 02       		.uleb128 0x2
+ 1724 024b 91       		.byte	0x91
+ 1725 024c 6E       		.sleb128 -18
+ 1726 024d 12       		.uleb128 0x12
+ 1727 024e C7020000 		.4byte	.LASF45
+ 1728 0252 01       		.byte	0x1
+ 1729 0253 94       		.byte	0x94
+ 1730 0254 68000000 		.4byte	0x68
+ 1731 0258 02       		.uleb128 0x2
+ 1732 0259 91       		.byte	0x91
+ 1733 025a 68       		.sleb128 -24
+ 1734 025b 12       		.uleb128 0x12
+ 1735 025c 7C000000 		.4byte	.LASF46
+ 1736 0260 01       		.byte	0x1
+ 1737 0261 95       		.byte	0x95
+ 1738 0262 68000000 		.4byte	0x68
+ 1739 0266 02       		.uleb128 0x2
+ 1740 0267 91       		.byte	0x91
+ 1741 0268 54       		.sleb128 -44
+ 1742 0269 16       		.uleb128 0x16
+ 1743 026a D0000000 		.4byte	.LBB2
+ 1744 026e 70060000 		.4byte	.LBE2-.LBB2
+ 1745 0272 17       		.uleb128 0x17
+ 1746 0273 6900     		.ascii	"i\000"
+ 1747 0275 01       		.byte	0x1
+ 1748 0276 AD       		.byte	0xad
+ 1749 0277 68000000 		.4byte	0x68
+ 1750 027b 02       		.uleb128 0x2
+ 1751 027c 91       		.byte	0x91
+ 1752 027d 64       		.sleb128 -28
+ 1753 027e 18       		.uleb128 0x18
+ 1754 027f C0040000 		.4byte	.LBB3
+ 1755 0283 48000000 		.4byte	.LBE3-.LBB3
+ 1756 0287 A8020000 		.4byte	0x2a8
+ 1757 028b 19       		.uleb128 0x19
+ 1758 028c 6900     		.ascii	"i\000"
+ 1759 028e 01       		.byte	0x1
+ 1760 028f 3701     		.2byte	0x137
+ 1761 0291 68000000 		.4byte	0x68
+ 1762 0295 02       		.uleb128 0x2
+ 1763 0296 91       		.byte	0x91
+ 1764 0297 60       		.sleb128 -32
+ 1765 0298 1A       		.uleb128 0x1a
+ 1766 0299 28030000 		.4byte	.LASF47
+ 1767 029d 01       		.byte	0x1
+ 1768 029e 3801     		.2byte	0x138
+ 1769 02a0 68000000 		.4byte	0x68
+ 1770 02a4 02       		.uleb128 0x2
+ 1771 02a5 91       		.byte	0x91
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 44
+
+
+ 1772 02a6 5C       		.sleb128 -36
+ 1773 02a7 00       		.byte	0
+ 1774 02a8 16       		.uleb128 0x16
+ 1775 02a9 14060000 		.4byte	.LBB4
+ 1776 02ad E4000000 		.4byte	.LBE4-.LBB4
+ 1777 02b1 1A       		.uleb128 0x1a
+ 1778 02b2 10030000 		.4byte	.LASF48
+ 1779 02b6 01       		.byte	0x1
+ 1780 02b7 6F01     		.2byte	0x16f
+ 1781 02b9 68000000 		.4byte	0x68
+ 1782 02bd 02       		.uleb128 0x2
+ 1783 02be 91       		.byte	0x91
+ 1784 02bf 58       		.sleb128 -40
+ 1785 02c0 00       		.byte	0
+ 1786 02c1 00       		.byte	0
+ 1787 02c2 00       		.byte	0
+ 1788 02c3 1B       		.uleb128 0x1b
+ 1789 02c4 35020000 		.4byte	.LASF71
+ 1790 02c8 01       		.byte	0x1
+ 1791 02c9 9C01     		.2byte	0x19c
+ 1792 02cb 00000000 		.4byte	.LFB66
+ 1793 02cf CC010000 		.4byte	.LFE66-.LFB66
+ 1794 02d3 01       		.uleb128 0x1
+ 1795 02d4 9C       		.byte	0x9c
+ 1796 02d5 7A030000 		.4byte	0x37a
+ 1797 02d9 1A       		.uleb128 0x1a
+ 1798 02da 4C000000 		.4byte	.LASF49
+ 1799 02de 01       		.byte	0x1
+ 1800 02df 9E01     		.2byte	0x19e
+ 1801 02e1 D0000000 		.4byte	0xd0
+ 1802 02e5 03       		.uleb128 0x3
+ 1803 02e6 91       		.byte	0x91
+ 1804 02e7 AC7F     		.sleb128 -84
+ 1805 02e9 19       		.uleb128 0x19
+ 1806 02ea 61767800 		.ascii	"avx\000"
+ 1807 02ee 01       		.byte	0x1
+ 1808 02ef 9F01     		.2byte	0x19f
+ 1809 02f1 A9000000 		.4byte	0xa9
+ 1810 02f5 02       		.uleb128 0x2
+ 1811 02f6 91       		.byte	0x91
+ 1812 02f7 68       		.sleb128 -24
+ 1813 02f8 19       		.uleb128 0x19
+ 1814 02f9 61767900 		.ascii	"avy\000"
+ 1815 02fd 01       		.byte	0x1
+ 1816 02fe 9F01     		.2byte	0x19f
+ 1817 0300 A9000000 		.4byte	0xa9
+ 1818 0304 02       		.uleb128 0x2
+ 1819 0305 91       		.byte	0x91
+ 1820 0306 60       		.sleb128 -32
+ 1821 0307 1A       		.uleb128 0x1a
+ 1822 0308 15010000 		.4byte	.LASF50
+ 1823 030c 01       		.byte	0x1
+ 1824 030d A001     		.2byte	0x1a0
+ 1825 030f 68000000 		.4byte	0x68
+ 1826 0313 02       		.uleb128 0x2
+ 1827 0314 91       		.byte	0x91
+ 1828 0315 58       		.sleb128 -40
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 45
+
+
+ 1829 0316 1A       		.uleb128 0x1a
+ 1830 0317 18000000 		.4byte	.LASF51
+ 1831 031b 01       		.byte	0x1
+ 1832 031c A101     		.2byte	0x1a1
+ 1833 031e 33000000 		.4byte	0x33
+ 1834 0322 02       		.uleb128 0x2
+ 1835 0323 91       		.byte	0x91
+ 1836 0324 4E       		.sleb128 -50
+ 1837 0325 1A       		.uleb128 0x1a
+ 1838 0326 D4020000 		.4byte	.LASF52
+ 1839 032a 01       		.byte	0x1
+ 1840 032b A101     		.2byte	0x1a1
+ 1841 032d 33000000 		.4byte	0x33
+ 1842 0331 02       		.uleb128 0x2
+ 1843 0332 91       		.byte	0x91
+ 1844 0333 4C       		.sleb128 -52
+ 1845 0334 1A       		.uleb128 0x1a
+ 1846 0335 7B010000 		.4byte	.LASF53
+ 1847 0339 01       		.byte	0x1
+ 1848 033a A101     		.2byte	0x1a1
+ 1849 033c 33000000 		.4byte	0x33
+ 1850 0340 02       		.uleb128 0x2
+ 1851 0341 91       		.byte	0x91
+ 1852 0342 4A       		.sleb128 -54
+ 1853 0343 1A       		.uleb128 0x1a
+ 1854 0344 56000000 		.4byte	.LASF54
+ 1855 0348 01       		.byte	0x1
+ 1856 0349 A101     		.2byte	0x1a1
+ 1857 034b 33000000 		.4byte	0x33
+ 1858 034f 02       		.uleb128 0x2
+ 1859 0350 91       		.byte	0x91
+ 1860 0351 48       		.sleb128 -56
+ 1861 0352 19       		.uleb128 0x19
+ 1862 0353 6900     		.ascii	"i\000"
+ 1863 0355 01       		.byte	0x1
+ 1864 0356 A201     		.2byte	0x1a2
+ 1865 0358 68000000 		.4byte	0x68
+ 1866 035c 02       		.uleb128 0x2
+ 1867 035d 91       		.byte	0x91
+ 1868 035e 5C       		.sleb128 -36
+ 1869 035f 19       		.uleb128 0x19
+ 1870 0360 7800     		.ascii	"x\000"
+ 1871 0362 01       		.byte	0x1
+ 1872 0363 AF01     		.2byte	0x1af
+ 1873 0365 68000000 		.4byte	0x68
+ 1874 0369 02       		.uleb128 0x2
+ 1875 036a 91       		.byte	0x91
+ 1876 036b 54       		.sleb128 -44
+ 1877 036c 19       		.uleb128 0x19
+ 1878 036d 7900     		.ascii	"y\000"
+ 1879 036f 01       		.byte	0x1
+ 1880 0370 B001     		.2byte	0x1b0
+ 1881 0372 68000000 		.4byte	0x68
+ 1882 0376 02       		.uleb128 0x2
+ 1883 0377 91       		.byte	0x91
+ 1884 0378 50       		.sleb128 -48
+ 1885 0379 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 46
+
+
+ 1886 037a 1C       		.uleb128 0x1c
+ 1887 037b 9B010000 		.4byte	.LASF55
+ 1888 037f 06       		.byte	0x6
+ 1889 0380 2A06     		.2byte	0x62a
+ 1890 0382 86030000 		.4byte	0x386
+ 1891 0386 05       		.uleb128 0x5
+ 1892 0387 76000000 		.4byte	0x76
+ 1893 038b 09       		.uleb128 0x9
+ 1894 038c 81000000 		.4byte	0x81
+ 1895 0390 A7030000 		.4byte	0x3a7
+ 1896 0394 0A       		.uleb128 0xa
+ 1897 0395 BC000000 		.4byte	0xbc
+ 1898 0399 8F       		.byte	0x8f
+ 1899 039a 0A       		.uleb128 0xa
+ 1900 039b BC000000 		.4byte	0xbc
+ 1901 039f 57       		.byte	0x57
+ 1902 03a0 0A       		.uleb128 0xa
+ 1903 03a1 BC000000 		.4byte	0xbc
+ 1904 03a5 03       		.byte	0x3
+ 1905 03a6 00       		.byte	0
+ 1906 03a7 1D       		.uleb128 0x1d
+ 1907 03a8 31030000 		.4byte	.LASF56
+ 1908 03ac 07       		.byte	0x7
+ 1909 03ad 08       		.byte	0x8
+ 1910 03ae 8B030000 		.4byte	0x38b
+ 1911 03b2 05       		.uleb128 0x5
+ 1912 03b3 03       		.byte	0x3
+ 1913 03b4 00000000 		.4byte	Camera_framebuffer
+ 1914 03b8 09       		.uleb128 0x9
+ 1915 03b9 68000000 		.4byte	0x68
+ 1916 03bd C8030000 		.4byte	0x3c8
+ 1917 03c1 0A       		.uleb128 0xa
+ 1918 03c2 BC000000 		.4byte	0xbc
+ 1919 03c6 03       		.byte	0x3
+ 1920 03c7 00       		.byte	0
+ 1921 03c8 1D       		.uleb128 0x1d
+ 1922 03c9 0D020000 		.4byte	.LASF57
+ 1923 03cd 08       		.byte	0x8
+ 1924 03ce 1F       		.byte	0x1f
+ 1925 03cf B8030000 		.4byte	0x3b8
+ 1926 03d3 05       		.uleb128 0x5
+ 1927 03d4 03       		.byte	0x3
+ 1928 03d5 00000000 		.4byte	stack
+ 1929 03d9 1E       		.uleb128 0x1e
+ 1930 03da 57030000 		.4byte	.LASF58
+ 1931 03de 01       		.byte	0x1
+ 1932 03df 21       		.byte	0x21
+ 1933 03e0 B7000000 		.4byte	0xb7
+ 1934 03e4 1E       		.uleb128 0x1e
+ 1935 03e5 F6010000 		.4byte	.LASF59
+ 1936 03e9 01       		.byte	0x1
+ 1937 03ea 25       		.byte	0x25
+ 1938 03eb 97000000 		.4byte	0x97
+ 1939 03ef 1E       		.uleb128 0x1e
+ 1940 03f0 67010000 		.4byte	.LASF60
+ 1941 03f4 01       		.byte	0x1
+ 1942 03f5 26       		.byte	0x26
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 47
+
+
+ 1943 03f6 97000000 		.4byte	0x97
+ 1944 03fa 1E       		.uleb128 0x1e
+ 1945 03fb 47020000 		.4byte	.LASF61
+ 1946 03ff 01       		.byte	0x1
+ 1947 0400 28       		.byte	0x28
+ 1948 0401 97000000 		.4byte	0x97
+ 1949 0405 1E       		.uleb128 0x1e
+ 1950 0406 6C020000 		.4byte	.LASF62
+ 1951 040a 01       		.byte	0x1
+ 1952 040b 29       		.byte	0x29
+ 1953 040c B7000000 		.4byte	0xb7
+ 1954 0410 1E       		.uleb128 0x1e
+ 1955 0411 63000000 		.4byte	.LASF63
+ 1956 0415 01       		.byte	0x1
+ 1957 0416 2A       		.byte	0x2a
+ 1958 0417 97000000 		.4byte	0x97
+ 1959 041b 1D       		.uleb128 0x1d
+ 1960 041c 4C000000 		.4byte	.LASF49
+ 1961 0420 01       		.byte	0x1
+ 1962 0421 2F       		.byte	0x2f
+ 1963 0422 D0000000 		.4byte	0xd0
+ 1964 0426 05       		.uleb128 0x5
+ 1965 0427 03       		.byte	0x3
+ 1966 0428 00000000 		.4byte	outString
+ 1967 042c 00       		.byte	0
+ 1968              		.section	.debug_abbrev,"",%progbits
+ 1969              	.Ldebug_abbrev0:
+ 1970 0000 01       		.uleb128 0x1
+ 1971 0001 11       		.uleb128 0x11
+ 1972 0002 01       		.byte	0x1
+ 1973 0003 25       		.uleb128 0x25
+ 1974 0004 0E       		.uleb128 0xe
+ 1975 0005 13       		.uleb128 0x13
+ 1976 0006 0B       		.uleb128 0xb
+ 1977 0007 03       		.uleb128 0x3
+ 1978 0008 0E       		.uleb128 0xe
+ 1979 0009 1B       		.uleb128 0x1b
+ 1980 000a 0E       		.uleb128 0xe
+ 1981 000b 55       		.uleb128 0x55
+ 1982 000c 17       		.uleb128 0x17
+ 1983 000d 11       		.uleb128 0x11
+ 1984 000e 01       		.uleb128 0x1
+ 1985 000f 10       		.uleb128 0x10
+ 1986 0010 17       		.uleb128 0x17
+ 1987 0011 00       		.byte	0
+ 1988 0012 00       		.byte	0
+ 1989 0013 02       		.uleb128 0x2
+ 1990 0014 24       		.uleb128 0x24
+ 1991 0015 00       		.byte	0
+ 1992 0016 0B       		.uleb128 0xb
+ 1993 0017 0B       		.uleb128 0xb
+ 1994 0018 3E       		.uleb128 0x3e
+ 1995 0019 0B       		.uleb128 0xb
+ 1996 001a 03       		.uleb128 0x3
+ 1997 001b 0E       		.uleb128 0xe
+ 1998 001c 00       		.byte	0
+ 1999 001d 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 48
+
+
+ 2000 001e 03       		.uleb128 0x3
+ 2001 001f 16       		.uleb128 0x16
+ 2002 0020 00       		.byte	0
+ 2003 0021 03       		.uleb128 0x3
+ 2004 0022 0E       		.uleb128 0xe
+ 2005 0023 3A       		.uleb128 0x3a
+ 2006 0024 0B       		.uleb128 0xb
+ 2007 0025 3B       		.uleb128 0x3b
+ 2008 0026 0B       		.uleb128 0xb
+ 2009 0027 49       		.uleb128 0x49
+ 2010 0028 13       		.uleb128 0x13
+ 2011 0029 00       		.byte	0
+ 2012 002a 00       		.byte	0
+ 2013 002b 04       		.uleb128 0x4
+ 2014 002c 24       		.uleb128 0x24
+ 2015 002d 00       		.byte	0
+ 2016 002e 0B       		.uleb128 0xb
+ 2017 002f 0B       		.uleb128 0xb
+ 2018 0030 3E       		.uleb128 0x3e
+ 2019 0031 0B       		.uleb128 0xb
+ 2020 0032 03       		.uleb128 0x3
+ 2021 0033 08       		.uleb128 0x8
+ 2022 0034 00       		.byte	0
+ 2023 0035 00       		.byte	0
+ 2024 0036 05       		.uleb128 0x5
+ 2025 0037 35       		.uleb128 0x35
+ 2026 0038 00       		.byte	0
+ 2027 0039 49       		.uleb128 0x49
+ 2028 003a 13       		.uleb128 0x13
+ 2029 003b 00       		.byte	0
+ 2030 003c 00       		.byte	0
+ 2031 003d 06       		.uleb128 0x6
+ 2032 003e 0F       		.uleb128 0xf
+ 2033 003f 00       		.byte	0
+ 2034 0040 0B       		.uleb128 0xb
+ 2035 0041 0B       		.uleb128 0xb
+ 2036 0042 00       		.byte	0
+ 2037 0043 00       		.byte	0
+ 2038 0044 07       		.uleb128 0x7
+ 2039 0045 0F       		.uleb128 0xf
+ 2040 0046 00       		.byte	0
+ 2041 0047 0B       		.uleb128 0xb
+ 2042 0048 0B       		.uleb128 0xb
+ 2043 0049 49       		.uleb128 0x49
+ 2044 004a 13       		.uleb128 0x13
+ 2045 004b 00       		.byte	0
+ 2046 004c 00       		.byte	0
+ 2047 004d 08       		.uleb128 0x8
+ 2048 004e 26       		.uleb128 0x26
+ 2049 004f 00       		.byte	0
+ 2050 0050 49       		.uleb128 0x49
+ 2051 0051 13       		.uleb128 0x13
+ 2052 0052 00       		.byte	0
+ 2053 0053 00       		.byte	0
+ 2054 0054 09       		.uleb128 0x9
+ 2055 0055 01       		.uleb128 0x1
+ 2056 0056 01       		.byte	0x1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 49
+
+
+ 2057 0057 49       		.uleb128 0x49
+ 2058 0058 13       		.uleb128 0x13
+ 2059 0059 01       		.uleb128 0x1
+ 2060 005a 13       		.uleb128 0x13
+ 2061 005b 00       		.byte	0
+ 2062 005c 00       		.byte	0
+ 2063 005d 0A       		.uleb128 0xa
+ 2064 005e 21       		.uleb128 0x21
+ 2065 005f 00       		.byte	0
+ 2066 0060 49       		.uleb128 0x49
+ 2067 0061 13       		.uleb128 0x13
+ 2068 0062 2F       		.uleb128 0x2f
+ 2069 0063 0B       		.uleb128 0xb
+ 2070 0064 00       		.byte	0
+ 2071 0065 00       		.byte	0
+ 2072 0066 0B       		.uleb128 0xb
+ 2073 0067 13       		.uleb128 0x13
+ 2074 0068 01       		.byte	0x1
+ 2075 0069 03       		.uleb128 0x3
+ 2076 006a 0E       		.uleb128 0xe
+ 2077 006b 0B       		.uleb128 0xb
+ 2078 006c 0B       		.uleb128 0xb
+ 2079 006d 3A       		.uleb128 0x3a
+ 2080 006e 0B       		.uleb128 0xb
+ 2081 006f 3B       		.uleb128 0x3b
+ 2082 0070 0B       		.uleb128 0xb
+ 2083 0071 01       		.uleb128 0x1
+ 2084 0072 13       		.uleb128 0x13
+ 2085 0073 00       		.byte	0
+ 2086 0074 00       		.byte	0
+ 2087 0075 0C       		.uleb128 0xc
+ 2088 0076 0D       		.uleb128 0xd
+ 2089 0077 00       		.byte	0
+ 2090 0078 03       		.uleb128 0x3
+ 2091 0079 0E       		.uleb128 0xe
+ 2092 007a 49       		.uleb128 0x49
+ 2093 007b 13       		.uleb128 0x13
+ 2094 007c 38       		.uleb128 0x38
+ 2095 007d 0B       		.uleb128 0xb
+ 2096 007e 34       		.uleb128 0x34
+ 2097 007f 19       		.uleb128 0x19
+ 2098 0080 00       		.byte	0
+ 2099 0081 00       		.byte	0
+ 2100 0082 0D       		.uleb128 0xd
+ 2101 0083 04       		.uleb128 0x4
+ 2102 0084 01       		.byte	0x1
+ 2103 0085 03       		.uleb128 0x3
+ 2104 0086 0E       		.uleb128 0xe
+ 2105 0087 0B       		.uleb128 0xb
+ 2106 0088 0B       		.uleb128 0xb
+ 2107 0089 3A       		.uleb128 0x3a
+ 2108 008a 0B       		.uleb128 0xb
+ 2109 008b 3B       		.uleb128 0x3b
+ 2110 008c 0B       		.uleb128 0xb
+ 2111 008d 01       		.uleb128 0x1
+ 2112 008e 13       		.uleb128 0x13
+ 2113 008f 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 50
+
+
+ 2114 0090 00       		.byte	0
+ 2115 0091 0E       		.uleb128 0xe
+ 2116 0092 28       		.uleb128 0x28
+ 2117 0093 00       		.byte	0
+ 2118 0094 03       		.uleb128 0x3
+ 2119 0095 0E       		.uleb128 0xe
+ 2120 0096 1C       		.uleb128 0x1c
+ 2121 0097 0D       		.uleb128 0xd
+ 2122 0098 00       		.byte	0
+ 2123 0099 00       		.byte	0
+ 2124 009a 0F       		.uleb128 0xf
+ 2125 009b 2E       		.uleb128 0x2e
+ 2126 009c 01       		.byte	0x1
+ 2127 009d 3F       		.uleb128 0x3f
+ 2128 009e 19       		.uleb128 0x19
+ 2129 009f 03       		.uleb128 0x3
+ 2130 00a0 0E       		.uleb128 0xe
+ 2131 00a1 3A       		.uleb128 0x3a
+ 2132 00a2 0B       		.uleb128 0xb
+ 2133 00a3 3B       		.uleb128 0x3b
+ 2134 00a4 0B       		.uleb128 0xb
+ 2135 00a5 27       		.uleb128 0x27
+ 2136 00a6 19       		.uleb128 0x19
+ 2137 00a7 11       		.uleb128 0x11
+ 2138 00a8 01       		.uleb128 0x1
+ 2139 00a9 12       		.uleb128 0x12
+ 2140 00aa 06       		.uleb128 0x6
+ 2141 00ab 40       		.uleb128 0x40
+ 2142 00ac 18       		.uleb128 0x18
+ 2143 00ad 9642     		.uleb128 0x2116
+ 2144 00af 19       		.uleb128 0x19
+ 2145 00b0 01       		.uleb128 0x1
+ 2146 00b1 13       		.uleb128 0x13
+ 2147 00b2 00       		.byte	0
+ 2148 00b3 00       		.byte	0
+ 2149 00b4 10       		.uleb128 0x10
+ 2150 00b5 05       		.uleb128 0x5
+ 2151 00b6 00       		.byte	0
+ 2152 00b7 03       		.uleb128 0x3
+ 2153 00b8 08       		.uleb128 0x8
+ 2154 00b9 3A       		.uleb128 0x3a
+ 2155 00ba 0B       		.uleb128 0xb
+ 2156 00bb 3B       		.uleb128 0x3b
+ 2157 00bc 0B       		.uleb128 0xb
+ 2158 00bd 49       		.uleb128 0x49
+ 2159 00be 13       		.uleb128 0x13
+ 2160 00bf 02       		.uleb128 0x2
+ 2161 00c0 18       		.uleb128 0x18
+ 2162 00c1 00       		.byte	0
+ 2163 00c2 00       		.byte	0
+ 2164 00c3 11       		.uleb128 0x11
+ 2165 00c4 18       		.uleb128 0x18
+ 2166 00c5 00       		.byte	0
+ 2167 00c6 00       		.byte	0
+ 2168 00c7 00       		.byte	0
+ 2169 00c8 12       		.uleb128 0x12
+ 2170 00c9 34       		.uleb128 0x34
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 51
+
+
+ 2171 00ca 00       		.byte	0
+ 2172 00cb 03       		.uleb128 0x3
+ 2173 00cc 0E       		.uleb128 0xe
+ 2174 00cd 3A       		.uleb128 0x3a
+ 2175 00ce 0B       		.uleb128 0xb
+ 2176 00cf 3B       		.uleb128 0x3b
+ 2177 00d0 0B       		.uleb128 0xb
+ 2178 00d1 49       		.uleb128 0x49
+ 2179 00d2 13       		.uleb128 0x13
+ 2180 00d3 02       		.uleb128 0x2
+ 2181 00d4 18       		.uleb128 0x18
+ 2182 00d5 00       		.byte	0
+ 2183 00d6 00       		.byte	0
+ 2184 00d7 13       		.uleb128 0x13
+ 2185 00d8 2E       		.uleb128 0x2e
+ 2186 00d9 01       		.byte	0x1
+ 2187 00da 3F       		.uleb128 0x3f
+ 2188 00db 19       		.uleb128 0x19
+ 2189 00dc 03       		.uleb128 0x3
+ 2190 00dd 0E       		.uleb128 0xe
+ 2191 00de 3A       		.uleb128 0x3a
+ 2192 00df 0B       		.uleb128 0xb
+ 2193 00e0 3B       		.uleb128 0x3b
+ 2194 00e1 0B       		.uleb128 0xb
+ 2195 00e2 27       		.uleb128 0x27
+ 2196 00e3 19       		.uleb128 0x19
+ 2197 00e4 49       		.uleb128 0x49
+ 2198 00e5 13       		.uleb128 0x13
+ 2199 00e6 11       		.uleb128 0x11
+ 2200 00e7 01       		.uleb128 0x1
+ 2201 00e8 12       		.uleb128 0x12
+ 2202 00e9 06       		.uleb128 0x6
+ 2203 00ea 40       		.uleb128 0x40
+ 2204 00eb 18       		.uleb128 0x18
+ 2205 00ec 9742     		.uleb128 0x2117
+ 2206 00ee 19       		.uleb128 0x19
+ 2207 00ef 01       		.uleb128 0x1
+ 2208 00f0 13       		.uleb128 0x13
+ 2209 00f1 00       		.byte	0
+ 2210 00f2 00       		.byte	0
+ 2211 00f3 14       		.uleb128 0x14
+ 2212 00f4 05       		.uleb128 0x5
+ 2213 00f5 00       		.byte	0
+ 2214 00f6 03       		.uleb128 0x3
+ 2215 00f7 0E       		.uleb128 0xe
+ 2216 00f8 3A       		.uleb128 0x3a
+ 2217 00f9 0B       		.uleb128 0xb
+ 2218 00fa 3B       		.uleb128 0x3b
+ 2219 00fb 0B       		.uleb128 0xb
+ 2220 00fc 49       		.uleb128 0x49
+ 2221 00fd 13       		.uleb128 0x13
+ 2222 00fe 02       		.uleb128 0x2
+ 2223 00ff 18       		.uleb128 0x18
+ 2224 0100 00       		.byte	0
+ 2225 0101 00       		.byte	0
+ 2226 0102 15       		.uleb128 0x15
+ 2227 0103 2E       		.uleb128 0x2e
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 52
+
+
+ 2228 0104 01       		.byte	0x1
+ 2229 0105 3F       		.uleb128 0x3f
+ 2230 0106 19       		.uleb128 0x19
+ 2231 0107 03       		.uleb128 0x3
+ 2232 0108 0E       		.uleb128 0xe
+ 2233 0109 3A       		.uleb128 0x3a
+ 2234 010a 0B       		.uleb128 0xb
+ 2235 010b 3B       		.uleb128 0x3b
+ 2236 010c 0B       		.uleb128 0xb
+ 2237 010d 49       		.uleb128 0x49
+ 2238 010e 13       		.uleb128 0x13
+ 2239 010f 11       		.uleb128 0x11
+ 2240 0110 01       		.uleb128 0x1
+ 2241 0111 12       		.uleb128 0x12
+ 2242 0112 06       		.uleb128 0x6
+ 2243 0113 40       		.uleb128 0x40
+ 2244 0114 18       		.uleb128 0x18
+ 2245 0115 9642     		.uleb128 0x2116
+ 2246 0117 19       		.uleb128 0x19
+ 2247 0118 01       		.uleb128 0x1
+ 2248 0119 13       		.uleb128 0x13
+ 2249 011a 00       		.byte	0
+ 2250 011b 00       		.byte	0
+ 2251 011c 16       		.uleb128 0x16
+ 2252 011d 0B       		.uleb128 0xb
+ 2253 011e 01       		.byte	0x1
+ 2254 011f 11       		.uleb128 0x11
+ 2255 0120 01       		.uleb128 0x1
+ 2256 0121 12       		.uleb128 0x12
+ 2257 0122 06       		.uleb128 0x6
+ 2258 0123 00       		.byte	0
+ 2259 0124 00       		.byte	0
+ 2260 0125 17       		.uleb128 0x17
+ 2261 0126 34       		.uleb128 0x34
+ 2262 0127 00       		.byte	0
+ 2263 0128 03       		.uleb128 0x3
+ 2264 0129 08       		.uleb128 0x8
+ 2265 012a 3A       		.uleb128 0x3a
+ 2266 012b 0B       		.uleb128 0xb
+ 2267 012c 3B       		.uleb128 0x3b
+ 2268 012d 0B       		.uleb128 0xb
+ 2269 012e 49       		.uleb128 0x49
+ 2270 012f 13       		.uleb128 0x13
+ 2271 0130 02       		.uleb128 0x2
+ 2272 0131 18       		.uleb128 0x18
+ 2273 0132 00       		.byte	0
+ 2274 0133 00       		.byte	0
+ 2275 0134 18       		.uleb128 0x18
+ 2276 0135 0B       		.uleb128 0xb
+ 2277 0136 01       		.byte	0x1
+ 2278 0137 11       		.uleb128 0x11
+ 2279 0138 01       		.uleb128 0x1
+ 2280 0139 12       		.uleb128 0x12
+ 2281 013a 06       		.uleb128 0x6
+ 2282 013b 01       		.uleb128 0x1
+ 2283 013c 13       		.uleb128 0x13
+ 2284 013d 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 53
+
+
+ 2285 013e 00       		.byte	0
+ 2286 013f 19       		.uleb128 0x19
+ 2287 0140 34       		.uleb128 0x34
+ 2288 0141 00       		.byte	0
+ 2289 0142 03       		.uleb128 0x3
+ 2290 0143 08       		.uleb128 0x8
+ 2291 0144 3A       		.uleb128 0x3a
+ 2292 0145 0B       		.uleb128 0xb
+ 2293 0146 3B       		.uleb128 0x3b
+ 2294 0147 05       		.uleb128 0x5
+ 2295 0148 49       		.uleb128 0x49
+ 2296 0149 13       		.uleb128 0x13
+ 2297 014a 02       		.uleb128 0x2
+ 2298 014b 18       		.uleb128 0x18
+ 2299 014c 00       		.byte	0
+ 2300 014d 00       		.byte	0
+ 2301 014e 1A       		.uleb128 0x1a
+ 2302 014f 34       		.uleb128 0x34
+ 2303 0150 00       		.byte	0
+ 2304 0151 03       		.uleb128 0x3
+ 2305 0152 0E       		.uleb128 0xe
+ 2306 0153 3A       		.uleb128 0x3a
+ 2307 0154 0B       		.uleb128 0xb
+ 2308 0155 3B       		.uleb128 0x3b
+ 2309 0156 05       		.uleb128 0x5
+ 2310 0157 49       		.uleb128 0x49
+ 2311 0158 13       		.uleb128 0x13
+ 2312 0159 02       		.uleb128 0x2
+ 2313 015a 18       		.uleb128 0x18
+ 2314 015b 00       		.byte	0
+ 2315 015c 00       		.byte	0
+ 2316 015d 1B       		.uleb128 0x1b
+ 2317 015e 2E       		.uleb128 0x2e
+ 2318 015f 01       		.byte	0x1
+ 2319 0160 3F       		.uleb128 0x3f
+ 2320 0161 19       		.uleb128 0x19
+ 2321 0162 03       		.uleb128 0x3
+ 2322 0163 0E       		.uleb128 0xe
+ 2323 0164 3A       		.uleb128 0x3a
+ 2324 0165 0B       		.uleb128 0xb
+ 2325 0166 3B       		.uleb128 0x3b
+ 2326 0167 05       		.uleb128 0x5
+ 2327 0168 11       		.uleb128 0x11
+ 2328 0169 01       		.uleb128 0x1
+ 2329 016a 12       		.uleb128 0x12
+ 2330 016b 06       		.uleb128 0x6
+ 2331 016c 40       		.uleb128 0x40
+ 2332 016d 18       		.uleb128 0x18
+ 2333 016e 9642     		.uleb128 0x2116
+ 2334 0170 19       		.uleb128 0x19
+ 2335 0171 01       		.uleb128 0x1
+ 2336 0172 13       		.uleb128 0x13
+ 2337 0173 00       		.byte	0
+ 2338 0174 00       		.byte	0
+ 2339 0175 1C       		.uleb128 0x1c
+ 2340 0176 34       		.uleb128 0x34
+ 2341 0177 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 54
+
+
+ 2342 0178 03       		.uleb128 0x3
+ 2343 0179 0E       		.uleb128 0xe
+ 2344 017a 3A       		.uleb128 0x3a
+ 2345 017b 0B       		.uleb128 0xb
+ 2346 017c 3B       		.uleb128 0x3b
+ 2347 017d 05       		.uleb128 0x5
+ 2348 017e 49       		.uleb128 0x49
+ 2349 017f 13       		.uleb128 0x13
+ 2350 0180 3F       		.uleb128 0x3f
+ 2351 0181 19       		.uleb128 0x19
+ 2352 0182 3C       		.uleb128 0x3c
+ 2353 0183 19       		.uleb128 0x19
+ 2354 0184 00       		.byte	0
+ 2355 0185 00       		.byte	0
+ 2356 0186 1D       		.uleb128 0x1d
+ 2357 0187 34       		.uleb128 0x34
+ 2358 0188 00       		.byte	0
+ 2359 0189 03       		.uleb128 0x3
+ 2360 018a 0E       		.uleb128 0xe
+ 2361 018b 3A       		.uleb128 0x3a
+ 2362 018c 0B       		.uleb128 0xb
+ 2363 018d 3B       		.uleb128 0x3b
+ 2364 018e 0B       		.uleb128 0xb
+ 2365 018f 49       		.uleb128 0x49
+ 2366 0190 13       		.uleb128 0x13
+ 2367 0191 3F       		.uleb128 0x3f
+ 2368 0192 19       		.uleb128 0x19
+ 2369 0193 02       		.uleb128 0x2
+ 2370 0194 18       		.uleb128 0x18
+ 2371 0195 00       		.byte	0
+ 2372 0196 00       		.byte	0
+ 2373 0197 1E       		.uleb128 0x1e
+ 2374 0198 34       		.uleb128 0x34
+ 2375 0199 00       		.byte	0
+ 2376 019a 03       		.uleb128 0x3
+ 2377 019b 0E       		.uleb128 0xe
+ 2378 019c 3A       		.uleb128 0x3a
+ 2379 019d 0B       		.uleb128 0xb
+ 2380 019e 3B       		.uleb128 0x3b
+ 2381 019f 0B       		.uleb128 0xb
+ 2382 01a0 49       		.uleb128 0x49
+ 2383 01a1 13       		.uleb128 0x13
+ 2384 01a2 3F       		.uleb128 0x3f
+ 2385 01a3 19       		.uleb128 0x19
+ 2386 01a4 3C       		.uleb128 0x3c
+ 2387 01a5 19       		.uleb128 0x19
+ 2388 01a6 00       		.byte	0
+ 2389 01a7 00       		.byte	0
+ 2390 01a8 00       		.byte	0
+ 2391              		.section	.debug_aranges,"",%progbits
+ 2392 0000 34000000 		.4byte	0x34
+ 2393 0004 0200     		.2byte	0x2
+ 2394 0006 00000000 		.4byte	.Ldebug_info0
+ 2395 000a 04       		.byte	0x4
+ 2396 000b 00       		.byte	0
+ 2397 000c 0000     		.2byte	0
+ 2398 000e 0000     		.2byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 55
+
+
+ 2399 0010 00000000 		.4byte	.LFB63
+ 2400 0014 4A000000 		.4byte	.LFE63-.LFB63
+ 2401 0018 00000000 		.4byte	.LFB64
+ 2402 001c 2E000000 		.4byte	.LFE64-.LFB64
+ 2403 0020 00000000 		.4byte	.LFB65
+ 2404 0024 58070000 		.4byte	.LFE65-.LFB65
+ 2405 0028 00000000 		.4byte	.LFB66
+ 2406 002c CC010000 		.4byte	.LFE66-.LFB66
+ 2407 0030 00000000 		.4byte	0
+ 2408 0034 00000000 		.4byte	0
+ 2409              		.section	.debug_ranges,"",%progbits
+ 2410              	.Ldebug_ranges0:
+ 2411 0000 00000000 		.4byte	.LFB63
+ 2412 0004 4A000000 		.4byte	.LFE63
+ 2413 0008 00000000 		.4byte	.LFB64
+ 2414 000c 2E000000 		.4byte	.LFE64
+ 2415 0010 00000000 		.4byte	.LFB65
+ 2416 0014 58070000 		.4byte	.LFE65
+ 2417 0018 00000000 		.4byte	.LFB66
+ 2418 001c CC010000 		.4byte	.LFE66
+ 2419 0020 00000000 		.4byte	0
+ 2420 0024 00000000 		.4byte	0
+ 2421              		.section	.debug_line,"",%progbits
+ 2422              	.Ldebug_line0:
+ 2423 0000 D9030000 		.section	.debug_str,"MS",%progbits,1
+ 2423      02000002 
+ 2423      00000201 
+ 2423      FB0E0D00 
+ 2423      01010101 
+ 2424              	.LASF23:
+ 2425 0000 535F4C45 		.ascii	"S_LEFT_BASE\000"
+ 2425      46545F42 
+ 2425      41534500 
+ 2426              	.LASF40:
+ 2427 000c 75707065 		.ascii	"upper\000"
+ 2427      7200
+ 2428              	.LASF44:
+ 2429 0012 73746174 		.ascii	"state\000"
+ 2429      6500
+ 2430              	.LASF51:
+ 2431 0018 78484947 		.ascii	"xHIGH\000"
+ 2431      4800
+ 2432              	.LASF2:
+ 2433 001e 73686F72 		.ascii	"short int\000"
+ 2433      7420696E 
+ 2433      7400
+ 2434              	.LASF32:
+ 2435 0028 535F474F 		.ascii	"S_GOING_HOME_RIGHT_IR\000"
+ 2435      494E475F 
+ 2435      484F4D45 
+ 2435      5F524947 
+ 2435      48545F49 
+ 2436              	.LASF17:
+ 2437 003e 73697A65 		.ascii	"sizetype\000"
+ 2437      74797065 
+ 2437      00
+ 2438              	.LASF42:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 56
+
+
+ 2439 0047 6D61696E 		.ascii	"main\000"
+ 2439      00
+ 2440              	.LASF49:
+ 2441 004c 6F757453 		.ascii	"outString\000"
+ 2441      7472696E 
+ 2441      6700
+ 2442              	.LASF54:
+ 2443 0056 794C4F57 		.ascii	"yLOW\000"
+ 2443      00
+ 2444              	.LASF19:
+ 2445 005b 76615F6C 		.ascii	"va_list\000"
+ 2445      69737400 
+ 2446              	.LASF63:
+ 2447 0063 6F726967 		.ascii	"original_compass_heading\000"
+ 2447      696E616C 
+ 2447      5F636F6D 
+ 2447      70617373 
+ 2447      5F686561 
+ 2448              	.LASF46:
+ 2449 007c 6E656172 		.ascii	"near_base\000"
+ 2449      5F626173 
+ 2449      6500
+ 2450              	.LASF64:
+ 2451 0086 474E5520 		.ascii	"GNU C 4.8.4 20140526 (release) [ARM/embedded-4_8-br"
+ 2451      4320342E 
+ 2451      382E3420 
+ 2451      32303134 
+ 2451      30353236 
+ 2452 00b9 616E6368 		.ascii	"anch revision 211358] -mcpu=cortex-m3 -mthumb -g -O"
+ 2452      20726576 
+ 2452      6973696F 
+ 2452      6E203231 
+ 2452      31333538 
+ 2453 00ec 30202D66 		.ascii	"0 -ffunction-sections\000"
+ 2453      66756E63 
+ 2453      74696F6E 
+ 2453      2D736563 
+ 2453      74696F6E 
+ 2454              	.LASF12:
+ 2455 0102 75696E74 		.ascii	"uint16\000"
+ 2455      313600
+ 2456              	.LASF13:
+ 2457 0109 696E7431 		.ascii	"int16\000"
+ 2457      3600
+ 2458              	.LASF11:
+ 2459 010f 75696E74 		.ascii	"uint8\000"
+ 2459      3800
+ 2460              	.LASF50:
+ 2461 0115 74726961 		.ascii	"trials\000"
+ 2461      6C7300
+ 2462              	.LASF14:
+ 2463 011c 666C6F61 		.ascii	"float\000"
+ 2463      7400
+ 2464              	.LASF22:
+ 2465 0122 535F4C45 		.ascii	"S_LEAVE_BASE\000"
+ 2465      4156455F 
+ 2465      42415345 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 57
+
+
+ 2465      00
+ 2466              	.LASF39:
+ 2467 012f 6C6F7765 		.ascii	"lower\000"
+ 2467      7200
+ 2468              	.LASF6:
+ 2469 0135 6C6F6E67 		.ascii	"long long int\000"
+ 2469      206C6F6E 
+ 2469      6720696E 
+ 2469      7400
+ 2470              	.LASF27:
+ 2471 0143 535F474F 		.ascii	"S_GOT_HOME\000"
+ 2471      545F484F 
+ 2471      4D4500
+ 2472              	.LASF69:
+ 2473 014e 53746174 		.ascii	"State\000"
+ 2473      6500
+ 2474              	.LASF4:
+ 2475 0154 6C6F6E67 		.ascii	"long int\000"
+ 2475      20696E74 
+ 2475      00
+ 2476              	.LASF67:
+ 2477 015d 5F5F7661 		.ascii	"__va_list\000"
+ 2477      5F6C6973 
+ 2477      7400
+ 2478              	.LASF60:
+ 2479 0167 636F6D70 		.ascii	"compass_y\000"
+ 2479      6173735F 
+ 2479      7900
+ 2480              	.LASF25:
+ 2481 0171 535F474F 		.ascii	"S_GO_HOME\000"
+ 2481      5F484F4D 
+ 2481      4500
+ 2482              	.LASF53:
+ 2483 017b 79484947 		.ascii	"yHIGH\000"
+ 2483      4800
+ 2484              	.LASF20:
+ 2485 0181 6C6F6E67 		.ascii	"long double\000"
+ 2485      20646F75 
+ 2485      626C6500 
+ 2486              	.LASF1:
+ 2487 018d 756E7369 		.ascii	"unsigned char\000"
+ 2487      676E6564 
+ 2487      20636861 
+ 2487      7200
+ 2488              	.LASF55:
+ 2489 019b 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 2489      52784275 
+ 2489      66666572 
+ 2489      00
+ 2490              	.LASF0:
+ 2491 01a8 7369676E 		.ascii	"signed char\000"
+ 2491      65642063 
+ 2491      68617200 
+ 2492              	.LASF10:
+ 2493 01b4 696E7433 		.ascii	"int32_t\000"
+ 2493      325F7400 
+ 2494              	.LASF7:
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 58
+
+
+ 2495 01bc 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2495      206C6F6E 
+ 2495      6720756E 
+ 2495      7369676E 
+ 2495      65642069 
+ 2496              	.LASF24:
+ 2497 01d3 535F4649 		.ascii	"S_FIND_PUCK\000"
+ 2497      4E445F50 
+ 2497      55434B00 
+ 2498              	.LASF30:
+ 2499 01df 535F474F 		.ascii	"S_GOING_HOME_CENTER_IR\000"
+ 2499      494E475F 
+ 2499      484F4D45 
+ 2499      5F43454E 
+ 2499      5445525F 
+ 2500              	.LASF59:
+ 2501 01f6 636F6D70 		.ascii	"compass_x\000"
+ 2501      6173735F 
+ 2501      7800
+ 2502              	.LASF8:
+ 2503 0200 756E7369 		.ascii	"unsigned int\000"
+ 2503      676E6564 
+ 2503      20696E74 
+ 2503      00
+ 2504              	.LASF57:
+ 2505 020d 73746163 		.ascii	"stack\000"
+ 2505      6B00
+ 2506              	.LASF38:
+ 2507 0213 61726773 		.ascii	"args\000"
+ 2507      00
+ 2508              	.LASF3:
+ 2509 0218 73686F72 		.ascii	"short unsigned int\000"
+ 2509      7420756E 
+ 2509      7369676E 
+ 2509      65642069 
+ 2509      6E7400
+ 2510              	.LASF68:
+ 2511 022b 5F5F6170 		.ascii	"__ap\000"
+ 2511      00
+ 2512              	.LASF16:
+ 2513 0230 63686172 		.ascii	"char\000"
+ 2513      00
+ 2514              	.LASF71:
+ 2515 0235 63616C69 		.ascii	"calibrate_compass\000"
+ 2515      62726174 
+ 2515      655F636F 
+ 2515      6D706173 
+ 2515      7300
+ 2516              	.LASF61:
+ 2517 0247 636F6D70 		.ascii	"compass_heading\000"
+ 2517      6173735F 
+ 2517      68656164 
+ 2517      696E6700 
+ 2518              	.LASF33:
+ 2519 0257 535F4E45 		.ascii	"S_NEAR_HOME_FIND_100\000"
+ 2519      41525F48 
+ 2519      4F4D455F 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 59
+
+
+ 2519      46494E44 
+ 2519      5F313030 
+ 2520              	.LASF62:
+ 2521 026c 636F6D70 		.ascii	"compass_ready\000"
+ 2521      6173735F 
+ 2521      72656164 
+ 2521      7900
+ 2522              	.LASF26:
+ 2523 027a 535F4641 		.ascii	"S_FACE_HOME\000"
+ 2523      43455F48 
+ 2523      4F4D4500 
+ 2524              	.LASF28:
+ 2525 0286 535F494E 		.ascii	"S_IN_CORNER\000"
+ 2525      5F434F52 
+ 2525      4E455200 
+ 2526              	.LASF37:
+ 2527 0292 62756666 		.ascii	"buffer\000"
+ 2527      657200
+ 2528              	.LASF5:
+ 2529 0299 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2529      20756E73 
+ 2529      69676E65 
+ 2529      6420696E 
+ 2529      7400
+ 2530              	.LASF31:
+ 2531 02ab 535F474F 		.ascii	"S_GOING_HOME_LEFT_IR\000"
+ 2531      494E475F 
+ 2531      484F4D45 
+ 2531      5F4C4546 
+ 2531      545F4952 
+ 2532              	.LASF15:
+ 2533 02c0 646F7562 		.ascii	"double\000"
+ 2533      6C6500
+ 2534              	.LASF45:
+ 2535 02c7 7075636B 		.ascii	"pucks_gotten\000"
+ 2535      735F676F 
+ 2535      7474656E 
+ 2535      00
+ 2536              	.LASF52:
+ 2537 02d4 784C4F57 		.ascii	"xLOW\000"
+ 2537      00
+ 2538              	.LASF34:
+ 2539 02d9 535F4E45 		.ascii	"S_NEAR_HOME_FIND_60\000"
+ 2539      41525F48 
+ 2539      4F4D455F 
+ 2539      46494E44 
+ 2539      5F363000 
+ 2540              	.LASF43:
+ 2541 02ed 69725F72 		.ascii	"ir_result\000"
+ 2541      6573756C 
+ 2541      7400
+ 2542              	.LASF65:
+ 2543 02f7 2E5C6D61 		.ascii	".\\main.c\000"
+ 2543      696E2E63 
+ 2543      00
+ 2544              	.LASF9:
+ 2545 0300 5F5F696E 		.ascii	"__int32_t\000"
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 60
+
+
+ 2545      7433325F 
+ 2545      7400
+ 2546              	.LASF41:
+ 2547 030a 7072696E 		.ascii	"print\000"
+ 2547      7400
+ 2548              	.LASF48:
+ 2549 0310 6F6E5F73 		.ascii	"on_stack\000"
+ 2549      7461636B 
+ 2549      00
+ 2550              	.LASF18:
+ 2551 0319 5F5F676E 		.ascii	"__gnuc_va_list\000"
+ 2551      75635F76 
+ 2551      615F6C69 
+ 2551      737400
+ 2552              	.LASF47:
+ 2553 0328 676F6F64 		.ascii	"good_val\000"
+ 2553      5F76616C 
+ 2553      00
+ 2554              	.LASF56:
+ 2555 0331 43616D65 		.ascii	"Camera_framebuffer\000"
+ 2555      72615F66 
+ 2555      72616D65 
+ 2555      62756666 
+ 2555      657200
+ 2556              	.LASF35:
+ 2557 0344 535F4345 		.ascii	"S_CENTERED_ON_BASE\000"
+ 2557      4E544552 
+ 2557      45445F4F 
+ 2557      4E5F4241 
+ 2557      534500
+ 2558              	.LASF58:
+ 2559 0357 62757430 		.ascii	"but0_b\000"
+ 2559      5F6200
+ 2560              	.LASF36:
+ 2561 035e 535F504C 		.ascii	"S_PLACE_PUCK\000"
+ 2561      4143455F 
+ 2561      5055434B 
+ 2561      00
+ 2562              	.LASF70:
+ 2563 036b 77697468 		.ascii	"within_range\000"
+ 2563      696E5F72 
+ 2563      616E6765 
+ 2563      00
+ 2564              	.LASF66:
+ 2565 0378 433A5C55 		.ascii	"C:\\Users\\xavieran\\Desktop\\ECE3091\\PSOCProjects"
+ 2565      73657273 
+ 2565      5C786176 
+ 2565      69657261 
+ 2565      6E5C4465 
+ 2566 03a6 5C454E47 		.ascii	"\\ENG3091_MandM\\camera_test.cydsn\000"
+ 2566      33303931 
+ 2566      5F4D616E 
+ 2566      644D5C63 
+ 2566      616D6572 
+ 2567              	.LASF29:
+ 2568 03c7 535F474F 		.ascii	"S_GOING_HOME_INVALID_IR\000"
+ 2568      494E475F 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccgX6TjG.s 			page 61
+
+
+ 2568      484F4D45 
+ 2568      5F494E56 
+ 2568      414C4944 
+ 2569              	.LASF21:
+ 2570 03df 535F5354 		.ascii	"S_START\000"
+ 2570      41525400 
+ 2571              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.8.4 20140526 (release) [ARM/embedded-4_8-br

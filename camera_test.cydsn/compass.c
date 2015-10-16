@@ -47,8 +47,8 @@ int16 original_compass_heading; //this makes our compass relative
 //AT THE LAB/ARENA
 //#define CALIBRATION_X 25
 //#define CALIBRATION_Y -25
-#define CALIBRATION_X 15
-#define CALIBRATION_Y -150
+#define CALIBRATION_X 11
+#define CALIBRATION_Y -228
 CY_ISR(DRDY_INTERRUPT){
     compass_ready = 1;
     Compass_DRDY_ISR_ClearPending();

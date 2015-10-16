@@ -50,6 +50,14 @@ void rotate_right(int speed);
 int16 abs2(int16 val);
 
 
+int my6abs(x){
+    if (x < 0){
+        return -x;
+    } else {
+        return x;
+    }
+}
+
 uint8 clip(int lower, int var, int upper){
     if (var > upper){
         return upper;
@@ -74,17 +82,17 @@ int control_heading(){
     int heading_error = desired_heading - compass_heading;
     // If the error is greater than 180, there is a shorter way around the unit 
     // circle, this corrects that
-    if (abs(heading_error) > 180){ 
+    if (my6abs(heading_error) > 180){
         heading_error = -(desired_heading - (360 - compass_heading));
     }
     // We need to correct the heading if the error is greater than 
-    if (abs(heading_error) > HEADING_ERROR_LIMIT){ 
+    if (my6abs(heading_error) > HEADING_ERROR_LIMIT){ 
         currently_rotating = 1;
         // the actual heading is greater than the desired heading
         if (heading_error < 0){ 
-            rotate_right(clip(STALL_SPEED, abs(heading_error)*2, MAX_SPEED));
+            rotate_right(clip(STALL_SPEED, my6abs(heading_error)*2, MAX_SPEED));
         } else {
-            rotate_left(clip(STALL_SPEED, abs(heading_error)*2, MAX_SPEED));
+            rotate_left(clip(STALL_SPEED, my6abs(heading_error)*2, MAX_SPEED));
         }
         
         return MEND_S_ROTATING;
