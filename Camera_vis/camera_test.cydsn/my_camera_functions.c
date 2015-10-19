@@ -1,3 +1,4 @@
+
 /* ========================================
  *
  * Copyright YOUR COMPANY, THE YEAR
@@ -12,24 +13,29 @@
 #include <project.h>
 #include <my_camera_functions.h>
 #include <blob_stats.h>
+#include <arm.h>
 #include <stdio.h>
 
-uint8 RED_U= 122;//116;
-uint8 RED_V= 150;//140;//162;
-uint8 GREEN_U= 130;//128;
+uint8 RED_U= 126;//116;
+uint8 RED_V= 152;//140;//162;
+uint8 GREEN_U= 120;//128;
 uint8 GREEN_V= 120;//102;
-uint8 BLUE_U= 135;//138;//162;
-uint8 BLUE_V= 120;//124;//116;
+uint8 BLUE_U= 129;//138;//162;
+uint8 BLUE_V= 123;//124;//116;
+uint8 GAIN = 34;
+uint8 B_GAIN = 139;
+uint8 R_GAIN = 139;
+uint8 EXPOSURE = 60;
 
-int connected = 4;
 extern blob *blobs;
+int connected = 4;
 
 void init_camera()
 {
 	Camera_Start();
     LCD_ClearDisplay();
     LCD_PosPrintString(0,0,"Camera Actualy");
-    Camera_WriteReg(0x1E,0b00000000); //Flip Image
+    Camera_WriteReg(0x1E,0b00010000); //Flip Image
     Camera_WriteReg(0x13,0b11100111); //Enable Auto Gain, WB, Exposure
     Camera_SyncFrame();
     LCD_PosPrintString(0,0,"Frame Sync Done");
@@ -38,13 +44,10 @@ void init_camera()
 	Camera_SyncFrame(); //wait until frame is fully captured before sending out over USB
     Camera_WriteReg(0x13,0b11100000);
     //Gain and exposure settigs
-    //B80,R170,G5
-    //a!105, 165, G6
-    //A2 G1
-    Camera_WriteReg(0x00, 1);
-    Camera_WriteReg(0x01, 85);
-    Camera_WriteReg(0x02, 150);
-    Camera_WriteReg(0x10,30);
+    Camera_WriteReg(0x00, GAIN);
+    Camera_WriteReg(0x01, B_GAIN);
+    Camera_WriteReg(0x02, R_GAIN);
+    Camera_WriteReg(0x10,EXPOSURE);
 	Camera_WriteReg(0x3F,0b00101111); // Edge Enhancement Factor and Threshold
     Camera_WriteReg(0x3E,0b00000011); // Edge Enhancement Control
     Camera_WriteReg(0x8C,0b10100000); // Denoise
@@ -70,34 +73,21 @@ void capture_thresh_image()
     blob_detect();
 }
 
-
-    //Gain and exposure settigs
-    //B80,R170,G5
-    //a!105, 165, G6
-    //A2 G1
 void set_gain_exposure(int setting)
 {
 	switch(setting)
 	{
 		case 1:
 			// Settings for Instructions
-			Camera_WriteReg(0x00,80);
-            Camera_WriteReg(0x01, 170);
-			Camera_WriteReg(0x10, 5);
+			Camera_WriteReg(0x00, GAIN); //g
+            Camera_WriteReg(0x01, B_GAIN);//BG
+            Camera_WriteReg(0x02, R_GAIN);//RG
+			Camera_WriteReg(0x10, EXPOSURE);//exposure
 			break;
-		default:
-		case 2:
-			// Settings for arena 1
-			Camera_WriteReg(0x00,105);
-            Camera_WriteReg(0x01, 165);
-			Camera_WriteReg(0x10, 6);
-			break;
-		case 3:
-			// Settings for arena 2
-			Camera_WriteReg(0x00,105);
-            Camera_WriteReg(0x01, 165);
-			Camera_WriteReg(0x10, 1);
-			break;
+        case 2:
+            Camera_WriteReg(0x00, 60); // Gain
+            Camera_WriteReg(0x10, 80); // Exposure
+            
 	}
 }
 
@@ -118,7 +108,7 @@ void threshold_image()
 {
 	uint8 locals[8];
 	uint8 colours[4];
-	uint8 pixel;
+    int pixel;
     int y, x, i;
     
     
@@ -282,13 +272,34 @@ void threshold_black()
 	}
 }
 
+void read_instruction_routine()
+{
+    arm_set_level(0);
+    CyDelay(100);
+    stack[0] = instruction_read();
+    arm_set_level(1);
+    CyDelay(100);
+    stack[1] = instruction_read();
+    arm_set_level(2);
+    CyDelay(100);
+    stack[2] = instruction_read();
+    arm_set_level(3);
+    CyDelay(100);
+    stack[3] = instruction_read();
+    char RGB[] = {'K','R','G','B'};
+    char display[20];
+    sprintf(display,"1:%c 2:%c 3:%c 4:%c",RGB[stack[0]],RGB[stack[1]],RGB[stack[2]],RGB[stack[3]]);
+    LCD_ClearDisplay();
+    LCD_PosPrintString(0,0,display);
+}
+
 
 void image_stuff4()
 {
     int x, i;
     char j,k,l,display[2][20],RGB[]="KRGB";
     //capture_thresh_image();
-    x = to_nearest_blob(BLUE,30,12, 40);
+    x = to_nearest_blob(BLUE,30,1,44);
     if(x < -2)
     {
         j = 'L';
@@ -302,7 +313,7 @@ void image_stuff4()
         j = 'N';
     }
     else{j = 'C';}
-    x = to_nearest_blob(RED,30,12,40);
+    x = to_nearest_blob(RED,30,12,44);
     if(x < -2)
     {
         k = 'L';
@@ -316,7 +327,7 @@ void image_stuff4()
         k = 'N';
     }
     else{k = 'C';}
-    x = to_nearest_blob(GREEN,30,12,40);
+    x = to_nearest_blob(GREEN,30,12,44);
     if(x < -2)
     {
         l = 'L';
@@ -330,10 +341,59 @@ void image_stuff4()
         l = 'N';
     }
     else{l = 'C';}
-    //sprintf(display[0],"#:%d R:%d G:%d B:%d",blob_count(0,30),blob_count(1,30),blob_count(2,30),blob_count(3,30));
-    //sprintf(display[1],"BC:%c R:%c G:%c B:%c",RGB[blobs[0].colour],k,l,j);
+    sprintf(display[0],"#:%d R:%d G:%d B:%d",blob_count(0),blob_count(1),blob_count(2),blob_count(3));
+    sprintf(display[1],"BC:%c R:%c G:%c B:%c",RGB[blobs[0].colour],k,l,j);
     LCD_ClearDisplay();
     LCD_PosPrintString(0,0,display[0]);
     LCD_PosPrintString(1,0,display[1]);
 }
+     
+     
+    void read_instructions()
+    {
+        int stacks[10][4];
+        int i,j,r,g,b;
+        char RGB[] = "KRGB";
+        char disp[2][20];
+        for(j = 0; j < 10; j++)
+        {
+            capture_thresh_image();
+            for(i = 0; i < 4; i++)
+            {
+                stacks[j][i] = get_blob(i,500);
+            }
+        }
+        for(i = 0; i < 4; i++)
+        {
+            r = 0;
+            g = 0; 
+            b = 0;
+            for(j = 0; j < 10; j++)
+            {
+                switch(stacks[j][i])
+                {
+                    case NONE:
+                        break;
+                    case RED:
+                        r++;
+                        break;
+                    case BLUE:
+                        b++;
+                        break;
+                    case GREEN:
+                        g++;
+                        break;
+                }
+            }
+            if(r > 5) {stack[i] = RED;}
+            else if(g > 5) {stack[i] = GREEN;}
+            else if(b > 5) {stack[i] = BLUE;}
+            else LCD_PosPrintString(1,0,"Missed Instruct");
+        }
+        sprintf(disp[0],"%c %c %c %c",RGB[stack[0]],RGB[stack[1]],RGB[stack[2]],RGB[stack[3]]);
+        LCD_ClearDisplay();
+        LCD_PosPrintString(0,0,disp[0]);
+    }
+
+
 /* [] END OF FILE */

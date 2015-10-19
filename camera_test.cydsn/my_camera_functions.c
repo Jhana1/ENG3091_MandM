@@ -15,12 +15,16 @@
 #include <arm.h>
 #include <stdio.h>
 
-uint8 RED_U= 122;//116;
-uint8 RED_V= 150;//140;//162;
-uint8 GREEN_U= 130;//128;
+uint8 RED_U= 126;//116;
+uint8 RED_V= 152;//140;//162;
+uint8 GREEN_U= 120;//128;
 uint8 GREEN_V= 120;//102;
-uint8 BLUE_U= 135;//138;//162;
-uint8 BLUE_V= 120;//124;//116;
+uint8 BLUE_U= 129;//138;//162;
+uint8 BLUE_V= 123;//124;//116;
+uint8 GAIN = 34;
+uint8 B_GAIN = 139;
+uint8 R_GAIN = 139;
+uint8 EXPOSURE = 60;
 
 extern blob *blobs;
 
@@ -29,7 +33,7 @@ void init_camera()
 	Camera_Start();
     LCD_ClearDisplay();
     LCD_PosPrintString(0,0,"Camera Actualy");
-    Camera_WriteReg(0x1E,0b00000000); //Flip Image
+    Camera_WriteReg(0x1E,0b00010000); //Flip Image
     Camera_WriteReg(0x13,0b11100111); //Enable Auto Gain, WB, Exposure
     Camera_SyncFrame();
     LCD_PosPrintString(0,0,"Frame Sync Done");
@@ -38,10 +42,10 @@ void init_camera()
 	Camera_SyncFrame(); //wait until frame is fully captured before sending out over USB
     Camera_WriteReg(0x13,0b11100000);
     //Gain and exposure settigs
-    Camera_WriteReg(0x00, 1);
-    Camera_WriteReg(0x01, 85);
-    Camera_WriteReg(0x02, 150);
-    Camera_WriteReg(0x10,30);
+    Camera_WriteReg(0x00, GAIN);
+    Camera_WriteReg(0x01, B_GAIN);
+    Camera_WriteReg(0x02, R_GAIN);
+    Camera_WriteReg(0x10,EXPOSURE);
 	Camera_WriteReg(0x3F,0b00101111); // Edge Enhancement Factor and Threshold
     Camera_WriteReg(0x3E,0b00000011); // Edge Enhancement Control
     Camera_WriteReg(0x8C,0b10100000); // Denoise
@@ -73,38 +77,18 @@ void set_gain_exposure(int setting)
 	{
 		case 1:
 			// Settings for Instructions
-			Camera_WriteReg(0x00, 9); //g
-            Camera_WriteReg(0x01, 108);//BG
-            Camera_WriteReg(0x02, 120);//RG
-			Camera_WriteReg(0x10, 48);//exposure
-            RED_U = 127;
-            RED_V = 150;
-            GREEN_U = 128;
-            GREEN_V = 118;
-            BLUE_U = 135;
-            BLUE_V = 120;
+			Camera_WriteReg(0x00, GAIN); //g
+            Camera_WriteReg(0x01, B_GAIN);//BG
+            Camera_WriteReg(0x02, R_GAIN);//RG
+			Camera_WriteReg(0x10, EXPOSURE);//exposure
 			break;
 		default:
 		case 2:
 			// Settings for arena 1
-			Camera_WriteReg(0x00,105);
-            Camera_WriteReg(0x01, 165);
-			Camera_WriteReg(0x10, 6);
+			Camera_WriteReg(0x00,60);
+			Camera_WriteReg(0x10,80);
 			break;
-		case 3:
-			// Settings for arena 2
-			Camera_WriteReg(0x00,105);
-            Camera_WriteReg(0x01, 165);
-			Camera_WriteReg(0x10, 1);
-			break;
-        case 4:
-            //Science student lounge
-            RED_U = 188;
-            RED_V = 129;
-            Camera_WriteReg(0x00, 53);
-            Camera_WriteReg(0x01, 163);
-            Camera_WriteReg(0x02, 114);
-            Camera_WriteReg(0x10, 60);
+            
 	}
 }
 
@@ -243,7 +227,18 @@ int identify_colour_instructions(int size)
 
 int identify_colour_gripper()
 {
-     return PixelColour(88/2,144);  
+    int i ,j, count[4] = {0};
+    for(i = 0; i < 10; i++)
+    {
+        for(j = 0; j < 10; j++)
+        {
+            count[PixelColour(34 + j, 143 - i)]++;
+        }
+    }
+    if(count[NONE] > 50) return NONE;
+    if(count[RED] > 80) return RED;
+    if(count[BLUE] > 80) return BLUE;
+    if(count[GREEN] > 80) return GREEN;
 }
 
 

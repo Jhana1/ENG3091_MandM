@@ -32,7 +32,7 @@ uint8 beam_broken(){
     BEAM_Clock_Start();
     CyDelay(350);
     BEAM_Clock_Stop();
-    uint8 broken = BEAM_BREAK_TIMER_ReadCounter() < 36000;
+    uint8 broken = BEAM_BREAK_TIMER_ReadCounter() < 38000;
     BEAM_BREAK_TIMER_Stop();
     CyDelay(300);
     return broken;

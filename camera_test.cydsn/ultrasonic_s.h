@@ -12,7 +12,8 @@
 
 #ifndef MY_ULTRASONIC_S
     #include <project.h>
-    
+    void select_left();
+    void select_stack();
     void start_ultrasonic_s(void);
     void stop_ultrasonic_s(void);
     uint16 get_mean_ultra_s(void);

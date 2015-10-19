@@ -177,3 +177,55 @@ uint8 size_of_biggest_colour(int colour)
     }
     return 0;
 }
+
+void sideways_instruction_read()
+{
+     // 0 center, + => Blob to Right, - => Blob to Left, -1 No blobs big enough
+    int cx, cy, i;
+    int c[4],s[4],ind[4];
+    for(i = 0; i < 4; i++)
+    {
+        cx = blobs[i].x_sum/blobs[i].size;
+        cy = blobs[i].y_sum/blobs[i].size;
+        Camera_framebuffer[cy][cx][0] = 255;
+        Camera_framebuffer[cy][cx][2] = 255;
+        c[i] = cx;
+        s[i] = 1000;
+    }
+    for(i = 0; i < 4; i++)
+    {
+        if(c[i] < s[0])
+        {
+            ind[0] = i;
+            s[0] = c[i];
+        }
+    }
+    for(i = 0; i < 4; i++)
+    {   
+        if(c[i] > s[0] && c[i] < s[1])
+        {
+            ind[1] = i;
+            s[1] = c[i];
+        }
+    }
+    for(i = 0; i < 4; i++)
+    {
+        if(c[i] > s[1] && c[i] < s[2])
+        {
+            ind[2] = i;
+            s[2] = c[i];
+        }
+    }
+    for(i = 0; i < 4; i++)
+    {
+        if(c[i] > s[2])
+        {
+            ind[3] = i;
+            s[2] = c[i];
+        }
+    }
+    for(i = 0; i < 4; i++)
+    {
+        stack[i] = blobs[ind[i]].colour;
+    }
+}

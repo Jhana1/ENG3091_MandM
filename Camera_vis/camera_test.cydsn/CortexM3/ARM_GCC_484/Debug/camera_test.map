@@ -147,7 +147,7 @@ Camera_I2C_mstrRdBufSize
                     0x1               .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
 display             0x28              .\CortexM3\ARM_GCC_484\Debug\main.o
 USB_lineChanged     0x1               .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
-stack               0xc               .\CortexM3\ARM_GCC_484\Debug\main.o
+stack               0x10              .\CortexM3\ARM_GCC_484\Debug\main.o
 Camera_I2C_mstrControl
                     0x1               .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
 USB_configurationChanged
@@ -176,6 +176,7 @@ Camera_I2C_mstrRdBufPtr
                     0x4               .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
 USB_deviceStatus    0x1               .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
 USB_cdc_data_in_ep  0x1               .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
+s                   0x10              .\CortexM3\ARM_GCC_484\Debug\main.o
 Camera_framebuffer  0xc600            .\CortexM3\ARM_GCC_484\Debug\main.o
 Camera_I2C_mstrStatus
                     0x1               .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
@@ -206,10 +207,14 @@ Discarded input sections
  .bss           0x00000000        0x0 .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
  .text.size_of_biggest_colour
                 0x00000000       0x4c .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
+ .text.get_blob
+                0x00000000       0x60 .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
  .text          0x00000000        0x0 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
  .bss           0x00000000        0x0 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
  .text.capture_thresh_image
                 0x00000000       0x3c .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
+ .text.clean_frame
+                0x00000000      0x124 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
  .text.identify_colour_instructions
                 0x00000000       0x34 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
  .text.identify_colour_gripper
@@ -218,6 +223,10 @@ Discarded input sections
                 0x00000000       0x58 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
  .text.threshold_black
                 0x00000000      0x198 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
+ .text.read_instruction_routine
+                0x00000000       0xdc .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
+ .text.read_instructions
+                0x00000000      0x1d8 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
  .text          0x00000000        0x0 .\CortexM3\ARM_GCC_484\Debug\ultrasonic.o
  .data          0x00000000        0x0 .\CortexM3\ARM_GCC_484\Debug\ultrasonic.o
  .bss           0x00000000        0x0 .\CortexM3\ARM_GCC_484\Debug\ultrasonic.o
@@ -852,10 +861,13 @@ Discarded input sections
  .text          0x00000000       0x40 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m\libgcc.a(_arm_fixunsdfsi.o)
  .data          0x00000000        0x0 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m\libgcc.a(_arm_fixunsdfsi.o)
  .bss           0x00000000        0x0 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m\libgcc.a(_arm_fixunsdfsi.o)
+ .text          0x00000000      0x21c c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m\libgcc.a(_arm_addsubsf3.o)
  .data          0x00000000        0x0 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m\libgcc.a(_arm_addsubsf3.o)
  .bss           0x00000000        0x0 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m\libgcc.a(_arm_addsubsf3.o)
+ .text          0x00000000      0x2a0 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m\libgcc.a(_arm_muldivsf3.o)
  .data          0x00000000        0x0 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m\libgcc.a(_arm_muldivsf3.o)
  .bss           0x00000000        0x0 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m\libgcc.a(_arm_muldivsf3.o)
+ .text          0x00000000       0xec c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m\libgcc.a(_arm_cmpsf2.o)
  .data          0x00000000        0x0 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m\libgcc.a(_arm_cmpsf2.o)
  .bss           0x00000000        0x0 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m\libgcc.a(_arm_cmpsf2.o)
  .text          0x00000000        0x0 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-errno.o)
@@ -981,7 +993,7 @@ END GROUP
                 0x00000001                CY_APPL_NUM = 0x1
                 0x00000001                CY_APPL_MAX = 0x1
                 0x00000040                CY_METADATA_SIZE = 0x40
-                0x20005920                PROVIDE (__cy_heap_start, _end)
+                0x20005938                PROVIDE (__cy_heap_start, _end)
                 0x00000001                PROVIDE (__cy_region_num, ((__cy_regions_end - __cy_regions) / 0x10))
                 0x20008000                PROVIDE (__cy_stack, (ORIGIN (ram) + 0x10000))
                 0x20007800                PROVIDE (__cy_heap_end, (__cy_stack - 0x800))
@@ -998,7 +1010,7 @@ END GROUP
                 0x00000800                ee_size = (CY_APPL_LOADABLE && ! (CY_EE_IN_BTLDR))?(CY_EE_SIZE / CY_APPL_MAX):CY_EE_SIZE
                 0x000004e0                PROVIDE (CY_ECC_OFFSET, ecc_offset)
 
-.text           0x00002700     0x6046
+.text           0x00002700     0x5c4e
  CREATE_OBJECT_SYMBOLS
                 0x00002700                PROVIDE (__cy_interrupt_vector, RomVectors)
  *(.romvectors)
@@ -1022,481 +1034,448 @@ END GROUP
  .text.main     0x0000278c      0x11c .\CortexM3\ARM_GCC_484\Debug\main.o
                 0x0000278c                main
  .text.image_stuff
-                0x000028a8       0xdc .\CortexM3\ARM_GCC_484\Debug\main.o
+                0x000028a8      0x108 .\CortexM3\ARM_GCC_484\Debug\main.o
                 0x000028a8                image_stuff
  .text.button_handle2
-                0x00002984      0x460 .\CortexM3\ARM_GCC_484\Debug\main.o
-                0x00002984                button_handle2
+                0x000029b0      0x460 .\CortexM3\ARM_GCC_484\Debug\main.o
+                0x000029b0                button_handle2
  .text.handle_menus
-                0x00002de4      0x26c .\CortexM3\ARM_GCC_484\Debug\main.o
-                0x00002de4                handle_menus
+                0x00002e10      0x26c .\CortexM3\ARM_GCC_484\Debug\main.o
+                0x00002e10                handle_menus
  .text.blob_detect
-                0x00003050      0x3d8 .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
-                0x00003050                blob_detect
+                0x0000307c      0x3d4 .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
+                0x0000307c                blob_detect
  .text.blob_count
-                0x00003428       0x48 .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
-                0x00003428                blob_count
+                0x00003450       0x48 .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
+                0x00003450                blob_count
  .text.blob_comp
-                0x00003470       0x48 .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
-                0x00003470                blob_comp
+                0x00003498       0x48 .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
+                0x00003498                blob_comp
  .text.to_nearest_blob
-                0x000034b8       0xec .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
-                0x000034b8                to_nearest_blob
+                0x000034e0       0xe8 .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
+                0x000034e0                to_nearest_blob
+ .text.blob_instruction_read
+                0x000035c8        0xc .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
+                0x000035c8                blob_instruction_read
+ .text.instruction_blob_stuff
+                0x000035d4      0x20c .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
+                0x000035d4                instruction_blob_stuff
  .text.init_camera
-                0x000035a4       0xb4 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
-                0x000035a4                init_camera
+                0x000037e0       0xd4 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
+                0x000037e0                init_camera
  .text.capture_image
-                0x00003658       0x14 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
-                0x00003658                capture_image
+                0x000038b4       0x14 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
+                0x000038b4                capture_image
  .text.set_gain_exposure
-                0x0000366c       0x68 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
-                0x0000366c                set_gain_exposure
+                0x000038c8       0x6c .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
+                0x000038c8                set_gain_exposure
  .text.PixelColour
-                0x000036d4       0xe8 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
-                0x000036d4                PixelColour
+                0x00003934       0xe8 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
+                0x00003934                PixelColour
  .text.threshold_image
-                0x000037bc      0x358 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
-                0x000037bc                threshold_image
- .text.clean_frame
-                0x00003b14      0x124 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
-                0x00003b14                clean_frame
+                0x00003a1c      0x358 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
+                0x00003a1c                threshold_image
  .text.image_stuff4
-                0x00003c38      0x110 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
-                0x00003c38                image_stuff4
+                0x00003d74      0x188 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
+                0x00003d74                image_stuff4
  .text.IntDefaultHandler
-                0x00003d48        0x8 .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
-                0x00003d48                IntDefaultHandler
- .text._sbrk    0x00003d50       0x50 .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
-                0x00003d50                _sbrk
- .text.Start_c  0x00003da0       0x98 .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
-                0x00003da0                Start_c
+                0x00003efc        0x8 .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
+                0x00003efc                IntDefaultHandler
+ .text._sbrk    0x00003f04       0x50 .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
+                0x00003f04                _sbrk
+ .text.Start_c  0x00003f54       0x98 .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
+                0x00003f54                Start_c
  .text.initialize_psoc
-                0x00003e38       0x90 .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
-                0x00003e38                initialize_psoc
+                0x00003fec       0x90 .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
+                0x00003fec                initialize_psoc
  .text.CYMEMZERO
-                0x00003ec8       0x1c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
+                0x0000407c       0x1c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
  .text.CYCONFIGCPY
-                0x00003ee4       0x1c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
+                0x00004098       0x1c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
  .text.CYCONFIGCPYCODE
-                0x00003f00       0x1c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
+                0x000040b4       0x1c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
  .text.CyClockStartupError
-                0x00003f1c        0xc .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
+                0x000040d0        0xc .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
  .text.cfg_write_bytes32
-                0x00003f28       0x74 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
+                0x000040dc       0x74 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
  .text.ClockSetup
-                0x00003f9c      0x16c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
+                0x00004150      0x16c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
  .text.AnalogSetDefault
-                0x00004108       0x44 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
+                0x000042bc       0x44 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
  .text.cyfitter_cfg
-                0x0000414c      0x1e4 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
-                0x0000414c                cyfitter_cfg
+                0x00004300      0x1e4 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
+                0x00004300                cyfitter_cfg
  .text.Camera_WriteReg
-                0x00004330       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
-                0x00004330                Camera_WriteReg
+                0x000044e4       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
+                0x000044e4                Camera_WriteReg
  .text.Camera_ReadReg
-                0x00004368       0x50 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
-                0x00004368                Camera_ReadReg
+                0x0000451c       0x50 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
+                0x0000451c                Camera_ReadReg
  .text.Camera_SyncFrame
-                0x000043b8       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
-                0x000043b8                Camera_SyncFrame
+                0x0000456c       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
+                0x0000456c                Camera_SyncFrame
  .text.Camera_Start
-                0x000043d8      0x12c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
-                0x000043d8                Camera_Start
+                0x0000458c      0x12c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
+                0x0000458c                Camera_Start
  .text.DMA_Start
-                0x00004504       0x48 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
+                0x000046b8       0x48 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
  .text.Camera_GetFrame
-                0x0000454c       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
-                0x0000454c                Camera_GetFrame
+                0x00004700       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
+                0x00004700                Camera_GetFrame
  .text.USB_Start
-                0x0000456c       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
-                0x0000456c                USB_Start
+                0x00004720       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
+                0x00004720                USB_Start
  .text.USB_Init
-                0x000045a4      0x18c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
-                0x000045a4                USB_Init
+                0x00004758      0x18c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
+                0x00004758                USB_Init
  .text.USB_InitComponent
-                0x00004730       0xd8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
-                0x00004730                USB_InitComponent
+                0x000048e4       0xd8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
+                0x000048e4                USB_InitComponent
  .text.USB_ReInitComponent
-                0x00004808       0x68 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
-                0x00004808                USB_ReInitComponent
+                0x000049bc       0x68 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
+                0x000049bc                USB_ReInitComponent
  .text.USB_GetConfiguration
-                0x00004870       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
-                0x00004870                USB_GetConfiguration
+                0x00004a24       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
+                0x00004a24                USB_GetConfiguration
  .text.USB_LoadInEP
-                0x00004888      0x108 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
-                0x00004888                USB_LoadInEP
+                0x00004a3c      0x108 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
+                0x00004a3c                USB_LoadInEP
  .text.USB_EnableOutEP
-                0x00004990       0x60 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
-                0x00004990                USB_EnableOutEP
+                0x00004b44       0x60 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
+                0x00004b44                USB_EnableOutEP
  .text.USB_DispatchCDCClassRqst
-                0x000049f0       0xcc .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
-                0x000049f0                USB_DispatchCDCClassRqst
+                0x00004ba4       0xcc .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
+                0x00004ba4                USB_DispatchCDCClassRqst
  .text.USB_CDC_Init
-                0x00004abc       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
-                0x00004abc                USB_CDC_Init
+                0x00004c70       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
+                0x00004c70                USB_CDC_Init
  .text.USB_PutData
-                0x00004adc       0x6c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
-                0x00004adc                USB_PutData
+                0x00004c90       0x6c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
+                0x00004c90                USB_PutData
  .text.USB_DataIsReady
-                0x00004b48       0x30 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
-                0x00004b48                USB_DataIsReady
+                0x00004cfc       0x30 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
+                0x00004cfc                USB_DataIsReady
  .text.USB_CDCIsReady
-                0x00004b78       0x30 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
-                0x00004b78                USB_CDCIsReady
+                0x00004d2c       0x30 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
+                0x00004d2c                USB_CDCIsReady
  .text.USB_EP_0_ISR
-                0x00004ba8       0xf8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
-                0x00004ba8                USB_EP_0_ISR
+                0x00004d5c       0xf8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+                0x00004d5c                USB_EP_0_ISR
  .text.USB_HandleSetup
-                0x00004ca0       0x88 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
-                0x00004ca0                USB_HandleSetup
+                0x00004e54       0x88 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+                0x00004e54                USB_HandleSetup
  .text.USB_HandleIN
-                0x00004d28       0x4c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
-                0x00004d28                USB_HandleIN
+                0x00004edc       0x4c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+                0x00004edc                USB_HandleIN
  .text.USB_HandleOUT
-                0x00004d74       0x58 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
-                0x00004d74                USB_HandleOUT
+                0x00004f28       0x58 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+                0x00004f28                USB_HandleOUT
  .text.USB_LoadEP0
-                0x00004dcc       0xd4 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
-                0x00004dcc                USB_LoadEP0
+                0x00004f80       0xd4 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+                0x00004f80                USB_LoadEP0
  .text.USB_InitControlRead
-                0x00004ea0       0x70 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
-                0x00004ea0                USB_InitControlRead
+                0x00005054       0x70 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+                0x00005054                USB_InitControlRead
  .text.USB_InitZeroLengthControlTransfer
-                0x00004f10       0x44 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
-                0x00004f10                USB_InitZeroLengthControlTransfer
+                0x000050c4       0x44 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+                0x000050c4                USB_InitZeroLengthControlTransfer
  .text.USB_ControlReadDataStage
-                0x00004f54        0xc .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
-                0x00004f54                USB_ControlReadDataStage
+                0x00005108        0xc .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+                0x00005108                USB_ControlReadDataStage
  .text.USB_ControlReadStatusStage
-                0x00004f60       0x40 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
-                0x00004f60                USB_ControlReadStatusStage
+                0x00005114       0x40 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+                0x00005114                USB_ControlReadStatusStage
  .text.USB_InitControlWrite
-                0x00004fa0       0x68 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
-                0x00004fa0                USB_InitControlWrite
+                0x00005154       0x68 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+                0x00005154                USB_InitControlWrite
  .text.USB_ControlWriteDataStage
-                0x00005008       0xb8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
-                0x00005008                USB_ControlWriteDataStage
+                0x000051bc       0xb8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+                0x000051bc                USB_ControlWriteDataStage
  .text.USB_ControlWriteStatusStage
-                0x000050c0       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
-                0x000050c0                USB_ControlWriteStatusStage
+                0x00005274       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+                0x00005274                USB_ControlWriteStatusStage
  .text.USB_InitNoDataControlTransfer
-                0x000050e0       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
-                0x000050e0                USB_InitNoDataControlTransfer
+                0x00005294       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+                0x00005294                USB_InitNoDataControlTransfer
  .text.USB_NoDataControlStatusStage
-                0x00005118       0x48 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
-                0x00005118                USB_NoDataControlStatusStage
+                0x000052cc       0x48 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+                0x000052cc                USB_NoDataControlStatusStage
  .text.USB_UpdateStatusBlock
-                0x00005160       0x40 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
-                0x00005160                USB_UpdateStatusBlock
+                0x00005314       0x40 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+                0x00005314                USB_UpdateStatusBlock
  .text.USB_InitializeStatusBlock
-                0x000051a0       0x34 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
-                0x000051a0                USB_InitializeStatusBlock
+                0x00005354       0x34 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+                0x00005354                USB_InitializeStatusBlock
  .text.USB_EP_1_ISR
-                0x000051d4       0x54 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
-                0x000051d4                USB_EP_1_ISR
+                0x00005388       0x54 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
+                0x00005388                USB_EP_1_ISR
  .text.USB_EP_2_ISR
-                0x00005228       0x54 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
-                0x00005228                USB_EP_2_ISR
+                0x000053dc       0x54 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
+                0x000053dc                USB_EP_2_ISR
  .text.USB_EP_3_ISR
-                0x0000527c       0x5c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
-                0x0000527c                USB_EP_3_ISR
+                0x00005430       0x5c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
+                0x00005430                USB_EP_3_ISR
  .text.USB_SOF_ISR
-                0x000052d8        0xc .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
-                0x000052d8                USB_SOF_ISR
+                0x0000548c        0xc .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
+                0x0000548c                USB_SOF_ISR
  .text.USB_BUS_RESET_ISR
-                0x000052e4        0xc .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
-                0x000052e4                USB_BUS_RESET_ISR
+                0x00005498        0xc .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
+                0x00005498                USB_BUS_RESET_ISR
  .text.USB_HandleStandardRqst
-                0x000052f0      0x4a0 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
-                0x000052f0                USB_HandleStandardRqst
+                0x000054a4      0x4a0 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
+                0x000054a4                USB_HandleStandardRqst
  .text.USB_ReadDieID
-                0x00005790       0x90 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
-                0x00005790                USB_ReadDieID
+                0x00005944       0x90 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
+                0x00005944                USB_ReadDieID
  .text.USB_ConfigReg
-                0x00005820      0x180 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
-                0x00005820                USB_ConfigReg
+                0x000059d4      0x180 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
+                0x000059d4                USB_ConfigReg
  .text.USB_Config
-                0x000059a0      0x344 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
-                0x000059a0                USB_Config
+                0x00005b54      0x344 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
+                0x00005b54                USB_Config
  .text.USB_ConfigAltChanged
-                0x00005ce4      0x274 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
-                0x00005ce4                USB_ConfigAltChanged
+                0x00005e98      0x274 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
+                0x00005e98                USB_ConfigAltChanged
  .text.USB_GetConfigTablePtr
-                0x00005f58       0x54 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
-                0x00005f58                USB_GetConfigTablePtr
+                0x0000610c       0x54 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
+                0x0000610c                USB_GetConfigTablePtr
  .text.USB_GetDeviceTablePtr
-                0x00005fac       0x24 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
-                0x00005fac                USB_GetDeviceTablePtr
+                0x00006160       0x24 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
+                0x00006160                USB_GetDeviceTablePtr
  .text.USB_GetInterfaceClassTablePtr
-                0x00005fd0       0x4c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
-                0x00005fd0                USB_GetInterfaceClassTablePtr
+                0x00006184       0x4c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
+                0x00006184                USB_GetInterfaceClassTablePtr
  .text.USB_SetEndpointHalt
-                0x0000601c       0xe0 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
-                0x0000601c                USB_SetEndpointHalt
+                0x000061d0       0xe0 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
+                0x000061d0                USB_SetEndpointHalt
  .text.USB_ClearEndpointHalt
-                0x000060fc      0x144 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
-                0x000060fc                USB_ClearEndpointHalt
+                0x000062b0      0x144 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
+                0x000062b0                USB_ClearEndpointHalt
  .text.USB_ValidateAlternateSetting
-                0x00006240       0x78 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
-                0x00006240                USB_ValidateAlternateSetting
+                0x000063f4       0x78 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
+                0x000063f4                USB_ValidateAlternateSetting
  .text.USB_HandleVendorRqst
-                0x000062b8       0x58 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_vnd.o)
-                0x000062b8                USB_HandleVendorRqst
+                0x0000646c       0x58 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_vnd.o)
+                0x0000646c                USB_HandleVendorRqst
  .text.Camera_DMA_DmaInitialize
-                0x00006310       0x60 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_DMA_dma.o)
-                0x00006310                Camera_DMA_DmaInitialize
+                0x000064c4       0x60 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_DMA_dma.o)
+                0x000064c4                Camera_DMA_DmaInitialize
  .text.Camera_VSYNC_Read
-                0x00006370       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_VSYNC.o)
-                0x00006370                Camera_VSYNC_Read
+                0x00006524       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_VSYNC.o)
+                0x00006524                Camera_VSYNC_Read
  .text.Camera_SIOD_SetDriveMode
-                0x00006390       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOD.o)
-                0x00006390                Camera_SIOD_SetDriveMode
+                0x00006544       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOD.o)
+                0x00006544                Camera_SIOD_SetDriveMode
  .text.Camera_SIOC_SetDriveMode
-                0x000063c8       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOC.o)
-                0x000063c8                Camera_SIOC_SetDriveMode
+                0x0000657c       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOC.o)
+                0x0000657c                Camera_SIOC_SetDriveMode
  .text.Camera_I2C_Init
-                0x00006400       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
-                0x00006400                Camera_I2C_Init
+                0x000065b4       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
+                0x000065b4                Camera_I2C_Init
  .text.Camera_I2C_Enable
-                0x00006480       0x44 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
-                0x00006480                Camera_I2C_Enable
+                0x00006634       0x44 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
+                0x00006634                Camera_I2C_Enable
  .text.Camera_I2C_Start
-                0x000064c4       0x2c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
-                0x000064c4                Camera_I2C_Start
+                0x00006678       0x2c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
+                0x00006678                Camera_I2C_Start
  .text.Camera_I2C_ISR
-                0x000064f0      0x3a8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_INT.o)
-                0x000064f0                Camera_I2C_ISR
+                0x000066a4      0x3a8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_INT.o)
+                0x000066a4                Camera_I2C_ISR
  .text.Camera_I2C_MasterSendStart
-                0x00006898       0xb8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
-                0x00006898                Camera_I2C_MasterSendStart
+                0x00006a4c       0xb8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
+                0x00006a4c                Camera_I2C_MasterSendStart
  .text.Camera_I2C_MasterSendStop
-                0x00006950       0x58 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
-                0x00006950                Camera_I2C_MasterSendStop
+                0x00006b04       0x58 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
+                0x00006b04                Camera_I2C_MasterSendStop
  .text.Camera_I2C_MasterWriteByte
-                0x000069a8       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
-                0x000069a8                Camera_I2C_MasterWriteByte
+                0x00006b5c       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
+                0x00006b5c                Camera_I2C_MasterWriteByte
  .text.Camera_I2C_MasterReadByte
-                0x00006a28       0x7c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
-                0x00006a28                Camera_I2C_MasterReadByte
- *fill*         0x00006aa4        0x4 
- .text          0x00006aa8       0x28 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyBootAsmGnu.o)
-                0x00006aa8                CyDelayCycles
-                0x00006abc                CyEnterCriticalSection
-                0x00006ac4                CyExitCriticalSection
+                0x00006bdc       0x7c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
+                0x00006bdc                Camera_I2C_MasterReadByte
+ .text          0x00006c58       0x28 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyBootAsmGnu.o)
+                0x00006c58                CyDelayCycles
+                0x00006c6c                CyEnterCriticalSection
+                0x00006c74                CyExitCriticalSection
  .text.CyDmacConfigure
-                0x00006ad0       0x5c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
-                0x00006ad0                CyDmacConfigure
+                0x00006c80       0x5c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
+                0x00006c80                CyDmacConfigure
  .text.CyDmaChEnable
-                0x00006b2c       0x8c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
-                0x00006b2c                CyDmaChEnable
+                0x00006cdc       0x8c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
+                0x00006cdc                CyDmaChEnable
  .text.CyDmaClearPendingDrq
-                0x00006bb8       0x64 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
-                0x00006bb8                CyDmaClearPendingDrq
+                0x00006d68       0x64 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
+                0x00006d68                CyDmaClearPendingDrq
  .text.CyDmaChPriority
-                0x00006c1c       0x5c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
-                0x00006c1c                CyDmaChPriority
+                0x00006dcc       0x5c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
+                0x00006dcc                CyDmaChPriority
  .text.CyDmaChSetExtendedAddress
-                0x00006c78       0x7c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
-                0x00006c78                CyDmaChSetExtendedAddress
+                0x00006e28       0x7c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
+                0x00006e28                CyDmaChSetExtendedAddress
  .text.CyDmaChSetInitialTd
-                0x00006cf4       0x3c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
-                0x00006cf4                CyDmaChSetInitialTd
+                0x00006ea4       0x3c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
+                0x00006ea4                CyDmaChSetInitialTd
  .text.CyDmaChSetConfiguration
-                0x00006d30       0x90 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
-                0x00006d30                CyDmaChSetConfiguration
+                0x00006ee0       0x90 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
+                0x00006ee0                CyDmaChSetConfiguration
  .text.CyDmaTdAllocate
-                0x00006dc0       0x5c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
-                0x00006dc0                CyDmaTdAllocate
+                0x00006f70       0x5c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
+                0x00006f70                CyDmaTdAllocate
  .text.CyDmaTdSetConfiguration
-                0x00006e1c       0x70 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
-                0x00006e1c                CyDmaTdSetConfiguration
+                0x00006fcc       0x70 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
+                0x00006fcc                CyDmaTdSetConfiguration
  .text.CyDmaTdSetAddress
-                0x00006e8c       0x5c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
-                0x00006e8c                CyDmaTdSetAddress
- .text.CyHalt   0x00006ee8       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
-                0x00006ee8                CyHalt
- .text.CyDelay  0x00006f00       0x44 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
-                0x00006f00                CyDelay
+                0x0000703c       0x5c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
+                0x0000703c                CyDmaTdSetAddress
+ .text.CyHalt   0x00007098       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
+                0x00007098                CyHalt
+ .text.CyDelay  0x000070b0       0x44 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
+                0x000070b0                CyDelay
  .text.CyDelayUs
-                0x00006f44       0x24 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
-                0x00006f44                CyDelayUs
+                0x000070f4       0x24 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
+                0x000070f4                CyDelayUs
  .text.CyIntSetVector
-                0x00006f68       0x50 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
-                0x00006f68                CyIntSetVector
+                0x00007118       0x50 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
+                0x00007118                CyIntSetVector
  .text.CyIntSetPriority
-                0x00006fb8       0x44 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
-                0x00006fb8                CyIntSetPriority
+                0x00007168       0x44 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
+                0x00007168                CyIntSetPriority
  .text.LCD_Init
-                0x00006ffc       0x6c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
-                0x00006ffc                LCD_Init
+                0x000071ac       0x6c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
+                0x000071ac                LCD_Init
  .text.LCD_Enable
-                0x00007068       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
-                0x00007068                LCD_Enable
+                0x00007218       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
+                0x00007218                LCD_Enable
  .text.LCD_Start
-                0x00007080       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
-                0x00007080                LCD_Start
+                0x00007230       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
+                0x00007230                LCD_Start
  .text.LCD_Position
-                0x000070a0       0x6c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
-                0x000070a0                LCD_Position
+                0x00007250       0x6c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
+                0x00007250                LCD_Position
  .text.LCD_PrintString
-                0x0000710c       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
-                0x0000710c                LCD_PrintString
+                0x000072bc       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
+                0x000072bc                LCD_PrintString
  .text.LCD_WriteData
-                0x00007144       0x3c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
-                0x00007144                LCD_WriteData
+                0x000072f4       0x3c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
+                0x000072f4                LCD_WriteData
  .text.LCD_WriteControl
-                0x00007180       0x3c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
-                0x00007180                LCD_WriteControl
+                0x00007330       0x3c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
+                0x00007330                LCD_WriteControl
  .text.LCD_WrDatNib
-                0x000071bc       0x70 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
+                0x0000736c       0x70 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
  .text.LCD_WrCntrlNib
-                0x0000722c       0x60 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
+                0x000073dc       0x60 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
  .text.but0_StartEx
-                0x0000728c       0x24 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
-                0x0000728c                but0_StartEx
+                0x0000743c       0x24 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
+                0x0000743c                but0_StartEx
  .text.but0_SetVector
-                0x000072b0       0x24 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
-                0x000072b0                but0_SetVector
+                0x00007460       0x24 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
+                0x00007460                but0_SetVector
  .text.but0_SetPriority
-                0x000072d4       0x24 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
-                0x000072d4                but0_SetPriority
+                0x00007484       0x24 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
+                0x00007484                but0_SetPriority
  .text.but0_Enable
-                0x000072f8       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
-                0x000072f8                but0_Enable
+                0x000074a8       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
+                0x000074a8                but0_Enable
  .text.but0_Disable
-                0x00007310       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
-                0x00007310                but0_Disable
+                0x000074c0       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
+                0x000074c0                but0_Disable
  .text.but0_ClearPending
-                0x00007328       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
-                0x00007328                but0_ClearPending
+                0x000074d8       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
+                0x000074d8                but0_ClearPending
  .text.but1_StartEx
-                0x00007340       0x24 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
-                0x00007340                but1_StartEx
+                0x000074f0       0x24 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
+                0x000074f0                but1_StartEx
  .text.but1_SetVector
-                0x00007364       0x24 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
-                0x00007364                but1_SetVector
+                0x00007514       0x24 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
+                0x00007514                but1_SetVector
  .text.but1_SetPriority
-                0x00007388       0x24 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
-                0x00007388                but1_SetPriority
+                0x00007538       0x24 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
+                0x00007538                but1_SetPriority
  .text.but1_Enable
-                0x000073ac       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
-                0x000073ac                but1_Enable
+                0x0000755c       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
+                0x0000755c                but1_Enable
  .text.but1_Disable
-                0x000073c4       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
-                0x000073c4                but1_Disable
+                0x00007574       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
+                0x00007574                but1_Disable
  .text.but1_ClearPending
-                0x000073dc       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
-                0x000073dc                but1_ClearPending
+                0x0000758c       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
+                0x0000758c                but1_ClearPending
  .text.BLUE_Write
-                0x000073f4       0x3c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(BLUE.o)
-                0x000073f4                BLUE_Write
+                0x000075a4       0x3c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(BLUE.o)
+                0x000075a4                BLUE_Write
  .text.Button_PWM_Start
-                0x00007430       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
-                0x00007430                Button_PWM_Start
+                0x000075e0       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
+                0x000075e0                Button_PWM_Start
  .text.Button_PWM_Init
-                0x00007450       0xbc .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
-                0x00007450                Button_PWM_Init
+                0x00007600       0xbc .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
+                0x00007600                Button_PWM_Init
  .text.Button_PWM_Enable
-                0x0000750c       0x48 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
-                0x0000750c                Button_PWM_Enable
+                0x000076bc       0x48 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
+                0x000076bc                Button_PWM_Enable
  .text.Button_PWM_WritePeriod
-                0x00007554       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
-                0x00007554                Button_PWM_WritePeriod
+                0x00007704       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
+                0x00007704                Button_PWM_WritePeriod
  .text.Button_PWM_WriteCompare
-                0x00007574       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
-                0x00007574                Button_PWM_WriteCompare
+                0x00007724       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
+                0x00007724                Button_PWM_WriteCompare
  .text.Button_PWM_SetInterruptMode
-                0x00007594       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
-                0x00007594                Button_PWM_SetInterruptMode
+                0x00007744       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
+                0x00007744                Button_PWM_SetInterruptMode
  .text.USB_DispatchClassRqst
-                0x000075b4       0x8c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cls.o)
-                0x000075b4                USB_DispatchClassRqst
- .text          0x00007640      0x21c c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m\libgcc.a(_arm_addsubsf3.o)
-                0x00007640                __aeabi_frsub
-                0x00007648                __subsf3
-                0x00007648                __aeabi_fsub
-                0x0000764c                __aeabi_fadd
-                0x0000764c                __addsf3
-                0x000077ac                __aeabi_ui2f
-                0x000077ac                __floatunsisf
-                0x000077b4                __aeabi_i2f
-                0x000077b4                __floatsisf
-                0x000077d0                __aeabi_ul2f
-                0x000077d0                __floatundisf
-                0x000077e0                __aeabi_l2f
-                0x000077e0                __floatdisf
- .text          0x0000785c      0x2a0 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m\libgcc.a(_arm_muldivsf3.o)
-                0x0000785c                __mulsf3
-                0x0000785c                __aeabi_fmul
-                0x000079c4                __aeabi_fdiv
-                0x000079c4                __divsf3
- .text          0x00007afc       0xec c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m\libgcc.a(_arm_cmpsf2.o)
-                0x00007afc                __gesf2
-                0x00007afc                __gtsf2
-                0x00007b04                __lesf2
-                0x00007b04                __ltsf2
-                0x00007b0c                __nesf2
-                0x00007b0c                __eqsf2
-                0x00007b0c                __cmpsf2
-                0x00007b6c                __aeabi_cfrcmple
-                0x00007b74                __aeabi_cfcmpeq
-                0x00007b74                __aeabi_cfcmple
-                0x00007b84                __aeabi_fcmpeq
-                0x00007b98                __aeabi_fcmplt
-                0x00007bac                __aeabi_fcmple
-                0x00007bc0                __aeabi_fcmpge
-                0x00007bd4                __aeabi_fcmpgt
- .text.__errno  0x00007be8        0xc c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-errno.o)
-                0x00007be8                __errno
+                0x00007764       0x8c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cls.o)
+                0x00007764                USB_DispatchClassRqst
+ .text.__errno  0x000077f0        0xc c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-errno.o)
+                0x000077f0                __errno
  .text.__libc_init_array
-                0x00007bf4       0x4c c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-init.o)
-                0x00007bf4                __libc_init_array
- .text.memcpy   0x00007c40       0x12 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-memcpy-stub.o)
-                0x00007c40                memcpy
- .text.memset   0x00007c52       0x10 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-memset.o)
-                0x00007c52                memset
+                0x000077fc       0x4c c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-init.o)
+                0x000077fc                __libc_init_array
+ .text.memcpy   0x00007848       0x12 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-memcpy-stub.o)
+                0x00007848                memcpy
+ .text.memset   0x0000785a       0x10 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-memset.o)
+                0x0000785a                memset
  .text.swapfunc
-                0x00007c62       0x30 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-qsort.o)
- .text.med3     0x00007c92       0x44 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-qsort.o)
- .text.qsort    0x00007cd6      0x278 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-qsort.o)
-                0x00007cd6                qsort
- *fill*         0x00007f4e        0x2 
- .text.sprintf  0x00007f50       0x48 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-sprintf.o)
-                0x00007f50                siprintf
-                0x00007f50                sprintf
+                0x0000786a       0x30 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-qsort.o)
+ .text.med3     0x0000789a       0x44 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-qsort.o)
+ .text.qsort    0x000078de      0x278 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-qsort.o)
+                0x000078de                qsort
+ *fill*         0x00007b56        0x2 
+ .text.sprintf  0x00007b58       0x48 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-sprintf.o)
+                0x00007b58                siprintf
+                0x00007b58                sprintf
  .text.__ssputs_r
-                0x00007f98       0xb8 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-svfprintf.o)
-                0x00007f98                __ssputs_r
+                0x00007ba0       0xb8 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-svfprintf.o)
+                0x00007ba0                __ssputs_r
  .text._svfprintf_r
-                0x00008050      0x1d8 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-svfprintf.o)
-                0x00008050                _svfiprintf_r
-                0x00008050                _svfprintf_r
+                0x00007c58      0x1d8 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-svfprintf.o)
+                0x00007c58                _svfiprintf_r
+                0x00007c58                _svfprintf_r
  .text._printf_common
-                0x00008228       0xe4 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-vfprintf_i.o)
-                0x00008228                _printf_common
+                0x00007e30       0xe4 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-vfprintf_i.o)
+                0x00007e30                _printf_common
  .text._printf_i
-                0x0000830c      0x228 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-vfprintf_i.o)
-                0x0000830c                _printf_i
- .text.memchr   0x00008534       0x1c c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-memchr-stub.o)
-                0x00008534                memchr
- .text.memmove  0x00008550       0x36 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-memmove.o)
-                0x00008550                memmove
- *fill*         0x00008586        0x2 
- .text._free_r  0x00008588       0x88 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-nano-freer.o)
-                0x00008588                _free_r
+                0x00007f14      0x228 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-vfprintf_i.o)
+                0x00007f14                _printf_i
+ .text.memchr   0x0000813c       0x1c c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-memchr-stub.o)
+                0x0000813c                memchr
+ .text.memmove  0x00008158       0x36 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-memmove.o)
+                0x00008158                memmove
+ *fill*         0x0000818e        0x2 
+ .text._free_r  0x00008190       0x88 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-nano-freer.o)
+                0x00008190                _free_r
  .text._malloc_r
-                0x00008610       0xa8 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-nano-mallocr.o)
-                0x00008610                _malloc_r
+                0x00008218       0xa8 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-nano-mallocr.o)
+                0x00008218                _malloc_r
  .text._realloc_r
-                0x000086b8       0x4c c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-nano-reallocr.o)
-                0x000086b8                _realloc_r
- .text._sbrk_r  0x00008704       0x20 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-sbrkr.o)
-                0x00008704                _sbrk_r
- .text.strlen   0x00008724       0x10 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-strlen.o)
-                0x00008724                strlen
+                0x000082c0       0x4c c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-nano-reallocr.o)
+                0x000082c0                _realloc_r
+ .text._sbrk_r  0x0000830c       0x20 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-sbrkr.o)
+                0x0000830c                _sbrk_r
+ .text.strlen   0x0000832c       0x10 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-strlen.o)
+                0x0000832c                strlen
  .text._malloc_usable_size_r
-                0x00008734       0x12 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-nano-msizer.o)
-                0x00008734                _malloc_usable_size_r
+                0x0000833c       0x12 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-nano-msizer.o)
+                0x0000833c                _malloc_usable_size_r
  *(.plt)
  *(.gnu.warning)
  *(.glue_7t)
@@ -1509,105 +1488,105 @@ END GROUP
  *(.ARM.extab* .gnu.linkonce.armextab.*)
  *(.gcc_except_table)
 
-.v4_bx          0x00008748        0x0
+.v4_bx          0x00008350        0x0
  .v4_bx         0x00000000        0x0 linker stubs
 
-.iplt           0x00008748        0x0
+.iplt           0x00008350        0x0
  .iplt          0x00000000        0x0 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtbegin.o
 
 .eh_frame_hdr
  *(.eh_frame_hdr)
 
-.eh_frame       0x00008748        0x4
+.eh_frame       0x00008350        0x4
  *(.eh_frame)
- .eh_frame      0x00008748        0x0 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtbegin.o
- .eh_frame      0x00008748        0x4 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtend.o
-                0x0000874c                PROVIDE (__exidx_start, .)
+ .eh_frame      0x00008350        0x0 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtbegin.o
+ .eh_frame      0x00008350        0x4 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtend.o
+                0x00008354                PROVIDE (__exidx_start, .)
 
 .ARM.exidx
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x0000874c                __exidx_end = .
+                0x00008354                __exidx_end = .
 
-.rodata         0x0000874c     0x131c
+.rodata         0x00008354     0x1394
  *(.rodata .rodata.* .gnu.linkonce.r.*)
- .rodata        0x0000874c      0x274 .\CortexM3\ARM_GCC_484\Debug\main.o
- .rodata        0x000089c0       0x4c .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
- .rodata        0x00008a0c      0xd94 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
- .rodata        0x000097a0       0x14 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
- .rodata        0x000097b4       0xb8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_settings.o)
-                0x000097b4                Camera_settings
-                0x00009820                Camera_format
-                0x00009830                Camera_sxga
-                0x0000983c                Camera_vga
-                0x00009848                Camera_qvga
-                0x00009854                Camera_cif
-                0x00009860                Camera_qcif
- .rodata        0x0000986c      0x18c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_descr.o)
-                0x0000986c                USB_DEVICE0_DESCR
-                0x00009880                USB_DEVICE0_CONFIGURATION0_DESCR
-                0x000098c4                USB_STRING_DESCRIPTORS
-                0x0000995c                USB_SN_STRING_DESCRIPTOR
-                0x00009960                USB_DEVICE0_CONFIGURATION0_EP_SETTINGS_TABLE
-                0x00009978                USB_DEVICE0_CONFIGURATION0_INTERFACE_CLASS
-                0x0000997c                USB_DEVICE0_CONFIGURATION0_TABLE
-                0x000099a4                USB_DEVICE0_TABLE
-                0x000099b4                USB_TABLE
-                0x000099bc                USB_MSOS_DESCRIPTOR
-                0x000099d0                USB_MSOS_CONFIGURATION_DESCR
+ .rodata        0x00008354      0x28c .\CortexM3\ARM_GCC_484\Debug\main.o
+ .rodata        0x000085e0       0xac .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
+ .rodata        0x0000868c      0xd94 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
+ .rodata        0x00009420       0x14 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
+ .rodata        0x00009434       0xb8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_settings.o)
+                0x00009434                Camera_settings
+                0x000094a0                Camera_format
+                0x000094b0                Camera_sxga
+                0x000094bc                Camera_vga
+                0x000094c8                Camera_qvga
+                0x000094d4                Camera_cif
+                0x000094e0                Camera_qcif
+ .rodata        0x000094ec      0x18c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_descr.o)
+                0x000094ec                USB_DEVICE0_DESCR
+                0x00009500                USB_DEVICE0_CONFIGURATION0_DESCR
+                0x00009544                USB_STRING_DESCRIPTORS
+                0x000095dc                USB_SN_STRING_DESCRIPTOR
+                0x000095e0                USB_DEVICE0_CONFIGURATION0_EP_SETTINGS_TABLE
+                0x000095f8                USB_DEVICE0_CONFIGURATION0_INTERFACE_CLASS
+                0x000095fc                USB_DEVICE0_CONFIGURATION0_TABLE
+                0x00009624                USB_DEVICE0_TABLE
+                0x00009634                USB_TABLE
+                0x0000963c                USB_MSOS_DESCRIPTOR
+                0x00009650                USB_MSOS_CONFIGURATION_DESCR
  .rodata.str1.1
-                0x000099f8        0x2 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-impure.o)
+                0x00009678        0x2 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-impure.o)
  .rodata.str1.1
-                0x000099fa       0x11 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-svfprintf.o)
+                0x0000967a       0x11 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-svfprintf.o)
  .rodata.str1.1
-                0x00009a0b       0x22 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-vfprintf_i.o)
-                0x00009a30                . = ALIGN (0x4)
- *fill*         0x00009a2d        0x3 
+                0x0000968b       0x22 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-vfprintf_i.o)
+                0x000096b0                . = ALIGN (0x4)
+ *fill*         0x000096ad        0x3 
  *(.init)
- .init          0x00009a30        0x4 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crti.o
-                0x00009a30                _init
- .init          0x00009a34        0x8 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtn.o
-                0x00009a3c                . = ALIGN (0x4)
-                0x00009a3c                __preinit_array_start = .
+ .init          0x000096b0        0x4 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crti.o
+                0x000096b0                _init
+ .init          0x000096b4        0x8 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtn.o
+                0x000096bc                . = ALIGN (0x4)
+                0x000096bc                __preinit_array_start = .
  *(.preinit_array)
-                0x00009a3c                __preinit_array_end = .
-                0x00009a3c                . = ALIGN (0x4)
-                0x00009a3c                __init_array_start = .
+                0x000096bc                __preinit_array_end = .
+                0x000096bc                . = ALIGN (0x4)
+                0x000096bc                __init_array_start = .
  *(SORT(.init_array.*))
  *(.init_array)
- .init_array    0x00009a3c        0x4 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtbegin.o
- .init_array    0x00009a40        0x4 .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
-                0x00009a44                __init_array_end = .
-                0x00009a44                . = ALIGN (0x4)
+ .init_array    0x000096bc        0x4 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtbegin.o
+ .init_array    0x000096c0        0x4 .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
+                0x000096c4                __init_array_end = .
+                0x000096c4                . = ALIGN (0x4)
  *(.fini)
- .fini          0x00009a44        0x4 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crti.o
-                0x00009a44                _fini
- .fini          0x00009a48        0x8 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtn.o
-                0x00009a50                . = ALIGN (0x4)
-                0x00009a50                __fini_array_start = .
+ .fini          0x000096c4        0x4 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crti.o
+                0x000096c4                _fini
+ .fini          0x000096c8        0x8 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtn.o
+                0x000096d0                . = ALIGN (0x4)
+                0x000096d0                __fini_array_start = .
  *(.fini_array)
- .fini_array    0x00009a50        0x4 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtbegin.o
+ .fini_array    0x000096d0        0x4 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtbegin.o
  *(SORT(.fini_array.*))
-                0x00009a54                __fini_array_end = .
-                0x00009a54                . = ALIGN (0x4)
+                0x000096d4                __fini_array_end = .
+                0x000096d4                . = ALIGN (0x4)
  *crtbegin.o(.ctors)
  *(EXCLUDE_FILE(*crtend.o) .ctors)
  *(SORT(.ctors.*))
  *crtend.o(.ctors)
-                0x00009a54                . = ALIGN (0x4)
+                0x000096d4                . = ALIGN (0x4)
  *crtbegin.o(.dtors)
  *(EXCLUDE_FILE(*crtend.o) .dtors)
  *(SORT(.dtors.*))
  *crtend.o(.dtors)
-                0x00009a54                . = ALIGN (0x4)
-                0x00009a54                __cy_regions = .
-                0x00009a54        0x4 LONG 0x9a68 __cy_region_init_ram
-                0x00009a58        0x4 LONG 0x1fff8108 __cy_region_start_data
-                0x00009a5c        0x4 LONG 0xb0 __cy_region_init_size_ram
-                0x00009a60        0x4 LONG 0xd768 __cy_region_zero_size_ram
-                0x00009a64                __cy_regions_end = .
-                0x00009a68                . = ALIGN (0x8)
- *fill*         0x00009a64        0x4 
-                0x00009a68                _etext = .
+                0x000096d4                . = ALIGN (0x4)
+                0x000096d4                __cy_regions = .
+                0x000096d4        0x4 LONG 0x96e8 __cy_region_init_ram
+                0x000096d8        0x4 LONG 0x1fff8108 __cy_region_start_data
+                0x000096dc        0x4 LONG 0xb8 __cy_region_init_size_ram
+                0x000096e0        0x4 LONG 0xd778 __cy_region_zero_size_ram
+                0x000096e4                __cy_regions_end = .
+                0x000096e8                . = ALIGN (0x8)
+ *fill*         0x000096e4        0x4 
+                0x000096e8                _etext = .
 
 .ramvectors     0x1fff8000      0x100
                 0x1fff8000                __cy_region_start_ram = .
@@ -1621,7 +1600,7 @@ END GROUP
  .noinit        0x1fff8104        0x1 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
                 0x1fff8104                CyResetStatus
 
-.data           0x1fff8108       0xb0 load address 0x00009a68
+.data           0x1fff8108       0xb8 load address 0x000096e8
                 0x1fff8108                __cy_region_start_data = .
  *(.jcr)
  .jcr           0x1fff8108        0x0 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtbegin.o
@@ -1635,137 +1614,142 @@ END GROUP
                 0x1fff8114                current_display
                 0x1fff8118                centre_pixel
                 0x1fff811c                PWM_Val
- .data          0x1fff8120        0xc .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
+ .data          0x1fff8120       0x10 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
                 0x1fff8120                RED_U
                 0x1fff8121                RED_V
                 0x1fff8122                GREEN_U
                 0x1fff8123                GREEN_V
                 0x1fff8124                BLUE_U
                 0x1fff8125                BLUE_V
-                0x1fff8128                connected
- .data          0x1fff812c        0x4 .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
- .data          0x1fff8130        0x8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
-                0x1fff8130                USB_lineCoding
- .data          0x1fff8138        0x1 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_DMA_dma.o)
-                0x1fff8138                Camera_DMA_DmaHandle
- *fill*         0x1fff8139        0x3 
- .data          0x1fff813c        0x8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
- .data          0x1fff8144       0x10 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
-                0x1fff8144                cydelay_freq_hz
-                0x1fff8148                cydelay_freq_khz
-                0x1fff814c                cydelay_freq_mhz
-                0x1fff8150                cydelay_32k_ms
+                0x1fff8126                GAIN
+                0x1fff8127                B_GAIN
+                0x1fff8128                R_GAIN
+                0x1fff8129                EXPOSURE
+                0x1fff812c                connected
+ .data          0x1fff8130        0x4 .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
+ .data          0x1fff8134        0x8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
+                0x1fff8134                USB_lineCoding
+ .data          0x1fff813c        0x1 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_DMA_dma.o)
+                0x1fff813c                Camera_DMA_DmaHandle
+ *fill*         0x1fff813d        0x3 
+ .data          0x1fff8140        0x8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
+ .data          0x1fff8148       0x10 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
+                0x1fff8148                cydelay_freq_hz
+                0x1fff814c                cydelay_freq_khz
+                0x1fff8150                cydelay_freq_mhz
+                0x1fff8154                cydelay_32k_ms
  .data.impure_data
-                0x1fff8154       0x60 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-impure.o)
+                0x1fff8158       0x60 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-impure.o)
  .data._impure_ptr
-                0x1fff81b4        0x4 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-impure.o)
-                0x1fff81b4                _impure_ptr
-                0x1fff81b8                . = ALIGN (0x8)
+                0x1fff81b8        0x4 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-impure.o)
+                0x1fff81b8                _impure_ptr
+                0x1fff81c0                . = ALIGN (0x8)
+ *fill*         0x1fff81bc        0x4 
  *(.ram)
-                0x1fff81b8                _edata = .
+                0x1fff81c0                _edata = .
 
-.igot.plt       0x1fff81b8        0x0 load address 0x00009b18
+.igot.plt       0x1fff81c0        0x0 load address 0x000097a0
  .igot.plt      0x00000000        0x0 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtbegin.o
 
-.bss            0x1fff81b8     0xd768 load address 0x00009b18
-                0x1fff81b8                PROVIDE (__bss_start__, .)
+.bss            0x1fff81c0     0xd778 load address 0x000097a0
+                0x1fff81c0                PROVIDE (__bss_start__, .)
  *(.shbss)
  *(.bss .bss.* .gnu.linkonce.b.*)
- .bss           0x1fff81b8       0x1c c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtbegin.o
- .bss           0x1fff81d4        0x6 .\CortexM3\ARM_GCC_484\Debug\main.o
-                0x1fff81d4                disp
-                0x1fff81d6                m
-                0x1fff81d8                c
- *fill*         0x1fff81da        0x2 
- .bss           0x1fff81dc       0x14 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
- .bss           0x1fff81f0        0x1 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
-                0x1fff81f0                USB_initVar
- *fill*         0x1fff81f1        0x3 
- .bss           0x1fff81f4        0x4 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
- .bss           0x1fff81f8        0x1 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
-                0x1fff81f8                Camera_I2C_initVar
- .bss           0x1fff81f9        0x2 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
-                0x1fff81f9                LCD_enableState
-                0x1fff81fa                LCD_initVar
- .bss           0x1fff81fb        0x1 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
-                0x1fff81fb                Button_PWM_initVar
+ .bss           0x1fff81c0       0x1c c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtbegin.o
+ .bss           0x1fff81dc        0x6 .\CortexM3\ARM_GCC_484\Debug\main.o
+                0x1fff81dc                disp
+                0x1fff81de                m
+                0x1fff81e0                c
+ *fill*         0x1fff81e2        0x2 
+ .bss           0x1fff81e4       0x14 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
+ .bss           0x1fff81f8        0x1 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
+                0x1fff81f8                USB_initVar
+ *fill*         0x1fff81f9        0x3 
+ .bss           0x1fff81fc        0x4 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
+ .bss           0x1fff8200        0x1 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
+                0x1fff8200                Camera_I2C_initVar
+ .bss           0x1fff8201        0x2 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
+                0x1fff8201                LCD_enableState
+                0x1fff8202                LCD_initVar
+ .bss           0x1fff8203        0x1 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
+                0x1fff8203                Button_PWM_initVar
  .bss.__malloc_sbrk_start
-                0x1fff81fc        0x4 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-nano-mallocr.o)
-                0x1fff81fc                __malloc_sbrk_start
+                0x1fff8204        0x4 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-nano-mallocr.o)
+                0x1fff8204                __malloc_sbrk_start
  .bss.__malloc_free_list
-                0x1fff8200        0x4 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-nano-mallocr.o)
-                0x1fff8200                __malloc_free_list
+                0x1fff8208        0x4 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-nano-mallocr.o)
+                0x1fff8208                __malloc_free_list
  *(COMMON)
- COMMON         0x1fff8204     0xc648 .\CortexM3\ARM_GCC_484\Debug\main.o
-                0x1fff8204                rgain
-                0x1fff8205                bgain
-                0x1fff8208                display
-                0x1fff8230                stack
-                0x1fff823c                blobn
-                0x1fff823e                gain
-                0x1fff823f                exposure
-                0x1fff8240                Camera_framebuffer
-                0x20004840                dis
- COMMON         0x2000484c      0xff0 .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
-                0x2000484c                blobs
- COMMON         0x2000583c        0x5 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
-                0x2000583c                USB_lineControlBitmap
-                0x2000583e                USB_cdc_data_out_ep
-                0x2000583f                USB_lineChanged
-                0x20005840                USB_cdc_data_in_ep
- *fill*         0x20005841        0x3 
- COMMON         0x20005844       0x98 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
-                0x20005844                USB_transferState
-                0x20005845                USB_interfaceNumber
-                0x20005846                USB_lastPacketSize
-                0x20005848                USB_interfaceClass
-                0x2000584c                USB_interfaceSetting
-                0x2000584e                USB_ep0Mode
-                0x2000584f                USB_device
-                0x20005850                USB_deviceAddress
-                0x20005851                USB_ep0Toggle
-                0x20005852                USB_configurationChanged
-                0x20005854                USB_interfaceStatus
-                0x20005856                USB_transferByteCount
-                0x20005858                USB_configuration
-                0x2000585c                USB_interfaceSetting_last
-                0x20005860                USB_currentTD
-                0x2000586c                USB_ep0Count
-                0x2000586d                USB_deviceStatus
-                0x20005870                USB_EP
- COMMON         0x200058dc        0x1 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
-                0x200058dc                Camera_I2C_state
- *fill*         0x200058dd        0x3 
- COMMON         0x200058e0       0x11 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
-                0x200058e0                Camera_I2C_mstrWrBufSize
-                0x200058e1                Camera_I2C_mstrRdBufIndex
-                0x200058e2                Camera_I2C_mstrRdBufSize
-                0x200058e3                Camera_I2C_mstrControl
-                0x200058e4                Camera_I2C_mstrWrBufPtr
-                0x200058e8                Camera_I2C_mstrWrBufIndex
-                0x200058ec                Camera_I2C_mstrRdBufPtr
-                0x200058f0                Camera_I2C_mstrStatus
- *fill*         0x200058f1        0x3 
- COMMON         0x200058f4       0x22 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_descr.o)
-                0x200058f4                USB_idSerialNumberStringDescriptor
- *fill*         0x20005916        0x2 
- COMMON         0x20005918        0x4 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-reent.o)
-                0x20005918                errno
-                0x20005920                . = ALIGN (0x8)
- *fill*         0x2000591c        0x4 
+ COMMON         0x1fff820c     0xc65c .\CortexM3\ARM_GCC_484\Debug\main.o
+                0x1fff820c                rgain
+                0x1fff820d                bgain
+                0x1fff8210                display
+                0x1fff8238                stack
+                0x1fff8248                blobn
+                0x1fff824a                gain
+                0x1fff824b                exposure
+                0x1fff824c                s
+                0x1fff825c                Camera_framebuffer
+                0x2000485c                dis
+ COMMON         0x20004868      0xff0 .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
+                0x20004868                blobs
+ COMMON         0x20005858        0x5 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
+                0x20005858                USB_lineControlBitmap
+                0x2000585a                USB_cdc_data_out_ep
+                0x2000585b                USB_lineChanged
+                0x2000585c                USB_cdc_data_in_ep
+ *fill*         0x2000585d        0x3 
+ COMMON         0x20005860       0x98 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+                0x20005860                USB_transferState
+                0x20005861                USB_interfaceNumber
+                0x20005862                USB_lastPacketSize
+                0x20005864                USB_interfaceClass
+                0x20005868                USB_interfaceSetting
+                0x2000586a                USB_ep0Mode
+                0x2000586b                USB_device
+                0x2000586c                USB_deviceAddress
+                0x2000586d                USB_ep0Toggle
+                0x2000586e                USB_configurationChanged
+                0x20005870                USB_interfaceStatus
+                0x20005872                USB_transferByteCount
+                0x20005874                USB_configuration
+                0x20005878                USB_interfaceSetting_last
+                0x2000587c                USB_currentTD
+                0x20005888                USB_ep0Count
+                0x20005889                USB_deviceStatus
+                0x2000588c                USB_EP
+ COMMON         0x200058f8        0x1 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
+                0x200058f8                Camera_I2C_state
+ *fill*         0x200058f9        0x3 
+ COMMON         0x200058fc       0x11 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
+                0x200058fc                Camera_I2C_mstrWrBufSize
+                0x200058fd                Camera_I2C_mstrRdBufIndex
+                0x200058fe                Camera_I2C_mstrRdBufSize
+                0x200058ff                Camera_I2C_mstrControl
+                0x20005900                Camera_I2C_mstrWrBufPtr
+                0x20005904                Camera_I2C_mstrWrBufIndex
+                0x20005908                Camera_I2C_mstrRdBufPtr
+                0x2000590c                Camera_I2C_mstrStatus
+ *fill*         0x2000590d        0x3 
+ COMMON         0x20005910       0x22 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_descr.o)
+                0x20005910                USB_idSerialNumberStringDescriptor
+ *fill*         0x20005932        0x2 
+ COMMON         0x20005934        0x4 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-reent.o)
+                0x20005934                errno
+                0x20005938                . = ALIGN (0x8)
  *(.ram.b)
-                0x20005920                _end = .
-                0x20005920                __end = .
-                0x20005920                PROVIDE (end, .)
-                0x20005920                PROVIDE (__bss_end__, .)
-                0x00009a68                __cy_region_init_ram = LOADADDR (.data)
-                0x000000b0                __cy_region_init_size_ram = (_edata - ADDR (.data))
-                0x0000d768                __cy_region_zero_size_ram = (_end - _edata)
+                0x20005938                _end = .
+                0x20005938                __end = .
+                0x20005938                PROVIDE (end, .)
+                0x20005938                PROVIDE (__bss_end__, .)
+                0x000096e8                __cy_region_init_ram = LOADADDR (.data)
+                0x000000b8                __cy_region_init_size_ram = (_edata - ADDR (.data))
+                0x0000d778                __cy_region_zero_size_ram = (_end - _edata)
 
-.heap           0x20005920        0x0 load address 0x00009b18
-                0x20005920                . = _end
-                0x20005920                . = (. + 0x0)
-                0x20005920                __cy_heap_limit = .
+.heap           0x20005938        0x0 load address 0x000097a0
+                0x20005938                . = _end
+                0x20005938                . = (. + 0x0)
+                0x20005938                __cy_heap_limit = .
 
 .stack          0x20007800      0x800
                 0x20007800                __cy_stack_limit = .
@@ -1835,357 +1819,357 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000     0x1080
+.debug_aranges  0x00000000     0x10a8
  *(.debug_aranges)
  .debug_aranges
                 0x00000000       0x60 .\CortexM3\ARM_GCC_484\Debug\main.o
  .debug_aranges
-                0x00000060       0x40 .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
+                0x00000060       0x58 .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
  .debug_aranges
-                0x000000a0       0x78 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
+                0x000000b8       0x88 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
  .debug_aranges
-                0x00000118       0x30 .\CortexM3\ARM_GCC_484\Debug\ultrasonic.o
+                0x00000140       0x30 .\CortexM3\ARM_GCC_484\Debug\ultrasonic.o
  .debug_aranges
-                0x00000148       0x18 .\CortexM3\ARM_GCC_484\Debug\cybootloader.o
+                0x00000170       0x18 .\CortexM3\ARM_GCC_484\Debug\cybootloader.o
  .debug_aranges
-                0x00000160       0x18 .\CortexM3\ARM_GCC_484\Debug\cymetadata.o
+                0x00000188       0x18 .\CortexM3\ARM_GCC_484\Debug\cymetadata.o
  .debug_aranges
-                0x00000178       0x48 .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
+                0x000001a0       0x48 .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
  .debug_aranges
-                0x000001c0       0x60 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
+                0x000001e8       0x60 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
  .debug_aranges
-                0x00000220       0x58 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
+                0x00000248       0x58 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
  .debug_aranges
-                0x00000278       0xb0 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
+                0x000002a0       0xb0 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
  .debug_aranges
-                0x00000328       0xb0 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
+                0x00000350       0xb0 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
  .debug_aranges
-                0x000003d8       0x98 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+                0x00000400       0x98 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
  .debug_aranges
-                0x00000470       0x40 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
+                0x00000498       0x40 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
  .debug_aranges
-                0x000004b0       0x78 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
+                0x000004d8       0x78 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
  .debug_aranges
-                0x00000528       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_vnd.o)
+                0x00000550       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_vnd.o)
  .debug_aranges
-                0x00000548       0x28 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_DMA_dma.o)
+                0x00000570       0x28 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_DMA_dma.o)
  .debug_aranges
-                0x00000570       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_VSYNC.o)
+                0x00000598       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_VSYNC.o)
  .debug_aranges
-                0x000005a8       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOD.o)
+                0x000005d0       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOD.o)
  .debug_aranges
-                0x000005e0       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOC.o)
+                0x00000608       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOC.o)
  .debug_aranges
-                0x00000618       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
+                0x00000640       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
  .debug_aranges
-                0x00000650       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_INT.o)
+                0x00000678       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_INT.o)
  .debug_aranges
-                0x00000670       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_PM.o)
+                0x00000698       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_PM.o)
  .debug_aranges
-                0x000006a8       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
+                0x000006d0       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
  .debug_aranges
-                0x00000728       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyBootAsmGnu.o)
+                0x00000750       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyBootAsmGnu.o)
  .debug_aranges
-                0x00000748       0xd8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
+                0x00000770       0xd8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
  .debug_aranges
-                0x00000820      0x298 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
+                0x00000848      0x298 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
  .debug_aranges
-                0x00000ab8       0x98 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyPm.o)
+                0x00000ae0       0x98 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyPm.o)
  .debug_aranges
-                0x00000b50       0x90 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
+                0x00000b78       0x90 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
  .debug_aranges
-                0x00000be0       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
+                0x00000c08       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
  .debug_aranges
-                0x00000c60       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
+                0x00000c88       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
  .debug_aranges
-                0x00000ce0       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(BLUE.o)
+                0x00000d08       0x38 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(BLUE.o)
  .debug_aranges
-                0x00000d18       0xa8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_PWM.o)
+                0x00000d40       0xa8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_PWM.o)
  .debug_aranges
-                0x00000dc0       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_Timer.o)
+                0x00000de8       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_Timer.o)
  .debug_aranges
-                0x00000e40       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_ISR.o)
+                0x00000e68       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_ISR.o)
  .debug_aranges
-                0x00000ec0       0x78 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
+                0x00000ee8       0x78 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
  .debug_aranges
-                0x00000f38       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_settings.o)
+                0x00000f60       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_settings.o)
  .debug_aranges
-                0x00000f50       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cls.o)
+                0x00000f78       0x20 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cls.o)
  .debug_aranges
-                0x00000f70       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_descr.o)
+                0x00000f98       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_descr.o)
  .debug_aranges
-                0x00000f88       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyFlash.o)
+                0x00000fb0       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyFlash.o)
  .debug_aranges
-                0x00001008       0x78 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CySpc.o)
+                0x00001030       0x78 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CySpc.o)
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x7f9a
+.debug_info     0x00000000     0x822c
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x00000000      0x422 .\CortexM3\ARM_GCC_484\Debug\main.o
- .debug_info    0x00000422      0x352 .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
- .debug_info    0x00000774      0x4ba .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
- .debug_info    0x00000c2e      0x13b .\CortexM3\ARM_GCC_484\Debug\ultrasonic.o
- .debug_info    0x00000d69      0x164 .\CortexM3\ARM_GCC_484\Debug\cybootloader.o
- .debug_info    0x00000ecd       0xb1 .\CortexM3\ARM_GCC_484\Debug\cymetadata.o
- .debug_info    0x00000f7e      0x317 .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
- .debug_info    0x00001295      0x616 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
- .debug_info    0x000018ab      0x295 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
- .debug_info    0x00001b40      0x5d1 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
- .debug_info    0x00002111      0x56f .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
- .debug_info    0x00002680      0x4ed .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
- .debug_info    0x00002b6d      0x1a6 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
- .debug_info    0x00002d13      0x7bb .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
- .debug_info    0x000034ce      0x177 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_vnd.o)
- .debug_info    0x00003645      0x112 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_DMA_dma.o)
- .debug_info    0x00003757      0x11d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_VSYNC.o)
- .debug_info    0x00003874      0x11d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOD.o)
- .debug_info    0x00003991      0x11d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOC.o)
- .debug_info    0x00003aae      0x1f7 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
- .debug_info    0x00003ca5      0x14d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_INT.o)
- .debug_info    0x00003df2      0x190 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_PM.o)
- .debug_info    0x00003f82      0x3ef .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
- .debug_info    0x00004371       0x9d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyBootAsmGnu.o)
- .debug_info    0x0000440e      0x8b1 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
- .debug_info    0x00004cbf      0xe31 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
- .debug_info    0x00005af0      0x55f .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyPm.o)
- .debug_info    0x0000604f      0x370 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
- .debug_info    0x000063bf      0x236 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
- .debug_info    0x000065f5      0x236 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
- .debug_info    0x0000682b      0x11d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(BLUE.o)
- .debug_info    0x00006948      0x2da .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_PWM.o)
- .debug_info    0x00006c22      0x216 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_Timer.o)
- .debug_info    0x00006e38      0x236 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_ISR.o)
- .debug_info    0x0000706e      0x22c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
- .debug_info    0x0000729a       0xfc .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_settings.o)
- .debug_info    0x00007396      0x19b .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cls.o)
- .debug_info    0x00007531      0x2c9 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_descr.o)
- .debug_info    0x000077fa      0x359 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyFlash.o)
- .debug_info    0x00007b53      0x447 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CySpc.o)
+ .debug_info    0x00000000      0x420 .\CortexM3\ARM_GCC_484\Debug\main.o
+ .debug_info    0x00000420      0x45e .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
+ .debug_info    0x0000087e      0x635 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
+ .debug_info    0x00000eb3      0x13b .\CortexM3\ARM_GCC_484\Debug\ultrasonic.o
+ .debug_info    0x00000fee      0x164 .\CortexM3\ARM_GCC_484\Debug\cybootloader.o
+ .debug_info    0x00001152       0xb1 .\CortexM3\ARM_GCC_484\Debug\cymetadata.o
+ .debug_info    0x00001203      0x317 .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
+ .debug_info    0x0000151a      0x616 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
+ .debug_info    0x00001b30      0x295 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
+ .debug_info    0x00001dc5      0x5d1 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
+ .debug_info    0x00002396      0x56f .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
+ .debug_info    0x00002905      0x4ed .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+ .debug_info    0x00002df2      0x1a6 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
+ .debug_info    0x00002f98      0x7bb .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
+ .debug_info    0x00003753      0x177 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_vnd.o)
+ .debug_info    0x000038ca      0x112 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_DMA_dma.o)
+ .debug_info    0x000039dc      0x11d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_VSYNC.o)
+ .debug_info    0x00003af9      0x11d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOD.o)
+ .debug_info    0x00003c16      0x11d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOC.o)
+ .debug_info    0x00003d33      0x1f7 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
+ .debug_info    0x00003f2a      0x14d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_INT.o)
+ .debug_info    0x00004077      0x190 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_PM.o)
+ .debug_info    0x00004207      0x3ef .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
+ .debug_info    0x000045f6       0xaa .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyBootAsmGnu.o)
+ .debug_info    0x000046a0      0x8b1 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
+ .debug_info    0x00004f51      0xe31 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
+ .debug_info    0x00005d82      0x55f .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyPm.o)
+ .debug_info    0x000062e1      0x370 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
+ .debug_info    0x00006651      0x236 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
+ .debug_info    0x00006887      0x236 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
+ .debug_info    0x00006abd      0x11d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(BLUE.o)
+ .debug_info    0x00006bda      0x2da .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_PWM.o)
+ .debug_info    0x00006eb4      0x216 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_Timer.o)
+ .debug_info    0x000070ca      0x236 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_ISR.o)
+ .debug_info    0x00007300      0x22c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
+ .debug_info    0x0000752c       0xfc .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_settings.o)
+ .debug_info    0x00007628      0x19b .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cls.o)
+ .debug_info    0x000077c3      0x2c9 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_descr.o)
+ .debug_info    0x00007a8c      0x359 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyFlash.o)
+ .debug_info    0x00007de5      0x447 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CySpc.o)
 
-.debug_abbrev   0x00000000     0x2c07
+.debug_abbrev   0x00000000     0x2c47
  *(.debug_abbrev)
- .debug_abbrev  0x00000000      0x186 .\CortexM3\ARM_GCC_484\Debug\main.o
- .debug_abbrev  0x00000186      0x138 .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
- .debug_abbrev  0x000002be      0x1c2 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
- .debug_abbrev  0x00000480       0xa0 .\CortexM3\ARM_GCC_484\Debug\ultrasonic.o
- .debug_abbrev  0x00000520       0x77 .\CortexM3\ARM_GCC_484\Debug\cybootloader.o
- .debug_abbrev  0x00000597       0x5d .\CortexM3\ARM_GCC_484\Debug\cymetadata.o
- .debug_abbrev  0x000005f4      0x1b6 .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
- .debug_abbrev  0x000007aa      0x1c2 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
- .debug_abbrev  0x0000096c      0x162 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
- .debug_abbrev  0x00000ace      0x1bf .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
- .debug_abbrev  0x00000c8d      0x1db .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
- .debug_abbrev  0x00000e68      0x179 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
- .debug_abbrev  0x00000fe1       0xd2 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
- .debug_abbrev  0x000010b3      0x1ac .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
- .debug_abbrev  0x0000125f       0xc5 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_vnd.o)
- .debug_abbrev  0x00001324       0x8b .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_DMA_dma.o)
- .debug_abbrev  0x000013af       0x9d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_VSYNC.o)
- .debug_abbrev  0x0000144c       0x9d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOD.o)
- .debug_abbrev  0x000014e9       0x9d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOC.o)
- .debug_abbrev  0x00001586       0xe2 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
- .debug_abbrev  0x00001668       0x8e .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_INT.o)
- .debug_abbrev  0x000016f6       0xf8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_PM.o)
- .debug_abbrev  0x000017ee      0x12b .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
- .debug_abbrev  0x00001919       0x14 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyBootAsmGnu.o)
- .debug_abbrev  0x0000192d      0x194 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
- .debug_abbrev  0x00001ac1      0x217 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
- .debug_abbrev  0x00001cd8      0x16e .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyPm.o)
- .debug_abbrev  0x00001e46      0x145 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
- .debug_abbrev  0x00001f8b      0x156 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
- .debug_abbrev  0x000020e1      0x156 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
- .debug_abbrev  0x00002237       0x9d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(BLUE.o)
- .debug_abbrev  0x000022d4      0x13b .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_PWM.o)
- .debug_abbrev  0x0000240f      0x128 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_Timer.o)
- .debug_abbrev  0x00002537      0x156 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_ISR.o)
- .debug_abbrev  0x0000268d      0x123 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
- .debug_abbrev  0x000027b0       0x45 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_settings.o)
- .debug_abbrev  0x000027f5       0xc5 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cls.o)
- .debug_abbrev  0x000028ba       0xa7 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_descr.o)
- .debug_abbrev  0x00002961      0x12d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyFlash.o)
- .debug_abbrev  0x00002a8e      0x179 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CySpc.o)
+ .debug_abbrev  0x00000000      0x167 .\CortexM3\ARM_GCC_484\Debug\main.o
+ .debug_abbrev  0x00000167      0x16e .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
+ .debug_abbrev  0x000002d5      0x1eb .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
+ .debug_abbrev  0x000004c0       0xa0 .\CortexM3\ARM_GCC_484\Debug\ultrasonic.o
+ .debug_abbrev  0x00000560       0x77 .\CortexM3\ARM_GCC_484\Debug\cybootloader.o
+ .debug_abbrev  0x000005d7       0x5d .\CortexM3\ARM_GCC_484\Debug\cymetadata.o
+ .debug_abbrev  0x00000634      0x1b6 .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
+ .debug_abbrev  0x000007ea      0x1c2 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
+ .debug_abbrev  0x000009ac      0x162 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
+ .debug_abbrev  0x00000b0e      0x1bf .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
+ .debug_abbrev  0x00000ccd      0x1db .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
+ .debug_abbrev  0x00000ea8      0x179 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+ .debug_abbrev  0x00001021       0xd2 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
+ .debug_abbrev  0x000010f3      0x1ac .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
+ .debug_abbrev  0x0000129f       0xc5 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_vnd.o)
+ .debug_abbrev  0x00001364       0x8b .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_DMA_dma.o)
+ .debug_abbrev  0x000013ef       0x9d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_VSYNC.o)
+ .debug_abbrev  0x0000148c       0x9d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOD.o)
+ .debug_abbrev  0x00001529       0x9d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOC.o)
+ .debug_abbrev  0x000015c6       0xe2 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
+ .debug_abbrev  0x000016a8       0x8e .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_INT.o)
+ .debug_abbrev  0x00001736       0xf8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_PM.o)
+ .debug_abbrev  0x0000182e      0x12b .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
+ .debug_abbrev  0x00001959       0x14 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyBootAsmGnu.o)
+ .debug_abbrev  0x0000196d      0x194 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
+ .debug_abbrev  0x00001b01      0x217 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
+ .debug_abbrev  0x00001d18      0x16e .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyPm.o)
+ .debug_abbrev  0x00001e86      0x145 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
+ .debug_abbrev  0x00001fcb      0x156 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
+ .debug_abbrev  0x00002121      0x156 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
+ .debug_abbrev  0x00002277       0x9d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(BLUE.o)
+ .debug_abbrev  0x00002314      0x13b .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_PWM.o)
+ .debug_abbrev  0x0000244f      0x128 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_Timer.o)
+ .debug_abbrev  0x00002577      0x156 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_ISR.o)
+ .debug_abbrev  0x000026cd      0x123 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
+ .debug_abbrev  0x000027f0       0x45 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_settings.o)
+ .debug_abbrev  0x00002835       0xc5 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cls.o)
+ .debug_abbrev  0x000028fa       0xa7 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_descr.o)
+ .debug_abbrev  0x000029a1      0x12d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyFlash.o)
+ .debug_abbrev  0x00002ace      0x179 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CySpc.o)
 
-.debug_line     0x00000000     0x4489
+.debug_line     0x00000000     0x45fd
  *(.debug_line)
- .debug_line    0x00000000      0x351 .\CortexM3\ARM_GCC_484\Debug\main.o
- .debug_line    0x00000351      0x25e .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
- .debug_line    0x000005af      0x3de .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
- .debug_line    0x0000098d      0x19f .\CortexM3\ARM_GCC_484\Debug\ultrasonic.o
- .debug_line    0x00000b2c       0x55 .\CortexM3\ARM_GCC_484\Debug\cybootloader.o
- .debug_line    0x00000b81       0x53 .\CortexM3\ARM_GCC_484\Debug\cymetadata.o
- .debug_line    0x00000bd4      0x1ca .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
- .debug_line    0x00000d9e      0x227 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
- .debug_line    0x00000fc5      0x26e .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
- .debug_line    0x00001233      0x2ab .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
- .debug_line    0x000014de      0x22c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
- .debug_line    0x0000170a      0x215 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
- .debug_line    0x0000191f       0xd8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
- .debug_line    0x000019f7      0x3f2 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
- .debug_line    0x00001de9       0x85 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_vnd.o)
- .debug_line    0x00001e6e       0x96 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_DMA_dma.o)
- .debug_line    0x00001f04       0x9d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_VSYNC.o)
- .debug_line    0x00001fa1       0x9c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOD.o)
- .debug_line    0x0000203d       0x9c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOC.o)
- .debug_line    0x000020d9       0xec .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
- .debug_line    0x000021c5      0x117 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_INT.o)
- .debug_line    0x000022dc       0xc8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_PM.o)
- .debug_line    0x000023a4      0x1f8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
- .debug_line    0x0000259c       0x68 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyBootAsmGnu.o)
- .debug_line    0x00002604      0x2af .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
- .debug_line    0x000028b3      0x86a .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
- .debug_line    0x0000311d      0x378 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyPm.o)
- .debug_line    0x00003495      0x1ae .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
- .debug_line    0x00003643      0x166 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
- .debug_line    0x000037a9      0x166 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
- .debug_line    0x0000390f       0x95 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(BLUE.o)
- .debug_line    0x000039a4      0x1b3 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_PWM.o)
- .debug_line    0x00003b57      0x153 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_Timer.o)
- .debug_line    0x00003caa      0x168 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_ISR.o)
- .debug_line    0x00003e12      0x147 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
- .debug_line    0x00003f59       0x4b .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_settings.o)
- .debug_line    0x00003fa4       0x8f .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cls.o)
- .debug_line    0x00004033       0x5b .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_descr.o)
- .debug_line    0x0000408e      0x20f .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyFlash.o)
- .debug_line    0x0000429d      0x1ec .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CySpc.o)
+ .debug_line    0x00000000      0x353 .\CortexM3\ARM_GCC_484\Debug\main.o
+ .debug_line    0x00000353      0x338 .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
+ .debug_line    0x0000068b      0x476 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
+ .debug_line    0x00000b01      0x19f .\CortexM3\ARM_GCC_484\Debug\ultrasonic.o
+ .debug_line    0x00000ca0       0x55 .\CortexM3\ARM_GCC_484\Debug\cybootloader.o
+ .debug_line    0x00000cf5       0x53 .\CortexM3\ARM_GCC_484\Debug\cymetadata.o
+ .debug_line    0x00000d48      0x1ca .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
+ .debug_line    0x00000f12      0x227 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
+ .debug_line    0x00001139      0x26e .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
+ .debug_line    0x000013a7      0x2ab .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
+ .debug_line    0x00001652      0x22c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
+ .debug_line    0x0000187e      0x215 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+ .debug_line    0x00001a93       0xd8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
+ .debug_line    0x00001b6b      0x3f2 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
+ .debug_line    0x00001f5d       0x85 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_vnd.o)
+ .debug_line    0x00001fe2       0x96 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_DMA_dma.o)
+ .debug_line    0x00002078       0x9d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_VSYNC.o)
+ .debug_line    0x00002115       0x9c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOD.o)
+ .debug_line    0x000021b1       0x9c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOC.o)
+ .debug_line    0x0000224d       0xec .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
+ .debug_line    0x00002339      0x117 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_INT.o)
+ .debug_line    0x00002450       0xc8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_PM.o)
+ .debug_line    0x00002518      0x1f8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
+ .debug_line    0x00002710       0x68 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyBootAsmGnu.o)
+ .debug_line    0x00002778      0x2af .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
+ .debug_line    0x00002a27      0x86a .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
+ .debug_line    0x00003291      0x378 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyPm.o)
+ .debug_line    0x00003609      0x1ae .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
+ .debug_line    0x000037b7      0x166 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
+ .debug_line    0x0000391d      0x166 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
+ .debug_line    0x00003a83       0x95 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(BLUE.o)
+ .debug_line    0x00003b18      0x1b3 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_PWM.o)
+ .debug_line    0x00003ccb      0x153 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_Timer.o)
+ .debug_line    0x00003e1e      0x168 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_ISR.o)
+ .debug_line    0x00003f86      0x147 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
+ .debug_line    0x000040cd       0x4b .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_settings.o)
+ .debug_line    0x00004118       0x8f .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cls.o)
+ .debug_line    0x000041a7       0x5b .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_descr.o)
+ .debug_line    0x00004202      0x20f .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyFlash.o)
+ .debug_line    0x00004411      0x1ec .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CySpc.o)
 
-.debug_frame    0x00000000     0x34d0
+.debug_frame    0x00000000     0x3580
  *(.debug_frame)
- .debug_frame   0x00000000      0x128 .\CortexM3\ARM_GCC_484\Debug\main.o
- .debug_frame   0x00000128       0xa8 .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
- .debug_frame   0x000001d0      0x178 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
- .debug_frame   0x00000348       0x64 .\CortexM3\ARM_GCC_484\Debug\ultrasonic.o
- .debug_frame   0x000003ac       0xc8 .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
- .debug_frame   0x00000474      0x120 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
- .debug_frame   0x00000594      0x100 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
- .debug_frame   0x00000694      0x238 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
- .debug_frame   0x000008cc      0x248 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
- .debug_frame   0x00000b14      0x1e0 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
- .debug_frame   0x00000cf4       0x9c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
- .debug_frame   0x00000d90      0x180 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
- .debug_frame   0x00000f10       0x30 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_vnd.o)
- .debug_frame   0x00000f40       0x4c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_DMA_dma.o)
- .debug_frame   0x00000f8c       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_VSYNC.o)
- .debug_frame   0x0000100c       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOD.o)
- .debug_frame   0x0000108c       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOC.o)
- .debug_frame   0x0000110c       0x88 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
- .debug_frame   0x00001194       0x30 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_INT.o)
- .debug_frame   0x000011c4       0x84 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_PM.o)
- .debug_frame   0x00001248      0x17c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
- .debug_frame   0x000013c4      0x2c0 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
- .debug_frame   0x00001684      0x948 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
- .debug_frame   0x00001fcc      0x1ec .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyPm.o)
- .debug_frame   0x000021b8      0x1dc .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
- .debug_frame   0x00002394      0x180 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
- .debug_frame   0x00002514      0x180 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
- .debug_frame   0x00002694       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(BLUE.o)
- .debug_frame   0x00002714      0x20c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_PWM.o)
- .debug_frame   0x00002920      0x180 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_Timer.o)
- .debug_frame   0x00002aa0      0x180 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_ISR.o)
- .debug_frame   0x00002c20      0x164 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
- .debug_frame   0x00002d84       0x30 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cls.o)
- .debug_frame   0x00002db4      0x1a8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyFlash.o)
- .debug_frame   0x00002f5c      0x174 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CySpc.o)
- .debug_frame   0x000030d0       0x20 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-errno.o)
- .debug_frame   0x000030f0       0x28 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-exit.o)
- .debug_frame   0x00003118       0x2c c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-init.o)
- .debug_frame   0x00003144       0x28 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-memcpy-stub.o)
- .debug_frame   0x0000316c       0x20 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-memset.o)
- .debug_frame   0x0000318c       0x74 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-qsort.o)
- .debug_frame   0x00003200       0x58 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-sprintf.o)
- .debug_frame   0x00003258       0x88 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-svfprintf.o)
- .debug_frame   0x000032e0       0x60 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-vfprintf_i.o)
- .debug_frame   0x00003340       0x28 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-memchr-stub.o)
- .debug_frame   0x00003368       0x2c c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-memmove.o)
- .debug_frame   0x00003394       0x2c c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-nano-freer.o)
- .debug_frame   0x000033c0       0x2c c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-nano-mallocr.o)
- .debug_frame   0x000033ec       0x30 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-nano-reallocr.o)
- .debug_frame   0x0000341c       0x2c c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-sbrkr.o)
- .debug_frame   0x00003448       0x20 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-strlen.o)
- .debug_frame   0x00003468       0x20 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-nano-msizer.o)
- .debug_frame   0x00003488       0x48 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-reent.o)
+ .debug_frame   0x00000000      0x12c .\CortexM3\ARM_GCC_484\Debug\main.o
+ .debug_frame   0x0000012c       0xfc .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
+ .debug_frame   0x00000228      0x1d0 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
+ .debug_frame   0x000003f8       0x64 .\CortexM3\ARM_GCC_484\Debug\ultrasonic.o
+ .debug_frame   0x0000045c       0xc8 .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
+ .debug_frame   0x00000524      0x120 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
+ .debug_frame   0x00000644      0x100 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
+ .debug_frame   0x00000744      0x238 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
+ .debug_frame   0x0000097c      0x248 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
+ .debug_frame   0x00000bc4      0x1e0 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+ .debug_frame   0x00000da4       0x9c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
+ .debug_frame   0x00000e40      0x180 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
+ .debug_frame   0x00000fc0       0x30 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_vnd.o)
+ .debug_frame   0x00000ff0       0x4c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_DMA_dma.o)
+ .debug_frame   0x0000103c       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_VSYNC.o)
+ .debug_frame   0x000010bc       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOD.o)
+ .debug_frame   0x0000113c       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOC.o)
+ .debug_frame   0x000011bc       0x88 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
+ .debug_frame   0x00001244       0x30 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_INT.o)
+ .debug_frame   0x00001274       0x84 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_PM.o)
+ .debug_frame   0x000012f8      0x17c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
+ .debug_frame   0x00001474      0x2c0 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
+ .debug_frame   0x00001734      0x948 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
+ .debug_frame   0x0000207c      0x1ec .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyPm.o)
+ .debug_frame   0x00002268      0x1dc .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
+ .debug_frame   0x00002444      0x180 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
+ .debug_frame   0x000025c4      0x180 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
+ .debug_frame   0x00002744       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(BLUE.o)
+ .debug_frame   0x000027c4      0x20c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_PWM.o)
+ .debug_frame   0x000029d0      0x180 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_Timer.o)
+ .debug_frame   0x00002b50      0x180 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_ISR.o)
+ .debug_frame   0x00002cd0      0x164 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
+ .debug_frame   0x00002e34       0x30 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cls.o)
+ .debug_frame   0x00002e64      0x1a8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyFlash.o)
+ .debug_frame   0x0000300c      0x174 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CySpc.o)
+ .debug_frame   0x00003180       0x20 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-errno.o)
+ .debug_frame   0x000031a0       0x28 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-exit.o)
+ .debug_frame   0x000031c8       0x2c c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-init.o)
+ .debug_frame   0x000031f4       0x28 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-memcpy-stub.o)
+ .debug_frame   0x0000321c       0x20 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-memset.o)
+ .debug_frame   0x0000323c       0x74 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-qsort.o)
+ .debug_frame   0x000032b0       0x58 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-sprintf.o)
+ .debug_frame   0x00003308       0x88 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-svfprintf.o)
+ .debug_frame   0x00003390       0x60 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-vfprintf_i.o)
+ .debug_frame   0x000033f0       0x28 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-memchr-stub.o)
+ .debug_frame   0x00003418       0x2c c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-memmove.o)
+ .debug_frame   0x00003444       0x2c c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-nano-freer.o)
+ .debug_frame   0x00003470       0x2c c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-nano-mallocr.o)
+ .debug_frame   0x0000349c       0x30 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-nano-reallocr.o)
+ .debug_frame   0x000034cc       0x2c c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-sbrkr.o)
+ .debug_frame   0x000034f8       0x20 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-strlen.o)
+ .debug_frame   0x00003518       0x20 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-nano-msizer.o)
+ .debug_frame   0x00003538       0x48 c:/program files (x86)/cypress/psoc creator/3.2/psoc creator/import/gnu/arm/4.8.4/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m\libg_s.a(lib_a-reent.o)
 
-.debug_str      0x00000000     0x355e
+.debug_str      0x00000000     0x3601
  *(.debug_str)
- .debug_str     0x00000000      0x280 .\CortexM3\ARM_GCC_484\Debug\main.o
-                                0x2ee (size before relaxing)
- .debug_str     0x00000280       0x91 .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
-                                0x285 (size before relaxing)
- .debug_str     0x00000311      0x114 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
-                                0x336 (size before relaxing)
- .debug_str     0x00000425       0x4b .\CortexM3\ARM_GCC_484\Debug\ultrasonic.o
-                                0x1f2 (size before relaxing)
- .debug_str     0x00000470       0x84 .\CortexM3\ARM_GCC_484\Debug\cybootloader.o
-                                0x1f2 (size before relaxing)
- .debug_str     0x000004f4       0x37 .\CortexM3\ARM_GCC_484\Debug\cymetadata.o
-                                0x1a5 (size before relaxing)
- .debug_str     0x0000052b      0x12b .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
-                                0x2c6 (size before relaxing)
- .debug_str     0x00000656      0x27e .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
-                                0x42f (size before relaxing)
- .debug_str     0x000008d4       0xd9 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
-                                0x299 (size before relaxing)
- .debug_str     0x000009ad      0x2c1 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
-                                0x45f (size before relaxing)
- .debug_str     0x00000c6e      0x241 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
-                                0x45f (size before relaxing)
- .debug_str     0x00000eaf      0x230 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
-                                0x534 (size before relaxing)
- .debug_str     0x000010df       0x6a .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
-                                0x24f (size before relaxing)
- .debug_str     0x00001149      0x26d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
-                                0x5bd (size before relaxing)
- .debug_str     0x000013b6       0x55 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_vnd.o)
-                                0x234 (size before relaxing)
- .debug_str     0x0000140b       0xa9 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_DMA_dma.o)
-                                0x21e (size before relaxing)
- .debug_str     0x000014b4       0x8b .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_VSYNC.o)
-                                0x200 (size before relaxing)
- .debug_str     0x0000153f       0x7b .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOD.o)
-                                0x1fb (size before relaxing)
- .debug_str     0x000015ba       0x7b .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOC.o)
-                                0x1fb (size before relaxing)
- .debug_str     0x00001635      0x131 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
-                                0x2c9 (size before relaxing)
- .debug_str     0x00001766       0xb9 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_INT.o)
-                                0x294 (size before relaxing)
- .debug_str     0x0000181f       0x7b .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_PM.o)
+ .debug_str     0x00000000      0x27d .\CortexM3\ARM_GCC_484\Debug\main.o
+                                0x2eb (size before relaxing)
+ .debug_str     0x0000027d       0xe0 .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
+                                0x2d7 (size before relaxing)
+ .debug_str     0x0000035d      0x16b .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
+                                0x3aa (size before relaxing)
+ .debug_str     0x000004c8       0x4b .\CortexM3\ARM_GCC_484\Debug\ultrasonic.o
+                                0x1ff (size before relaxing)
+ .debug_str     0x00000513       0x84 .\CortexM3\ARM_GCC_484\Debug\cybootloader.o
+                                0x1ff (size before relaxing)
+ .debug_str     0x00000597       0x37 .\CortexM3\ARM_GCC_484\Debug\cymetadata.o
+                                0x1b2 (size before relaxing)
+ .debug_str     0x000005ce      0x12b .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
+                                0x2d3 (size before relaxing)
+ .debug_str     0x000006f9      0x27e .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
+                                0x43c (size before relaxing)
+ .debug_str     0x00000977       0xd9 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
+                                0x2a6 (size before relaxing)
+ .debug_str     0x00000a50      0x2c1 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
+                                0x46c (size before relaxing)
+ .debug_str     0x00000d11      0x241 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
+                                0x46c (size before relaxing)
+ .debug_str     0x00000f52      0x230 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+                                0x541 (size before relaxing)
+ .debug_str     0x00001182       0x6a .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
                                 0x25c (size before relaxing)
- .debug_str     0x0000189a      0x1d4 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
-                                0x434 (size before relaxing)
- .debug_str     0x00001a6e      0x34c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
-                                0x50c (size before relaxing)
- .debug_str     0x00001dba      0x7a8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
-                                0x9c1 (size before relaxing)
- .debug_str     0x00002562      0x367 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyPm.o)
-                                0x526 (size before relaxing)
- .debug_str     0x000028c9      0x145 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
-                                0x2e7 (size before relaxing)
- .debug_str     0x00002a0e       0xda .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
-                                0x287 (size before relaxing)
- .debug_str     0x00002ae8       0xda .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
-                                0x287 (size before relaxing)
- .debug_str     0x00002bc2       0x58 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(BLUE.o)
-                                0x1d8 (size before relaxing)
- .debug_str     0x00002c1a      0x1d7 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_PWM.o)
-                                0x35e (size before relaxing)
- .debug_str     0x00002df1      0x153 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_Timer.o)
-                                0x2f0 (size before relaxing)
- .debug_str     0x00002f44       0xf6 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_ISR.o)
-                                0x2a3 (size before relaxing)
- .debug_str     0x0000303a      0x151 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
-                                0x302 (size before relaxing)
- .debug_str     0x0000318b       0x59 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_settings.o)
-                                0x163 (size before relaxing)
- .debug_str     0x000031e4       0x39 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cls.o)
-                                0x250 (size before relaxing)
- .debug_str     0x0000321d       0xea .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_descr.o)
-                                0x345 (size before relaxing)
- .debug_str     0x00003307      0x136 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyFlash.o)
-                                0x2db (size before relaxing)
- .debug_str     0x0000343d      0x121 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CySpc.o)
-                                0x2db (size before relaxing)
+ .debug_str     0x000011ec      0x26d .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
+                                0x5ca (size before relaxing)
+ .debug_str     0x00001459       0x55 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_vnd.o)
+                                0x241 (size before relaxing)
+ .debug_str     0x000014ae       0xa9 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_DMA_dma.o)
+                                0x22b (size before relaxing)
+ .debug_str     0x00001557       0x8b .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_VSYNC.o)
+                                0x20d (size before relaxing)
+ .debug_str     0x000015e2       0x7b .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOD.o)
+                                0x208 (size before relaxing)
+ .debug_str     0x0000165d       0x7b .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOC.o)
+                                0x208 (size before relaxing)
+ .debug_str     0x000016d8      0x131 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
+                                0x2d6 (size before relaxing)
+ .debug_str     0x00001809       0xb9 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_INT.o)
+                                0x2a1 (size before relaxing)
+ .debug_str     0x000018c2       0x7b .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_PM.o)
+                                0x269 (size before relaxing)
+ .debug_str     0x0000193d      0x1d4 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
+                                0x441 (size before relaxing)
+ .debug_str     0x00001b11      0x34c .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
+                                0x519 (size before relaxing)
+ .debug_str     0x00001e5d      0x7a8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
+                                0x9ce (size before relaxing)
+ .debug_str     0x00002605      0x367 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyPm.o)
+                                0x533 (size before relaxing)
+ .debug_str     0x0000296c      0x145 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
+                                0x2f4 (size before relaxing)
+ .debug_str     0x00002ab1       0xda .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
+                                0x294 (size before relaxing)
+ .debug_str     0x00002b8b       0xda .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
+                                0x294 (size before relaxing)
+ .debug_str     0x00002c65       0x58 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(BLUE.o)
+                                0x1e5 (size before relaxing)
+ .debug_str     0x00002cbd      0x1d7 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_PWM.o)
+                                0x36b (size before relaxing)
+ .debug_str     0x00002e94      0x153 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_Timer.o)
+                                0x2fd (size before relaxing)
+ .debug_str     0x00002fe7       0xf6 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_ISR.o)
+                                0x2b0 (size before relaxing)
+ .debug_str     0x000030dd      0x151 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
+                                0x30f (size before relaxing)
+ .debug_str     0x0000322e       0x59 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_settings.o)
+                                0x170 (size before relaxing)
+ .debug_str     0x00003287       0x39 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cls.o)
+                                0x25d (size before relaxing)
+ .debug_str     0x000032c0       0xea .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_descr.o)
+                                0x352 (size before relaxing)
+ .debug_str     0x000033aa      0x136 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyFlash.o)
+                                0x2e8 (size before relaxing)
+ .debug_str     0x000034e0      0x121 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CySpc.o)
+                                0x2e8 (size before relaxing)
 
 .debug_loc
  *(.debug_loc)
@@ -2193,43 +2177,43 @@ END GROUP
 .debug_macinfo
  *(.debug_macinfo)
 
-.debug_ranges   0x00000000      0xdd0
+.debug_ranges   0x00000000      0xdf8
  *(.debug_ranges)
  .debug_ranges  0x00000000       0x50 .\CortexM3\ARM_GCC_484\Debug\main.o
- .debug_ranges  0x00000050       0x30 .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
- .debug_ranges  0x00000080       0x68 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
- .debug_ranges  0x000000e8       0x20 .\CortexM3\ARM_GCC_484\Debug\ultrasonic.o
- .debug_ranges  0x00000108       0x38 .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
- .debug_ranges  0x00000140       0x50 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
- .debug_ranges  0x00000190       0x48 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
- .debug_ranges  0x000001d8       0xa0 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
- .debug_ranges  0x00000278       0xa0 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
- .debug_ranges  0x00000318       0x88 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
- .debug_ranges  0x000003a0       0x30 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
- .debug_ranges  0x000003d0       0x68 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
- .debug_ranges  0x00000438       0x10 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_vnd.o)
- .debug_ranges  0x00000448       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_DMA_dma.o)
- .debug_ranges  0x00000460       0x28 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_VSYNC.o)
- .debug_ranges  0x00000488       0x28 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOD.o)
- .debug_ranges  0x000004b0       0x28 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOC.o)
- .debug_ranges  0x000004d8       0x28 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
- .debug_ranges  0x00000500       0x10 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_INT.o)
- .debug_ranges  0x00000510       0x28 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_PM.o)
- .debug_ranges  0x00000538       0x70 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
- .debug_ranges  0x000005a8       0xc8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
- .debug_ranges  0x00000670      0x288 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
- .debug_ranges  0x000008f8       0x88 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyPm.o)
- .debug_ranges  0x00000980       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
- .debug_ranges  0x00000a00       0x70 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
- .debug_ranges  0x00000a70       0x70 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
- .debug_ranges  0x00000ae0       0x28 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(BLUE.o)
- .debug_ranges  0x00000b08       0x98 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_PWM.o)
- .debug_ranges  0x00000ba0       0x70 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_Timer.o)
- .debug_ranges  0x00000c10       0x70 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_ISR.o)
- .debug_ranges  0x00000c80       0x68 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
- .debug_ranges  0x00000ce8       0x10 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cls.o)
- .debug_ranges  0x00000cf8       0x70 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyFlash.o)
- .debug_ranges  0x00000d68       0x68 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CySpc.o)
+ .debug_ranges  0x00000050       0x48 .\CortexM3\ARM_GCC_484\Debug\blob_stats.o
+ .debug_ranges  0x00000098       0x78 .\CortexM3\ARM_GCC_484\Debug\my_camera_functions.o
+ .debug_ranges  0x00000110       0x20 .\CortexM3\ARM_GCC_484\Debug\ultrasonic.o
+ .debug_ranges  0x00000130       0x38 .\CortexM3\ARM_GCC_484\Debug\Cm3Start.o
+ .debug_ranges  0x00000168       0x50 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyfitter_cfg.o)
+ .debug_ranges  0x000001b8       0x48 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera.o)
+ .debug_ranges  0x00000200       0xa0 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB.o)
+ .debug_ranges  0x000002a0       0xa0 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cdc.o)
+ .debug_ranges  0x00000340       0x88 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_drv.o)
+ .debug_ranges  0x000003c8       0x30 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_episr.o)
+ .debug_ranges  0x000003f8       0x68 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_std.o)
+ .debug_ranges  0x00000460       0x10 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_vnd.o)
+ .debug_ranges  0x00000470       0x18 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_DMA_dma.o)
+ .debug_ranges  0x00000488       0x28 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_VSYNC.o)
+ .debug_ranges  0x000004b0       0x28 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOD.o)
+ .debug_ranges  0x000004d8       0x28 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_SIOC.o)
+ .debug_ranges  0x00000500       0x28 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C.o)
+ .debug_ranges  0x00000528       0x10 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_INT.o)
+ .debug_ranges  0x00000538       0x28 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_PM.o)
+ .debug_ranges  0x00000560       0x70 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Camera_I2C_MASTER.o)
+ .debug_ranges  0x000005d0       0xc8 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyDmac.o)
+ .debug_ranges  0x00000698      0x288 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyLib.o)
+ .debug_ranges  0x00000920       0x88 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(cyPm.o)
+ .debug_ranges  0x000009a8       0x80 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(LCD.o)
+ .debug_ranges  0x00000a28       0x70 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but0.o)
+ .debug_ranges  0x00000a98       0x70 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(but1.o)
+ .debug_ranges  0x00000b08       0x28 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(BLUE.o)
+ .debug_ranges  0x00000b30       0x98 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_PWM.o)
+ .debug_ranges  0x00000bc8       0x70 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_Timer.o)
+ .debug_ranges  0x00000c38       0x70 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(HC_ISR.o)
+ .debug_ranges  0x00000ca8       0x68 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(Button_PWM.o)
+ .debug_ranges  0x00000d10       0x10 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(USB_cls.o)
+ .debug_ranges  0x00000d20       0x70 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CyFlash.o)
+ .debug_ranges  0x00000d90       0x68 .\CortexM3\ARM_GCC_484\Debug\camera_test.a(CySpc.o)
 
 .comment        0x00000000       0x70
  .comment       0x00000000       0x70 .\CortexM3\ARM_GCC_484\Debug\main.o

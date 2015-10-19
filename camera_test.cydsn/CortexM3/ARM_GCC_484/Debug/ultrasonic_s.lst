@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 1
   12:.\ultrasonic_s.c **** #include <project.h>
   13:.\ultrasonic_s.c **** #include <stdio.h>
   14:.\ultrasonic_s.c **** #include <math.h>
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 2
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 2
 
 
   15:.\ultrasonic_s.c **** 
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 1
   72              		.align	2
   73              		.global	get_var_ultra_s
   74              		.thumb
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 3
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 3
 
 
   75              		.thumb_func
@@ -156,1127 +156,1241 @@ ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 1
  103              		.cfi_endproc
  104              	.LFE64:
  105              		.size	get_var_ultra_s, .-get_var_ultra_s
- 106              		.section	.text.myabss,"ax",%progbits
+ 106              		.section	.text.select_stack,"ax",%progbits
  107              		.align	2
- 108              		.global	myabss
+ 108              		.global	select_stack
  109              		.thumb
  110              		.thumb_func
- 111              		.type	myabss, %function
- 112              	myabss:
+ 111              		.type	select_stack, %function
+ 112              	select_stack:
  113              	.LFB65:
   45:.\ultrasonic_s.c **** 
-  46:.\ultrasonic_s.c **** 
-  47:.\ultrasonic_s.c **** int myabss(x){
- 114              		.loc 1 47 0
+  46:.\ultrasonic_s.c **** void select_stack(){
+ 114              		.loc 1 46 0
  115              		.cfi_startproc
- 116              		@ args = 0, pretend = 0, frame = 8
+ 116              		@ args = 0, pretend = 0, frame = 0
  117              		@ frame_needed = 1, uses_anonymous_args = 0
- 118              		@ link register save eliminated.
- 119 0000 80B4     		push	{r7}
- 120              		.cfi_def_cfa_offset 4
- 121              		.cfi_offset 7, -4
- 122 0002 83B0     		sub	sp, sp, #12
- 123              		.cfi_def_cfa_offset 16
- 124 0004 00AF     		add	r7, sp, #0
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 4
+ 118 0000 80B5     		push	{r7, lr}
+ 119              		.cfi_def_cfa_offset 8
+ 120              		.cfi_offset 7, -8
+ 121              		.cfi_offset 14, -4
+ 122 0002 00AF     		add	r7, sp, #0
+ 123              		.cfi_def_cfa_register 7
+  47:.\ultrasonic_s.c ****     if (HC_REG_Read() != 0x00){
+ 124              		.loc 1 47 0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 4
 
 
- 125              		.cfi_def_cfa_register 7
- 126 0006 7860     		str	r0, [r7, #4]
-  48:.\ultrasonic_s.c ****     if (x < 0){
- 127              		.loc 1 48 0
- 128 0008 7B68     		ldr	r3, [r7, #4]
- 129 000a 002B     		cmp	r3, #0
- 130 000c 02DA     		bge	.L10
-  49:.\ultrasonic_s.c ****         return -x;
- 131              		.loc 1 49 0
- 132 000e 7B68     		ldr	r3, [r7, #4]
- 133 0010 5B42     		negs	r3, r3
- 134 0012 00E0     		b	.L11
- 135              	.L10:
-  50:.\ultrasonic_s.c ****     } else {
-  51:.\ultrasonic_s.c ****         return x;
- 136              		.loc 1 51 0
- 137 0014 7B68     		ldr	r3, [r7, #4]
- 138              	.L11:
-  52:.\ultrasonic_s.c ****     }
-  53:.\ultrasonic_s.c **** }
- 139              		.loc 1 53 0
- 140 0016 1846     		mov	r0, r3
- 141 0018 0C37     		adds	r7, r7, #12
- 142 001a BD46     		mov	sp, r7
- 143              		@ sp needed
- 144 001c 5DF8047B 		ldr	r7, [sp], #4
- 145 0020 7047     		bx	lr
- 146              		.cfi_endproc
- 147              	.LFE65:
- 148              		.size	myabss, .-myabss
- 149              		.global	__aeabi_ui2d
- 150              		.global	__aeabi_ddiv
- 151              		.global	__aeabi_d2uiz
- 152 0022 00BF     		.section	.text.HC_TRIG_ISR_S,"ax",%progbits
- 153              		.align	2
- 154              		.global	HC_TRIG_ISR_S
- 155              		.thumb
- 156              		.thumb_func
- 157              		.type	HC_TRIG_ISR_S, %function
- 158              	HC_TRIG_ISR_S:
- 159              	.LFB66:
-  54:.\ultrasonic_s.c **** 
-  55:.\ultrasonic_s.c **** CY_ISR(HC_TRIG_ISR_S){
- 160              		.loc 1 55 0
- 161              		.cfi_startproc
- 162              		@ args = 0, pretend = 0, frame = 8
- 163              		@ frame_needed = 1, uses_anonymous_args = 0
- 164 0000 80B5     		push	{r7, lr}
- 165              		.cfi_def_cfa_offset 8
- 166              		.cfi_offset 7, -8
- 167              		.cfi_offset 14, -4
- 168 0002 82B0     		sub	sp, sp, #8
- 169              		.cfi_def_cfa_offset 16
- 170 0004 00AF     		add	r7, sp, #0
- 171              		.cfi_def_cfa_register 7
-  56:.\ultrasonic_s.c ****     ultra_distance_s = (MAX_COUNT - HC_Timer_S_ReadCounter()) / DIST_CORRECTION;
- 172              		.loc 1 56 0
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 5
+ 125 0004 FFF7FEFF 		bl	HC_REG_Read
+ 126 0008 0346     		mov	r3, r0
+ 127 000a 002B     		cmp	r3, #0
+ 128 000c 02D0     		beq	.L9
+  48:.\ultrasonic_s.c ****         HC_REG_Write(0x00);
+ 129              		.loc 1 48 0
+ 130 000e 0020     		movs	r0, #0
+ 131 0010 FFF7FEFF 		bl	HC_REG_Write
+ 132              	.L9:
+  49:.\ultrasonic_s.c ****     }
+  50:.\ultrasonic_s.c **** }
+ 133              		.loc 1 50 0
+ 134 0014 80BD     		pop	{r7, pc}
+ 135              		.cfi_endproc
+ 136              	.LFE65:
+ 137              		.size	select_stack, .-select_stack
+ 138 0016 00BF     		.section	.text.select_left,"ax",%progbits
+ 139              		.align	2
+ 140              		.global	select_left
+ 141              		.thumb
+ 142              		.thumb_func
+ 143              		.type	select_left, %function
+ 144              	select_left:
+ 145              	.LFB66:
+  51:.\ultrasonic_s.c **** void select_left(){
+ 146              		.loc 1 51 0
+ 147              		.cfi_startproc
+ 148              		@ args = 0, pretend = 0, frame = 0
+ 149              		@ frame_needed = 1, uses_anonymous_args = 0
+ 150 0000 80B5     		push	{r7, lr}
+ 151              		.cfi_def_cfa_offset 8
+ 152              		.cfi_offset 7, -8
+ 153              		.cfi_offset 14, -4
+ 154 0002 00AF     		add	r7, sp, #0
+ 155              		.cfi_def_cfa_register 7
+  52:.\ultrasonic_s.c ****     if (HC_REG_Read() == 0x00){
+ 156              		.loc 1 52 0
+ 157 0004 FFF7FEFF 		bl	HC_REG_Read
+ 158 0008 0346     		mov	r3, r0
+ 159 000a 002B     		cmp	r3, #0
+ 160 000c 02D1     		bne	.L11
+  53:.\ultrasonic_s.c ****         HC_REG_Write(0xFF);
+ 161              		.loc 1 53 0
+ 162 000e FF20     		movs	r0, #255
+ 163 0010 FFF7FEFF 		bl	HC_REG_Write
+ 164              	.L11:
+  54:.\ultrasonic_s.c ****     }
+  55:.\ultrasonic_s.c **** }
+ 165              		.loc 1 55 0
+ 166 0014 80BD     		pop	{r7, pc}
+ 167              		.cfi_endproc
+ 168              	.LFE66:
+ 169              		.size	select_left, .-select_left
+ 170 0016 00BF     		.section	.text.myabss,"ax",%progbits
+ 171              		.align	2
+ 172              		.global	myabss
+ 173              		.thumb
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 5
 
 
- 173 0006 FFF7FEFF 		bl	HC_Timer_S_ReadCounter
- 174 000a 0346     		mov	r3, r0
- 175 000c C3F54343 		rsb	r3, r3, #49920
- 176 0010 5033     		adds	r3, r3, #80
- 177 0012 1846     		mov	r0, r3
- 178 0014 FFF7FEFF 		bl	__aeabi_ui2d
- 179 0018 0246     		mov	r2, r0
- 180 001a 0B46     		mov	r3, r1
- 181 001c 1046     		mov	r0, r2
- 182 001e 1946     		mov	r1, r3
- 183 0020 4FF00002 		mov	r2, #0
- 184 0024 354B     		ldr	r3, .L17
- 185 0026 FFF7FEFF 		bl	__aeabi_ddiv
- 186 002a 0246     		mov	r2, r0
- 187 002c 0B46     		mov	r3, r1
- 188 002e 1046     		mov	r0, r2
- 189 0030 1946     		mov	r1, r3
- 190 0032 FFF7FEFF 		bl	__aeabi_d2uiz
- 191 0036 0346     		mov	r3, r0
- 192 0038 9AB2     		uxth	r2, r3
- 193 003a 314B     		ldr	r3, .L17+4
- 194 003c 1A80     		strh	r2, [r3]	@ movhi
-  57:.\ultrasonic_s.c ****     ultra_s[ultra_i_s] = ultra_distance_s;
- 195              		.loc 1 57 0
- 196 003e 314B     		ldr	r3, .L17+8
- 197 0040 1A68     		ldr	r2, [r3]
- 198 0042 2F4B     		ldr	r3, .L17+4
- 199 0044 1B88     		ldrh	r3, [r3]	@ movhi
- 200 0046 99B2     		uxth	r1, r3
- 201 0048 2F4B     		ldr	r3, .L17+12
- 202 004a 23F81210 		strh	r1, [r3, r2, lsl #1]	@ movhi
-  58:.\ultrasonic_s.c ****     ultra_i_s = (ultra_i_s + 1) % 10;
- 203              		.loc 1 58 0
- 204 004e 2D4B     		ldr	r3, .L17+8
- 205 0050 1B68     		ldr	r3, [r3]
- 206 0052 591C     		adds	r1, r3, #1
- 207 0054 2D4B     		ldr	r3, .L17+16
- 208 0056 83FB0123 		smull	r2, r3, r3, r1
- 209 005a 9A10     		asrs	r2, r3, #2
- 210 005c CB17     		asrs	r3, r1, #31
- 211 005e D21A     		subs	r2, r2, r3
- 212 0060 1346     		mov	r3, r2
- 213 0062 9B00     		lsls	r3, r3, #2
- 214 0064 1344     		add	r3, r3, r2
- 215 0066 5B00     		lsls	r3, r3, #1
- 216 0068 CA1A     		subs	r2, r1, r3
- 217 006a 264B     		ldr	r3, .L17+8
- 218 006c 1A60     		str	r2, [r3]
-  59:.\ultrasonic_s.c ****     int i;
-  60:.\ultrasonic_s.c ****     for (i = 0; i < 10; i++){
- 219              		.loc 1 60 0
- 220 006e 0023     		movs	r3, #0
- 221 0070 7B60     		str	r3, [r7, #4]
- 222 0072 0EE0     		b	.L13
- 223              	.L14:
-  61:.\ultrasonic_s.c ****         ultra_distance_s += ultra_s[i];
- 224              		.loc 1 61 0 discriminator 2
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 6
+ 174              		.thumb_func
+ 175              		.type	myabss, %function
+ 176              	myabss:
+ 177              	.LFB67:
+  56:.\ultrasonic_s.c **** 
+  57:.\ultrasonic_s.c **** 
+  58:.\ultrasonic_s.c **** int myabss(x){
+ 178              		.loc 1 58 0
+ 179              		.cfi_startproc
+ 180              		@ args = 0, pretend = 0, frame = 8
+ 181              		@ frame_needed = 1, uses_anonymous_args = 0
+ 182              		@ link register save eliminated.
+ 183 0000 80B4     		push	{r7}
+ 184              		.cfi_def_cfa_offset 4
+ 185              		.cfi_offset 7, -4
+ 186 0002 83B0     		sub	sp, sp, #12
+ 187              		.cfi_def_cfa_offset 16
+ 188 0004 00AF     		add	r7, sp, #0
+ 189              		.cfi_def_cfa_register 7
+ 190 0006 7860     		str	r0, [r7, #4]
+  59:.\ultrasonic_s.c ****     if (x < 0){
+ 191              		.loc 1 59 0
+ 192 0008 7B68     		ldr	r3, [r7, #4]
+ 193 000a 002B     		cmp	r3, #0
+ 194 000c 02DA     		bge	.L14
+  60:.\ultrasonic_s.c ****         return -x;
+ 195              		.loc 1 60 0
+ 196 000e 7B68     		ldr	r3, [r7, #4]
+ 197 0010 5B42     		negs	r3, r3
+ 198 0012 00E0     		b	.L15
+ 199              	.L14:
+  61:.\ultrasonic_s.c ****     } else {
+  62:.\ultrasonic_s.c ****         return x;
+ 200              		.loc 1 62 0
+ 201 0014 7B68     		ldr	r3, [r7, #4]
+ 202              	.L15:
+  63:.\ultrasonic_s.c ****     }
+  64:.\ultrasonic_s.c **** }
+ 203              		.loc 1 64 0
+ 204 0016 1846     		mov	r0, r3
+ 205 0018 0C37     		adds	r7, r7, #12
+ 206 001a BD46     		mov	sp, r7
+ 207              		@ sp needed
+ 208 001c 5DF8047B 		ldr	r7, [sp], #4
+ 209 0020 7047     		bx	lr
+ 210              		.cfi_endproc
+ 211              	.LFE67:
+ 212              		.size	myabss, .-myabss
+ 213              		.global	__aeabi_ui2d
+ 214              		.global	__aeabi_ddiv
+ 215              		.global	__aeabi_d2uiz
+ 216 0022 00BF     		.section	.text.HC_TRIG_ISR_S,"ax",%progbits
+ 217              		.align	2
+ 218              		.global	HC_TRIG_ISR_S
+ 219              		.thumb
+ 220              		.thumb_func
+ 221              		.type	HC_TRIG_ISR_S, %function
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 6
 
 
- 225 0074 244B     		ldr	r3, .L17+12
- 226 0076 7A68     		ldr	r2, [r7, #4]
- 227 0078 33F81230 		ldrh	r3, [r3, r2, lsl #1]	@ movhi
- 228 007c 9AB2     		uxth	r2, r3
- 229 007e 204B     		ldr	r3, .L17+4
- 230 0080 1B88     		ldrh	r3, [r3]	@ movhi
- 231 0082 9BB2     		uxth	r3, r3
- 232 0084 1344     		add	r3, r3, r2
- 233 0086 9AB2     		uxth	r2, r3
- 234 0088 1D4B     		ldr	r3, .L17+4
- 235 008a 1A80     		strh	r2, [r3]	@ movhi
-  60:.\ultrasonic_s.c ****     for (i = 0; i < 10; i++){
- 236              		.loc 1 60 0 discriminator 2
- 237 008c 7B68     		ldr	r3, [r7, #4]
- 238 008e 0133     		adds	r3, r3, #1
- 239 0090 7B60     		str	r3, [r7, #4]
- 240              	.L13:
-  60:.\ultrasonic_s.c ****     for (i = 0; i < 10; i++){
- 241              		.loc 1 60 0 is_stmt 0 discriminator 1
- 242 0092 7B68     		ldr	r3, [r7, #4]
- 243 0094 092B     		cmp	r3, #9
- 244 0096 EDDD     		ble	.L14
-  62:.\ultrasonic_s.c ****     } 
-  63:.\ultrasonic_s.c ****     ultra_distance_s /= 10;
- 245              		.loc 1 63 0 is_stmt 1
- 246 0098 194B     		ldr	r3, .L17+4
- 247 009a 1B88     		ldrh	r3, [r3]	@ movhi
- 248 009c 9AB2     		uxth	r2, r3
- 249 009e 1C4B     		ldr	r3, .L17+20
- 250 00a0 A3FB0213 		umull	r1, r3, r3, r2
- 251 00a4 DB08     		lsrs	r3, r3, #3
- 252 00a6 9AB2     		uxth	r2, r3
- 253 00a8 154B     		ldr	r3, .L17+4
- 254 00aa 1A80     		strh	r2, [r3]	@ movhi
-  64:.\ultrasonic_s.c ****     var_ultra_s = 0;
- 255              		.loc 1 64 0
- 256 00ac 194B     		ldr	r3, .L17+24
- 257 00ae 0022     		movs	r2, #0
- 258 00b0 1A80     		strh	r2, [r3]	@ movhi
-  65:.\ultrasonic_s.c ****     for (i = 0; i < 10; i++){
- 259              		.loc 1 65 0
- 260 00b2 0023     		movs	r3, #0
- 261 00b4 7B60     		str	r3, [r7, #4]
- 262 00b6 18E0     		b	.L15
- 263              	.L16:
-  66:.\ultrasonic_s.c ****         var_ultra_s += myabss(ultra_distance_s - ultra_s[i]);
- 264              		.loc 1 66 0 discriminator 2
- 265 00b8 114B     		ldr	r3, .L17+4
- 266 00ba 1B88     		ldrh	r3, [r3]	@ movhi
- 267 00bc 9BB2     		uxth	r3, r3
- 268 00be 1A46     		mov	r2, r3
- 269 00c0 114B     		ldr	r3, .L17+12
- 270 00c2 7968     		ldr	r1, [r7, #4]
- 271 00c4 33F81130 		ldrh	r3, [r3, r1, lsl #1]	@ movhi
- 272 00c8 9BB2     		uxth	r3, r3
- 273 00ca D31A     		subs	r3, r2, r3
- 274 00cc 1846     		mov	r0, r3
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 7
+ 222              	HC_TRIG_ISR_S:
+ 223              	.LFB68:
+  65:.\ultrasonic_s.c **** 
+  66:.\ultrasonic_s.c **** CY_ISR(HC_TRIG_ISR_S){
+ 224              		.loc 1 66 0
+ 225              		.cfi_startproc
+ 226              		@ args = 0, pretend = 0, frame = 8
+ 227              		@ frame_needed = 1, uses_anonymous_args = 0
+ 228 0000 80B5     		push	{r7, lr}
+ 229              		.cfi_def_cfa_offset 8
+ 230              		.cfi_offset 7, -8
+ 231              		.cfi_offset 14, -4
+ 232 0002 82B0     		sub	sp, sp, #8
+ 233              		.cfi_def_cfa_offset 16
+ 234 0004 00AF     		add	r7, sp, #0
+ 235              		.cfi_def_cfa_register 7
+  67:.\ultrasonic_s.c ****     ultra_distance_s = (MAX_COUNT - HC_Timer_S_ReadCounter()) / DIST_CORRECTION;
+ 236              		.loc 1 67 0
+ 237 0006 FFF7FEFF 		bl	HC_Timer_S_ReadCounter
+ 238 000a 0346     		mov	r3, r0
+ 239 000c C3F54343 		rsb	r3, r3, #49920
+ 240 0010 5033     		adds	r3, r3, #80
+ 241 0012 1846     		mov	r0, r3
+ 242 0014 FFF7FEFF 		bl	__aeabi_ui2d
+ 243 0018 0246     		mov	r2, r0
+ 244 001a 0B46     		mov	r3, r1
+ 245 001c 1046     		mov	r0, r2
+ 246 001e 1946     		mov	r1, r3
+ 247 0020 4FF00002 		mov	r2, #0
+ 248 0024 354B     		ldr	r3, .L21
+ 249 0026 FFF7FEFF 		bl	__aeabi_ddiv
+ 250 002a 0246     		mov	r2, r0
+ 251 002c 0B46     		mov	r3, r1
+ 252 002e 1046     		mov	r0, r2
+ 253 0030 1946     		mov	r1, r3
+ 254 0032 FFF7FEFF 		bl	__aeabi_d2uiz
+ 255 0036 0346     		mov	r3, r0
+ 256 0038 9AB2     		uxth	r2, r3
+ 257 003a 314B     		ldr	r3, .L21+4
+ 258 003c 1A80     		strh	r2, [r3]	@ movhi
+  68:.\ultrasonic_s.c ****     ultra_s[ultra_i_s] = ultra_distance_s;
+ 259              		.loc 1 68 0
+ 260 003e 314B     		ldr	r3, .L21+8
+ 261 0040 1A68     		ldr	r2, [r3]
+ 262 0042 2F4B     		ldr	r3, .L21+4
+ 263 0044 1B88     		ldrh	r3, [r3]	@ movhi
+ 264 0046 99B2     		uxth	r1, r3
+ 265 0048 2F4B     		ldr	r3, .L21+12
+ 266 004a 23F81210 		strh	r1, [r3, r2, lsl #1]	@ movhi
+  69:.\ultrasonic_s.c ****     ultra_i_s = (ultra_i_s + 1) % 10;
+ 267              		.loc 1 69 0
+ 268 004e 2D4B     		ldr	r3, .L21+8
+ 269 0050 1B68     		ldr	r3, [r3]
+ 270 0052 591C     		adds	r1, r3, #1
+ 271 0054 2D4B     		ldr	r3, .L21+16
+ 272 0056 83FB0123 		smull	r2, r3, r3, r1
+ 273 005a 9A10     		asrs	r2, r3, #2
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 7
 
 
- 275 00ce FFF7FEFF 		bl	myabss
- 276 00d2 0346     		mov	r3, r0
- 277 00d4 9AB2     		uxth	r2, r3
- 278 00d6 0F4B     		ldr	r3, .L17+24
- 279 00d8 1B88     		ldrh	r3, [r3]	@ movhi
- 280 00da 9BB2     		uxth	r3, r3
- 281 00dc 1344     		add	r3, r3, r2
- 282 00de 9AB2     		uxth	r2, r3
- 283 00e0 0C4B     		ldr	r3, .L17+24
- 284 00e2 1A80     		strh	r2, [r3]	@ movhi
-  65:.\ultrasonic_s.c ****     for (i = 0; i < 10; i++){
- 285              		.loc 1 65 0 discriminator 2
- 286 00e4 7B68     		ldr	r3, [r7, #4]
- 287 00e6 0133     		adds	r3, r3, #1
- 288 00e8 7B60     		str	r3, [r7, #4]
- 289              	.L15:
-  65:.\ultrasonic_s.c ****     for (i = 0; i < 10; i++){
- 290              		.loc 1 65 0 is_stmt 0 discriminator 1
- 291 00ea 7B68     		ldr	r3, [r7, #4]
- 292 00ec 092B     		cmp	r3, #9
- 293 00ee E3DD     		ble	.L16
-  67:.\ultrasonic_s.c ****     }
-  68:.\ultrasonic_s.c ****     HC_ISR_S_ClearPending();
- 294              		.loc 1 68 0 is_stmt 1
- 295 00f0 FFF7FEFF 		bl	HC_ISR_S_ClearPending
-  69:.\ultrasonic_s.c **** }
- 296              		.loc 1 69 0
- 297 00f4 0837     		adds	r7, r7, #8
- 298 00f6 BD46     		mov	sp, r7
- 299              		@ sp needed
- 300 00f8 80BD     		pop	{r7, pc}
- 301              	.L18:
- 302 00fa 00BF     		.align	2
- 303              	.L17:
- 304 00fc 00004D40 		.word	1078788096
- 305 0100 00000000 		.word	ultra_distance_s
- 306 0104 00000000 		.word	ultra_i_s
- 307 0108 00000000 		.word	ultra_s
- 308 010c 67666666 		.word	1717986919
- 309 0110 CDCCCCCC 		.word	-858993459
- 310 0114 00000000 		.word	var_ultra_s
- 311              		.cfi_endproc
- 312              	.LFE66:
- 313              		.size	HC_TRIG_ISR_S, .-HC_TRIG_ISR_S
- 314              		.section	.text.start_ultrasonic_s,"ax",%progbits
- 315              		.align	2
- 316              		.global	start_ultrasonic_s
- 317              		.thumb
- 318              		.thumb_func
- 319              		.type	start_ultrasonic_s, %function
- 320              	start_ultrasonic_s:
- 321              	.LFB67:
-  70:.\ultrasonic_s.c **** 
-  71:.\ultrasonic_s.c **** void start_ultrasonic_s(){
- 322              		.loc 1 71 0
- 323              		.cfi_startproc
- 324              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 8
+ 274 005c CB17     		asrs	r3, r1, #31
+ 275 005e D21A     		subs	r2, r2, r3
+ 276 0060 1346     		mov	r3, r2
+ 277 0062 9B00     		lsls	r3, r3, #2
+ 278 0064 1344     		add	r3, r3, r2
+ 279 0066 5B00     		lsls	r3, r3, #1
+ 280 0068 CA1A     		subs	r2, r1, r3
+ 281 006a 264B     		ldr	r3, .L21+8
+ 282 006c 1A60     		str	r2, [r3]
+  70:.\ultrasonic_s.c ****     int i;
+  71:.\ultrasonic_s.c ****     for (i = 0; i < 10; i++){
+ 283              		.loc 1 71 0
+ 284 006e 0023     		movs	r3, #0
+ 285 0070 7B60     		str	r3, [r7, #4]
+ 286 0072 0EE0     		b	.L17
+ 287              	.L18:
+  72:.\ultrasonic_s.c ****         ultra_distance_s += ultra_s[i];
+ 288              		.loc 1 72 0 discriminator 2
+ 289 0074 244B     		ldr	r3, .L21+12
+ 290 0076 7A68     		ldr	r2, [r7, #4]
+ 291 0078 33F81230 		ldrh	r3, [r3, r2, lsl #1]	@ movhi
+ 292 007c 9AB2     		uxth	r2, r3
+ 293 007e 204B     		ldr	r3, .L21+4
+ 294 0080 1B88     		ldrh	r3, [r3]	@ movhi
+ 295 0082 9BB2     		uxth	r3, r3
+ 296 0084 1344     		add	r3, r3, r2
+ 297 0086 9AB2     		uxth	r2, r3
+ 298 0088 1D4B     		ldr	r3, .L21+4
+ 299 008a 1A80     		strh	r2, [r3]	@ movhi
+  71:.\ultrasonic_s.c ****     for (i = 0; i < 10; i++){
+ 300              		.loc 1 71 0 discriminator 2
+ 301 008c 7B68     		ldr	r3, [r7, #4]
+ 302 008e 0133     		adds	r3, r3, #1
+ 303 0090 7B60     		str	r3, [r7, #4]
+ 304              	.L17:
+  71:.\ultrasonic_s.c ****     for (i = 0; i < 10; i++){
+ 305              		.loc 1 71 0 is_stmt 0 discriminator 1
+ 306 0092 7B68     		ldr	r3, [r7, #4]
+ 307 0094 092B     		cmp	r3, #9
+ 308 0096 EDDD     		ble	.L18
+  73:.\ultrasonic_s.c ****     } 
+  74:.\ultrasonic_s.c ****     ultra_distance_s /= 10;
+ 309              		.loc 1 74 0 is_stmt 1
+ 310 0098 194B     		ldr	r3, .L21+4
+ 311 009a 1B88     		ldrh	r3, [r3]	@ movhi
+ 312 009c 9AB2     		uxth	r2, r3
+ 313 009e 1C4B     		ldr	r3, .L21+20
+ 314 00a0 A3FB0213 		umull	r1, r3, r3, r2
+ 315 00a4 DB08     		lsrs	r3, r3, #3
+ 316 00a6 9AB2     		uxth	r2, r3
+ 317 00a8 154B     		ldr	r3, .L21+4
+ 318 00aa 1A80     		strh	r2, [r3]	@ movhi
+  75:.\ultrasonic_s.c ****     var_ultra_s = 0;
+ 319              		.loc 1 75 0
+ 320 00ac 194B     		ldr	r3, .L21+24
+ 321 00ae 0022     		movs	r2, #0
+ 322 00b0 1A80     		strh	r2, [r3]	@ movhi
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 8
 
 
- 325              		@ frame_needed = 1, uses_anonymous_args = 0
- 326 0000 80B5     		push	{r7, lr}
- 327              		.cfi_def_cfa_offset 8
- 328              		.cfi_offset 7, -8
- 329              		.cfi_offset 14, -4
- 330 0002 00AF     		add	r7, sp, #0
- 331              		.cfi_def_cfa_register 7
-  72:.\ultrasonic_s.c ****     ultra_i_s = 0;
- 332              		.loc 1 72 0
- 333 0004 064B     		ldr	r3, .L20
- 334 0006 0022     		movs	r2, #0
- 335 0008 1A60     		str	r2, [r3]
-  73:.\ultrasonic_s.c ****     ultra_distance_s = 0;
- 336              		.loc 1 73 0
- 337 000a 064B     		ldr	r3, .L20+4
- 338 000c 0022     		movs	r2, #0
- 339 000e 1A80     		strh	r2, [r3]	@ movhi
-  74:.\ultrasonic_s.c ****     HC_Timer_S_Start();
- 340              		.loc 1 74 0
- 341 0010 FFF7FEFF 		bl	HC_Timer_S_Start
-  75:.\ultrasonic_s.c ****     HC_PWM_S_Start();
- 342              		.loc 1 75 0
- 343 0014 FFF7FEFF 		bl	HC_PWM_S_Start
-  76:.\ultrasonic_s.c ****     HC_ISR_S_StartEx(HC_TRIG_ISR_S);
- 344              		.loc 1 76 0
- 345 0018 0348     		ldr	r0, .L20+8
- 346 001a FFF7FEFF 		bl	HC_ISR_S_StartEx
-  77:.\ultrasonic_s.c **** }
- 347              		.loc 1 77 0
- 348 001e 80BD     		pop	{r7, pc}
- 349              	.L21:
- 350              		.align	2
- 351              	.L20:
- 352 0020 00000000 		.word	ultra_i_s
- 353 0024 00000000 		.word	ultra_distance_s
- 354 0028 00000000 		.word	HC_TRIG_ISR_S
- 355              		.cfi_endproc
- 356              	.LFE67:
- 357              		.size	start_ultrasonic_s, .-start_ultrasonic_s
- 358              		.section	.text.stop_ultrasonic_s,"ax",%progbits
- 359              		.align	2
- 360              		.global	stop_ultrasonic_s
- 361              		.thumb
- 362              		.thumb_func
- 363              		.type	stop_ultrasonic_s, %function
- 364              	stop_ultrasonic_s:
- 365              	.LFB68:
-  78:.\ultrasonic_s.c **** 
-  79:.\ultrasonic_s.c **** void stop_ultrasonic_s(){
- 366              		.loc 1 79 0
- 367              		.cfi_startproc
- 368              		@ args = 0, pretend = 0, frame = 0
- 369              		@ frame_needed = 1, uses_anonymous_args = 0
- 370 0000 80B5     		push	{r7, lr}
- 371              		.cfi_def_cfa_offset 8
- 372              		.cfi_offset 7, -8
- 373              		.cfi_offset 14, -4
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 9
+  76:.\ultrasonic_s.c ****     for (i = 0; i < 10; i++){
+ 323              		.loc 1 76 0
+ 324 00b2 0023     		movs	r3, #0
+ 325 00b4 7B60     		str	r3, [r7, #4]
+ 326 00b6 18E0     		b	.L19
+ 327              	.L20:
+  77:.\ultrasonic_s.c ****         var_ultra_s += myabss(ultra_distance_s - ultra_s[i]);
+ 328              		.loc 1 77 0 discriminator 2
+ 329 00b8 114B     		ldr	r3, .L21+4
+ 330 00ba 1B88     		ldrh	r3, [r3]	@ movhi
+ 331 00bc 9BB2     		uxth	r3, r3
+ 332 00be 1A46     		mov	r2, r3
+ 333 00c0 114B     		ldr	r3, .L21+12
+ 334 00c2 7968     		ldr	r1, [r7, #4]
+ 335 00c4 33F81130 		ldrh	r3, [r3, r1, lsl #1]	@ movhi
+ 336 00c8 9BB2     		uxth	r3, r3
+ 337 00ca D31A     		subs	r3, r2, r3
+ 338 00cc 1846     		mov	r0, r3
+ 339 00ce FFF7FEFF 		bl	myabss
+ 340 00d2 0346     		mov	r3, r0
+ 341 00d4 9AB2     		uxth	r2, r3
+ 342 00d6 0F4B     		ldr	r3, .L21+24
+ 343 00d8 1B88     		ldrh	r3, [r3]	@ movhi
+ 344 00da 9BB2     		uxth	r3, r3
+ 345 00dc 1344     		add	r3, r3, r2
+ 346 00de 9AB2     		uxth	r2, r3
+ 347 00e0 0C4B     		ldr	r3, .L21+24
+ 348 00e2 1A80     		strh	r2, [r3]	@ movhi
+  76:.\ultrasonic_s.c ****     for (i = 0; i < 10; i++){
+ 349              		.loc 1 76 0 discriminator 2
+ 350 00e4 7B68     		ldr	r3, [r7, #4]
+ 351 00e6 0133     		adds	r3, r3, #1
+ 352 00e8 7B60     		str	r3, [r7, #4]
+ 353              	.L19:
+  76:.\ultrasonic_s.c ****     for (i = 0; i < 10; i++){
+ 354              		.loc 1 76 0 is_stmt 0 discriminator 1
+ 355 00ea 7B68     		ldr	r3, [r7, #4]
+ 356 00ec 092B     		cmp	r3, #9
+ 357 00ee E3DD     		ble	.L20
+  78:.\ultrasonic_s.c ****     }
+  79:.\ultrasonic_s.c ****     HC_ISR_S_ClearPending();
+ 358              		.loc 1 79 0 is_stmt 1
+ 359 00f0 FFF7FEFF 		bl	HC_ISR_S_ClearPending
+  80:.\ultrasonic_s.c **** }
+ 360              		.loc 1 80 0
+ 361 00f4 0837     		adds	r7, r7, #8
+ 362 00f6 BD46     		mov	sp, r7
+ 363              		@ sp needed
+ 364 00f8 80BD     		pop	{r7, pc}
+ 365              	.L22:
+ 366 00fa 00BF     		.align	2
+ 367              	.L21:
+ 368 00fc 00004D40 		.word	1078788096
+ 369 0100 00000000 		.word	ultra_distance_s
+ 370 0104 00000000 		.word	ultra_i_s
+ 371 0108 00000000 		.word	ultra_s
+ 372 010c 67666666 		.word	1717986919
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 9
 
 
- 374 0002 00AF     		add	r7, sp, #0
- 375              		.cfi_def_cfa_register 7
-  80:.\ultrasonic_s.c ****     HC_Timer_S_Stop();
- 376              		.loc 1 80 0
- 377 0004 FFF7FEFF 		bl	HC_Timer_S_Stop
-  81:.\ultrasonic_s.c ****     HC_PWM_S_Stop();
- 378              		.loc 1 81 0
- 379 0008 FFF7FEFF 		bl	HC_PWM_S_Stop
-  82:.\ultrasonic_s.c ****     HC_ISR_S_Stop();
- 380              		.loc 1 82 0
- 381 000c FFF7FEFF 		bl	HC_ISR_S_Stop
-  83:.\ultrasonic_s.c **** }
- 382              		.loc 1 83 0
- 383 0010 80BD     		pop	{r7, pc}
- 384              		.cfi_endproc
- 385              	.LFE68:
- 386              		.size	stop_ultrasonic_s, .-stop_ultrasonic_s
- 387 0012 00BF     		.text
- 388              	.Letext0:
- 389              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
- 390              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
- 391              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
- 392              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
- 393              		.file 6 "Generated_Source\\PSoC5/Camera.h"
- 394              		.section	.debug_info,"",%progbits
- 395              	.Ldebug_info0:
- 396 0000 0D020000 		.4byte	0x20d
- 397 0004 0400     		.2byte	0x4
- 398 0006 00000000 		.4byte	.Ldebug_abbrev0
- 399 000a 04       		.byte	0x4
- 400 000b 01       		.uleb128 0x1
- 401 000c 4F010000 		.4byte	.LASF29
- 402 0010 01       		.byte	0x1
- 403 0011 CB010000 		.4byte	.LASF30
- 404 0015 6D000000 		.4byte	.LASF31
- 405 0019 00000000 		.4byte	.Ldebug_ranges0+0
- 406 001d 00000000 		.4byte	0
- 407 0021 00000000 		.4byte	.Ldebug_line0
- 408 0025 02       		.uleb128 0x2
- 409 0026 01       		.byte	0x1
- 410 0027 06       		.byte	0x6
- 411 0028 3D020000 		.4byte	.LASF0
- 412 002c 02       		.uleb128 0x2
- 413 002d 01       		.byte	0x1
- 414 002e 08       		.byte	0x8
- 415 002f 5F000000 		.4byte	.LASF1
- 416 0033 02       		.uleb128 0x2
- 417 0034 02       		.byte	0x2
- 418 0035 05       		.byte	0x5
- 419 0036 07010000 		.4byte	.LASF2
- 420 003a 02       		.uleb128 0x2
- 421 003b 02       		.byte	0x2
- 422 003c 07       		.byte	0x7
- 423 003d CE000000 		.4byte	.LASF3
- 424 0041 03       		.uleb128 0x3
- 425 0042 0E000000 		.4byte	.LASF9
- 426 0046 02       		.byte	0x2
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 10
+ 373 0110 CDCCCCCC 		.word	-858993459
+ 374 0114 00000000 		.word	var_ultra_s
+ 375              		.cfi_endproc
+ 376              	.LFE68:
+ 377              		.size	HC_TRIG_ISR_S, .-HC_TRIG_ISR_S
+ 378              		.section	.text.start_ultrasonic_s,"ax",%progbits
+ 379              		.align	2
+ 380              		.global	start_ultrasonic_s
+ 381              		.thumb
+ 382              		.thumb_func
+ 383              		.type	start_ultrasonic_s, %function
+ 384              	start_ultrasonic_s:
+ 385              	.LFB69:
+  81:.\ultrasonic_s.c **** 
+  82:.\ultrasonic_s.c **** void start_ultrasonic_s(){
+ 386              		.loc 1 82 0
+ 387              		.cfi_startproc
+ 388              		@ args = 0, pretend = 0, frame = 0
+ 389              		@ frame_needed = 1, uses_anonymous_args = 0
+ 390 0000 80B5     		push	{r7, lr}
+ 391              		.cfi_def_cfa_offset 8
+ 392              		.cfi_offset 7, -8
+ 393              		.cfi_offset 14, -4
+ 394 0002 00AF     		add	r7, sp, #0
+ 395              		.cfi_def_cfa_register 7
+  83:.\ultrasonic_s.c ****     ultra_i_s = 0;
+ 396              		.loc 1 83 0
+ 397 0004 064B     		ldr	r3, .L24
+ 398 0006 0022     		movs	r2, #0
+ 399 0008 1A60     		str	r2, [r3]
+  84:.\ultrasonic_s.c ****     ultra_distance_s = 0;
+ 400              		.loc 1 84 0
+ 401 000a 064B     		ldr	r3, .L24+4
+ 402 000c 0022     		movs	r2, #0
+ 403 000e 1A80     		strh	r2, [r3]	@ movhi
+  85:.\ultrasonic_s.c ****     HC_Timer_S_Start();
+ 404              		.loc 1 85 0
+ 405 0010 FFF7FEFF 		bl	HC_Timer_S_Start
+  86:.\ultrasonic_s.c ****     HC_PWM_S_Start();
+ 406              		.loc 1 86 0
+ 407 0014 FFF7FEFF 		bl	HC_PWM_S_Start
+  87:.\ultrasonic_s.c ****     HC_ISR_S_StartEx(HC_TRIG_ISR_S);
+ 408              		.loc 1 87 0
+ 409 0018 0348     		ldr	r0, .L24+8
+ 410 001a FFF7FEFF 		bl	HC_ISR_S_StartEx
+  88:.\ultrasonic_s.c **** }
+ 411              		.loc 1 88 0
+ 412 001e 80BD     		pop	{r7, pc}
+ 413              	.L25:
+ 414              		.align	2
+ 415              	.L24:
+ 416 0020 00000000 		.word	ultra_i_s
+ 417 0024 00000000 		.word	ultra_distance_s
+ 418 0028 00000000 		.word	HC_TRIG_ISR_S
+ 419              		.cfi_endproc
+ 420              	.LFE69:
+ 421              		.size	start_ultrasonic_s, .-start_ultrasonic_s
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 10
 
 
- 427 0047 37       		.byte	0x37
- 428 0048 4C000000 		.4byte	0x4c
- 429 004c 02       		.uleb128 0x2
- 430 004d 04       		.byte	0x4
- 431 004e 05       		.byte	0x5
- 432 004f 28020000 		.4byte	.LASF4
- 433 0053 02       		.uleb128 0x2
- 434 0054 04       		.byte	0x4
- 435 0055 07       		.byte	0x7
- 436 0056 BC000000 		.4byte	.LASF5
- 437 005a 02       		.uleb128 0x2
- 438 005b 08       		.byte	0x8
- 439 005c 05       		.byte	0x5
- 440 005d ED010000 		.4byte	.LASF6
- 441 0061 02       		.uleb128 0x2
- 442 0062 08       		.byte	0x8
- 443 0063 07       		.byte	0x7
- 444 0064 38010000 		.4byte	.LASF7
- 445 0068 04       		.uleb128 0x4
- 446 0069 04       		.byte	0x4
- 447 006a 05       		.byte	0x5
- 448 006b 696E7400 		.ascii	"int\000"
- 449 006f 02       		.uleb128 0x2
- 450 0070 04       		.byte	0x4
- 451 0071 07       		.byte	0x7
- 452 0072 2B010000 		.4byte	.LASF8
- 453 0076 03       		.uleb128 0x3
- 454 0077 DC010000 		.4byte	.LASF10
- 455 007b 03       		.byte	0x3
- 456 007c 41       		.byte	0x41
- 457 007d 41000000 		.4byte	0x41
- 458 0081 03       		.uleb128 0x3
- 459 0082 18020000 		.4byte	.LASF11
- 460 0086 04       		.byte	0x4
- 461 0087 B3       		.byte	0xb3
- 462 0088 2C000000 		.4byte	0x2c
- 463 008c 03       		.uleb128 0x3
- 464 008d 11010000 		.4byte	.LASF12
- 465 0091 04       		.byte	0x4
- 466 0092 B4       		.byte	0xb4
- 467 0093 3A000000 		.4byte	0x3a
- 468 0097 02       		.uleb128 0x2
- 469 0098 04       		.byte	0x4
- 470 0099 04       		.byte	0x4
- 471 009a 59000000 		.4byte	.LASF13
- 472 009e 02       		.uleb128 0x2
- 473 009f 08       		.byte	0x8
- 474 00a0 04       		.byte	0x4
- 475 00a1 00010000 		.4byte	.LASF14
- 476 00a5 02       		.uleb128 0x2
- 477 00a6 01       		.byte	0x1
- 478 00a7 08       		.byte	0x8
- 479 00a8 FB010000 		.4byte	.LASF15
- 480 00ac 05       		.uleb128 0x5
- 481 00ad 8C000000 		.4byte	0x8c
- 482 00b1 02       		.uleb128 0x2
- 483 00b2 04       		.byte	0x4
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 11
+ 422              		.section	.text.stop_ultrasonic_s,"ax",%progbits
+ 423              		.align	2
+ 424              		.global	stop_ultrasonic_s
+ 425              		.thumb
+ 426              		.thumb_func
+ 427              		.type	stop_ultrasonic_s, %function
+ 428              	stop_ultrasonic_s:
+ 429              	.LFB70:
+  89:.\ultrasonic_s.c **** 
+  90:.\ultrasonic_s.c **** void stop_ultrasonic_s(){
+ 430              		.loc 1 90 0
+ 431              		.cfi_startproc
+ 432              		@ args = 0, pretend = 0, frame = 0
+ 433              		@ frame_needed = 1, uses_anonymous_args = 0
+ 434 0000 80B5     		push	{r7, lr}
+ 435              		.cfi_def_cfa_offset 8
+ 436              		.cfi_offset 7, -8
+ 437              		.cfi_offset 14, -4
+ 438 0002 00AF     		add	r7, sp, #0
+ 439              		.cfi_def_cfa_register 7
+  91:.\ultrasonic_s.c ****     HC_Timer_S_Stop();
+ 440              		.loc 1 91 0
+ 441 0004 FFF7FEFF 		bl	HC_Timer_S_Stop
+  92:.\ultrasonic_s.c ****     HC_PWM_S_Stop();
+ 442              		.loc 1 92 0
+ 443 0008 FFF7FEFF 		bl	HC_PWM_S_Stop
+  93:.\ultrasonic_s.c ****     HC_ISR_S_Stop();
+ 444              		.loc 1 93 0
+ 445 000c FFF7FEFF 		bl	HC_ISR_S_Stop
+  94:.\ultrasonic_s.c **** }
+ 446              		.loc 1 94 0
+ 447 0010 80BD     		pop	{r7, pc}
+ 448              		.cfi_endproc
+ 449              	.LFE70:
+ 450              		.size	stop_ultrasonic_s, .-stop_ultrasonic_s
+ 451 0012 00BF     		.text
+ 452              	.Letext0:
+ 453              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 454              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.2\\psoc creator\\import\\gnu\\arm\\4.8.
+ 455              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 456              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 457              		.file 6 "Generated_Source\\PSoC5/Camera.h"
+ 458              		.section	.debug_info,"",%progbits
+ 459              	.Ldebug_info0:
+ 460 0000 2F020000 		.4byte	0x22f
+ 461 0004 0400     		.2byte	0x4
+ 462 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 463 000a 04       		.byte	0x4
+ 464 000b 01       		.uleb128 0x1
+ 465 000c 5C010000 		.4byte	.LASF31
+ 466 0010 01       		.byte	0x1
+ 467 0011 D8010000 		.4byte	.LASF32
+ 468 0015 7A000000 		.4byte	.LASF33
+ 469 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 470 001d 00000000 		.4byte	0
+ 471 0021 00000000 		.4byte	.Ldebug_line0
+ 472 0025 02       		.uleb128 0x2
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 11
 
 
- 484 00b3 07       		.byte	0x7
- 485 00b4 E4010000 		.4byte	.LASF16
- 486 00b8 02       		.uleb128 0x2
- 487 00b9 08       		.byte	0x8
- 488 00ba 04       		.byte	0x4
- 489 00bb 31020000 		.4byte	.LASF17
- 490 00bf 06       		.uleb128 0x6
- 491 00c0 18000000 		.4byte	.LASF32
- 492 00c4 01       		.byte	0x1
- 493 00c5 26       		.byte	0x26
- 494 00c6 8C000000 		.4byte	0x8c
- 495 00ca 00000000 		.4byte	.LFB63
- 496 00ce 18000000 		.4byte	.LFE63-.LFB63
- 497 00d2 01       		.uleb128 0x1
- 498 00d3 9C       		.byte	0x9c
- 499 00d4 07       		.uleb128 0x7
- 500 00d5 08020000 		.4byte	.LASF33
- 501 00d9 01       		.byte	0x1
- 502 00da 2A       		.byte	0x2a
- 503 00db 8C000000 		.4byte	0x8c
- 504 00df 00000000 		.4byte	.LFB64
- 505 00e3 18000000 		.4byte	.LFE64-.LFB64
- 506 00e7 01       		.uleb128 0x1
- 507 00e8 9C       		.byte	0x9c
- 508 00e9 08       		.uleb128 0x8
- 509 00ea 52000000 		.4byte	.LASF18
- 510 00ee 01       		.byte	0x1
- 511 00ef 2F       		.byte	0x2f
- 512 00f0 68000000 		.4byte	0x68
- 513 00f4 00000000 		.4byte	.LFB65
- 514 00f8 22000000 		.4byte	.LFE65-.LFB65
- 515 00fc 01       		.uleb128 0x1
- 516 00fd 9C       		.byte	0x9c
- 517 00fe 0F010000 		.4byte	0x10f
- 518 0102 09       		.uleb128 0x9
- 519 0103 7800     		.ascii	"x\000"
- 520 0105 01       		.byte	0x1
- 521 0106 2F       		.byte	0x2f
- 522 0107 68000000 		.4byte	0x68
- 523 010b 02       		.uleb128 0x2
- 524 010c 91       		.byte	0x91
- 525 010d 74       		.sleb128 -12
- 526 010e 00       		.byte	0
- 527 010f 0A       		.uleb128 0xa
- 528 0110 00000000 		.4byte	.LASF19
- 529 0114 01       		.byte	0x1
- 530 0115 37       		.byte	0x37
- 531 0116 00000000 		.4byte	.LFB66
- 532 011a 18010000 		.4byte	.LFE66-.LFB66
- 533 011e 01       		.uleb128 0x1
- 534 011f 9C       		.byte	0x9c
- 535 0120 31010000 		.4byte	0x131
- 536 0124 0B       		.uleb128 0xb
- 537 0125 6900     		.ascii	"i\000"
- 538 0127 01       		.byte	0x1
- 539 0128 3B       		.byte	0x3b
- 540 0129 68000000 		.4byte	0x68
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 12
+ 473 0026 01       		.byte	0x1
+ 474 0027 06       		.byte	0x6
+ 475 0028 56020000 		.4byte	.LASF0
+ 476 002c 02       		.uleb128 0x2
+ 477 002d 01       		.byte	0x1
+ 478 002e 08       		.byte	0x8
+ 479 002f 6C000000 		.4byte	.LASF1
+ 480 0033 02       		.uleb128 0x2
+ 481 0034 02       		.byte	0x2
+ 482 0035 05       		.byte	0x5
+ 483 0036 14010000 		.4byte	.LASF2
+ 484 003a 02       		.uleb128 0x2
+ 485 003b 02       		.byte	0x2
+ 486 003c 07       		.byte	0x7
+ 487 003d DB000000 		.4byte	.LASF3
+ 488 0041 03       		.uleb128 0x3
+ 489 0042 1B000000 		.4byte	.LASF9
+ 490 0046 02       		.byte	0x2
+ 491 0047 37       		.byte	0x37
+ 492 0048 4C000000 		.4byte	0x4c
+ 493 004c 02       		.uleb128 0x2
+ 494 004d 04       		.byte	0x4
+ 495 004e 05       		.byte	0x5
+ 496 004f 41020000 		.4byte	.LASF4
+ 497 0053 02       		.uleb128 0x2
+ 498 0054 04       		.byte	0x4
+ 499 0055 07       		.byte	0x7
+ 500 0056 C9000000 		.4byte	.LASF5
+ 501 005a 02       		.uleb128 0x2
+ 502 005b 08       		.byte	0x8
+ 503 005c 05       		.byte	0x5
+ 504 005d FA010000 		.4byte	.LASF6
+ 505 0061 02       		.uleb128 0x2
+ 506 0062 08       		.byte	0x8
+ 507 0063 07       		.byte	0x7
+ 508 0064 45010000 		.4byte	.LASF7
+ 509 0068 04       		.uleb128 0x4
+ 510 0069 04       		.byte	0x4
+ 511 006a 05       		.byte	0x5
+ 512 006b 696E7400 		.ascii	"int\000"
+ 513 006f 02       		.uleb128 0x2
+ 514 0070 04       		.byte	0x4
+ 515 0071 07       		.byte	0x7
+ 516 0072 38010000 		.4byte	.LASF8
+ 517 0076 03       		.uleb128 0x3
+ 518 0077 E9010000 		.4byte	.LASF10
+ 519 007b 03       		.byte	0x3
+ 520 007c 41       		.byte	0x41
+ 521 007d 41000000 		.4byte	0x41
+ 522 0081 03       		.uleb128 0x3
+ 523 0082 31020000 		.4byte	.LASF11
+ 524 0086 04       		.byte	0x4
+ 525 0087 B3       		.byte	0xb3
+ 526 0088 2C000000 		.4byte	0x2c
+ 527 008c 03       		.uleb128 0x3
+ 528 008d 1E010000 		.4byte	.LASF12
+ 529 0091 04       		.byte	0x4
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 12
 
 
- 541 012d 02       		.uleb128 0x2
- 542 012e 91       		.byte	0x91
- 543 012f 74       		.sleb128 -12
- 544 0130 00       		.byte	0
- 545 0131 0C       		.uleb128 0xc
- 546 0132 18010000 		.4byte	.LASF20
- 547 0136 01       		.byte	0x1
- 548 0137 47       		.byte	0x47
- 549 0138 00000000 		.4byte	.LFB67
- 550 013c 2C000000 		.4byte	.LFE67-.LFB67
- 551 0140 01       		.uleb128 0x1
- 552 0141 9C       		.byte	0x9c
- 553 0142 0C       		.uleb128 0xc
- 554 0143 E1000000 		.4byte	.LASF21
- 555 0147 01       		.byte	0x1
- 556 0148 4F       		.byte	0x4f
- 557 0149 00000000 		.4byte	.LFB68
- 558 014d 12000000 		.4byte	.LFE68-.LFB68
- 559 0151 01       		.uleb128 0x1
- 560 0152 9C       		.byte	0x9c
- 561 0153 0D       		.uleb128 0xd
- 562 0154 F3000000 		.4byte	.LASF22
- 563 0158 05       		.byte	0x5
- 564 0159 2A06     		.2byte	0x62a
- 565 015b 5F010000 		.4byte	0x15f
- 566 015f 05       		.uleb128 0x5
- 567 0160 76000000 		.4byte	0x76
- 568 0164 0E       		.uleb128 0xe
- 569 0165 81000000 		.4byte	0x81
- 570 0169 80010000 		.4byte	0x180
- 571 016d 0F       		.uleb128 0xf
- 572 016e B1000000 		.4byte	0xb1
- 573 0172 8F       		.byte	0x8f
- 574 0173 0F       		.uleb128 0xf
- 575 0174 B1000000 		.4byte	0xb1
- 576 0178 57       		.byte	0x57
- 577 0179 0F       		.uleb128 0xf
- 578 017a B1000000 		.4byte	0xb1
- 579 017e 03       		.byte	0x3
- 580 017f 00       		.byte	0
- 581 0180 10       		.uleb128 0x10
- 582 0181 3F000000 		.4byte	.LASF23
- 583 0185 06       		.byte	0x6
- 584 0186 08       		.byte	0x8
- 585 0187 64010000 		.4byte	0x164
- 586 018b 05       		.uleb128 0x5
- 587 018c 03       		.byte	0x3
- 588 018d 00000000 		.4byte	Camera_framebuffer
- 589 0191 0E       		.uleb128 0xe
- 590 0192 8C000000 		.4byte	0x8c
- 591 0196 A1010000 		.4byte	0x1a1
- 592 019a 0F       		.uleb128 0xf
- 593 019b B1000000 		.4byte	0xb1
- 594 019f 09       		.byte	0x9
- 595 01a0 00       		.byte	0
- 596 01a1 10       		.uleb128 0x10
- 597 01a2 00020000 		.4byte	.LASF24
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 13
+ 530 0092 B4       		.byte	0xb4
+ 531 0093 3A000000 		.4byte	0x3a
+ 532 0097 02       		.uleb128 0x2
+ 533 0098 04       		.byte	0x4
+ 534 0099 04       		.byte	0x4
+ 535 009a 66000000 		.4byte	.LASF13
+ 536 009e 02       		.uleb128 0x2
+ 537 009f 08       		.byte	0x8
+ 538 00a0 04       		.byte	0x4
+ 539 00a1 0D010000 		.4byte	.LASF14
+ 540 00a5 02       		.uleb128 0x2
+ 541 00a6 01       		.byte	0x1
+ 542 00a7 08       		.byte	0x8
+ 543 00a8 08020000 		.4byte	.LASF15
+ 544 00ac 05       		.uleb128 0x5
+ 545 00ad 8C000000 		.4byte	0x8c
+ 546 00b1 02       		.uleb128 0x2
+ 547 00b2 04       		.byte	0x4
+ 548 00b3 07       		.byte	0x7
+ 549 00b4 F1010000 		.4byte	.LASF16
+ 550 00b8 02       		.uleb128 0x2
+ 551 00b9 08       		.byte	0x8
+ 552 00ba 04       		.byte	0x4
+ 553 00bb 4A020000 		.4byte	.LASF17
+ 554 00bf 06       		.uleb128 0x6
+ 555 00c0 25000000 		.4byte	.LASF34
+ 556 00c4 01       		.byte	0x1
+ 557 00c5 26       		.byte	0x26
+ 558 00c6 8C000000 		.4byte	0x8c
+ 559 00ca 00000000 		.4byte	.LFB63
+ 560 00ce 18000000 		.4byte	.LFE63-.LFB63
+ 561 00d2 01       		.uleb128 0x1
+ 562 00d3 9C       		.byte	0x9c
+ 563 00d4 07       		.uleb128 0x7
+ 564 00d5 21020000 		.4byte	.LASF35
+ 565 00d9 01       		.byte	0x1
+ 566 00da 2A       		.byte	0x2a
+ 567 00db 8C000000 		.4byte	0x8c
+ 568 00df 00000000 		.4byte	.LFB64
+ 569 00e3 18000000 		.4byte	.LFE64-.LFB64
+ 570 00e7 01       		.uleb128 0x1
+ 571 00e8 9C       		.byte	0x9c
+ 572 00e9 08       		.uleb128 0x8
+ 573 00ea 00000000 		.4byte	.LASF18
+ 574 00ee 01       		.byte	0x1
+ 575 00ef 2E       		.byte	0x2e
+ 576 00f0 00000000 		.4byte	.LFB65
+ 577 00f4 16000000 		.4byte	.LFE65-.LFB65
+ 578 00f8 01       		.uleb128 0x1
+ 579 00f9 9C       		.byte	0x9c
+ 580 00fa 08       		.uleb128 0x8
+ 581 00fb 0D020000 		.4byte	.LASF19
+ 582 00ff 01       		.byte	0x1
+ 583 0100 33       		.byte	0x33
+ 584 0101 00000000 		.4byte	.LFB66
+ 585 0105 16000000 		.4byte	.LFE66-.LFB66
+ 586 0109 01       		.uleb128 0x1
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 13
 
 
- 598 01a6 01       		.byte	0x1
- 599 01a7 15       		.byte	0x15
- 600 01a8 B2010000 		.4byte	0x1b2
- 601 01ac 05       		.uleb128 0x5
- 602 01ad 03       		.byte	0x3
- 603 01ae 00000000 		.4byte	ultra_s
- 604 01b2 05       		.uleb128 0x5
- 605 01b3 91010000 		.4byte	0x191
- 606 01b7 10       		.uleb128 0x10
- 607 01b8 29000000 		.4byte	.LASF25
- 608 01bc 01       		.byte	0x1
- 609 01bd 16       		.byte	0x16
- 610 01be C8010000 		.4byte	0x1c8
- 611 01c2 05       		.uleb128 0x5
- 612 01c3 03       		.byte	0x3
- 613 01c4 00000000 		.4byte	ultra_i_s
- 614 01c8 05       		.uleb128 0x5
- 615 01c9 68000000 		.4byte	0x68
- 616 01cd 10       		.uleb128 0x10
- 617 01ce 49020000 		.4byte	.LASF26
- 618 01d2 01       		.byte	0x1
- 619 01d3 17       		.byte	0x17
- 620 01d4 AC000000 		.4byte	0xac
- 621 01d8 05       		.uleb128 0x5
- 622 01d9 03       		.byte	0x3
- 623 01da 00000000 		.4byte	ultra_distance_s
- 624 01de 10       		.uleb128 0x10
- 625 01df 33000000 		.4byte	.LASF27
- 626 01e3 01       		.byte	0x1
- 627 01e4 18       		.byte	0x18
- 628 01e5 AC000000 		.4byte	0xac
- 629 01e9 05       		.uleb128 0x5
- 630 01ea 03       		.byte	0x3
- 631 01eb 00000000 		.4byte	var_ultra_s
- 632 01ef 0E       		.uleb128 0xe
- 633 01f0 A5000000 		.4byte	0xa5
- 634 01f4 FF010000 		.4byte	0x1ff
- 635 01f8 0F       		.uleb128 0xf
- 636 01f9 B1000000 		.4byte	0xb1
- 637 01fd 0F       		.byte	0xf
- 638 01fe 00       		.byte	0
- 639 01ff 10       		.uleb128 0x10
- 640 0200 1E020000 		.4byte	.LASF28
- 641 0204 01       		.byte	0x1
- 642 0205 21       		.byte	0x21
- 643 0206 EF010000 		.4byte	0x1ef
- 644 020a 05       		.uleb128 0x5
- 645 020b 03       		.byte	0x3
- 646 020c 00000000 		.4byte	outString
- 647 0210 00       		.byte	0
- 648              		.section	.debug_abbrev,"",%progbits
- 649              	.Ldebug_abbrev0:
- 650 0000 01       		.uleb128 0x1
- 651 0001 11       		.uleb128 0x11
- 652 0002 01       		.byte	0x1
- 653 0003 25       		.uleb128 0x25
- 654 0004 0E       		.uleb128 0xe
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 14
+ 587 010a 9C       		.byte	0x9c
+ 588 010b 09       		.uleb128 0x9
+ 589 010c 5F000000 		.4byte	.LASF20
+ 590 0110 01       		.byte	0x1
+ 591 0111 3A       		.byte	0x3a
+ 592 0112 68000000 		.4byte	0x68
+ 593 0116 00000000 		.4byte	.LFB67
+ 594 011a 22000000 		.4byte	.LFE67-.LFB67
+ 595 011e 01       		.uleb128 0x1
+ 596 011f 9C       		.byte	0x9c
+ 597 0120 31010000 		.4byte	0x131
+ 598 0124 0A       		.uleb128 0xa
+ 599 0125 7800     		.ascii	"x\000"
+ 600 0127 01       		.byte	0x1
+ 601 0128 3A       		.byte	0x3a
+ 602 0129 68000000 		.4byte	0x68
+ 603 012d 02       		.uleb128 0x2
+ 604 012e 91       		.byte	0x91
+ 605 012f 74       		.sleb128 -12
+ 606 0130 00       		.byte	0
+ 607 0131 0B       		.uleb128 0xb
+ 608 0132 0D000000 		.4byte	.LASF21
+ 609 0136 01       		.byte	0x1
+ 610 0137 42       		.byte	0x42
+ 611 0138 00000000 		.4byte	.LFB68
+ 612 013c 18010000 		.4byte	.LFE68-.LFB68
+ 613 0140 01       		.uleb128 0x1
+ 614 0141 9C       		.byte	0x9c
+ 615 0142 53010000 		.4byte	0x153
+ 616 0146 0C       		.uleb128 0xc
+ 617 0147 6900     		.ascii	"i\000"
+ 618 0149 01       		.byte	0x1
+ 619 014a 46       		.byte	0x46
+ 620 014b 68000000 		.4byte	0x68
+ 621 014f 02       		.uleb128 0x2
+ 622 0150 91       		.byte	0x91
+ 623 0151 74       		.sleb128 -12
+ 624 0152 00       		.byte	0
+ 625 0153 08       		.uleb128 0x8
+ 626 0154 25010000 		.4byte	.LASF22
+ 627 0158 01       		.byte	0x1
+ 628 0159 52       		.byte	0x52
+ 629 015a 00000000 		.4byte	.LFB69
+ 630 015e 2C000000 		.4byte	.LFE69-.LFB69
+ 631 0162 01       		.uleb128 0x1
+ 632 0163 9C       		.byte	0x9c
+ 633 0164 08       		.uleb128 0x8
+ 634 0165 EE000000 		.4byte	.LASF23
+ 635 0169 01       		.byte	0x1
+ 636 016a 5A       		.byte	0x5a
+ 637 016b 00000000 		.4byte	.LFB70
+ 638 016f 12000000 		.4byte	.LFE70-.LFB70
+ 639 0173 01       		.uleb128 0x1
+ 640 0174 9C       		.byte	0x9c
+ 641 0175 0D       		.uleb128 0xd
+ 642 0176 00010000 		.4byte	.LASF24
+ 643 017a 05       		.byte	0x5
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 14
 
 
- 655 0005 13       		.uleb128 0x13
- 656 0006 0B       		.uleb128 0xb
- 657 0007 03       		.uleb128 0x3
- 658 0008 0E       		.uleb128 0xe
- 659 0009 1B       		.uleb128 0x1b
- 660 000a 0E       		.uleb128 0xe
- 661 000b 55       		.uleb128 0x55
- 662 000c 17       		.uleb128 0x17
- 663 000d 11       		.uleb128 0x11
- 664 000e 01       		.uleb128 0x1
- 665 000f 10       		.uleb128 0x10
- 666 0010 17       		.uleb128 0x17
- 667 0011 00       		.byte	0
- 668 0012 00       		.byte	0
- 669 0013 02       		.uleb128 0x2
- 670 0014 24       		.uleb128 0x24
- 671 0015 00       		.byte	0
- 672 0016 0B       		.uleb128 0xb
- 673 0017 0B       		.uleb128 0xb
- 674 0018 3E       		.uleb128 0x3e
- 675 0019 0B       		.uleb128 0xb
- 676 001a 03       		.uleb128 0x3
- 677 001b 0E       		.uleb128 0xe
- 678 001c 00       		.byte	0
- 679 001d 00       		.byte	0
- 680 001e 03       		.uleb128 0x3
- 681 001f 16       		.uleb128 0x16
- 682 0020 00       		.byte	0
- 683 0021 03       		.uleb128 0x3
- 684 0022 0E       		.uleb128 0xe
- 685 0023 3A       		.uleb128 0x3a
- 686 0024 0B       		.uleb128 0xb
- 687 0025 3B       		.uleb128 0x3b
- 688 0026 0B       		.uleb128 0xb
- 689 0027 49       		.uleb128 0x49
- 690 0028 13       		.uleb128 0x13
- 691 0029 00       		.byte	0
- 692 002a 00       		.byte	0
- 693 002b 04       		.uleb128 0x4
- 694 002c 24       		.uleb128 0x24
- 695 002d 00       		.byte	0
- 696 002e 0B       		.uleb128 0xb
- 697 002f 0B       		.uleb128 0xb
- 698 0030 3E       		.uleb128 0x3e
- 699 0031 0B       		.uleb128 0xb
- 700 0032 03       		.uleb128 0x3
- 701 0033 08       		.uleb128 0x8
- 702 0034 00       		.byte	0
- 703 0035 00       		.byte	0
- 704 0036 05       		.uleb128 0x5
- 705 0037 35       		.uleb128 0x35
- 706 0038 00       		.byte	0
- 707 0039 49       		.uleb128 0x49
- 708 003a 13       		.uleb128 0x13
- 709 003b 00       		.byte	0
- 710 003c 00       		.byte	0
- 711 003d 06       		.uleb128 0x6
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 15
+ 644 017b 2A06     		.2byte	0x62a
+ 645 017d 81010000 		.4byte	0x181
+ 646 0181 05       		.uleb128 0x5
+ 647 0182 76000000 		.4byte	0x76
+ 648 0186 0E       		.uleb128 0xe
+ 649 0187 81000000 		.4byte	0x81
+ 650 018b A2010000 		.4byte	0x1a2
+ 651 018f 0F       		.uleb128 0xf
+ 652 0190 B1000000 		.4byte	0xb1
+ 653 0194 8F       		.byte	0x8f
+ 654 0195 0F       		.uleb128 0xf
+ 655 0196 B1000000 		.4byte	0xb1
+ 656 019a 57       		.byte	0x57
+ 657 019b 0F       		.uleb128 0xf
+ 658 019c B1000000 		.4byte	0xb1
+ 659 01a0 03       		.byte	0x3
+ 660 01a1 00       		.byte	0
+ 661 01a2 10       		.uleb128 0x10
+ 662 01a3 4C000000 		.4byte	.LASF25
+ 663 01a7 06       		.byte	0x6
+ 664 01a8 08       		.byte	0x8
+ 665 01a9 86010000 		.4byte	0x186
+ 666 01ad 05       		.uleb128 0x5
+ 667 01ae 03       		.byte	0x3
+ 668 01af 00000000 		.4byte	Camera_framebuffer
+ 669 01b3 0E       		.uleb128 0xe
+ 670 01b4 8C000000 		.4byte	0x8c
+ 671 01b8 C3010000 		.4byte	0x1c3
+ 672 01bc 0F       		.uleb128 0xf
+ 673 01bd B1000000 		.4byte	0xb1
+ 674 01c1 09       		.byte	0x9
+ 675 01c2 00       		.byte	0
+ 676 01c3 10       		.uleb128 0x10
+ 677 01c4 19020000 		.4byte	.LASF26
+ 678 01c8 01       		.byte	0x1
+ 679 01c9 15       		.byte	0x15
+ 680 01ca D4010000 		.4byte	0x1d4
+ 681 01ce 05       		.uleb128 0x5
+ 682 01cf 03       		.byte	0x3
+ 683 01d0 00000000 		.4byte	ultra_s
+ 684 01d4 05       		.uleb128 0x5
+ 685 01d5 B3010000 		.4byte	0x1b3
+ 686 01d9 10       		.uleb128 0x10
+ 687 01da 36000000 		.4byte	.LASF27
+ 688 01de 01       		.byte	0x1
+ 689 01df 16       		.byte	0x16
+ 690 01e0 EA010000 		.4byte	0x1ea
+ 691 01e4 05       		.uleb128 0x5
+ 692 01e5 03       		.byte	0x3
+ 693 01e6 00000000 		.4byte	ultra_i_s
+ 694 01ea 05       		.uleb128 0x5
+ 695 01eb 68000000 		.4byte	0x68
+ 696 01ef 10       		.uleb128 0x10
+ 697 01f0 62020000 		.4byte	.LASF28
+ 698 01f4 01       		.byte	0x1
+ 699 01f5 17       		.byte	0x17
+ 700 01f6 AC000000 		.4byte	0xac
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 15
 
 
- 712 003e 2E       		.uleb128 0x2e
- 713 003f 00       		.byte	0
- 714 0040 3F       		.uleb128 0x3f
- 715 0041 19       		.uleb128 0x19
- 716 0042 03       		.uleb128 0x3
- 717 0043 0E       		.uleb128 0xe
- 718 0044 3A       		.uleb128 0x3a
- 719 0045 0B       		.uleb128 0xb
- 720 0046 3B       		.uleb128 0x3b
- 721 0047 0B       		.uleb128 0xb
- 722 0048 27       		.uleb128 0x27
- 723 0049 19       		.uleb128 0x19
- 724 004a 49       		.uleb128 0x49
- 725 004b 13       		.uleb128 0x13
- 726 004c 11       		.uleb128 0x11
- 727 004d 01       		.uleb128 0x1
- 728 004e 12       		.uleb128 0x12
- 729 004f 06       		.uleb128 0x6
- 730 0050 40       		.uleb128 0x40
- 731 0051 18       		.uleb128 0x18
- 732 0052 9742     		.uleb128 0x2117
- 733 0054 19       		.uleb128 0x19
- 734 0055 00       		.byte	0
- 735 0056 00       		.byte	0
- 736 0057 07       		.uleb128 0x7
- 737 0058 2E       		.uleb128 0x2e
- 738 0059 00       		.byte	0
- 739 005a 3F       		.uleb128 0x3f
- 740 005b 19       		.uleb128 0x19
- 741 005c 03       		.uleb128 0x3
- 742 005d 0E       		.uleb128 0xe
- 743 005e 3A       		.uleb128 0x3a
- 744 005f 0B       		.uleb128 0xb
- 745 0060 3B       		.uleb128 0x3b
- 746 0061 0B       		.uleb128 0xb
- 747 0062 49       		.uleb128 0x49
- 748 0063 13       		.uleb128 0x13
- 749 0064 11       		.uleb128 0x11
- 750 0065 01       		.uleb128 0x1
- 751 0066 12       		.uleb128 0x12
- 752 0067 06       		.uleb128 0x6
- 753 0068 40       		.uleb128 0x40
- 754 0069 18       		.uleb128 0x18
- 755 006a 9742     		.uleb128 0x2117
- 756 006c 19       		.uleb128 0x19
- 757 006d 00       		.byte	0
- 758 006e 00       		.byte	0
- 759 006f 08       		.uleb128 0x8
- 760 0070 2E       		.uleb128 0x2e
- 761 0071 01       		.byte	0x1
- 762 0072 3F       		.uleb128 0x3f
- 763 0073 19       		.uleb128 0x19
- 764 0074 03       		.uleb128 0x3
- 765 0075 0E       		.uleb128 0xe
- 766 0076 3A       		.uleb128 0x3a
- 767 0077 0B       		.uleb128 0xb
- 768 0078 3B       		.uleb128 0x3b
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 16
+ 701 01fa 05       		.uleb128 0x5
+ 702 01fb 03       		.byte	0x3
+ 703 01fc 00000000 		.4byte	ultra_distance_s
+ 704 0200 10       		.uleb128 0x10
+ 705 0201 40000000 		.4byte	.LASF29
+ 706 0205 01       		.byte	0x1
+ 707 0206 18       		.byte	0x18
+ 708 0207 AC000000 		.4byte	0xac
+ 709 020b 05       		.uleb128 0x5
+ 710 020c 03       		.byte	0x3
+ 711 020d 00000000 		.4byte	var_ultra_s
+ 712 0211 0E       		.uleb128 0xe
+ 713 0212 A5000000 		.4byte	0xa5
+ 714 0216 21020000 		.4byte	0x221
+ 715 021a 0F       		.uleb128 0xf
+ 716 021b B1000000 		.4byte	0xb1
+ 717 021f 0F       		.byte	0xf
+ 718 0220 00       		.byte	0
+ 719 0221 10       		.uleb128 0x10
+ 720 0222 37020000 		.4byte	.LASF30
+ 721 0226 01       		.byte	0x1
+ 722 0227 21       		.byte	0x21
+ 723 0228 11020000 		.4byte	0x211
+ 724 022c 05       		.uleb128 0x5
+ 725 022d 03       		.byte	0x3
+ 726 022e 00000000 		.4byte	outString
+ 727 0232 00       		.byte	0
+ 728              		.section	.debug_abbrev,"",%progbits
+ 729              	.Ldebug_abbrev0:
+ 730 0000 01       		.uleb128 0x1
+ 731 0001 11       		.uleb128 0x11
+ 732 0002 01       		.byte	0x1
+ 733 0003 25       		.uleb128 0x25
+ 734 0004 0E       		.uleb128 0xe
+ 735 0005 13       		.uleb128 0x13
+ 736 0006 0B       		.uleb128 0xb
+ 737 0007 03       		.uleb128 0x3
+ 738 0008 0E       		.uleb128 0xe
+ 739 0009 1B       		.uleb128 0x1b
+ 740 000a 0E       		.uleb128 0xe
+ 741 000b 55       		.uleb128 0x55
+ 742 000c 17       		.uleb128 0x17
+ 743 000d 11       		.uleb128 0x11
+ 744 000e 01       		.uleb128 0x1
+ 745 000f 10       		.uleb128 0x10
+ 746 0010 17       		.uleb128 0x17
+ 747 0011 00       		.byte	0
+ 748 0012 00       		.byte	0
+ 749 0013 02       		.uleb128 0x2
+ 750 0014 24       		.uleb128 0x24
+ 751 0015 00       		.byte	0
+ 752 0016 0B       		.uleb128 0xb
+ 753 0017 0B       		.uleb128 0xb
+ 754 0018 3E       		.uleb128 0x3e
+ 755 0019 0B       		.uleb128 0xb
+ 756 001a 03       		.uleb128 0x3
+ 757 001b 0E       		.uleb128 0xe
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 16
 
 
- 769 0079 0B       		.uleb128 0xb
- 770 007a 49       		.uleb128 0x49
- 771 007b 13       		.uleb128 0x13
- 772 007c 11       		.uleb128 0x11
- 773 007d 01       		.uleb128 0x1
- 774 007e 12       		.uleb128 0x12
- 775 007f 06       		.uleb128 0x6
- 776 0080 40       		.uleb128 0x40
- 777 0081 18       		.uleb128 0x18
- 778 0082 9742     		.uleb128 0x2117
- 779 0084 19       		.uleb128 0x19
- 780 0085 01       		.uleb128 0x1
- 781 0086 13       		.uleb128 0x13
- 782 0087 00       		.byte	0
- 783 0088 00       		.byte	0
- 784 0089 09       		.uleb128 0x9
- 785 008a 05       		.uleb128 0x5
- 786 008b 00       		.byte	0
- 787 008c 03       		.uleb128 0x3
- 788 008d 08       		.uleb128 0x8
- 789 008e 3A       		.uleb128 0x3a
- 790 008f 0B       		.uleb128 0xb
- 791 0090 3B       		.uleb128 0x3b
- 792 0091 0B       		.uleb128 0xb
- 793 0092 49       		.uleb128 0x49
- 794 0093 13       		.uleb128 0x13
- 795 0094 02       		.uleb128 0x2
- 796 0095 18       		.uleb128 0x18
- 797 0096 00       		.byte	0
- 798 0097 00       		.byte	0
- 799 0098 0A       		.uleb128 0xa
- 800 0099 2E       		.uleb128 0x2e
- 801 009a 01       		.byte	0x1
- 802 009b 3F       		.uleb128 0x3f
- 803 009c 19       		.uleb128 0x19
- 804 009d 03       		.uleb128 0x3
- 805 009e 0E       		.uleb128 0xe
- 806 009f 3A       		.uleb128 0x3a
- 807 00a0 0B       		.uleb128 0xb
- 808 00a1 3B       		.uleb128 0x3b
- 809 00a2 0B       		.uleb128 0xb
- 810 00a3 27       		.uleb128 0x27
- 811 00a4 19       		.uleb128 0x19
- 812 00a5 11       		.uleb128 0x11
- 813 00a6 01       		.uleb128 0x1
- 814 00a7 12       		.uleb128 0x12
- 815 00a8 06       		.uleb128 0x6
- 816 00a9 40       		.uleb128 0x40
- 817 00aa 18       		.uleb128 0x18
- 818 00ab 9642     		.uleb128 0x2116
- 819 00ad 19       		.uleb128 0x19
- 820 00ae 01       		.uleb128 0x1
- 821 00af 13       		.uleb128 0x13
- 822 00b0 00       		.byte	0
- 823 00b1 00       		.byte	0
- 824 00b2 0B       		.uleb128 0xb
- 825 00b3 34       		.uleb128 0x34
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 17
+ 758 001c 00       		.byte	0
+ 759 001d 00       		.byte	0
+ 760 001e 03       		.uleb128 0x3
+ 761 001f 16       		.uleb128 0x16
+ 762 0020 00       		.byte	0
+ 763 0021 03       		.uleb128 0x3
+ 764 0022 0E       		.uleb128 0xe
+ 765 0023 3A       		.uleb128 0x3a
+ 766 0024 0B       		.uleb128 0xb
+ 767 0025 3B       		.uleb128 0x3b
+ 768 0026 0B       		.uleb128 0xb
+ 769 0027 49       		.uleb128 0x49
+ 770 0028 13       		.uleb128 0x13
+ 771 0029 00       		.byte	0
+ 772 002a 00       		.byte	0
+ 773 002b 04       		.uleb128 0x4
+ 774 002c 24       		.uleb128 0x24
+ 775 002d 00       		.byte	0
+ 776 002e 0B       		.uleb128 0xb
+ 777 002f 0B       		.uleb128 0xb
+ 778 0030 3E       		.uleb128 0x3e
+ 779 0031 0B       		.uleb128 0xb
+ 780 0032 03       		.uleb128 0x3
+ 781 0033 08       		.uleb128 0x8
+ 782 0034 00       		.byte	0
+ 783 0035 00       		.byte	0
+ 784 0036 05       		.uleb128 0x5
+ 785 0037 35       		.uleb128 0x35
+ 786 0038 00       		.byte	0
+ 787 0039 49       		.uleb128 0x49
+ 788 003a 13       		.uleb128 0x13
+ 789 003b 00       		.byte	0
+ 790 003c 00       		.byte	0
+ 791 003d 06       		.uleb128 0x6
+ 792 003e 2E       		.uleb128 0x2e
+ 793 003f 00       		.byte	0
+ 794 0040 3F       		.uleb128 0x3f
+ 795 0041 19       		.uleb128 0x19
+ 796 0042 03       		.uleb128 0x3
+ 797 0043 0E       		.uleb128 0xe
+ 798 0044 3A       		.uleb128 0x3a
+ 799 0045 0B       		.uleb128 0xb
+ 800 0046 3B       		.uleb128 0x3b
+ 801 0047 0B       		.uleb128 0xb
+ 802 0048 27       		.uleb128 0x27
+ 803 0049 19       		.uleb128 0x19
+ 804 004a 49       		.uleb128 0x49
+ 805 004b 13       		.uleb128 0x13
+ 806 004c 11       		.uleb128 0x11
+ 807 004d 01       		.uleb128 0x1
+ 808 004e 12       		.uleb128 0x12
+ 809 004f 06       		.uleb128 0x6
+ 810 0050 40       		.uleb128 0x40
+ 811 0051 18       		.uleb128 0x18
+ 812 0052 9742     		.uleb128 0x2117
+ 813 0054 19       		.uleb128 0x19
+ 814 0055 00       		.byte	0
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 17
 
 
- 826 00b4 00       		.byte	0
- 827 00b5 03       		.uleb128 0x3
- 828 00b6 08       		.uleb128 0x8
- 829 00b7 3A       		.uleb128 0x3a
- 830 00b8 0B       		.uleb128 0xb
- 831 00b9 3B       		.uleb128 0x3b
- 832 00ba 0B       		.uleb128 0xb
- 833 00bb 49       		.uleb128 0x49
- 834 00bc 13       		.uleb128 0x13
- 835 00bd 02       		.uleb128 0x2
- 836 00be 18       		.uleb128 0x18
- 837 00bf 00       		.byte	0
- 838 00c0 00       		.byte	0
- 839 00c1 0C       		.uleb128 0xc
- 840 00c2 2E       		.uleb128 0x2e
- 841 00c3 00       		.byte	0
- 842 00c4 3F       		.uleb128 0x3f
- 843 00c5 19       		.uleb128 0x19
- 844 00c6 03       		.uleb128 0x3
- 845 00c7 0E       		.uleb128 0xe
- 846 00c8 3A       		.uleb128 0x3a
- 847 00c9 0B       		.uleb128 0xb
- 848 00ca 3B       		.uleb128 0x3b
- 849 00cb 0B       		.uleb128 0xb
- 850 00cc 11       		.uleb128 0x11
- 851 00cd 01       		.uleb128 0x1
- 852 00ce 12       		.uleb128 0x12
- 853 00cf 06       		.uleb128 0x6
- 854 00d0 40       		.uleb128 0x40
- 855 00d1 18       		.uleb128 0x18
- 856 00d2 9642     		.uleb128 0x2116
- 857 00d4 19       		.uleb128 0x19
- 858 00d5 00       		.byte	0
- 859 00d6 00       		.byte	0
- 860 00d7 0D       		.uleb128 0xd
- 861 00d8 34       		.uleb128 0x34
- 862 00d9 00       		.byte	0
- 863 00da 03       		.uleb128 0x3
- 864 00db 0E       		.uleb128 0xe
- 865 00dc 3A       		.uleb128 0x3a
- 866 00dd 0B       		.uleb128 0xb
- 867 00de 3B       		.uleb128 0x3b
- 868 00df 05       		.uleb128 0x5
- 869 00e0 49       		.uleb128 0x49
- 870 00e1 13       		.uleb128 0x13
- 871 00e2 3F       		.uleb128 0x3f
- 872 00e3 19       		.uleb128 0x19
- 873 00e4 3C       		.uleb128 0x3c
- 874 00e5 19       		.uleb128 0x19
- 875 00e6 00       		.byte	0
- 876 00e7 00       		.byte	0
- 877 00e8 0E       		.uleb128 0xe
- 878 00e9 01       		.uleb128 0x1
- 879 00ea 01       		.byte	0x1
- 880 00eb 49       		.uleb128 0x49
- 881 00ec 13       		.uleb128 0x13
- 882 00ed 01       		.uleb128 0x1
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 18
+ 815 0056 00       		.byte	0
+ 816 0057 07       		.uleb128 0x7
+ 817 0058 2E       		.uleb128 0x2e
+ 818 0059 00       		.byte	0
+ 819 005a 3F       		.uleb128 0x3f
+ 820 005b 19       		.uleb128 0x19
+ 821 005c 03       		.uleb128 0x3
+ 822 005d 0E       		.uleb128 0xe
+ 823 005e 3A       		.uleb128 0x3a
+ 824 005f 0B       		.uleb128 0xb
+ 825 0060 3B       		.uleb128 0x3b
+ 826 0061 0B       		.uleb128 0xb
+ 827 0062 49       		.uleb128 0x49
+ 828 0063 13       		.uleb128 0x13
+ 829 0064 11       		.uleb128 0x11
+ 830 0065 01       		.uleb128 0x1
+ 831 0066 12       		.uleb128 0x12
+ 832 0067 06       		.uleb128 0x6
+ 833 0068 40       		.uleb128 0x40
+ 834 0069 18       		.uleb128 0x18
+ 835 006a 9742     		.uleb128 0x2117
+ 836 006c 19       		.uleb128 0x19
+ 837 006d 00       		.byte	0
+ 838 006e 00       		.byte	0
+ 839 006f 08       		.uleb128 0x8
+ 840 0070 2E       		.uleb128 0x2e
+ 841 0071 00       		.byte	0
+ 842 0072 3F       		.uleb128 0x3f
+ 843 0073 19       		.uleb128 0x19
+ 844 0074 03       		.uleb128 0x3
+ 845 0075 0E       		.uleb128 0xe
+ 846 0076 3A       		.uleb128 0x3a
+ 847 0077 0B       		.uleb128 0xb
+ 848 0078 3B       		.uleb128 0x3b
+ 849 0079 0B       		.uleb128 0xb
+ 850 007a 11       		.uleb128 0x11
+ 851 007b 01       		.uleb128 0x1
+ 852 007c 12       		.uleb128 0x12
+ 853 007d 06       		.uleb128 0x6
+ 854 007e 40       		.uleb128 0x40
+ 855 007f 18       		.uleb128 0x18
+ 856 0080 9642     		.uleb128 0x2116
+ 857 0082 19       		.uleb128 0x19
+ 858 0083 00       		.byte	0
+ 859 0084 00       		.byte	0
+ 860 0085 09       		.uleb128 0x9
+ 861 0086 2E       		.uleb128 0x2e
+ 862 0087 01       		.byte	0x1
+ 863 0088 3F       		.uleb128 0x3f
+ 864 0089 19       		.uleb128 0x19
+ 865 008a 03       		.uleb128 0x3
+ 866 008b 0E       		.uleb128 0xe
+ 867 008c 3A       		.uleb128 0x3a
+ 868 008d 0B       		.uleb128 0xb
+ 869 008e 3B       		.uleb128 0x3b
+ 870 008f 0B       		.uleb128 0xb
+ 871 0090 49       		.uleb128 0x49
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 18
 
 
- 883 00ee 13       		.uleb128 0x13
- 884 00ef 00       		.byte	0
- 885 00f0 00       		.byte	0
- 886 00f1 0F       		.uleb128 0xf
- 887 00f2 21       		.uleb128 0x21
- 888 00f3 00       		.byte	0
- 889 00f4 49       		.uleb128 0x49
- 890 00f5 13       		.uleb128 0x13
- 891 00f6 2F       		.uleb128 0x2f
- 892 00f7 0B       		.uleb128 0xb
- 893 00f8 00       		.byte	0
- 894 00f9 00       		.byte	0
- 895 00fa 10       		.uleb128 0x10
- 896 00fb 34       		.uleb128 0x34
- 897 00fc 00       		.byte	0
- 898 00fd 03       		.uleb128 0x3
- 899 00fe 0E       		.uleb128 0xe
- 900 00ff 3A       		.uleb128 0x3a
- 901 0100 0B       		.uleb128 0xb
- 902 0101 3B       		.uleb128 0x3b
- 903 0102 0B       		.uleb128 0xb
- 904 0103 49       		.uleb128 0x49
- 905 0104 13       		.uleb128 0x13
- 906 0105 3F       		.uleb128 0x3f
- 907 0106 19       		.uleb128 0x19
- 908 0107 02       		.uleb128 0x2
- 909 0108 18       		.uleb128 0x18
- 910 0109 00       		.byte	0
- 911 010a 00       		.byte	0
- 912 010b 00       		.byte	0
- 913              		.section	.debug_aranges,"",%progbits
- 914 0000 44000000 		.4byte	0x44
- 915 0004 0200     		.2byte	0x2
- 916 0006 00000000 		.4byte	.Ldebug_info0
- 917 000a 04       		.byte	0x4
- 918 000b 00       		.byte	0
- 919 000c 0000     		.2byte	0
- 920 000e 0000     		.2byte	0
- 921 0010 00000000 		.4byte	.LFB63
- 922 0014 18000000 		.4byte	.LFE63-.LFB63
- 923 0018 00000000 		.4byte	.LFB64
- 924 001c 18000000 		.4byte	.LFE64-.LFB64
- 925 0020 00000000 		.4byte	.LFB65
- 926 0024 22000000 		.4byte	.LFE65-.LFB65
- 927 0028 00000000 		.4byte	.LFB66
- 928 002c 18010000 		.4byte	.LFE66-.LFB66
- 929 0030 00000000 		.4byte	.LFB67
- 930 0034 2C000000 		.4byte	.LFE67-.LFB67
- 931 0038 00000000 		.4byte	.LFB68
- 932 003c 12000000 		.4byte	.LFE68-.LFB68
- 933 0040 00000000 		.4byte	0
- 934 0044 00000000 		.4byte	0
- 935              		.section	.debug_ranges,"",%progbits
- 936              	.Ldebug_ranges0:
- 937 0000 00000000 		.4byte	.LFB63
- 938 0004 18000000 		.4byte	.LFE63
- 939 0008 00000000 		.4byte	.LFB64
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 19
+ 872 0091 13       		.uleb128 0x13
+ 873 0092 11       		.uleb128 0x11
+ 874 0093 01       		.uleb128 0x1
+ 875 0094 12       		.uleb128 0x12
+ 876 0095 06       		.uleb128 0x6
+ 877 0096 40       		.uleb128 0x40
+ 878 0097 18       		.uleb128 0x18
+ 879 0098 9742     		.uleb128 0x2117
+ 880 009a 19       		.uleb128 0x19
+ 881 009b 01       		.uleb128 0x1
+ 882 009c 13       		.uleb128 0x13
+ 883 009d 00       		.byte	0
+ 884 009e 00       		.byte	0
+ 885 009f 0A       		.uleb128 0xa
+ 886 00a0 05       		.uleb128 0x5
+ 887 00a1 00       		.byte	0
+ 888 00a2 03       		.uleb128 0x3
+ 889 00a3 08       		.uleb128 0x8
+ 890 00a4 3A       		.uleb128 0x3a
+ 891 00a5 0B       		.uleb128 0xb
+ 892 00a6 3B       		.uleb128 0x3b
+ 893 00a7 0B       		.uleb128 0xb
+ 894 00a8 49       		.uleb128 0x49
+ 895 00a9 13       		.uleb128 0x13
+ 896 00aa 02       		.uleb128 0x2
+ 897 00ab 18       		.uleb128 0x18
+ 898 00ac 00       		.byte	0
+ 899 00ad 00       		.byte	0
+ 900 00ae 0B       		.uleb128 0xb
+ 901 00af 2E       		.uleb128 0x2e
+ 902 00b0 01       		.byte	0x1
+ 903 00b1 3F       		.uleb128 0x3f
+ 904 00b2 19       		.uleb128 0x19
+ 905 00b3 03       		.uleb128 0x3
+ 906 00b4 0E       		.uleb128 0xe
+ 907 00b5 3A       		.uleb128 0x3a
+ 908 00b6 0B       		.uleb128 0xb
+ 909 00b7 3B       		.uleb128 0x3b
+ 910 00b8 0B       		.uleb128 0xb
+ 911 00b9 27       		.uleb128 0x27
+ 912 00ba 19       		.uleb128 0x19
+ 913 00bb 11       		.uleb128 0x11
+ 914 00bc 01       		.uleb128 0x1
+ 915 00bd 12       		.uleb128 0x12
+ 916 00be 06       		.uleb128 0x6
+ 917 00bf 40       		.uleb128 0x40
+ 918 00c0 18       		.uleb128 0x18
+ 919 00c1 9642     		.uleb128 0x2116
+ 920 00c3 19       		.uleb128 0x19
+ 921 00c4 01       		.uleb128 0x1
+ 922 00c5 13       		.uleb128 0x13
+ 923 00c6 00       		.byte	0
+ 924 00c7 00       		.byte	0
+ 925 00c8 0C       		.uleb128 0xc
+ 926 00c9 34       		.uleb128 0x34
+ 927 00ca 00       		.byte	0
+ 928 00cb 03       		.uleb128 0x3
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 19
 
 
- 940 000c 18000000 		.4byte	.LFE64
- 941 0010 00000000 		.4byte	.LFB65
- 942 0014 22000000 		.4byte	.LFE65
- 943 0018 00000000 		.4byte	.LFB66
- 944 001c 18010000 		.4byte	.LFE66
- 945 0020 00000000 		.4byte	.LFB67
- 946 0024 2C000000 		.4byte	.LFE67
- 947 0028 00000000 		.4byte	.LFB68
- 948 002c 12000000 		.4byte	.LFE68
- 949 0030 00000000 		.4byte	0
- 950 0034 00000000 		.4byte	0
- 951              		.section	.debug_line,"",%progbits
- 952              	.Ldebug_line0:
- 953 0000 FE010000 		.section	.debug_str,"MS",%progbits,1
- 953      02005D01 
- 953      00000201 
- 953      FB0E0D00 
- 953      01010101 
- 954              	.LASF19:
- 955 0000 48435F54 		.ascii	"HC_TRIG_ISR_S\000"
- 955      5249475F 
- 955      4953525F 
- 955      5300
- 956              	.LASF9:
- 957 000e 5F5F696E 		.ascii	"__int32_t\000"
- 957      7433325F 
- 957      7400
- 958              	.LASF32:
- 959 0018 6765745F 		.ascii	"get_mean_ultra_s\000"
- 959      6D65616E 
- 959      5F756C74 
- 959      72615F73 
- 959      00
- 960              	.LASF25:
- 961 0029 756C7472 		.ascii	"ultra_i_s\000"
- 961      615F695F 
- 961      7300
- 962              	.LASF27:
- 963 0033 7661725F 		.ascii	"var_ultra_s\000"
- 963      756C7472 
- 963      615F7300 
- 964              	.LASF23:
- 965 003f 43616D65 		.ascii	"Camera_framebuffer\000"
- 965      72615F66 
- 965      72616D65 
- 965      62756666 
- 965      657200
- 966              	.LASF18:
- 967 0052 6D796162 		.ascii	"myabss\000"
- 967      737300
- 968              	.LASF13:
- 969 0059 666C6F61 		.ascii	"float\000"
- 969      7400
- 970              	.LASF1:
- 971 005f 756E7369 		.ascii	"unsigned char\000"
- 971      676E6564 
- 971      20636861 
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 20
+ 929 00cc 08       		.uleb128 0x8
+ 930 00cd 3A       		.uleb128 0x3a
+ 931 00ce 0B       		.uleb128 0xb
+ 932 00cf 3B       		.uleb128 0x3b
+ 933 00d0 0B       		.uleb128 0xb
+ 934 00d1 49       		.uleb128 0x49
+ 935 00d2 13       		.uleb128 0x13
+ 936 00d3 02       		.uleb128 0x2
+ 937 00d4 18       		.uleb128 0x18
+ 938 00d5 00       		.byte	0
+ 939 00d6 00       		.byte	0
+ 940 00d7 0D       		.uleb128 0xd
+ 941 00d8 34       		.uleb128 0x34
+ 942 00d9 00       		.byte	0
+ 943 00da 03       		.uleb128 0x3
+ 944 00db 0E       		.uleb128 0xe
+ 945 00dc 3A       		.uleb128 0x3a
+ 946 00dd 0B       		.uleb128 0xb
+ 947 00de 3B       		.uleb128 0x3b
+ 948 00df 05       		.uleb128 0x5
+ 949 00e0 49       		.uleb128 0x49
+ 950 00e1 13       		.uleb128 0x13
+ 951 00e2 3F       		.uleb128 0x3f
+ 952 00e3 19       		.uleb128 0x19
+ 953 00e4 3C       		.uleb128 0x3c
+ 954 00e5 19       		.uleb128 0x19
+ 955 00e6 00       		.byte	0
+ 956 00e7 00       		.byte	0
+ 957 00e8 0E       		.uleb128 0xe
+ 958 00e9 01       		.uleb128 0x1
+ 959 00ea 01       		.byte	0x1
+ 960 00eb 49       		.uleb128 0x49
+ 961 00ec 13       		.uleb128 0x13
+ 962 00ed 01       		.uleb128 0x1
+ 963 00ee 13       		.uleb128 0x13
+ 964 00ef 00       		.byte	0
+ 965 00f0 00       		.byte	0
+ 966 00f1 0F       		.uleb128 0xf
+ 967 00f2 21       		.uleb128 0x21
+ 968 00f3 00       		.byte	0
+ 969 00f4 49       		.uleb128 0x49
+ 970 00f5 13       		.uleb128 0x13
+ 971 00f6 2F       		.uleb128 0x2f
+ 972 00f7 0B       		.uleb128 0xb
+ 973 00f8 00       		.byte	0
+ 974 00f9 00       		.byte	0
+ 975 00fa 10       		.uleb128 0x10
+ 976 00fb 34       		.uleb128 0x34
+ 977 00fc 00       		.byte	0
+ 978 00fd 03       		.uleb128 0x3
+ 979 00fe 0E       		.uleb128 0xe
+ 980 00ff 3A       		.uleb128 0x3a
+ 981 0100 0B       		.uleb128 0xb
+ 982 0101 3B       		.uleb128 0x3b
+ 983 0102 0B       		.uleb128 0xb
+ 984 0103 49       		.uleb128 0x49
+ 985 0104 13       		.uleb128 0x13
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 20
 
 
- 971      7200
- 972              	.LASF31:
- 973 006d 433A5C55 		.ascii	"C:\\Users\\xavieran\\Desktop\\ECE3091\\PSOCProjects"
- 973      73657273 
- 973      5C786176 
- 973      69657261 
- 973      6E5C4465 
- 974 009b 5C454E47 		.ascii	"\\ENG3091_MandM\\camera_test.cydsn\000"
- 974      33303931 
- 974      5F4D616E 
- 974      644D5C63 
- 974      616D6572 
- 975              	.LASF5:
- 976 00bc 6C6F6E67 		.ascii	"long unsigned int\000"
- 976      20756E73 
- 976      69676E65 
- 976      6420696E 
- 976      7400
- 977              	.LASF3:
- 978 00ce 73686F72 		.ascii	"short unsigned int\000"
- 978      7420756E 
- 978      7369676E 
- 978      65642069 
- 978      6E7400
- 979              	.LASF21:
- 980 00e1 73746F70 		.ascii	"stop_ultrasonic_s\000"
- 980      5F756C74 
- 980      7261736F 
- 980      6E69635F 
- 980      7300
- 981              	.LASF22:
- 982 00f3 49544D5F 		.ascii	"ITM_RxBuffer\000"
- 982      52784275 
- 982      66666572 
- 982      00
- 983              	.LASF14:
- 984 0100 646F7562 		.ascii	"double\000"
- 984      6C6500
- 985              	.LASF2:
- 986 0107 73686F72 		.ascii	"short int\000"
- 986      7420696E 
- 986      7400
- 987              	.LASF12:
- 988 0111 75696E74 		.ascii	"uint16\000"
- 988      313600
- 989              	.LASF20:
- 990 0118 73746172 		.ascii	"start_ultrasonic_s\000"
- 990      745F756C 
- 990      74726173 
- 990      6F6E6963 
- 990      5F7300
- 991              	.LASF8:
- 992 012b 756E7369 		.ascii	"unsigned int\000"
- 992      676E6564 
- 992      20696E74 
- 992      00
- 993              	.LASF7:
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 21
+ 986 0105 3F       		.uleb128 0x3f
+ 987 0106 19       		.uleb128 0x19
+ 988 0107 02       		.uleb128 0x2
+ 989 0108 18       		.uleb128 0x18
+ 990 0109 00       		.byte	0
+ 991 010a 00       		.byte	0
+ 992 010b 00       		.byte	0
+ 993              		.section	.debug_aranges,"",%progbits
+ 994 0000 54000000 		.4byte	0x54
+ 995 0004 0200     		.2byte	0x2
+ 996 0006 00000000 		.4byte	.Ldebug_info0
+ 997 000a 04       		.byte	0x4
+ 998 000b 00       		.byte	0
+ 999 000c 0000     		.2byte	0
+ 1000 000e 0000     		.2byte	0
+ 1001 0010 00000000 		.4byte	.LFB63
+ 1002 0014 18000000 		.4byte	.LFE63-.LFB63
+ 1003 0018 00000000 		.4byte	.LFB64
+ 1004 001c 18000000 		.4byte	.LFE64-.LFB64
+ 1005 0020 00000000 		.4byte	.LFB65
+ 1006 0024 16000000 		.4byte	.LFE65-.LFB65
+ 1007 0028 00000000 		.4byte	.LFB66
+ 1008 002c 16000000 		.4byte	.LFE66-.LFB66
+ 1009 0030 00000000 		.4byte	.LFB67
+ 1010 0034 22000000 		.4byte	.LFE67-.LFB67
+ 1011 0038 00000000 		.4byte	.LFB68
+ 1012 003c 18010000 		.4byte	.LFE68-.LFB68
+ 1013 0040 00000000 		.4byte	.LFB69
+ 1014 0044 2C000000 		.4byte	.LFE69-.LFB69
+ 1015 0048 00000000 		.4byte	.LFB70
+ 1016 004c 12000000 		.4byte	.LFE70-.LFB70
+ 1017 0050 00000000 		.4byte	0
+ 1018 0054 00000000 		.4byte	0
+ 1019              		.section	.debug_ranges,"",%progbits
+ 1020              	.Ldebug_ranges0:
+ 1021 0000 00000000 		.4byte	.LFB63
+ 1022 0004 18000000 		.4byte	.LFE63
+ 1023 0008 00000000 		.4byte	.LFB64
+ 1024 000c 18000000 		.4byte	.LFE64
+ 1025 0010 00000000 		.4byte	.LFB65
+ 1026 0014 16000000 		.4byte	.LFE65
+ 1027 0018 00000000 		.4byte	.LFB66
+ 1028 001c 16000000 		.4byte	.LFE66
+ 1029 0020 00000000 		.4byte	.LFB67
+ 1030 0024 22000000 		.4byte	.LFE67
+ 1031 0028 00000000 		.4byte	.LFB68
+ 1032 002c 18010000 		.4byte	.LFE68
+ 1033 0030 00000000 		.4byte	.LFB69
+ 1034 0034 2C000000 		.4byte	.LFE69
+ 1035 0038 00000000 		.4byte	.LFB70
+ 1036 003c 12000000 		.4byte	.LFE70
+ 1037 0040 00000000 		.4byte	0
+ 1038 0044 00000000 		.4byte	0
+ 1039              		.section	.debug_line,"",%progbits
+ 1040              	.Ldebug_line0:
+ 1041 0000 23020000 		.section	.debug_str,"MS",%progbits,1
+ 1041      02005D01 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 21
 
 
- 994 0138 6C6F6E67 		.ascii	"long long unsigned int\000"
- 994      206C6F6E 
- 994      6720756E 
- 994      7369676E 
- 994      65642069 
- 995              	.LASF29:
- 996 014f 474E5520 		.ascii	"GNU C 4.8.4 20140526 (release) [ARM/embedded-4_8-br"
- 996      4320342E 
- 996      382E3420 
- 996      32303134 
- 996      30353236 
- 997 0182 616E6368 		.ascii	"anch revision 211358] -mcpu=cortex-m3 -mthumb -g -O"
- 997      20726576 
- 997      6973696F 
- 997      6E203231 
- 997      31333538 
- 998 01b5 30202D66 		.ascii	"0 -ffunction-sections\000"
- 998      66756E63 
- 998      74696F6E 
- 998      2D736563 
- 998      74696F6E 
- 999              	.LASF30:
- 1000 01cb 2E5C756C 		.ascii	".\\ultrasonic_s.c\000"
- 1000      74726173 
- 1000      6F6E6963 
- 1000      5F732E63 
- 1000      00
- 1001              	.LASF10:
- 1002 01dc 696E7433 		.ascii	"int32_t\000"
- 1002      325F7400 
- 1003              	.LASF16:
- 1004 01e4 73697A65 		.ascii	"sizetype\000"
- 1004      74797065 
- 1004      00
- 1005              	.LASF6:
- 1006 01ed 6C6F6E67 		.ascii	"long long int\000"
- 1006      206C6F6E 
- 1006      6720696E 
- 1006      7400
- 1007              	.LASF15:
- 1008 01fb 63686172 		.ascii	"char\000"
- 1008      00
- 1009              	.LASF24:
- 1010 0200 756C7472 		.ascii	"ultra_s\000"
- 1010      615F7300 
- 1011              	.LASF33:
- 1012 0208 6765745F 		.ascii	"get_var_ultra_s\000"
- 1012      7661725F 
- 1012      756C7472 
- 1012      615F7300 
- 1013              	.LASF11:
- 1014 0218 75696E74 		.ascii	"uint8\000"
- 1014      3800
- 1015              	.LASF28:
- 1016 021e 6F757453 		.ascii	"outString\000"
- 1016      7472696E 
- 1016      6700
-ARM GAS  C:\Users\xavieran\AppData\Local\Temp\cccrv2V1.s 			page 22
+ 1041      00000201 
+ 1041      FB0E0D00 
+ 1041      01010101 
+ 1042              	.LASF18:
+ 1043 0000 73656C65 		.ascii	"select_stack\000"
+ 1043      63745F73 
+ 1043      7461636B 
+ 1043      00
+ 1044              	.LASF21:
+ 1045 000d 48435F54 		.ascii	"HC_TRIG_ISR_S\000"
+ 1045      5249475F 
+ 1045      4953525F 
+ 1045      5300
+ 1046              	.LASF9:
+ 1047 001b 5F5F696E 		.ascii	"__int32_t\000"
+ 1047      7433325F 
+ 1047      7400
+ 1048              	.LASF34:
+ 1049 0025 6765745F 		.ascii	"get_mean_ultra_s\000"
+ 1049      6D65616E 
+ 1049      5F756C74 
+ 1049      72615F73 
+ 1049      00
+ 1050              	.LASF27:
+ 1051 0036 756C7472 		.ascii	"ultra_i_s\000"
+ 1051      615F695F 
+ 1051      7300
+ 1052              	.LASF29:
+ 1053 0040 7661725F 		.ascii	"var_ultra_s\000"
+ 1053      756C7472 
+ 1053      615F7300 
+ 1054              	.LASF25:
+ 1055 004c 43616D65 		.ascii	"Camera_framebuffer\000"
+ 1055      72615F66 
+ 1055      72616D65 
+ 1055      62756666 
+ 1055      657200
+ 1056              	.LASF20:
+ 1057 005f 6D796162 		.ascii	"myabss\000"
+ 1057      737300
+ 1058              	.LASF13:
+ 1059 0066 666C6F61 		.ascii	"float\000"
+ 1059      7400
+ 1060              	.LASF1:
+ 1061 006c 756E7369 		.ascii	"unsigned char\000"
+ 1061      676E6564 
+ 1061      20636861 
+ 1061      7200
+ 1062              	.LASF33:
+ 1063 007a 433A5C55 		.ascii	"C:\\Users\\xavieran\\Desktop\\ECE3091\\PSOCProjects"
+ 1063      73657273 
+ 1063      5C786176 
+ 1063      69657261 
+ 1063      6E5C4465 
+ 1064 00a8 5C454E47 		.ascii	"\\ENG3091_MandM\\camera_test.cydsn\000"
+ 1064      33303931 
+ 1064      5F4D616E 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 22
 
 
- 1017              	.LASF4:
- 1018 0228 6C6F6E67 		.ascii	"long int\000"
- 1018      20696E74 
- 1018      00
- 1019              	.LASF17:
- 1020 0231 6C6F6E67 		.ascii	"long double\000"
- 1020      20646F75 
- 1020      626C6500 
- 1021              	.LASF0:
- 1022 023d 7369676E 		.ascii	"signed char\000"
- 1022      65642063 
- 1022      68617200 
- 1023              	.LASF26:
- 1024 0249 756C7472 		.ascii	"ultra_distance_s\000"
- 1024      615F6469 
- 1024      7374616E 
- 1024      63655F73 
- 1024      00
- 1025              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.8.4 20140526 (release) [ARM/embedded-4_8-br
+ 1064      644D5C63 
+ 1064      616D6572 
+ 1065              	.LASF5:
+ 1066 00c9 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1066      20756E73 
+ 1066      69676E65 
+ 1066      6420696E 
+ 1066      7400
+ 1067              	.LASF3:
+ 1068 00db 73686F72 		.ascii	"short unsigned int\000"
+ 1068      7420756E 
+ 1068      7369676E 
+ 1068      65642069 
+ 1068      6E7400
+ 1069              	.LASF23:
+ 1070 00ee 73746F70 		.ascii	"stop_ultrasonic_s\000"
+ 1070      5F756C74 
+ 1070      7261736F 
+ 1070      6E69635F 
+ 1070      7300
+ 1071              	.LASF24:
+ 1072 0100 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1072      52784275 
+ 1072      66666572 
+ 1072      00
+ 1073              	.LASF14:
+ 1074 010d 646F7562 		.ascii	"double\000"
+ 1074      6C6500
+ 1075              	.LASF2:
+ 1076 0114 73686F72 		.ascii	"short int\000"
+ 1076      7420696E 
+ 1076      7400
+ 1077              	.LASF12:
+ 1078 011e 75696E74 		.ascii	"uint16\000"
+ 1078      313600
+ 1079              	.LASF22:
+ 1080 0125 73746172 		.ascii	"start_ultrasonic_s\000"
+ 1080      745F756C 
+ 1080      74726173 
+ 1080      6F6E6963 
+ 1080      5F7300
+ 1081              	.LASF8:
+ 1082 0138 756E7369 		.ascii	"unsigned int\000"
+ 1082      676E6564 
+ 1082      20696E74 
+ 1082      00
+ 1083              	.LASF7:
+ 1084 0145 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1084      206C6F6E 
+ 1084      6720756E 
+ 1084      7369676E 
+ 1084      65642069 
+ 1085              	.LASF31:
+ 1086 015c 474E5520 		.ascii	"GNU C 4.8.4 20140526 (release) [ARM/embedded-4_8-br"
+ 1086      4320342E 
+ 1086      382E3420 
+ 1086      32303134 
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 23
+
+
+ 1086      30353236 
+ 1087 018f 616E6368 		.ascii	"anch revision 211358] -mcpu=cortex-m3 -mthumb -g -O"
+ 1087      20726576 
+ 1087      6973696F 
+ 1087      6E203231 
+ 1087      31333538 
+ 1088 01c2 30202D66 		.ascii	"0 -ffunction-sections\000"
+ 1088      66756E63 
+ 1088      74696F6E 
+ 1088      2D736563 
+ 1088      74696F6E 
+ 1089              	.LASF32:
+ 1090 01d8 2E5C756C 		.ascii	".\\ultrasonic_s.c\000"
+ 1090      74726173 
+ 1090      6F6E6963 
+ 1090      5F732E63 
+ 1090      00
+ 1091              	.LASF10:
+ 1092 01e9 696E7433 		.ascii	"int32_t\000"
+ 1092      325F7400 
+ 1093              	.LASF16:
+ 1094 01f1 73697A65 		.ascii	"sizetype\000"
+ 1094      74797065 
+ 1094      00
+ 1095              	.LASF6:
+ 1096 01fa 6C6F6E67 		.ascii	"long long int\000"
+ 1096      206C6F6E 
+ 1096      6720696E 
+ 1096      7400
+ 1097              	.LASF15:
+ 1098 0208 63686172 		.ascii	"char\000"
+ 1098      00
+ 1099              	.LASF19:
+ 1100 020d 73656C65 		.ascii	"select_left\000"
+ 1100      63745F6C 
+ 1100      65667400 
+ 1101              	.LASF26:
+ 1102 0219 756C7472 		.ascii	"ultra_s\000"
+ 1102      615F7300 
+ 1103              	.LASF35:
+ 1104 0221 6765745F 		.ascii	"get_var_ultra_s\000"
+ 1104      7661725F 
+ 1104      756C7472 
+ 1104      615F7300 
+ 1105              	.LASF11:
+ 1106 0231 75696E74 		.ascii	"uint8\000"
+ 1106      3800
+ 1107              	.LASF30:
+ 1108 0237 6F757453 		.ascii	"outString\000"
+ 1108      7472696E 
+ 1108      6700
+ 1109              	.LASF4:
+ 1110 0241 6C6F6E67 		.ascii	"long int\000"
+ 1110      20696E74 
+ 1110      00
+ 1111              	.LASF17:
+ 1112 024a 6C6F6E67 		.ascii	"long double\000"
+ARM GAS  C:\Users\xavieran\AppData\Local\Temp\ccNfplLo.s 			page 24
+
+
+ 1112      20646F75 
+ 1112      626C6500 
+ 1113              	.LASF0:
+ 1114 0256 7369676E 		.ascii	"signed char\000"
+ 1114      65642063 
+ 1114      68617200 
+ 1115              	.LASF28:
+ 1116 0262 756C7472 		.ascii	"ultra_distance_s\000"
+ 1116      615F6469 
+ 1116      7374616E 
+ 1116      63655F73 
+ 1116      00
+ 1117              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.8.4 20140526 (release) [ARM/embedded-4_8-br

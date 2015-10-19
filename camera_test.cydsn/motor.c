@@ -40,6 +40,16 @@ uint8 isDriving(){
     return currently_driving;
 }
 
+uint8 HEADING_ERROR_LIMIT = 4;
+uint8 STALL_SPEED = ARENA_STALL_SPEED;
+uint8 MAX_SPEED = 240;
+char outString[25];
+
+#define POS_PRINTF(R,C,X,...) \
+ {sprintf(outString, X, ##__VA_ARGS__); LCD_Position(R, C); LCD_PrintString(outString);}
+
+
+
 // From compass.c
 extern int16 compass_heading;
 // From navigation.c
@@ -90,9 +100,9 @@ int control_heading(){
         currently_rotating = 1;
         // the actual heading is greater than the desired heading
         if (heading_error < 0){ 
-            rotate_right(clip(STALL_SPEED, my6abs(heading_error)*2, MAX_SPEED));
-        } else {
             rotate_left(clip(STALL_SPEED, my6abs(heading_error)*2, MAX_SPEED));
+        } else {
+            rotate_right(clip(STALL_SPEED, my6abs(heading_error)*2, MAX_SPEED));
         }
         
         return MEND_S_ROTATING;
@@ -149,14 +159,19 @@ void go_backward_ultra(uint16 ultra_dist, uint8 speed){
  */
 void rotate_degrees(int16 angle){
     desired_heading += angle;
-    if (desired_heading > 360){
+    desired_heading = desired_heading % 360;
+    /*if (desired_heading > 360){
         desired_heading -= 360;
     } else if (desired_heading < 0){
         desired_heading += 360;
+    }*/
+    
+    while (control_heading() != MEND_S_STOPPED){
+        /*LCD_ClearDisplay();
+        POS_PRINTF(1,0,"%d %d", desired_heading, compass_heading);
+        CyDelay(50);*/
     }
-    while (control_heading() != MEND_S_STOPPED){;}
 }
-
 /* 
  * Sets the robots heading to *new_heading*
  */
@@ -172,6 +187,8 @@ void rotate_left(int speed){
     setReverse(MLEFT);
     setSpeed(MBOTH, speed);
 }
+
+
 
 /*
  * Sets the motors to rotate the robot right at *speed*

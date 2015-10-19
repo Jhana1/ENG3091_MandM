@@ -1,6 +1,6 @@
 // ======================================================================
 // camera_test.v generated from TopDesign.cysch
-// 09/22/2015 at 16:30
+// 10/19/2015 at 19:15
 // This file is auto generated. ANY EDITS YOU MAKE MAY BE LOST WHEN THIS FILE IS REGENERATED!!!
 // ======================================================================
 
@@ -82,8 +82,8 @@
 `define CY_BLK_DIR "..\FIFO"
 `include "..\FIFO\FIFO.v"
 `else
-`define CY_BLK_DIR "C:\Users\xavieran\Desktop\ECE3091\WorkingCamera\Camera_vis\camera_test.cydsn\FIFO"
-`include "C:\Users\xavieran\Desktop\ECE3091\WorkingCamera\Camera_vis\camera_test.cydsn\FIFO\FIFO.v"
+`define CY_BLK_DIR "C:\Users\xavieran\Desktop\ECE3091\PSOCProjects\ENG3091_MandM\Camera_vis\camera_test.cydsn\FIFO"
+`include "C:\Users\xavieran\Desktop\ECE3091\PSOCProjects\ENG3091_MandM\Camera_vis\camera_test.cydsn\FIFO\FIFO.v"
 `endif
 
 // Component: cy_UDB_clockenable_v1_0

@@ -18,6 +18,7 @@
     int to_nearest_blob(int colour, int size, int centre_threshold);
     uint8 size_of_biggest_colour(int colour);
     int nth_blob_colour(int);
+    void sideways_instruction_read();
     
     typedef struct
     {

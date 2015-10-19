@@ -43,6 +43,17 @@ uint16 get_var_ultra_s(){
     return var_ultra_s;
 }
 
+void select_stack(){
+    if (HC_REG_Read() != 0x00){
+        HC_REG_Write(0x00);
+    }
+}
+void select_left(){
+    if (HC_REG_Read() == 0x00){
+        HC_REG_Write(0xFF);
+    }
+}
+
 
 int myabss(x){
     if (x < 0){

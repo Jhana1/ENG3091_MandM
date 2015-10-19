@@ -33,7 +33,7 @@ extern int connected;
 
 uint8 exposure, gain, bgain, rgain;
 uint16 blobn;
-int dis[3], stack[3];
+int dis[3];
 
 int PWM_Val = 24;
 // Exposure, White Balance, Gain, Gamma
@@ -79,7 +79,6 @@ int main()
     LCD_PosPrintString(0,0,"Camera Started");
     set_gain_exposure(2);
     
-    
     //image_stuff3();
     //CyDelay(20000);
     USB_Start(0,USB_DWR_VDDD_OPERATION);
@@ -89,7 +88,6 @@ int main()
     for(;;)
     {
         image_stuff();
-       
         if(disp == 8)
         {
             image_stuff4();
@@ -168,17 +166,19 @@ void image_stuff()
     }
     //LCD_PosPrintString(0,0,"Sent....");
         threshold_image();
-        clean_frame(RED,0.3,144/3);
         blob_detect();
-        dis[0] = to_nearest_blob(RED,50,10,centre_pixel);
-        dis[1] = to_nearest_blob(GREEN,50,10,centre_pixel);
-        dis[2] = to_nearest_blob(BLUE,50,10,centre_pixel);
-        blobn = blob_count(50);
+        blob_instruction_read();
         for(i=0;i<sizeof Camera_framebuffer;i+=64)
         {
             while(!USB_CDCIsReady()); //wait until USB is ready
             USB_PutData((uint8*)Camera_framebuffer+i,64); //send next 64 byte packet (maximum size)
         }
+        sprintf(display[0],"%c %c %c %c",RGB[stack[0]],RGB[stack[1]],RGB[stack[2]],RGB[stack[3]]);
+        //sprintf(display[0],"%d %d %d %d",stack[0],stack[1],stack[2],stack[3]);
+        sprintf(display[1],"%d %d %d %d",s[0],s[1],s[2],s[3]);
+        LCD_ClearDisplay();
+        LCD_PosPrintString(0,0,display[0]);
+        LCD_PosPrintString(1,0,display[1]);
         //LCD_PosPutChar(1,15,RGB[identify_colour_instructions()]);
 }
 

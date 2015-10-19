@@ -27,10 +27,10 @@
     #define MEND_S_STOPPED 0
     #define MEND_S_ROTATING 1
     #define MEND_S_DRIVING 2
+   
+    #define ARENA_STALL_SPEED 140
+    #define BASE_STALL_SPEED 180
     
-    #define STALL_SPEED 150
-    #define MAX_SPEED 200
-    #define HEADING_ERROR_LIMIT 3 //degrees
     #define LEFT_MOTOR_SPEED_CORRECTION 0 //attempt to correct for unmatched motors
     
     void start_motors(void);

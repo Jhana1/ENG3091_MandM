@@ -1,6 +1,6 @@
 // ======================================================================
 // camera_test.v generated from TopDesign.cysch
-// 10/16/2015 at 20:12
+// 10/18/2015 at 17:48
 // This file is auto generated. ANY EDITS YOU MAKE MAY BE LOST WHEN THIS FILE IS REGENERATED!!!
 // ======================================================================
 
@@ -2702,10 +2702,33 @@ endmodule
 `include "C:\Program Files (x86)\Cypress\PSoC Creator\3.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\mux_v1_10\mux_v1_10.v"
 `endif
 
+// Component: demux_v1_10
+`ifdef CY_BLK_DIR
+`undef CY_BLK_DIR
+`endif
+
+`ifdef WARP
+`define CY_BLK_DIR "$CYPRESS_DIR\..\psoc\content\cyprimitives\CyPrimitives.cylib\demux_v1_10"
+`include "$CYPRESS_DIR\..\psoc\content\cyprimitives\CyPrimitives.cylib\demux_v1_10\demux_v1_10.v"
+`else
+`define CY_BLK_DIR "C:\Program Files (x86)\Cypress\PSoC Creator\3.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\demux_v1_10"
+`include "C:\Program Files (x86)\Cypress\PSoC Creator\3.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\demux_v1_10\demux_v1_10.v"
+`endif
+
 // top
 module top ;
 
+          wire  Net_6148;
+          wire  Net_6147;
+          wire  Net_6146;
+          wire  Net_6145;
+          wire  Net_6144;
+          wire  Net_6143;
+          wire  Net_6141;
+          wire  Net_6140;
+          wire  Net_6115;
           wire  Net_6095;
+          wire  Net_6114;
           wire  Net_5991;
           wire  Net_5990;
           wire  Net_5989;
@@ -2861,6 +2884,10 @@ module top ;
           wire  Net_1001;
           wire  Net_531;
           wire  Net_410;
+          wire  Net_6117;
+          wire  Net_6142;
+          wire  Net_6124;
+          wire  Net_6125;
           wire  Net_5924;
           wire  Net_5955;
           wire  Net_2330;
@@ -5442,7 +5469,7 @@ module top ;
 		HC_ECHO_S
 		 (.oe(tmpOE__HC_ECHO_S_net),
 		  .y({1'b0}),
-		  .fb({Net_5924}),
+		  .fb({Net_6124}),
 		  .io({tmpIO_0__HC_ECHO_S_net[0:0]}),
 		  .siovref(tmpSIOVREF__HC_ECHO_S_net),
 		  .interrupt({tmpINTERRUPT_0__HC_ECHO_S_net[0:0]}),
@@ -5531,7 +5558,7 @@ module top ;
 		  .input_buffer_sel(2'b00))
 		HC_TRIG_S
 		 (.oe(tmpOE__HC_TRIG_S_net),
-		  .y({Net_5922}),
+		  .y({Net_6114}),
 		  .fb({tmpFB_0__HC_TRIG_S_net[0:0]}),
 		  .io({tmpIO_0__HC_TRIG_S_net[0:0]}),
 		  .siovref(tmpSIOVREF__HC_TRIG_S_net),
@@ -5571,6 +5598,215 @@ module top ;
         assign Net_5614 = tmp__IR_MUX_reg;
     end
     // -- Mux end --
+
+    // -- Mux start --
+    if (1)
+    begin : HC_MUX
+        reg  tmp__HC_MUX_reg;
+        always @(Net_6124 or Net_6125 or Net_6142)
+        begin
+            case (Net_6142)
+                1'b0 :  tmp__HC_MUX_reg = Net_6124;
+                1'b1 :  tmp__HC_MUX_reg = Net_6125;
+            endcase
+        end
+        assign Net_5924 = tmp__HC_MUX_reg;
+    end
+    // -- Mux end --
+
+    // -- De Mux start --
+    if (1)
+    begin : HC_DEMUX
+        reg  tmp__HC_DEMUX_0_reg;
+        reg  tmp__HC_DEMUX_1_reg;
+        always @(Net_5922 or Net_6117)
+        begin
+            case (Net_6117)
+                1'b0:
+                begin
+                    tmp__HC_DEMUX_0_reg = Net_5922;
+                    tmp__HC_DEMUX_1_reg = 1'b0;
+                end
+                1'b1:
+                begin
+                    tmp__HC_DEMUX_0_reg = 1'b0;
+                    tmp__HC_DEMUX_1_reg = Net_5922;
+                end
+            endcase
+        end
+        assign Net_6114 = tmp__HC_DEMUX_0_reg;
+        assign Net_6115 = tmp__HC_DEMUX_1_reg;
+    end
+    // -- De Mux end --
+
+	wire [0:0] tmpOE__HC_ECHO_L_net;
+	wire [0:0] tmpIO_0__HC_ECHO_L_net;
+	wire [0:0] tmpINTERRUPT_0__HC_ECHO_L_net;
+	electrical [0:0] tmpSIOVREF__HC_ECHO_L_net;
+
+	cy_psoc3_pins_v1_10
+		#(.id("b8313431-59f0-4a5e-ba52-49d06255e867"),
+		  .drive_mode(3'b001),
+		  .ibuf_enabled(1'b1),
+		  .init_dr_st(1'b0),
+		  .input_clk_en(0),
+		  .input_sync(1'b1),
+		  .input_sync_mode(1'b0),
+		  .intr_mode(2'b00),
+		  .invert_in_clock(0),
+		  .invert_in_clock_en(0),
+		  .invert_in_reset(0),
+		  .invert_out_clock(0),
+		  .invert_out_clock_en(0),
+		  .invert_out_reset(0),
+		  .io_voltage(""),
+		  .layout_mode("CONTIGUOUS"),
+		  .oe_conn(1'b0),
+		  .oe_reset(0),
+		  .oe_sync(1'b0),
+		  .output_clk_en(0),
+		  .output_clock_mode(1'b0),
+		  .output_conn(1'b0),
+		  .output_mode(1'b0),
+		  .output_reset(0),
+		  .output_sync(1'b0),
+		  .pa_in_clock(-1),
+		  .pa_in_clock_en(-1),
+		  .pa_in_reset(-1),
+		  .pa_out_clock(-1),
+		  .pa_out_clock_en(-1),
+		  .pa_out_reset(-1),
+		  .pin_aliases(""),
+		  .pin_mode("I"),
+		  .por_state(4),
+		  .sio_group_cnt(0),
+		  .sio_hyst(1'b1),
+		  .sio_ibuf(""),
+		  .sio_info(2'b00),
+		  .sio_obuf(""),
+		  .sio_refsel(""),
+		  .sio_vtrip(""),
+		  .slew_rate(1'b0),
+		  .spanning(0),
+		  .use_annotation(1'b0),
+		  .vtrip(2'b00),
+		  .width(1),
+		  .ovt_hyst_trim(1'b0),
+		  .ovt_needed(1'b0),
+		  .ovt_slew_control(2'b00),
+		  .input_buffer_sel(2'b00))
+		HC_ECHO_L
+		 (.oe(tmpOE__HC_ECHO_L_net),
+		  .y({1'b0}),
+		  .fb({Net_6125}),
+		  .io({tmpIO_0__HC_ECHO_L_net[0:0]}),
+		  .siovref(tmpSIOVREF__HC_ECHO_L_net),
+		  .interrupt({tmpINTERRUPT_0__HC_ECHO_L_net[0:0]}),
+		  .in_clock({1'b0}),
+		  .in_clock_en({1'b1}),
+		  .in_reset({1'b0}),
+		  .out_clock({1'b0}),
+		  .out_clock_en({1'b1}),
+		  .out_reset({1'b0}));
+
+	assign tmpOE__HC_ECHO_L_net = (`CYDEV_CHIP_MEMBER_USED == `CYDEV_CHIP_MEMBER_3A && `CYDEV_CHIP_REVISION_USED < `CYDEV_CHIP_REVISION_3A_ES3) ? ~{1'b1} : {1'b1};
+
+	wire [0:0] tmpOE__HC_TRIG_L_net;
+	wire [0:0] tmpFB_0__HC_TRIG_L_net;
+	wire [0:0] tmpIO_0__HC_TRIG_L_net;
+	wire [0:0] tmpINTERRUPT_0__HC_TRIG_L_net;
+	electrical [0:0] tmpSIOVREF__HC_TRIG_L_net;
+
+	cy_psoc3_pins_v1_10
+		#(.id("fcf76f3b-c47d-42fd-a324-a9766093758b"),
+		  .drive_mode(3'b110),
+		  .ibuf_enabled(1'b1),
+		  .init_dr_st(1'b1),
+		  .input_clk_en(0),
+		  .input_sync(1'b1),
+		  .input_sync_mode(1'b0),
+		  .intr_mode(2'b00),
+		  .invert_in_clock(0),
+		  .invert_in_clock_en(0),
+		  .invert_in_reset(0),
+		  .invert_out_clock(0),
+		  .invert_out_clock_en(0),
+		  .invert_out_reset(0),
+		  .io_voltage(""),
+		  .layout_mode("CONTIGUOUS"),
+		  .oe_conn(1'b0),
+		  .oe_reset(0),
+		  .oe_sync(1'b0),
+		  .output_clk_en(0),
+		  .output_clock_mode(1'b0),
+		  .output_conn(1'b1),
+		  .output_mode(1'b0),
+		  .output_reset(0),
+		  .output_sync(1'b0),
+		  .pa_in_clock(-1),
+		  .pa_in_clock_en(-1),
+		  .pa_in_reset(-1),
+		  .pa_out_clock(-1),
+		  .pa_out_clock_en(-1),
+		  .pa_out_reset(-1),
+		  .pin_aliases(""),
+		  .pin_mode("O"),
+		  .por_state(4),
+		  .sio_group_cnt(0),
+		  .sio_hyst(1'b1),
+		  .sio_ibuf(""),
+		  .sio_info(2'b00),
+		  .sio_obuf(""),
+		  .sio_refsel(""),
+		  .sio_vtrip(""),
+		  .slew_rate(1'b0),
+		  .spanning(0),
+		  .use_annotation(1'b0),
+		  .vtrip(2'b10),
+		  .width(1),
+		  .ovt_hyst_trim(1'b0),
+		  .ovt_needed(1'b0),
+		  .ovt_slew_control(2'b00),
+		  .input_buffer_sel(2'b00))
+		HC_TRIG_L
+		 (.oe(tmpOE__HC_TRIG_L_net),
+		  .y({Net_6115}),
+		  .fb({tmpFB_0__HC_TRIG_L_net[0:0]}),
+		  .io({tmpIO_0__HC_TRIG_L_net[0:0]}),
+		  .siovref(tmpSIOVREF__HC_TRIG_L_net),
+		  .interrupt({tmpINTERRUPT_0__HC_TRIG_L_net[0:0]}),
+		  .in_clock({1'b0}),
+		  .in_clock_en({1'b1}),
+		  .in_reset({1'b0}),
+		  .out_clock({1'b0}),
+		  .out_clock_en({1'b1}),
+		  .out_reset({1'b0}));
+
+	assign tmpOE__HC_TRIG_L_net = (`CYDEV_CHIP_MEMBER_USED == `CYDEV_CHIP_MEMBER_3A && `CYDEV_CHIP_REVISION_USED < `CYDEV_CHIP_REVISION_3A_ES3) ? ~{1'b1} : {1'b1};
+
+    CyControlReg_v1_80 HC_REG (
+        .control_1(Net_6117),
+        .control_2(Net_6140),
+        .control_3(Net_6141),
+        .control_0(Net_6142),
+        .control_4(Net_6143),
+        .control_5(Net_6144),
+        .control_6(Net_6145),
+        .control_7(Net_6146),
+        .clock(1'b0),
+        .reset(1'b0));
+    defparam HC_REG.Bit0Mode = 0;
+    defparam HC_REG.Bit1Mode = 0;
+    defparam HC_REG.Bit2Mode = 0;
+    defparam HC_REG.Bit3Mode = 0;
+    defparam HC_REG.Bit4Mode = 0;
+    defparam HC_REG.Bit5Mode = 0;
+    defparam HC_REG.Bit6Mode = 0;
+    defparam HC_REG.Bit7Mode = 0;
+    defparam HC_REG.BitValue = 0;
+    defparam HC_REG.BusDisplay = 0;
+    defparam HC_REG.ExtrReset = 0;
+    defparam HC_REG.NumOutputs = 2;
 
 
 

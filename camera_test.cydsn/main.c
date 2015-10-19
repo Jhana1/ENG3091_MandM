@@ -9,6 +9,22 @@
  *
  * ========================================
 */
+/* TODO ***
+ * GET ALL THE COLORS
+ * Work on reading instructions
+ * Put the beacon at the beginning 
+ * Improve search strategy
+ * Make it run around faster
+ * Check the compass orientations
+ * Fix magnet
+ * Check second ultrasonic
+ * Corner handling
+ * Collision handling
+ * Timeouts
+ * Counter for homing on puck
+ */
+
+
 #include <project.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -29,6 +45,9 @@
 #include <beam.h>
 
 extern blob blobs[255];
+//motor.c
+extern uint8 HEADING_ERROR_LIMIT;
+extern uint8 STALL_SPEED;
 //these are in button.c
 extern volatile uint8 but0_b;
 extern volatile uint8 but1_b;
@@ -68,6 +87,10 @@ int within_range(int lower, int val, int upper){
     return val >= lower && val <= upper;
 }
 
+#define NP_AHEAD 0
+#define NP_TURNED_RIGHT 1
+#define NP_TURNED_LEFT 2
+
 enum State {
     S_START = 0,
     S_LEAVE_BASE,
@@ -77,14 +100,13 @@ enum State {
     S_FACE_HOME,
     S_GOT_HOME,
     S_IN_CORNER,
-    S_GOING_HOME_INVALID_IR,
-    S_GOING_HOME_CENTER_IR,
-    S_GOING_HOME_LEFT_IR,
-    S_GOING_HOME_RIGHT_IR,
+    S_GOING_HOME_CHECK_IR,
     S_NEAR_HOME_FIND_100,
     S_NEAR_HOME_FIND_60,
     S_CENTERED_ON_BASE,
-    S_PLACE_PUCK
+    S_PLACE_PUCK,
+    S_NEAR_HOME_SAW_30,
+    S_GRAB_BEACON
 };
 
 int main()
@@ -94,12 +116,7 @@ int main()
     
     /**** INITIALIZE COMPONENTS ****/
     LCD_Start();
-    USB_Start(0, USB_DWR_VDDD_OPERATION);
-   
-    //CyDelay(5000);
-    //LCD_PosPrintString(0,0,"STARTING CAM");
-    //init_camera();
-    //LCD_PosPrintString(0,0, "CAMERA STARTED!!!");
+    //USB_Start(0, USB_DWR_VDDD_OPERATION);
     
     Timer_Start();
     start_buttons();
@@ -107,7 +124,7 @@ int main()
     while (!compass_ready){;}
     compass_read();
     original_compass_heading = compass_heading;
-        
+    
     start_motors();
     start_gripper();
     drop_puck();
@@ -120,25 +137,41 @@ int main()
     
     /*
     while (1){
-        POS_PRINTF(0,0,"M %d R %d S %d", get_avg_mean_ultra(), get_mean_ultra(), get_mean_ultra_s());
-        POS_PRINTF(1,0,"B %d", beam_broken());
-        CyDelay(50);
+        if (compass_ready){
+            compass_read();
+            print("%d %d\n", compass_x, compass_y);
+            POS_PRINTF(0,0,"%d %d %d", compass_heading, compass_x, compass_y);
+        }
+    }
+    */
+
+    //calibrate_compass();
+    
+    /*
+    int arm_height = 1;
+    while (1){
+        LCD_ClearDisplay();
+        POS_PRINTF(0,0,"R %d S %d", get_mean_ultra(), get_mean_ultra_s());
+        POS_PRINTF(1,0,"B %d P %d", beam_broken(), arm_height);
+        if (but0_b){
+            but0_b = 0;
+            if (arm_height){
+                select_left();
+            } else {
+                select_stack();
+            }
+        } else if (but1_b){
+            but1_b = 0;
+        }
+        CyDelay(50);   
     }*/
     
-    calibrate_compass();
     /*
     while (1){
         LCD_ClearDisplay();
         POS_PRINTF(0,0,"F %d L %d", get_front_ir(), get_left_ir());
         POS_PRINTF(1,0,"U %d V %d", get_mean_ultra(), get_var_ultra());
         CyDelay(50);
-    }*/
-    /*
-    while (1){
-        if (compass_ready){
-            compass_read();
-        }
-        print("%d %d\n", compass_x, compass_y);
     }*/
 
     /**** Declare Variables ****/
@@ -147,10 +180,14 @@ int main()
     uint16 state;
     int pucks_gotten = 0;
     int near_base = 70;
-    
-    
+    int current_color = RED;
+    long start_time_find100;
+    long start_time_find_puck;
+    int no_puck_state = 0;
     state = S_START;
-   
+     
+    
+    
     /*
     while (1){
         LCD_ClearDisplay();
@@ -158,161 +195,239 @@ int main()
         CyDelay(50);
     }*/
     
-    pickup_puck();
-    CyDelay(1000);
     while (1){
         switch(state){
             case S_START:
-                arm_set_level(5);
+                pickup_angled_puck();
                 CyDelay(500);
-                go_forward(400, 255);
+                arm_set_level(6);
+                CyDelay(1000);
+                go_forward(1600, 200);
+                CyDelay(300);
+                pickup_puck();
                 CyDelay(500);
                 drop_puck();
                 CyDelay(500);
-                go_backward(700, 255);
+                go_backward_ultra(10, 180);
+                POS_PRINTF(0,0,"DROPPED BEACON");
                 int i;
-                for (i = 4; i >= 0; i--){
-                    arm_set_level(i);
-                    CyDelay(500);
-                }
+                arm_set_level(1);
+                CyDelay(500);
+                LCD_PosPrintString(0,0,"STARTING CAM");
+                init_camera();
+                LCD_PosPrintString(0,0, "CAMERA STARTED!!!");
+                arm_inbetween_level(0,1);
+                CyDelay(500);
+                set_gain_exposure(2);
+                capture_thresh_image();
+                sideways_instruction_read();
+                set_gain_exposure(1);
+                POS_PRINTF(1,0,"%d %d %d %d", stack[3], stack[2], stack[1], stack[0]);
                 state = S_LEAVE_BASE;
                 break;
+                
             case S_LEAVE_BASE:
                 arm_set_level(0);
-                go_backward_ultra(50, 255);
+                go_backward_ultra(60, 255);
                 state = S_LEFT_BASE;
+                current_color = stack[(4 - pucks_gotten) - 1];
+                STALL_SPEED = ARENA_STALL_SPEED;
                 break;
             case S_LEFT_BASE:
+                set_heading(90);
+                rotate_degrees(0);
+                CyDelay(500);
+                go_backward(1400, 255);
+                CyDelay(500);
                 set_heading(180);
                 rotate_degrees(0);
-                CyDelay(1000);
+                CyDelay(500);
+                start_time_find_puck = Timer_ReadCounter();
                 state = S_FIND_PUCK;
                 break;
             case S_FIND_PUCK:
-                go_forward(1000, 200);
-                CyDelay(1000);
-                if (beam_broken() || beam_broken()){
-                    go_forward(750, 255);
-                    pickup_puck();
-                    CyDelay(100);
-                    arm_carry_home();
-                    pucks_gotten++;
-                    state = S_FACE_HOME;
+                POS_PRINTF(1,0,"FIND %d of %d", current_color, pucks_gotten);
+                if (start_time_find_puck - Timer_ReadCounter() > 10 * 35000){
+                    set_heading(180);
+                    go_backward(4000, 255);
+                    start_time_find_puck = Timer_ReadCounter();
                 }
-                CyDelay(1000);
+                CyDelay(300);
+                capture_thresh_image();
+                int pucks = to_nearest_blob(current_color, 30, 10);
+                
+                if (pucks == 0){
+                    //Red puck is centered, so we check our beam break and drive forward a bit.
+                    go_forward(1000, 255);
+                    if (beam_broken()){
+                        go_forward(300, 255);
+                        pickup_puck();
+                        CyDelay(100);
+                        int old_heading = compass_heading;
+                        
+                        arm_carry_home();
+                        set_heading(90);
+                        rotate_degrees(0);
+                        arm_set_level(0);
+                        CyDelay(300);
+                        capture_thresh_image();
+                        int color = identify_colour_gripper();
+                        POS_PRINTF(0,0,"SEE C: %d", color);
+                        CyDelay(3000);
+                        if (color != current_color){
+                            go_forward(500, 255);
+                            drop_puck();
+                            go_backward(500, 255);
+                            arm_set_level(0);
+                            CyDelay(100);
+                            set_heading(old_heading);
+                            rotate_degrees(0);
+                        } else {
+                            start_time_find_puck = Timer_ReadCounter();
+                            arm_carry_home();
+                            set_heading(180);
+                            rotate_degrees(0);
+                            go_backward(1500, 255);
+                            pucks_gotten++;
+                            state = S_FACE_HOME;
+                            break;
+                        }
+                    }                
+                } else if (pucks < 0){
+                    rotate_degrees(-6);
+                } else if (pucks > 0){
+                    rotate_degrees(6);
+                } else if (pucks == -1){
+                    switch (no_puck_state){
+                        case NP_AHEAD:
+                            for (i = 1; i < 8; i++){
+                                set_heading(180 - i*10);
+                                rotate_degrees(0);
+                                POS_PRINTF(0,0,"LEFT to: %d", 180 - i*10);
+                                CyDelay(500);
+                                capture_thresh_image();
+                                pucks = to_nearest_blob(current_color, 30, 10);
+                                if (pucks != -1){
+                                    break;
+                                }
+                            }
+                            if (pucks != -1){
+                                break;
+                            }
+                            set_heading(180);
+                            rotate_degrees(0);
+                            no_puck_state = NP_TURNED_LEFT;
+                            break;
+                        case NP_TURNED_LEFT:
+                            for (i = 1; i < 6; i++){
+                                set_heading(180 + i*10);
+                                rotate_degrees(0);
+                                POS_PRINTF(0,0,"RIGHT to: %d", 180 - i*10);
+                                CyDelay(500);
+                                capture_thresh_image();
+                                pucks = to_nearest_blob(current_color, 30, 10);
+                                if (pucks != -1){
+                                    break;
+                                }
+                            }
+                            if (pucks != -1){
+                                break;
+                            }
+                            set_heading(180);
+                            rotate_degrees(0);
+                            no_puck_state = NP_TURNED_RIGHT;
+                            break;
+                        case NP_TURNED_RIGHT:
+                            go_forward(1000, 255);
+                            no_puck_state = NP_AHEAD;
+                            break;
+                    }
+                }
                 break;
             case S_FACE_HOME:
-                set_heading(0);
+                set_heading(90);
                 rotate_degrees(0);
-                CyDelay(1000);
-                set_heading(45);
-                rotate_degrees(0);
-                go_forward(800, 255);
-                CyDelay(1000);
-                set_heading(300);
-                rotate_degrees(0);
-                go_forward(800, 255);
                 set_heading(0);
                 rotate_degrees(0);
                 state = S_GO_HOME;
                 break;
             case S_GO_HOME:
                 select_front();
-                CyDelay(500);
+                CyDelay(300);
                 ir_result = get_ir_val();
                 LCD_ClearDisplay();
                 POS_PRINTF(0,0,"IN GO HOME I:%d U%d", ir_result, get_mean_ultra());
-                if (get_mean_ultra() < near_base){
+                //!!!!!!!!!!!
+                //!!!!!!!!!!! CHECK AGAIN TO MAKE SURE IT WASNT JUST A PUCK BLOCKING the US
+                //!!!!!!!!!!!
+                if (get_mean_ultra() < near_base){ 
                     state = S_NEAR_HOME_FIND_100;
                     break;
                 }
-                    
                 
+                state = S_GOING_HOME_CHECK_IR;
+                set_heading(0);
+                rotate_degrees(0);
+                break;
+                
+            case S_GOING_HOME_CHECK_IR:
+                
+                POS_PRINTF(0,0,"GOING HOME CHECK IR");
+                select_front();
+                ir_result = get_ir_val();
+                POS_PRINTF(1,0,"I %d", ir_result);
                 if (ir_result < 10){//IR INVALID
-                    POS_PRINTF(0,0,"I:%d < 10: fwd", ir_result);
-                    //while (!but0_b){;}but0_b = 0;
-                    //or look at variance of ir
-                    state = S_GOING_HOME_INVALID_IR;
-                    break;
+                    go_forward(500, 255);
                 } else if (within_range(57, ir_result, 60)){
-                    state = S_GOING_HOME_CENTER_IR;
+                    POS_PRINTF(1,5, "center");
+                    set_heading(0);
+                    go_forward(500, 255);
                     break;
-                } else if (within_range(80, ir_result, 100)){
-                    state = S_GOING_HOME_LEFT_IR;
+                } else if (within_range(95, ir_result, 105)){
+                    POS_PRINTF(1,5, "left");
+                    set_heading(0);
+                    go_forward(500, 255);
                     break;
-                } else if (within_range(25, ir_result,30)){
-                    state = S_GOING_HOME_RIGHT_IR;
+                } else if (within_range(25, ir_result,35)){
+                    POS_PRINTF(1,5, "right");
+                    set_heading(0);
+                    go_forward(500, 255);
                     break;
                 } else {
-                    POS_PRINTF(0,0,"!!! %d !!!", ir_result);
+                    POS_PRINTF(0,0,"something else");
+                    set_heading(0);
                     go_forward(500,255);
                 }
-                break;
-            case S_GOING_HOME_CENTER_IR:
-                POS_PRINTF(0,0,"CENTER IR GO HOME");
-                //while (!but0_b){;}but0_b = 0;
-                while (get_mean_ultra() > near_base){
-                    go_forward(600, 255);
-                    CyDelay(600);
+                CyDelay(500);
+                if (get_mean_ultra() <= near_base){
+                    state = S_NEAR_HOME_FIND_100;
+                    start_time_find100 = Timer_ReadCounter();
                 }
-                state = S_NEAR_HOME_FIND_100;
-                break;
-            case S_GOING_HOME_INVALID_IR:
-                POS_PRINTF(0,0,"INVALID IR GO HOME");
-                //while (!but0_b){;}but0_b = 0;
-                while (get_mean_ultra() > near_base){
-                    go_forward(500, 255);
-                    CyDelay(600);
-                }
-                state = S_NEAR_HOME_FIND_100;
-                break;
-            case S_GOING_HOME_LEFT_IR:
-                set_heading(90);
-                rotate_degrees(0);
-                go_forward(1000, 255);
-                set_heading(0);
-                rotate_degrees(0);
-                select_right();
-                ir_result = get_ir_val();
-                ///if (ir_result 
-                while (get_mean_ultra() > near_base){
-                    go_forward(500, 255);
-                    CyDelay(600);
-                }
-                state = S_NEAR_HOME_FIND_100;
-                break;
-            case S_GOING_HOME_RIGHT_IR:
-                set_heading(270);
-                rotate_degrees(0);
-                go_forward(1000, 255);
-                set_heading(0);
-                rotate_degrees(0);
-                select_right();
-                ir_result = get_ir_val();
-                //DO SOMETHING WITH THAT...
-                while (get_mean_ultra() > near_base){
-                    go_forward(600, 255);
-                    CyDelay(600);
-                }
-                state = S_NEAR_HOME_FIND_100;
+                
                 break;
             case S_NEAR_HOME_FIND_100:
+                if (start_time_find100 - Timer_ReadCounter() >  10 * 20000){//We must be too far left...
+                    go_backward(4000, 255);
+                    start_time_find100 = Timer_ReadCounter();
+                }
+                
                 POS_PRINTF(0,0,"NEAR HOME FIND 100");
                 //while (!but0_b){;}but0_b = 0;
-                set_heading(270);
+                set_heading(90);
                 rotate_degrees(0);
-                CyDelay(1000);
+                CyDelay(300);
                 select_right();
                 ir_result = get_ir_val();
-                POS_PRINTF(1,0,"ir:%d", ir_result);
+                POS_PRINTF(1,0,"i %d", ir_result);
+                POS_PRINTF(1,5,"t %ld", Timer_ReadCounter());
                 //while (!but0_b){;}but0_b = 0;
                 
-                if (within_range(80, ir_result, 105)){
+                if (within_range(96, ir_result, 105)){
                     int i;
                     int good_val = 1;
                     for (i = 0; i < 3; i++){
-                        CyDelay(500);
-                        if (!within_range(80, get_ir_val(), 105)){
+                        CyDelay(300);
+                        if (!within_range(96, get_ir_val(), 105)){
                             good_val = 0;
                             break;
                         }
@@ -321,13 +436,33 @@ int main()
                         state = S_NEAR_HOME_FIND_60;
                     }
                     break;
+                } else if (within_range(25, ir_result, 35)){
+                    go_forward(1000, 255);
                 }
-                go_forward(300, 255);
+                go_forward(400, 255);
                 break;
+                
+            case S_NEAR_HOME_SAW_30:
+                POS_PRINTF(0,0,"NEAR HOME SAW 30");
+                CyDelay(300);
+                select_right();
+                ir_result = get_ir_val();
+                POS_PRINTF(1,0,"ir%d", ir_result);
+                
+                if (within_range(57, ir_result, 65)){
+                    go_forward(1500, 255);
+                    set_heading(0);
+                    rotate_degrees(0);
+                    state = S_CENTERED_ON_BASE;
+                    break;
+                }
+                go_forward(400, 255);
+                break;
+                
             case S_NEAR_HOME_FIND_60:
                 POS_PRINTF(0,0,"NEAR HOME FIND 60");
                 //while (!but0_b){;}but0_b = 0;
-                CyDelay(1000);
+                CyDelay(500);
                 select_right();
                 ir_result = get_ir_val();
                 POS_PRINTF(1,0,"ir%d", ir_result);
@@ -337,65 +472,184 @@ int main()
                     rotate_degrees(0);
                     state = S_CENTERED_ON_BASE;
                     break;
+                } else if (within_range(27, ir_result, 33)){
+                    state = S_NEAR_HOME_SAW_30;
+                    break;
                 }
+                
                 go_backward(250, 255);
                 break;
+                
             case S_CENTERED_ON_BASE:
                 POS_PRINTF(0,0,"CENTERED ON BASE");
+                arm_inbetween_level(0,1);
+                CyDelay(200);
+                arm_set_level(0);
+                CyDelay(200);
+                drop_puck();
+                go_forward(300, 255);
+                pickup_puck();
+                CyDelay(200);
+                
                 arm_set_level(4);
-                while (get_avg_mean_ultra() > 15){
-                    go_forward(300, 255);
-                    CyDelay(500);
+                
+                while (get_mean_ultra() > 24){
+                    go_forward(500, 255);
+                    CyDelay(300);
                 }
-                if (get_avg_mean_ultra() < 14){
-                    go_backward(200, 255);
+                int ultra = get_mean_ultra();
+                int stackable = 0;
+                while (!within_range(14,ultra,15) && !stackable){
+                    ultra = get_mean_ultra();
+                    POS_PRINTF(1,0,"ULTRA: %d", ultra);
+                    if (ultra > 15){
+                        go_forward(250, 200);
+                        rotate_degrees(0);
+                        CyDelay(300);
+                    } else if (ultra < 14){
+                        go_backward(200,200);
+                        rotate_degrees(0);
+                        CyDelay(300);
+                    } else if (ultra == 14){
+                        stackable = 1;
+                    }
                 }
-                set_heading(90);
+                STALL_SPEED = BASE_STALL_SPEED;
+                set_heading(270);
                 rotate_degrees(0);
                 
                 state = S_PLACE_PUCK;
                 break;
+                
             case S_PLACE_PUCK:
                 //FIRST PUCK EVER!
+                HEADING_ERROR_LIMIT = 2;
                 if (pucks_gotten == 1){
-                    go_forward(1500, 200);
+                    for (i = 0; i < 3; i++){
+                        go_forward(500, 200);
+                        CyDelay(600);
+                    }
+                    CyDelay(300);
+                    set_heading(270);
+                    rotate_degrees(0);
+                    arm_inbetween_level(0,1);
+                    CyDelay(300);
                     drop_puck();
+                    CyDelay(200);
                     go_backward(2000, 255);
                 } else {
                     arm_set_level(pucks_gotten + 1);
                     go_forward(500, 200);
                     int on_stack = 0;
+                    
                     while (!on_stack){
                         POS_PRINTF(0,0,"STACKING!");
                         POS_PRINTF(1, 0, "B%d SU%d", beam_broken(), get_mean_ultra_s());
                         if (beam_broken()){
                             on_stack = 1;
                         } else if (get_mean_ultra_s() < 10){
-                            
-                            go_backward(100, 255);
+                            go_backward(200, 255);
+                            on_stack = 1;
+                        } else if (get_mean_ultra_s() > 17) {
+                            go_forward(300, 255);
+                            rotate_degrees(0);
                         } else {
                             go_forward(200, 255);
+                            rotate_degrees(0);
                         }
                     }
-                    go_backward(200, 255);
+                    
+                    #define LEVEL_1_DIST 14
+                    #define LEVEL_2_DIST 15
+                    #define LEVEL_3_DIST 16
+                    
+                    int ultra = get_mean_ultra_s();
+                    int stackable = 0;
+                    switch (pucks_gotten){
+                        case 2:
+                            while (!within_range(LEVEL_1_DIST,ultra,LEVEL_1_DIST + 1) && !stackable){
+                                ultra = get_mean_ultra_s();
+                                POS_PRINTF(1,0,"ULTRA: %d", ultra);
+                                if (ultra > LEVEL_1_DIST + 1){
+                                    go_forward(300, 140);
+                                    rotate_degrees(0);
+                                    CyDelay(300);
+                                } else if (ultra < LEVEL_1_DIST){
+                                    go_backward(140,140);
+                                    rotate_degrees(0);
+                                    CyDelay(300);
+                                } else if (ultra == LEVEL_1_DIST){
+                                    stackable = 1;
+                                }
+                            }
+                            break;   
+                        case 3:
+                            while (!within_range(LEVEL_2_DIST,ultra,LEVEL_2_DIST+1) && !stackable){
+                                ultra = get_mean_ultra_s();
+                                POS_PRINTF(1,0,"ULTRA: %d", ultra);
+                                if (ultra > LEVEL_2_DIST + 1){
+                                    go_forward(300, 140);
+                                    rotate_degrees(0);
+                                    CyDelay(300);
+                                } else if (ultra < LEVEL_2_DIST){
+                                    go_backward(140,140);
+                                    rotate_degrees(0);
+                                    CyDelay(300);
+                                } else if (ultra == LEVEL_2_DIST){
+                                    stackable = 1;
+                                }
+                            }
+                            break;
+                        case 4:
+                            while (!within_range(LEVEL_3_DIST,ultra,LEVEL_3_DIST+10) && !stackable){
+                                ultra = get_mean_ultra_s();
+                                POS_PRINTF(1,0,"ULTRA: %d", ultra);
+                                if (ultra > LEVEL_3_DIST + 1){
+                                    go_forward(300, 140);
+                                    rotate_degrees(0);
+                                    CyDelay(300);
+                                } else if (ultra < LEVEL_3_DIST){
+                                    go_backward(140,140);
+                                    rotate_degrees(0);
+                                    CyDelay(300);
+                                } else if (ultra == LEVEL_3_DIST){
+                                    stackable = 1;
+                                }
+                            }
+                            break;
+                    }
                     arm_inbetween_level(pucks_gotten - 1, pucks_gotten);
-                    CyDelay(500);
+                    CyDelay(800);
                     drop_puck();
-                    go_backward(2000, 255);
+                    CyDelay(200);
+                    go_backward(1400, 255);
                     arm_carry_home();
                     arm_set_level(0);
-                    CyDelay(500);
+                    CyDelay(200);
                 }
                 
+                HEADING_ERROR_LIMIT = 3;
                 set_heading(0);
                 rotate_degrees(0);
-                go_backward(2000, 255);
-                state = S_LEAVE_BASE;
+                go_backward(1500, 255);
+                
+                if (pucks_gotten == 4){
+                    state = S_GRAB_BEACON;
+                } else {
+                    state = S_LEAVE_BASE;
+                }
                 break;
                     
-            case S_GOT_HOME:
+            case S_GRAB_BEACON:
                 POS_PRINTF(0,0,"GOT HOME");
-                while (!but0_b){;}but0_b = 0;
+                set_heading(0);
+                rotate_degrees(0);
+                arm_set_level(6);
+                go_forward(500, 255);
+                pickup_angled_puck();
+                break;
+            case S_GOT_HOME:
+                POS_PRINTF(0,0,"VICTORY!!!");
                 break;
         }
         
@@ -412,28 +666,28 @@ int main()
 void calibrate_compass()
 {
     char outString[25];
-    double avx = 0,avy = 0;
-    int trials = 1000;
-    short xHIGH, xLOW, yHIGH, yLOW;
+    float avx = 0,avy = 0;
+    int trials = 2000;
+    int32 x = 0,y = 0;
     int i;
     rotate_left(130);
     for(i = 0; i < trials; i++)
     {
         while(!compass_ready){}
         compass_read();
-        avx += compass_x/((double) trials);
-        avy += compass_y/((double) trials);
+        x += compass_x;
+        y += compass_y;
         LCD_ClearDisplay();
-        POS_PRINTF(0,0,"X:%d Y:%d",(int) round(avx),(int) round(avy));
-        POS_PRINTF(1,0,"C:%d/%d",i,(int) round(trials));
+        //POS_PRINTF(0,0,"X:%ld Y:%ld",(int) round(avx),(int) round(avy));
+        //POS_PRINTF(1,0,"C:%ld/%ld",i,(int) round(trials));
+        POS_PRINTF(0,0,"X:%ld Y:%ld",x/i,y/i);
+        POS_PRINTF(1,0,"T:%ld/%ld",i,trials);
     }
     setCoast(MBOTH);
-    int x = round(avx);
-    int y = round(avy);
-    xHIGH = x >> 8;
-    xLOW = x & 0xFF;
-    yHIGH = y >> 8;
-    yLOW = y & 0xFF;
+    avx = x/(1.0);
+    avy = y/(1.0);
+    x = round(avx);
+    y = round(avy);
     //EEPROM1_Write(&xHIGH,0);
     //EEPROM1_Write(&xLOW,1);
     //EEPROM1_Write(&yHIGH,2);

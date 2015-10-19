@@ -18,6 +18,8 @@
     void capture_thresh_image();
     void set_gain_exposure(int setting);
     void clean_frame(int colour, float proportion, int row_limit); 
+    void image_stuff4();
+    void read_instructions();
     
     uint8 PixelColour(uint8, uint8);
     void threshold_image();
@@ -26,7 +28,8 @@
     int PixelLuminence(int x, int y);
     int identify_colour_instructions(int size);
     int identify_colour_gripper();
-   
+    int instruction_read();
+    int stack[4];
     enum
     {
         NONE=0,
