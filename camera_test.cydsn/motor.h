@@ -29,7 +29,7 @@
     #define MEND_S_DRIVING 2
    
     #define ARENA_STALL_SPEED 140
-    #define BASE_STALL_SPEED 180
+    #define BASE_STALL_SPEED 160
     
     #define LEFT_MOTOR_SPEED_CORRECTION 0 //attempt to correct for unmatched motors
     
