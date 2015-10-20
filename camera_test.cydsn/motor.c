@@ -40,7 +40,7 @@ uint8 isDriving(){
     return currently_driving;
 }
 
-uint8 HEADING_ERROR_LIMIT = 4;
+uint8 HEADING_ERROR_LIMIT = 3;
 uint8 STALL_SPEED = ARENA_STALL_SPEED;
 uint8 MAX_SPEED = 240;
 char outString[25];
@@ -88,8 +88,9 @@ int control_heading(){
      */
     while (!compass_ready){;}
     compass_read();
-    int motor_end_state = 0;
-    int heading_error = desired_heading - compass_heading;
+    int16 heading_error = desired_heading - compass_heading;
+    heading_error = heading_error % 360;
+    //POS_PRINTF(0,0,"d%d c%d e%d", desired_heading, compass_heading, heading_error);
     // If the error is greater than 180, there is a shorter way around the unit 
     // circle, this corrects that
     if (my6abs(heading_error) > 180){
@@ -97,7 +98,6 @@ int control_heading(){
     }
     // We need to correct the heading if the error is greater than 
     if (my6abs(heading_error) > HEADING_ERROR_LIMIT){ 
-        currently_rotating = 1;
         // the actual heading is greater than the desired heading
         if (heading_error < 0){ 
             rotate_left(clip(STALL_SPEED, my6abs(heading_error)*2, MAX_SPEED));
@@ -160,11 +160,6 @@ void go_backward_ultra(uint16 ultra_dist, uint8 speed){
 void rotate_degrees(int16 angle){
     desired_heading += angle;
     desired_heading = desired_heading % 360;
-    /*if (desired_heading > 360){
-        desired_heading -= 360;
-    } else if (desired_heading < 0){
-        desired_heading += 360;
-    }*/
     
     while (control_heading() != MEND_S_STOPPED){
         /*LCD_ClearDisplay();

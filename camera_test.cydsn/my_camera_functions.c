@@ -24,7 +24,7 @@ uint8 BLUE_V= 123;//124;//116;
 uint8 GAIN = 34;
 uint8 B_GAIN = 139;
 uint8 R_GAIN = 139;
-uint8 EXPOSURE = 60;
+uint8 EXPOSURE = 40;
 
 extern blob *blobs;
 

@@ -116,7 +116,7 @@ int main()
     
     /**** INITIALIZE COMPONENTS ****/
     LCD_Start();
-    //USB_Start(0, USB_DWR_VDDD_OPERATION);
+    USB_Start(0, USB_DWR_VDDD_OPERATION);
     
     Timer_Start();
     start_buttons();
@@ -184,6 +184,7 @@ int main()
     long start_time_find100;
     long start_time_find_puck;
     int no_puck_state = 0;
+    int twitching = 0;
     state = S_START;
      
     
@@ -247,16 +248,17 @@ int main()
                 break;
             case S_FIND_PUCK:
                 POS_PRINTF(1,0,"FIND %d of %d", current_color, pucks_gotten);
-                if (start_time_find_puck - Timer_ReadCounter() > 10 * 35000){
+                /*if (start_time_find_puck - Timer_ReadCounter() > 10 * 35000){
                     set_heading(180);
                     go_backward(4000, 255);
                     start_time_find_puck = Timer_ReadCounter();
-                }
+                }*/
                 CyDelay(300);
                 capture_thresh_image();
                 int pucks = to_nearest_blob(current_color, 30, 10);
                 
                 if (pucks == 0){
+                    twitching = 0;
                     //Red puck is centered, so we check our beam break and drive forward a bit.
                     go_forward(1000, 255);
                     if (beam_broken()){
@@ -270,10 +272,11 @@ int main()
                         rotate_degrees(0);
                         arm_set_level(0);
                         CyDelay(300);
+                        set_gain_exposure(2);
                         capture_thresh_image();
                         int color = identify_colour_gripper();
+                        set_gain_exposure(1);
                         POS_PRINTF(0,0,"SEE C: %d", color);
-                        CyDelay(3000);
                         if (color != current_color){
                             go_forward(500, 255);
                             drop_puck();
@@ -283,20 +286,31 @@ int main()
                             set_heading(old_heading);
                             rotate_degrees(0);
                         } else {
-                            start_time_find_puck = Timer_ReadCounter();
                             arm_carry_home();
                             set_heading(180);
                             rotate_degrees(0);
                             go_backward(1500, 255);
                             pucks_gotten++;
+                            start_time_find_puck = Timer_ReadCounter();
                             state = S_FACE_HOME;
                             break;
                         }
                     }                
                 } else if (pucks < 0){
-                    rotate_degrees(-6);
-                } else if (pucks > 0){
-                    rotate_degrees(6);
+                    if (twitching > 5){
+                        twitching = 0;
+                        go_forward(500, 255);
+                    } else {
+                        rotate_degrees(-3);
+                        twitching++;
+                    }
+                } else if (pucks > 0){if (twitching > 5){
+                        twitching = 0;
+                        go_forward(500, 255);
+                    } else {
+                        rotate_degrees(3);
+                        twitching++;
+                    }
                 } else if (pucks == -1){
                     switch (no_puck_state){
                         case NP_AHEAD:
@@ -514,7 +528,12 @@ int main()
                         stackable = 1;
                     }
                 }
+                
                 STALL_SPEED = BASE_STALL_SPEED;
+                
+                rotate_left(200);
+                CyDelay(400);
+                
                 set_heading(270);
                 rotate_degrees(0);
                 
@@ -522,8 +541,9 @@ int main()
                 break;
                 
             case S_PLACE_PUCK:
+                POS_PRINTF(0,0,"PLACING PUCK");
                 //FIRST PUCK EVER!
-                HEADING_ERROR_LIMIT = 2;
+                HEADING_ERROR_LIMIT = 1;
                 if (pucks_gotten == 1){
                     for (i = 0; i < 3; i++){
                         go_forward(500, 200);
@@ -536,27 +556,30 @@ int main()
                     CyDelay(300);
                     drop_puck();
                     CyDelay(200);
-                    go_backward(2000, 255);
+                    go_backward(1400, 255);
                 } else {
                     arm_set_level(pucks_gotten + 1);
-                    go_forward(500, 200);
-                    int on_stack = 0;
+                    //go_forward(500, 200);
                     
+                    int on_stack = 0;
                     while (!on_stack){
                         POS_PRINTF(0,0,"STACKING!");
                         POS_PRINTF(1, 0, "B%d SU%d", beam_broken(), get_mean_ultra_s());
                         if (beam_broken()){
+                            POS_PRINTF(0,0,"BEAM BROKEN");
                             on_stack = 1;
-                        } else if (get_mean_ultra_s() < 10){
+                        } else if (get_mean_ultra_s() < 12){
+                            POS_PRINTF(0,0,"Close to stack");
                             go_backward(200, 255);
                             on_stack = 1;
                         } else if (get_mean_ultra_s() > 17) {
+                            POS_PRINTF(0,0,"FAR FROM STACK");
                             go_forward(300, 255);
-                            rotate_degrees(0);
                         } else {
+                            POS_PRINTF(0,0,"between 12 and 17");
                             go_forward(200, 255);
-                            rotate_degrees(0);
                         }
+                        CyDelay(300);
                     }
                     
                     #define LEVEL_1_DIST 14
