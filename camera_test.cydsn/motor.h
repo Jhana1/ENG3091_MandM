@@ -28,8 +28,8 @@
     #define MEND_S_ROTATING 1
     #define MEND_S_DRIVING 2
    
-    #define ARENA_STALL_SPEED 140
-    #define BASE_STALL_SPEED 160
+    #define ARENA_STALL_SPEED 150
+    #define BASE_STALL_SPEED 190
     
     #define LEFT_MOTOR_SPEED_CORRECTION 0 //attempt to correct for unmatched motors
     
@@ -41,7 +41,8 @@
     
     //Makes the robot drive to x,y position
     void goto_position(int32 x, int32 y);
-    
+    void go_backward_blind(uint32 time, uint8 speed);
+    void go_forward_blind(uint32 time, uint8 speed);
     int control_motors();
     void rotate_degrees(int16 angle);
     void rotate_left(int speed);

@@ -85,8 +85,8 @@ void set_gain_exposure(int setting)
 			Camera_WriteReg(0x10, EXPOSURE);//exposure
 			break;
         case 2:
-            Camera_WriteReg(0x00, 60); // Gain
-            Camera_WriteReg(0x10, 80); // Exposure
+            Camera_WriteReg(0x00, 40); // Gain
+            Camera_WriteReg(0x10, 60); // Exposure
             
 	}
 }

@@ -127,8 +127,22 @@ void go_forward(uint32 time, uint8 speed){
     setCoast(MBOTH);
 }
 
+void go_forward_blind(uint32 time, uint8 speed){
+    setForward(MBOTH);
+    setSpeed(MBOTH, speed);
+    CyDelay(time);
+    setCoast(MBOTH);
+}
+
+void go_backward_blind(uint32 time, uint8 speed){
+    setReverse(MBOTH);
+    setSpeed(MBOTH, speed);
+    CyDelay(time);
+    setCoast(MBOTH);
+}
+
 /*
- * Makes the robot drive backward *distance* centimeters
+ * Makes the robot drive backward *time* milliseconds
  */
 void go_backward(uint32 time, uint8 speed){
     time = time * 10;
@@ -160,11 +174,11 @@ void go_backward_ultra(uint16 ultra_dist, uint8 speed){
 void rotate_degrees(int16 angle){
     desired_heading += angle;
     desired_heading = desired_heading % 360;
-    
+    int32 started_time = Timer_ReadCounter();
     while (control_heading() != MEND_S_STOPPED){
-        /*LCD_ClearDisplay();
-        POS_PRINTF(1,0,"%d %d", desired_heading, compass_heading);
-        CyDelay(50);*/
+        if (started_time - Timer_ReadCounter() > 10000 * 10){
+            POS_PRINTF(0,0,"!!!!! STUCK !!!!!");
+        }
     }
 }
 /* 

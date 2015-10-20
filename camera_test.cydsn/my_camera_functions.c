@@ -85,8 +85,8 @@ void set_gain_exposure(int setting)
 		default:
 		case 2:
 			// Settings for arena 1
-			Camera_WriteReg(0x00,60);
-			Camera_WriteReg(0x10,80);
+			Camera_WriteReg(0x00,40);
+			Camera_WriteReg(0x10,60);
 			break;
             
 	}
@@ -230,15 +230,15 @@ int identify_colour_gripper()
     int i ,j, count[4] = {0};
     for(i = 0; i < 10; i++)
     {
-        for(j = 0; j < 10; j++)
+        for(j = 0; j < 5; j++)
         {
-            count[PixelColour(34 + j, 143 - i)]++;
+            count[PixelColour(41 + j, 143 - i)]++;
         }
     }
-    if(count[NONE] > 50) return NONE;
-    if(count[RED] > 80) return RED;
-    if(count[BLUE] > 80) return BLUE;
-    if(count[GREEN] > 80) return GREEN;
+    if(count[NONE] > 25) return NONE;
+    if(count[RED] > 35) return RED;
+    if(count[BLUE] > 35) return BLUE;
+    if(count[GREEN] > 35) return GREEN;
 }
 
 

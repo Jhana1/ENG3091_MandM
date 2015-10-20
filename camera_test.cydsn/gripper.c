@@ -31,7 +31,8 @@
 /* SERVO CONSTANTS */
 #define MINIMUM_POINT 18
 #define MAXIMUM_POINT 50
-#define OPTIMAL_GRIP_POINT 31
+#define SUBOPTIMAL_GRIP_POINT 31
+#define OPTIMAL_GRIP_POINT 29
 #define PICKUP_ANGLE_POINT 27
 #define PERIOD 799
 
@@ -41,7 +42,7 @@
 void start_gripper(){
     /* Initialize the motor controller */
     Gripper_PWM_Start();
-    Gripper_PWM_WriteCompare(MAXIMUM_POINT);
+    Gripper_PWM_WriteCompare(OPTIMAL_GRIP_POINT);
 }
 
 void pickup_puck(){
@@ -49,6 +50,14 @@ void pickup_puck(){
     Gripper_PWM_WriteCompare(OPTIMAL_GRIP_POINT);
     CyDelay(PAUSE);
     //TODO: Implement Potential Power Saving by Killing the PWM???
+}
+
+void drop_puck();
+
+void gently_drop_puck(){
+    Gripper_PWM_WriteCompare(SUBOPTIMAL_GRIP_POINT);
+    CyDelay(100);
+    drop_puck();
 }
 
 void drop_puck(){
