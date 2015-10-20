@@ -135,14 +135,14 @@ int main()
     start_infrared();
     beam_broken();
     
-    
+    /*
     while (1){
         if (compass_ready){
             compass_read();
             print("%d %d\n", compass_x, compass_y);
             POS_PRINTF(0,0,"%d %d %d", compass_heading, compass_x, compass_y);
         }
-    }
+    }*/
     
 
     //calibrate_compass();
